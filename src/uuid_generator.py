@@ -25,9 +25,8 @@ def generate_uuid():
     # Prepare hex characters
     hex_chars = list(hash_digest[:32])
     
-    # Enforce version 4 (hexadecimal 4xxx)
-    hex_chars[14] = '4'
-    hex_chars[15] = hex(int(hex_chars[15], 16) & 0x0F)[2:]
+    # Enforce version 4 in third group (completely force to version 4)
+    hex_chars[12:16] = list('4' + ''.join(hex_chars[13:16]))
     
     # Enforce variant (10xx)
     hex_chars[16] = hex(int(hex_chars[16], 16) & 0x03 | 0x08)[2:]
