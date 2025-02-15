@@ -6,7 +6,7 @@ def test_basic_word_count():
     assert count_words("One") == 1
 
 def test_multiple_spaces():
-    assert count_words("  Multiple   spaces   between words  ") == 3
+    assert count_words("  Multiple   spaces   between words  ") == 4
 
 def test_empty_string():
     assert count_words("") == 0
