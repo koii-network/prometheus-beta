@@ -21,9 +21,9 @@ def test_uuid_version():
     
     # Check version bit (should be 4 in 3rd group)
     version_char = uuid.split('-')[2][0]
-    assert version_char in '4', f"Incorrect version bit: {version_char}"
+    assert version_char == '4', f"Incorrect version bit: {version_char}"
     
-    # Check variant bit (in 3rd group)
+    # Check variant bit (in 3rd group, should be 8, 9, a, or b)
     variant_char = uuid.split('-')[2][1]
     assert variant_char in '89ab', f"Incorrect variant bit: {variant_char}"
 
