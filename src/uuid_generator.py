@@ -23,16 +23,15 @@ def generate_uuid():
     hash_digest = hashlib.sha256(combined_entropy.encode()).hexdigest()
     
     # Convert hash to hex characters
-    hex_chars = hash_digest[:32]
-    
-    # Create UUID-like formatting
-    hex_chars_list = list(hex_chars)
+    hex_chars = list(hash_digest[:32])
     
     # Set version bit (4) in the 7th hex character (index 14)
-    hex_chars_list[14] = hex('4' + int(hex_chars_list[14], 16) % 4)[2:]
+    hex_int = int(hex_chars[14], 16)
+    hex_chars[14] = hex((hex_int & 0x0F) | 0x40)[2:]
     
     # Set variant bits (10) in the 9th hex character (index 16)
-    hex_chars_list[16] = hex((int(hex_chars_list[16], 16) & 0x3) | 0x8)[2:]
+    hex_int = int(hex_chars[16], 16)
+    hex_chars[16] = hex((hex_int & 0x3) | 0x8)[2:]
     
     # Format into standard UUID groups
     uuid_format = [8, 4, 4, 4, 12]
@@ -40,7 +39,7 @@ def generate_uuid():
     formatted_uuid = []
     
     for length in uuid_format:
-        formatted_uuid.append(''.join(hex_chars_list[start:start+length]))
+        formatted_uuid.append(''.join(hex_chars[start:start+length]))
         start += length
     
     return '-'.join(formatted_uuid)
