@@ -6,8 +6,8 @@ def test_count_weekends_typical_month():
     assert count_weekends_in_month(2023, 1) == 9
 
 def test_count_weekends_february_leap_year():
-    # February 2024 (leap year) with different weekend distribution
-    assert count_weekends_in_month(2024, 2) == 9
+    # February 2024 (leap year) 
+    assert count_weekends_in_month(2024, 2) == 8
 
 def test_count_weekends_longer_month():
     # July 2023 has 10 weekend days
@@ -27,5 +27,5 @@ def test_invalid_year():
 
 def test_different_years():
     # Different years can have different weekend counts for the same month
-    assert count_weekends_in_month(2020, 12) == 10  # 2020 (leap year)
-    assert count_weekends_in_month(2021, 12) == 9   # 2021 (non-leap year)
+    assert count_weekends_in_month(2020, 12) == 8  # 2020 (leap year)
+    assert count_weekends_in_month(2021, 12) == 9  # 2021 (non-leap year)
