@@ -17,4 +17,4 @@ def count_words(text: str) -> int:
         return 0
     
     # Split the string by whitespace and count non-empty elements
-    return len([word for word in text.split() if word])
+    return len(text.split())
