@@ -28,4 +28,4 @@ def test_invalid_year():
 def test_different_years():
     # Different years can have different weekend counts for the same month
     assert count_weekends_in_month(2020, 12) == 8  # 2020 (leap year)
-    assert count_weekends_in_month(2021, 12) == 9  # 2021 (non-leap year)
+    assert count_weekends_in_month(2021, 12) == 8  # 2021 (non-leap year)
