@@ -16,8 +16,7 @@ def count_words(text: str) -> int:
         >>> count_words("")
         0
     """
-    # Remove leading and trailing whitespace and split on whitespace
-    # Using split() without arguments handles multiple consecutive whitespace characters
+    # Use a more precise method to count words by splitting on one or more whitespace characters
     if not text or not text.strip():
         return 0
     
