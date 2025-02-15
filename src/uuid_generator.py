@@ -1,5 +1,7 @@
 import time
 import random
+import hashlib
+import os
 
 def generate_uuid():
     """
@@ -8,28 +10,37 @@ def generate_uuid():
     Returns:
         str: A UUID in the format 8-4-4-4-12 hexadecimal characters
     """
-    # Get current timestamp for some randomness
-    timestamp = int(time.time() * 1000)
-    random.seed(timestamp)
+    # Use multiple sources of entropy
+    entropy_sources = [
+        str(time.time()),  # Timestamp
+        str(os.getpid()),  # Process ID
+        str(random.randint(0, 2**64)),  # Secure random number
+        ''.join(str(random.random()) for _ in range(10))  # Random float series
+    ]
     
-    # Generate 32 random hexadecimal characters
-    hex_chars = '0123456789abcdef'
-    uuid_chars = [random.choice(hex_chars) for _ in range(32)]
+    # Combine and hash entropy sources
+    combined_entropy = '|'.join(entropy_sources)
+    hash_digest = hashlib.sha256(combined_entropy.encode()).hexdigest()
     
-    # Apply UUID v4 variant and version bits
-    # Set the variant (bits 6-7 of 8th hex character) to 0b10
-    uuid_chars[16] = hex_chars[(int(uuid_chars[16], 16) & 0x3) | 0x8]
+    # Convert hash to hex characters
+    hex_chars = hash_digest[:32]
     
-    # Set the version (bits 6-7 of 6th hex character) to 0b0100 (version 4)
-    uuid_chars[14] = hex_chars[(int(uuid_chars[14], 16) & 0x3) | 0x4]
+    # Create UUID-like formatting
+    hex_chars_list = list(hex_chars)
+    
+    # Set version bit (4) in the 7th hex character (index 14)
+    hex_chars_list[14] = hex('4' + int(hex_chars_list[14], 16) % 4)[2:]
+    
+    # Set variant bits (10) in the 9th hex character (index 16)
+    hex_chars_list[16] = hex((int(hex_chars_list[16], 16) & 0x3) | 0x8)[2:]
     
     # Format into standard UUID groups
     uuid_format = [8, 4, 4, 4, 12]
-    formatted_uuid = []
     start = 0
+    formatted_uuid = []
     
     for length in uuid_format:
-        formatted_uuid.append(''.join(uuid_chars[start:start+length]))
+        formatted_uuid.append(''.join(hex_chars_list[start:start+length]))
         start += length
     
     return '-'.join(formatted_uuid)
