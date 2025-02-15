@@ -19,9 +19,9 @@ def find_longest_increasing_subsequence(arr):
     if not arr:
         return []
     
-    # Check if all elements are numeric
-    if not all(isinstance(x, (int, float)) for x in arr):
-        raise ValueError("List must contain only numeric elements")
+    # Check if all elements are of the same numeric type
+    if not all(isinstance(x, type(arr[0])) and isinstance(x, (int, float)) for x in arr):
+        raise ValueError("List must contain only consistent numeric elements")
     
     # Dynamic Programming solution
     # Initialize lengths and predecessors
