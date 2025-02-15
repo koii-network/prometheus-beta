@@ -10,11 +10,21 @@ def find_median_sorted_arrays(nums1, nums2):
         float: Median of the two sorted arrays
     
     Raises:
-        ValueError: If input is not a valid list of numbers
+        ValueError: If input is not a valid list of numbers or not sorted
     """
     # Validate input 
+    if nums1 is None or nums2 is None:
+        raise ValueError("Inputs must not be None")
+    
     if not isinstance(nums1, list) or not isinstance(nums2, list):
         raise ValueError("Inputs must be lists")
+    
+    # Check if arrays are sorted
+    def is_sorted(arr):
+        return all(arr[i] <= arr[i+1] for i in range(len(arr)-1)) if arr else True
+    
+    if not (is_sorted(nums1) and is_sorted(nums2)):
+        raise ValueError("Input arrays must be sorted")
     
     # Ensure first array is the smaller one for efficiency
     if len(nums1) > len(nums2):
@@ -50,4 +60,4 @@ def find_median_sorted_arrays(nums1, nums2):
             low = partition_x + 1
     
     # If no valid partition found
-    raise ValueError("Input arrays are not sorted")
+    raise ValueError("Could not find median")
