@@ -19,4 +19,4 @@ def test_count_words_with_punctuation():
     assert count_words("Hello, world! How are you?") == 5
 
 def test_count_words_with_numbers():
-    assert count_words("There are 123 words in this 456 string") == 7
+    assert count_words("There are 123 words in this 456 string") == 8
