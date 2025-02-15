@@ -29,9 +29,8 @@ def generate_uuid():
     hex_chars[12] = '4'
     
     # Enforce variant (10xx)
-    variant_options = ['8', '9', 'a', 'b']
-    variant_choice = random.choice(variant_options)
-    hex_chars[16] = variant_choice
+    variant_bits = ['8', '9', 'a', 'b']
+    hex_chars[16] = variant_bits[int(hash_digest[16], 16) % 4]
     
     # Format into standard UUID groups
     uuid_parts = [
