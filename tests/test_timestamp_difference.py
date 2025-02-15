@@ -28,7 +28,7 @@ def test_calculate_timestamp_difference_days():
         'hours': 4,
         'minutes': 30,
         'seconds': 0,
-        'total_seconds': 186600
+        'total_seconds': 189000
     }
 
 def test_calculate_timestamp_difference_order_independence():
@@ -47,5 +47,5 @@ def test_calculate_timestamp_difference_custom_format():
         'hours': 4,
         'minutes': 30,
         'seconds': 0,
-        'total_seconds': 186600
+        'total_seconds': 189000
     }
