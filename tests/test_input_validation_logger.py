@@ -25,10 +25,10 @@ class TestInputValidationLogger:
         
         caplog.set_level(logging.ERROR)
         
-        with pytest.raises(TypeError):
+        with pytest.raises(TypeError, match="Invalid type for parameter"):
             example_func("not", "int")
         
-        assert "Invalid input type" in caplog.text
+        assert "Invalid type for parameter" in caplog.text
     
     def test_failed_validation_value(self, caplog):
         @log_input_validation()
