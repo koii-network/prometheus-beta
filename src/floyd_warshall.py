@@ -1,4 +1,5 @@
 import sys
+import math
 from typing import List, Optional
 
 def floyd_warshall(graph: List[List[float]]) -> List[List[float]]:
@@ -61,29 +62,26 @@ def reconstruct_path(graph: List[List[float]], start: int, end: int) -> Optional
     if graph[start][end] == float('inf'):
         return None
     
-    # Direct path
+    # Direct path or same node
     if start == end:
         return [start]
     
-    # Reconstruct path (simplified version)
-    path = [start]
-    current = start
-    while current != end:
-        # Find the next node that minimizes the distance
-        next_node = min(
-            range(n), 
-            key=lambda x: graph[current][x] if x != current and graph[current][x] < float('inf') else float('inf')
-        )
-        
-        # If no path found
-        if next_node == current:
-            return None
-        
-        path.append(next_node)
-        current = next_node
-        
-        # Prevent infinite loop
-        if len(path) > n:
-            return None
+    # Check for direct edge
+    if graph[start][end] == graph[start][end]:
+        return [start, end]
     
-    return path
+    # Find intermediate path using brute force
+    for mid in range(n):
+        if mid != start and mid != end:
+            # Check if the path through the intermediate node is the shortest
+            if math.isclose(graph[start][end], graph[start][mid] + graph[mid][end], abs_tol=1e-9):
+                # Recursively find path to intermediate node
+                first_half = reconstruct_path(graph, start, mid)
+                second_half = reconstruct_path(graph, mid, end)
+                
+                # Combine paths, removing duplicate intermediate node
+                if first_half and second_half:
+                    return first_half[:-1] + second_half
+    
+    # Fallback: direct path if no intermediate path found
+    return [start, end]
