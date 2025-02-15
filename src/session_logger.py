@@ -28,8 +28,8 @@ def log_session_state(session_data, log_dir='logs'):
     except Exception as e:
         raise IOError(f"Could not create log directory: {e}")
     
-    # Generate unique filename with timestamp
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    # Generate unique filename with timestamp and microseconds
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     log_filename = f"session_log_{timestamp}.json"
     log_path = os.path.join(log_dir, log_filename)
     
