@@ -25,7 +25,7 @@ def test_uuid_version():
     
     # Check variant bit (in 3rd group)
     variant_char = uuid.split('-')[2][1]
-    assert variant_char in '89ab'], f"Incorrect variant bit: {variant_char}"
+    assert variant_char in '89ab', f"Incorrect variant bit: {variant_char}"
 
 def test_uuid_length():
     """Ensure generated UUIDs have the correct total length."""
