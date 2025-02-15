@@ -28,23 +28,28 @@ def find_single_non_duplicate(arr):
         return arr[-1]
     
     # Binary search to find the single element
-    left, right = 1, len(arr) - 2
+    left, right = 0, len(arr) - 1
     
     while left <= right:
         mid = (left + right) // 2
         
-        # Check if mid is the unique element
-        if arr[mid] != arr[mid-1] and arr[mid] != arr[mid+1]:
+        # Ensure mid is always looking at first occurrence of the pair
+        if mid % 2 == 1:
+            mid -= 1
+        
+        # Check if current pair is broken
+        if arr[mid] != arr[mid+1]:
             return arr[mid]
         
-        # Determine which side to continue searching
-        # If mid is on the left half, the unique element is on this side 
-        # if the first pair is broken
-        if (mid % 2 == 1 and arr[mid] == arr[mid-1]) or \
-           (mid % 2 == 0 and arr[mid] == arr[mid+1]):
-            right = mid - 1
+        # Determine search direction
+        if mid < len(arr) - 2:
+            # If pairs to the left of mid are complete, search right
+            if arr[mid] == arr[mid+1]:
+                left = mid + 2
+            else:
+                right = mid - 2
         else:
-            left = mid + 1
+            break
     
     # If no single element found
     raise ValueError("No single non-duplicate element found")
