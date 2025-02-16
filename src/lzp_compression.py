@@ -15,7 +15,7 @@ def lzp_compress(data):
         return b''
     
     compressed = bytearray()
-    context_size = 4  # Context window size
+    context_size = 3  # Reduced context window size
     context_dict = {}
     
     # Initialize context with first few bytes
@@ -25,7 +25,7 @@ def lzp_compress(data):
     i = context_size
     while i < len(data):
         # Look for matching context
-        context = data[i-context_size:i]
+        context = bytes(data[i-context_size:i])
         next_byte = data[i]
         
         # If context exists in dictionary, encode prediction
@@ -45,6 +45,10 @@ def lzp_compress(data):
             compressed.append(0)  # Literal flag
             compressed.append(next_byte)
             context_dict[context] = next_byte
+        
+        # Less frequent context dictionary updates for better compression
+        if len(context_dict) > 512:
+            context_dict.clear()
         
         i += 1
     
@@ -67,7 +71,7 @@ def lzp_decompress(compressed_data):
         return b''
     
     decompressed = bytearray()
-    context_size = 4  # Match context window size
+    context_size = 3  # Match context window size
     context_dict = {}
     
     # Initialize context with first few bytes
@@ -76,7 +80,7 @@ def lzp_decompress(compressed_data):
     
     i = context_size
     while i < len(compressed_data):
-        context = decompressed[-context_size:]
+        context = bytes(decompressed[-context_size:])
         
         # Check prediction flag
         flag = compressed_data[i]
@@ -99,5 +103,9 @@ def lzp_decompress(compressed_data):
             i += 1
             decompressed.append(next_byte)
             context_dict[context] = next_byte
+        
+        # Less frequent context dictionary updates
+        if len(context_dict) > 512:
+            context_dict.clear()
     
     return bytes(decompressed)
