@@ -24,7 +24,7 @@ def compress_lzma(input_data, output_path=None):
         raise TypeError("Input data cannot be None")
     
     # Validate input 
-    if input_data == "":
+    if input_data == "" or input_data == b"":
         raise ValueError("Input data cannot be empty")
     
     # Convert str to bytes if needed
@@ -67,7 +67,7 @@ def decompress_lzma(input_data):
         raise TypeError("Input data cannot be None")
     
     # Validate input
-    if input_data == "":
+    if input_data == "" or input_data == b"":
         raise ValueError("Input data cannot be empty")
     
     # If input is a file path, read the compressed data
@@ -83,4 +83,7 @@ def decompress_lzma(input_data):
         raise TypeError("Input must be bytes or a valid file path")
     
     # Decompress the data
-    return lzma.decompress(input_data)
+    try:
+        return lzma.decompress(input_data)
+    except lzma.LZMAError as e:
+        raise ValueError(f"Invalid LZMA compressed data: {e}")
