@@ -19,7 +19,17 @@ def test_compression_quality():
     
     # Test different compression levels
     for quality in [0, 5, 11]:
-        compressed_data = compress_with_brotli(data, quality)
+        compressed_data = compress_with_brotli(data, quality=quality)
+        decompressed_data = decompress_with_brotli(compressed_data)
+        assert decompressed_data == data
+
+def test_compression_modes():
+    """Test different compression modes"""
+    data = b"Test data for compression modes"
+    
+    # Test different modes
+    for mode in [0, 1, 2]:
+        compressed_data = compress_with_brotli(data, mode=mode)
         decompressed_data = decompress_with_brotli(compressed_data)
         assert decompressed_data == data
 
@@ -44,10 +54,20 @@ def test_invalid_compression_quality():
     data = b"Test data"
     
     with pytest.raises(ValueError):
-        compress_with_brotli(data, -1)
+        compress_with_brotli(data, quality=-1)
     
     with pytest.raises(ValueError):
-        compress_with_brotli(data, 12)
+        compress_with_brotli(data, quality=12)
+
+def test_invalid_compression_mode():
+    """Test error handling for invalid compression mode"""
+    data = b"Test data"
+    
+    with pytest.raises(ValueError):
+        compress_with_brotli(data, mode=-1)
+    
+    with pytest.raises(ValueError):
+        compress_with_brotli(data, mode=3)
 
 def test_empty_data_compression():
     """Test compression and decompression of empty data"""

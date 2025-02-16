@@ -1,6 +1,6 @@
 import brotli
 
-def compress_with_brotli(data: bytes, quality: int = 11) -> bytes:
+def compress_with_brotli(data: bytes, quality: int = 11, mode: int = 0) -> bytes:
     """
     Compress data using Brotli compression algorithm.
     
@@ -8,13 +8,17 @@ def compress_with_brotli(data: bytes, quality: int = 11) -> bytes:
         data (bytes): The input data to compress
         quality (int, optional): Compression quality (0-11). 
                                  Defaults to 11 (maximum compression).
+        mode (int, optional): Compression mode. 
+                               0: MODE_GENERIC (default)
+                               1: MODE_TEXT (UTF-8 text)
+                               2: MODE_FONT (WOFF 2.0)
     
     Returns:
         bytes: Compressed data
     
     Raises:
         TypeError: If input is not bytes
-        ValueError: If quality is out of range (0-11)
+        ValueError: If quality or mode is out of range
     """
     # Validate input types
     if not isinstance(data, bytes):
@@ -24,8 +28,12 @@ def compress_with_brotli(data: bytes, quality: int = 11) -> bytes:
     if not 0 <= quality <= 11:
         raise ValueError("Compression quality must be between 0 and 11")
     
+    # Validate compression mode
+    if mode not in [0, 1, 2]:
+        raise ValueError("Compression mode must be 0 (GENERIC), 1 (TEXT), or 2 (FONT)")
+    
     # Perform Brotli compression
-    compressed_data = brotli.compress(data, quality)
+    compressed_data = brotli.compress(data, mode=mode, quality=quality)
     
     return compressed_data
 
