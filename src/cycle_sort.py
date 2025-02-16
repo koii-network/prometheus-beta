@@ -41,7 +41,7 @@ def cycle_sort(arr):
             pos += 1
         
         # Swap the item with the element at the calculated position
-        arr[pos], item = item, arr[pos]
+        arr[pos], arr[cycle_start] = arr[cycle_start], arr[pos]
         
         # Rotate the rest of the cycle 
         while pos != cycle_start:
