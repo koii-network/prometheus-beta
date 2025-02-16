@@ -1,18 +1,16 @@
 class LZRWCompressor:
-    def __init__(self, window_size=4096, lookahead_size=16):
+    def __init__(self, max_dict_size=4096):
         """
         Initialize LZRW compression algorithm.
         
         Args:
-            window_size (int): Size of the sliding window for searching matches
-            lookahead_size (int): Size of the lookahead buffer
+            max_dict_size (int): Maximum size of the dictionary
         """
-        self.window_size = window_size
-        self.lookahead_size = lookahead_size
+        self.max_dict_size = max_dict_size
     
     def compress(self, input_data):
         """
-        Compress input data using LZRW algorithm.
+        Compress input data using a custom LZ-style compression.
         
         Args:
             input_data (bytes or str): Data to compress
@@ -28,53 +26,54 @@ class LZRWCompressor:
         if isinstance(input_data, str):
             input_data = input_data.encode('utf-8')
         
-        # Compression buffers
+        # Compression variables
         compressed = bytearray()
         pos = 0
+        window_size = 256  # Smaller sliding window
         
         while pos < len(input_data):
-            # Find the longest match in the window
-            longest_match_length = 0
-            longest_match_offset = 0
+            # Look for longest match in previous window
+            best_match_length = 0
+            best_match_distance = 0
             
-            # Search back in the current window
-            window_start = max(0, pos - self.window_size)
-            search_window = input_data[window_start:pos]
+            # Define search window
+            window_start = max(0, pos - window_size)
+            window = input_data[window_start:pos]
             
-            # Look ahead to find a match
-            lookahead_end = min(pos + self.lookahead_size, len(input_data))
-            lookahead = input_data[pos:lookahead_end]
+            # Look ahead buffer
+            lookahead = input_data[pos:min(pos + 16, len(input_data))]
             
-            for offset in range(len(search_window)):
-                match_length = 0
+            # Find best match
+            for distance in range(1, len(window) + 1):
+                # Current search position 
+                search_pos = len(window) - distance
                 
-                # Find match length
+                # Compute match length
+                match_length = 0
                 while (match_length < len(lookahead) and 
-                       search_window[len(search_window) - offset - 1 + match_length] == lookahead[match_length]):
+                       search_pos + match_length < len(window) and
+                       window[search_pos + match_length] == lookahead[match_length]):
                     match_length += 1
                 
-                # Update longest match if better match found
-                if match_length > longest_match_length:
-                    longest_match_length = match_length
-                    longest_match_offset = offset
+                # Update best match
+                if match_length > best_match_length:
+                    best_match_length = match_length
+                    best_match_distance = distance
             
             # Encode match or literal
-            if longest_match_length > 2:
-                # Encode match: offset (2 bytes), length (1 byte)
-                offset = longest_match_offset
-                length = longest_match_length
-                
-                # Use high bit to mark match
-                compressed.extend([
-                    0x80 | ((offset >> 8) & 0x0F),  # High 4 bits of high-order offset byte
-                    offset & 0xFF,                  # Low 8 bits of offset
-                    length                          # Length of match
-                ])
+            if best_match_length > 2:
+                # Compressed token
+                # First byte: Match flag (0x80) + 4-bit distance high
+                # Second byte: Distance low bits
+                # Third byte: Match length
+                compressed.append(0x80 | ((best_match_distance >> 8) & 0x0F))
+                compressed.append(best_match_distance & 0xFF)
+                compressed.append(best_match_length)
                 
                 # Move position
-                pos += length
+                pos += best_match_length
             else:
-                # Encode literal
+                # Literal byte
                 compressed.append(input_data[pos])
                 pos += 1
         
@@ -82,10 +81,10 @@ class LZRWCompressor:
     
     def decompress(self, compressed_data):
         """
-        Decompress data using LZRW algorithm.
+        Decompress LZRW compressed data.
         
         Args:
-            compressed_data (bytes): Compressed data to decompress
+            compressed_data (bytes): Compressed data
         
         Returns:
             bytes: Decompressed data
@@ -94,27 +93,30 @@ class LZRWCompressor:
         if not compressed_data:
             return bytes()
         
-        # Decompression buffer
+        # Decompression variables
         decompressed = bytearray()
         pos = 0
         
         while pos < len(compressed_data):
-            # Check if it's a match or literal
+            # Check if current token is a match 
             if compressed_data[pos] & 0x80:
-                # Match encoding
+                # Verify we have enough data for match 
                 if pos + 2 >= len(compressed_data):
                     raise ValueError("Invalid compressed data")
                 
-                # Decode match info
-                high_offset = (compressed_data[pos] & 0x0F) << 8
-                low_offset = compressed_data[pos + 1]
-                offset = high_offset | low_offset
+                # Extract match details
+                # High 4 bits of distance + low distance byte
+                high_distance = (compressed_data[pos] & 0x0F) << 8
+                low_distance = compressed_data[pos + 1]
+                distance = high_distance | low_distance
                 length = compressed_data[pos + 2]
                 
-                # Find match in current decompressed data
-                match_start = len(decompressed) - offset - 1
+                # Validate match
+                if distance > len(decompressed) or length == 0:
+                    raise ValueError("Invalid match in compressed data")
                 
-                # Copy match
+                # Copy match from existing decompressed data
+                match_start = len(decompressed) - distance
                 for i in range(length):
                     decompressed.append(decompressed[match_start + i])
                 
