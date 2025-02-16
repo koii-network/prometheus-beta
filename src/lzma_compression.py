@@ -19,8 +19,12 @@ def compress_lzma(input_data, output_path=None):
         ValueError: If input is empty
         IOError: If there's an issue writing to file
     """
+    # Explicitly raise TypeError for None
+    if input_data is None:
+        raise TypeError("Input data cannot be None")
+    
     # Validate input 
-    if not input_data:
+    if input_data == "":
         raise ValueError("Input data cannot be empty")
     
     # Convert str to bytes if needed
@@ -58,8 +62,12 @@ def decompress_lzma(input_data):
         ValueError: If input is empty
         IOError: If there's an issue reading from file
     """
+    # Explicitly raise TypeError for None
+    if input_data is None:
+        raise TypeError("Input data cannot be None")
+    
     # Validate input
-    if not input_data:
+    if input_data == "":
         raise ValueError("Input data cannot be empty")
     
     # If input is a file path, read the compressed data
