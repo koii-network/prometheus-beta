@@ -21,7 +21,7 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
     m, n = len(str1), len(str2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
     
-    # Track possible subsequences
+    # Tracking to reconstruct the subsequence
     for i in range(1, m + 1):
         for j in range(1, n + 1):
             if str1[i-1] == str2[j-1]:
@@ -29,31 +29,21 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
             else:
                 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
     
-    # Reconstruct all possible longest common subsequences
-    def backtrack(i, j, current):
-        if i == 0 or j == 0:
-            return [current[::-1]]
-        
-        if str1[i-1] == str2[j-1]:
-            return backtrack(i-1, j-1, current + str1[i-1])
-        
-        results = []
-        if dp[i-1][j] > dp[i][j-1]:
-            results.extend(backtrack(i-1, j, current))
-        elif dp[i-1][j] < dp[i][j-1]:
-            results.extend(backtrack(i, j-1, current))
-        else:
-            results.extend(backtrack(i-1, j, current))
-            results.extend(backtrack(i, j-1, current))
-        
-        return results
-    
-    # Find all LCS with maximum length
-    lcs_candidates = backtrack(m, n, "")
-    
-    # If no common subsequence found
-    if not lcs_candidates or lcs_candidates[0] == "":
+    # If no common subsequence exists
+    if dp[m][n] == 0:
         return ""
     
-    # Return the lexicographically smallest LCS of the max length candidates
-    return min(lcs_candidates)
+    # Backtrack to find the actual subsequence
+    lcs = []
+    i, j = m, n
+    while i > 0 and j > 0:
+        if str1[i-1] == str2[j-1]:
+            lcs.append(str1[i-1])
+            i -= 1
+            j -= 1
+        elif dp[i-1][j] > dp[i][j-1]:
+            i -= 1
+        else:
+            j -= 1
+    
+    return ''.join(reversed(lcs))
