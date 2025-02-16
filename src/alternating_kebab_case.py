@@ -1,0 +1,35 @@
+def to_alternating_kebab_case(input_string):
+    """
+    Convert a string to alternating kebab case.
+    
+    Args:
+        input_string (str): The input string to convert.
+    
+    Returns:
+        str: The string converted to alternating kebab case.
+    
+    Raises:
+        TypeError: If input is not a string.
+    """
+    if not isinstance(input_string, str):
+        raise TypeError("Input must be a string")
+    
+    # Remove leading/trailing whitespaces and split into words
+    words = input_string.strip().split()
+    
+    # Handle empty string case
+    if not words:
+        return ""
+    
+    # Convert words to alternating lowercase and uppercase
+    alternating_words = []
+    for i, word in enumerate(words):
+        # Remove non-alphanumeric characters first
+        cleaned_word = ''.join(c for c in word if c.isalnum())
+        
+        # Convert to lowercase if index is even, uppercase if index is odd
+        converted_word = cleaned_word.lower() if i % 2 == 0 else cleaned_word.upper()
+        
+        alternating_words.append(converted_word)
+    
+    return '-'.join(alternating_words)
