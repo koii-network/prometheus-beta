@@ -16,6 +16,12 @@ class LZ77Compressor:
         :param input_data: String or bytes to compress
         :return: List of tuples representing compressed data (offset, length, next_char)
         """
+        if input_data is None:
+            raise TypeError("Input data cannot be None")
+        
+        if not isinstance(input_data, (str, bytes)):
+            raise TypeError("Input must be a string or bytes")
+
         if not input_data:
             return []
 
@@ -39,17 +45,23 @@ class LZ77Compressor:
             search_window = input_data[search_start:search_end]
             lookahead_buffer = input_data[current_index:lookahead_end]
 
-            for offset in range(len(search_window)):
+            # Check each possible offset in the search window
+            for offset in range(1, len(search_window) + 1):
                 match_length = 0
+                
+                # Find the maximum match length
                 while (match_length < len(lookahead_buffer) and 
-                       search_window[len(search_window) - offset + match_length - 1] == 
+                       match_length < offset and 
+                       search_window[-offset + match_length] == 
                        lookahead_buffer[match_length]):
                     match_length += 1
-                    if match_length >= best_length:
-                        best_length = match_length
-                        best_offset = offset
+                
+                # Update best match if necessary
+                if match_length > best_length:
+                    best_length = match_length
+                    best_offset = offset
 
-            # Add to compressed output
+            # Encode match or literal
             if best_length > 0:
                 next_char = lookahead_buffer[best_length] if best_length < len(lookahead_buffer) else None
                 compressed.append((best_offset, best_length, next_char))
