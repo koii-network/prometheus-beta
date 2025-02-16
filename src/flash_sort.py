@@ -2,10 +2,6 @@ def flash_sort(arr):
     """
     Implement the Flash Sort algorithm for sorting a list of numbers.
     
-    Flash Sort is a distribution sorting algorithm that works by first creating 
-    classification array and then redistributing elements into buckets based 
-    on their relative magnitude.
-    
     Args:
         arr (list): The input list of numbers to be sorted
     
@@ -31,6 +27,10 @@ def flash_sort(arr):
     arr = arr.copy()
     n = len(arr)
     
+    # Handle trivial cases
+    if n <= 1:
+        return arr
+    
     # Find min and max to create classification
     min_val = min(arr)
     max_val = max(arr)
@@ -39,25 +39,23 @@ def flash_sort(arr):
     if min_val == max_val:
         return arr
     
-    # Number of classification bins
-    m = int(0.42 * n) + 1
+    # Compute the number of classes dynamically
+    m = max(1, int(0.42 * n))
     
-    # Initialize classification array
+    # Initialize and compute classification
     l = [0] * m
-    
-    # Compute classification weights
     c1 = (m - 1) / (max_val - min_val)
     
-    # Step 1: Compute classification weights
+    # Compute classification and cumulative count
     for x in arr:
         k = int(((x - min_val) * c1))
         l[k] += 1
     
-    # Step 2: Compute cumulative count
+    # Compute cumulative count
     for k in range(1, m):
         l[k] += l[k-1]
     
-    # Step 3: Permutation
+    # Permutation
     output = [0] * n
     
     # Backward pass
@@ -66,7 +64,7 @@ def flash_sort(arr):
         l[k] -= 1
         output[l[k]] = arr[j]
     
-    # Step 4: Insert sort for remaining elements
+    # Insertion sort on small segments to improve accuracy
     def insertion_sort(arr, left, right):
         for i in range(left + 1, right + 1):
             key = arr[i]
@@ -77,11 +75,11 @@ def flash_sort(arr):
             arr[j + 1] = key
         return arr
     
-    # Subdivide if necessary
-    k = 0
-    while k < m - 1:
-        if l[k + 1] - l[k] > 20:
-            output[l[k]:l[k+1]] = insertion_sort(output[l[k]:l[k+1]], 0, l[k+1] - l[k] - 1)
-        k += 1
+    # Sort small segments
+    start = 0
+    for k in range(m):
+        if l[k] - start > 20:
+            output[start:l[k]] = insertion_sort(output[start:l[k]], 0, l[k] - start - 1)
+        start = l[k]
     
     return output
