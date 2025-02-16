@@ -64,10 +64,18 @@ def test_symmetric_matching():
     }
     matching = hopcroft_karp_matching(graph)
     
+    # Reverse graph for checking back references
+    reverse_graph = {}
+    for node, neighbors in graph.items():
+        for neighbor in neighbors:
+            if neighbor not in reverse_graph:
+                reverse_graph[neighbor] = []
+            reverse_graph[neighbor].append(node)
+    
     # Check symmetry in matching
     for node, matched_node in matching.items():
         assert matched_node in graph.get(node, [])
-        assert node in graph[matched_node]
+        assert node in reverse_graph.get(matched_node, [])
 
 def test_single_node_matching():
     """Test matching with a graph where some nodes have single-node adjacency."""
