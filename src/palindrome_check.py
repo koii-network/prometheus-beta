@@ -3,6 +3,7 @@ def is_palindrome_number(number):
     Check if a given number is a palindrome.
     
     A palindrome number reads the same backward as forward.
+    Negative numbers are not considered palindromes due to the minus sign.
     
     Args:
         number (int): The number to check.
@@ -17,8 +18,12 @@ def is_palindrome_number(number):
     if not isinstance(number, int):
         raise TypeError("Input must be an integer")
     
+    # Negative numbers are not palindromes
+    if number < 0:
+        return False
+    
     # Convert number to string for easier comparison
-    num_str = str(abs(number))
+    num_str = str(number)
     
     # Compare the string with its reverse
     return num_str == num_str[::-1]
