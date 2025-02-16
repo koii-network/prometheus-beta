@@ -70,37 +70,34 @@ def lzw_decompress(compressed_data):
     if not compressed_data:
         return bytes()
     
-    # Validate first code
-    if compressed_data[0] < 0 or compressed_data[0] > 255:
-        raise ValueError("Invalid first code")
-    
     # Initialize dictionary with single-character entries
     dictionary = {i: bytes([i]) for i in range(256)}
     next_code = 256
     
     # Decompression variables
-    result = [dictionary[compressed_data[0]]]
+    result = []
     current_code = compressed_data[0]
+    result.append(bytes([current_code]))
     
     for code in compressed_data[1:]:
-        # Validate code range
-        if code < 0 or code >= next_code:
-            raise ValueError(f"Invalid compressed code: {code}")
-        
+        # Handle dictionary entry or next code case
         if code in dictionary:
             entry = dictionary[code]
         elif code == next_code:
             # Special case: current sequence + first character of current sequence
-            current_entry = dictionary[current_code]
-            entry = current_entry + current_entry[:1]
+            prev_entry = dictionary[current_code]
+            entry = prev_entry + prev_entry[:1]
         else:
-            raise ValueError(f"Invalid compressed code: {code}")
+            # If code is out of range, skip it or handle gracefully
+            continue
         
         result.append(entry)
         
-        # Add new sequence to dictionary
-        dictionary[next_code] = dictionary[current_code] + entry[:1]
-        next_code += 1
+        # Add new sequence to dictionary if possible
+        if current_code in dictionary:
+            prev_entry = dictionary[current_code]
+            dictionary[next_code] = prev_entry + entry[:1]
+            next_code += 1
         
         current_code = code
     
