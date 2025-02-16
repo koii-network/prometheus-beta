@@ -18,11 +18,14 @@ def to_constant_case(input_string):
     # Remove leading/trailing whitespace
     input_string = input_string.strip()
     
-    # Replace non-alphanumeric characters with underscores
+    # Replace multiple consecutive non-alphanumeric characters with a single underscore
     import re
     
-    # Replace multiple consecutive non-alphanumeric characters with a single underscore
-    cleaned_string = re.sub(r'[^a-zA-Z0-9]+', '_', input_string)
+    # First, split camel case words
+    camel_split = re.sub(r'([a-z])([A-Z])', r'\1_\2', input_string)
+    
+    # Replace non-alphanumeric characters with underscores
+    cleaned_string = re.sub(r'[^a-zA-Z0-9]+', '_', camel_split)
     
     # Convert to uppercase and remove leading/trailing underscores
     constant_case = cleaned_string.upper().strip('_')
