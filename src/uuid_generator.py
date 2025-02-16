@@ -10,20 +10,13 @@ def generate_uuid():
         str: A UUID in the standard 8-4-4-4-12 format (e.g., '550e8400-e29b-4214-a536-123456789012')
     """
     # Use current timestamp and random bytes for uniqueness
-    timestamp = int(time.time() * 1000)
-    random_bytes = os.urandom(10) if hasattr(os, 'urandom') else os.getrandom(10)
+    random_bytes = os.urandom(16) if hasattr(os, 'urandom') else os.getrandom(16)
     
-    # Generate hex representation
-    hex_timestamp = hex(timestamp)[2:].zfill(12)
-    hex_random = ''.join([f'{byte:02x}' for byte in random_bytes])
+    # Modify specific bytes to create a version 4 UUID with the right variant
+    random_bytes = bytearray(random_bytes)
+    random_bytes[6] = (random_bytes[6] & 0x0f) | 0x40  # Version 4
+    random_bytes[8] = (random_bytes[8] & 0x3f) | 0x80  # Variant 10
     
-    # Construct UUID parts with version 4 variant
-    parts = [
-        hex_timestamp[:8],  # 8 chars from timestamp
-        hex_random[:4],     # 4 random chars
-        f'4{hex_random[4:5]}',  # Version 4 UUID (starts with 4)
-        f'{int(hex_random[5:6], 16) & 0x3 | 0x8:x}{hex_random[6:8]}',  # Variant and random
-        hex_random[8:20]   # Last 12 chars
-    ]
-    
-    return '-'.join(parts)
+    # Convert to hex and format UUID
+    hex_uuid = ''.join([f'{b:02x}' for b in random_bytes])
+    return f'{hex_uuid[:8]}-{hex_uuid[8:12]}-{hex_uuid[12:16]}-{hex_uuid[16:20]}-{hex_uuid[20:]}'
