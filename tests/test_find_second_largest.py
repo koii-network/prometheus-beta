@@ -15,7 +15,7 @@ def test_find_second_largest_with_duplicates():
 def test_find_second_largest_negative_numbers():
     """Test finding second largest with negative numbers"""
     assert find_second_largest([-1, -2, -3, -4, -5]) == -2
-    assert find_second_largest([0, -1, -2, 1, 2]) == 0
+    assert find_second_largest([0, -1, -2, 1, 2]) == 1
 
 def test_find_second_largest_insufficient_elements():
     """Test that ValueError is raised for insufficient unique elements"""
