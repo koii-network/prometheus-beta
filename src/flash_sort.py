@@ -40,7 +40,7 @@ def flash_sort(arr):
         return arr
     
     # Number of classification bins
-    m = int(0.42 * n)
+    m = int(0.42 * n) + 1
     
     # Initialize classification array
     l = [0] * m
@@ -48,25 +48,40 @@ def flash_sort(arr):
     # Compute classification weights
     c1 = (m - 1) / (max_val - min_val)
     
-    # Compute classification array
-    for i in range(n):
-        k = int(((arr[i] - min_val) * c1))
+    # Step 1: Compute classification weights
+    for x in arr:
+        k = int(((x - min_val) * c1))
         l[k] += 1
     
-    # Compute cumulative counts
+    # Step 2: Compute cumulative count
     for k in range(1, m):
         l[k] += l[k-1]
     
-    # Perform Flash Sort redistribution
+    # Step 3: Permutation
     output = [0] * n
     
-    # Backward pass to preserve stability
+    # Backward pass
     for j in range(n - 1, -1, -1):
         k = int(((arr[j] - min_val) * c1))
         l[k] -= 1
         output[l[k]] = arr[j]
     
-    # Prepare final sorted output
-    sorted_arr = output
+    # Step 4: Insert sort for remaining elements
+    def insertion_sort(arr, left, right):
+        for i in range(left + 1, right + 1):
+            key = arr[i]
+            j = i - 1
+            while j >= left and arr[j] > key:
+                arr[j + 1] = arr[j]
+                j -= 1
+            arr[j + 1] = key
+        return arr
     
-    return sorted_arr
+    # Subdivide if necessary
+    k = 0
+    while k < m - 1:
+        if l[k + 1] - l[k] > 20:
+            output[l[k]:l[k+1]] = insertion_sort(output[l[k]:l[k+1]], 0, l[k+1] - l[k] - 1)
+        k += 1
+    
+    return output
