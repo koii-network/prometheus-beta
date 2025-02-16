@@ -1,6 +1,6 @@
 def convert_to_alternating_lower(input_string):
     """
-    Convert a string to alternating lower case.
+    Convert a string to specific alternating lower case pattern.
     
     Args:
         input_string (str): The input string to convert.
@@ -14,9 +14,13 @@ def convert_to_alternating_lower(input_string):
     if not isinstance(input_string, str):
         raise TypeError("Input must be a string")
     
-    return ''.join(
-        char.lower() if i % 2 == 0 and char.isalpha() else 
-        char.lower() if i % 2 == 0 and not char.isalpha() else 
-        char 
-        for i, char in enumerate(input_string)
-    )
+    result = []
+    for i, char in enumerate(input_string):
+        # Even-indexed characters are lowercased, 
+        # odd-indexed characters remain unchanged
+        if i % 2 == 0:
+            result.append(char.lower())
+        else:
+            result.append(char)
+    
+    return ''.join(result)
