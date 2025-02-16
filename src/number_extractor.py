@@ -10,18 +10,20 @@ def extract_numbers(input_string):
     Returns:
         list: A list of numbers (either integers or floats) found in the string.
     """
-    # Use regex to find all numbers (including integers and floating-point numbers)
-    numbers = re.findall(r'-?\d+(?:\.\d+)?', str(input_string))
+    # Use regex to find all numbers (including integers, floats, and scientific notation)
+    numbers = re.findall(r'-?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?', str(input_string))
     
     # Convert numbers to int or float based on their representation
     parsed_numbers = []
     for num in numbers:
         try:
-            # Try to convert to int first
-            parsed_num = int(num)
-        except ValueError:
-            # If not an integer, try float
+            # Convert using float and int conversion
             parsed_num = float(num)
+            # If it's effectively an integer, convert to int
+            if parsed_num.is_integer():
+                parsed_num = int(parsed_num)
+        except ValueError:
+            continue
         parsed_numbers.append(parsed_num)
     
     return parsed_numbers
