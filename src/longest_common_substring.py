@@ -17,22 +17,17 @@ def find_longest_common_substring(str1, str2):
     m, n = len(str1), len(str2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
     
-    # Variables to track the longest substring
     max_length = 0
     end_index = 0
     
-    # Dynamic programming to find longest common substring with exact match
+    # Dynamic programming to find longest common substring
     for i in range(1, m + 1):
         for j in range(1, n + 1):
-            # Exact match (case-sensitive)
             if str1[i-1] == str2[j-1]:
                 dp[i][j] = dp[i-1][j-1] + 1
                 if dp[i][j] > max_length:
                     max_length = dp[i][j]
                     end_index = i - 1
     
-    # Return the longest common substring, ensuring exact match
-    substr = str1[end_index - max_length + 1 : end_index + 1] if max_length > 0 else ""
-    
-    # Verify the substring exists in both strings exactly
-    return substr if substr and substr in str1 and substr in str2 else ""
+    # Return the longest common substring
+    return str1[end_index - max_length + 1 : end_index + 1] if max_length > 0 else ""
