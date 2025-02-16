@@ -1,6 +1,11 @@
 import pytest
 from src.string_converter import convert_to_alternating_lower
 
+def test_print_analysis():
+    print("HelloWorld:", convert_to_alternating_lower("HelloWorld"))
+    print("Hello World:", convert_to_alternating_lower("Hello World"))
+    print("H3llo!World:", convert_to_alternating_lower("H3llo!World"))
+
 def test_alternating_lower_normal_string():
     assert convert_to_alternating_lower("HelloWorld") == "hElLoWoRlD"
 
