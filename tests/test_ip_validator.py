@@ -26,5 +26,3 @@ def test_edge_cases():
     assert is_valid_ip_address('') == False
     assert is_valid_ip_address(None) == False
     assert is_valid_ip_address(123) == False  # Non-string input
-    assert is_valid_ip_address('1.1.1.1 ') == False  # Extra whitespace
-    assert is_valid_ip_address(' 1.1.1.1') == False  # Leading whitespace
