@@ -1,6 +1,6 @@
 import pytest
 import random
-from ..src.library_sort import library_sort
+from src.library_sort import library_sort
 
 def test_library_sort_empty_list():
     """Test sorting an empty list"""
