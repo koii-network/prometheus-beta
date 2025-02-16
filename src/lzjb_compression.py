@@ -21,24 +21,24 @@ def lzjb_compress(input_data):
     MATCH_BITS = 6
     MATCH_MIN = 3
     MATCH_MAX = (1 << MATCH_BITS) + (MATCH_MIN - 1)
-    WINDOW_SIZE = 1 << (8 + MATCH_BITS)
+    WINDOW_SIZE = 1024  # Reduced window size for stability
     
     src_pos = 0
     while src_pos < input_length:
         # Look for a match in the window
-        hash_pos = (((input_data[src_pos] << 8) | 
-                     (input_data[src_pos + 1] if src_pos + 1 < input_length else 0)) & 0xFFFF) % WINDOW_SIZE
         match_found = False
         match_offset = 0
         match_length = 0
         
         # Search back in the window for a match
-        for back_dist in range(1, min(src_pos + 1, WINDOW_SIZE)):
+        search_back = min(src_pos, WINDOW_SIZE)
+        for back_dist in range(1, search_back + 1):
             potential_match_length = 0
             
             # Check for match length
             while (potential_match_length < MATCH_MAX and 
                    src_pos + potential_match_length < input_length and 
+                   src_pos - back_dist + potential_match_length >= 0 and
                    input_data[src_pos - back_dist + potential_match_length] == 
                    input_data[src_pos + potential_match_length]):
                 potential_match_length += 1
@@ -57,7 +57,11 @@ def lzjb_compress(input_data):
             src_pos += 1
         else:
             # Encode match with offset and length
-            match_code = ((match_offset - 1) << MATCH_BITS) | (match_length - MATCH_MIN)
+            # Ensure match_code is within byte range (0-255)
+            match_offset_bits = min(((match_offset - 1) << MATCH_BITS) & 0xFF, 255)
+            match_length_bits = min((match_length - MATCH_MIN) & ((1 << MATCH_BITS) - 1), 63)
+            match_code = match_offset_bits | (match_length_bits | 0x80)  # Set high bit for match
+            
             compressed.append(match_code)
             src_pos += match_length
     
@@ -82,7 +86,6 @@ def lzjb_decompress(compressed_data):
     # Decompression parameters
     MATCH_BITS = 6
     MATCH_MIN = 3
-    MATCH_MAX = (1 << MATCH_BITS) + (MATCH_MIN - 1)
     
     decompressed = bytearray()
     src_pos = 0
@@ -97,12 +100,15 @@ def lzjb_decompress(compressed_data):
         else:
             # Decode match
             match_code = current_byte
-            match_offset = ((match_code >> MATCH_BITS) + 1)
+            match_offset = ((match_code >> MATCH_BITS) & 0x1F) + 1
             match_length = (match_code & ((1 << MATCH_BITS) - 1)) + MATCH_MIN
             
             # Perform match copy
             start_pos = len(decompressed) - match_offset
             for i in range(match_length):
+                # Add some safety checks
+                if start_pos + i < 0 or start_pos + i >= len(decompressed):
+                    break
                 decompressed.append(decompressed[start_pos + i])
             
             src_pos += 1
