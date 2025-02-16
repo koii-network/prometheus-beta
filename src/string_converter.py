@@ -14,5 +14,9 @@ def convert_to_alternating_lower(input_string):
     if not isinstance(input_string, str):
         raise TypeError("Input must be a string")
     
-    return ''.join(char.lower() if i % 2 == 0 else char 
-                   for i, char in enumerate(input_string))
+    return ''.join(
+        char.lower() if i % 2 == 0 and char.isalpha() else 
+        char.lower() if i % 2 == 0 and not char.isalpha() else 
+        char 
+        for i, char in enumerate(input_string)
+    )
