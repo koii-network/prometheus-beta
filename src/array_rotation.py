@@ -19,6 +19,10 @@ def rotate_array(arr, n):
     if not isinstance(n, int):
         raise TypeError("Rotation amount must be an integer")
     
+    # Raise TypeError for negative rotations
+    if n < 0:
+        raise TypeError("Rotation amount cannot be negative")
+    
     # Handle empty list or zero rotation
     if not arr or n == 0:
         return arr.copy()
