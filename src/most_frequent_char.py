@@ -17,18 +17,15 @@ def find_most_frequent_char(s: str) -> str:
     if not s:
         raise ValueError("Input string cannot be empty")
     
-    # Create a dictionary to store character frequencies
+    # Count character frequencies
     char_freq = {}
-    
-    # Count character frequencies while maintaining order
     for char in s:
-        if char not in char_freq:
-            char_freq[char] = 1
-        else:
-            char_freq[char] += 1
+        char_freq[char] = char_freq.get(char, 0) + 1
     
     # Find the maximum frequency
     max_freq = max(char_freq.values())
     
-    # Return the first character with max frequency in the original string
-    return next(char for char in s if char_freq[char] == max_freq)
+    # Use a linear scan to find the first character with max frequency
+    for char in s:
+        if char_freq[char] == max_freq:
+            return char
