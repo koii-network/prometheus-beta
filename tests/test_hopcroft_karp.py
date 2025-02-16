@@ -10,9 +10,8 @@ def test_basic_matching():
     matching = hopcroft_karp_matching(graph)
     
     # Verify matching
-    assert len(matching) == 4  # 4 nodes should be matched
-    assert 1 in matching and matching[1] in [3, 4]
-    assert 2 in matching and matching[2] in [3, 5]
+    assert all(node in matching for node in graph)  # All graph nodes matched
+    assert all(matching[node] in graph[node] for node in graph)
 
 def test_no_matching():
     """Test a graph with no possible matching."""
@@ -32,9 +31,9 @@ def test_complete_matching():
     }
     matching = hopcroft_karp_matching(graph)
     
-    # Verify each node is matched exactly once
-    assert len(matching) == 6  # All 6 nodes should be matched
-    assert len(set(matching.values())) == 3  # 3 unique pairs
+    # Verify each node is matched
+    assert all(node in matching for node in graph)
+    assert len(set(matching.values())) == len(graph)
 
 def test_large_graph():
     """Test a larger graph with multiple possible matchings."""
@@ -45,7 +44,8 @@ def test_large_graph():
     }
     matching = hopcroft_karp_matching(graph)
     
-    assert len(matching) >= 4  # At least 4 nodes should be matched
+    # All input nodes must be matched
+    assert all(node in matching for node in graph)
 
 def test_invalid_input():
     """Test error handling for invalid input types."""
@@ -53,7 +53,7 @@ def test_invalid_input():
         hopcroft_karp_matching([1, 2, 3])  # Not a dictionary
     
     with pytest.raises(ValueError):
-        hopcroft_karp_matching({1: 2})  # Invalid graph structure
+        hopcroft_karp_matching({1: "not a list"})  # Invalid graph structure
 
 def test_symmetric_matching():
     """Verify that the matching is symmetric."""
@@ -67,4 +67,18 @@ def test_symmetric_matching():
     # Check symmetry in matching
     for node, matched_node in matching.items():
         assert matched_node in graph.get(node, [])
-        assert node in graph[matched_node] if matched_node in graph else False
+        assert node in graph[matched_node]
+
+def test_single_node_matching():
+    """Test matching with a graph where some nodes have single-node adjacency."""
+    graph = {
+        1: 3,
+        2: 4,
+        3: [1, 2],
+        4: [1, 2]
+    }
+    matching = hopcroft_karp_matching(graph)
+    
+    # Verify matching
+    assert all(node in matching for node in graph)
+    assert all(matching[node] in graph[node] if isinstance(graph[node], list) else matching[node] == graph[node] for node in graph)
