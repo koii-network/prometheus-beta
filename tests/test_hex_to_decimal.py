@@ -27,5 +27,5 @@ def test_zero_conversion():
     assert hex_to_decimal('00') == 0
 
 def test_large_hex_number():
-    assert hex_to_decimal('1234ABCD') == 305419905
+    assert hex_to_decimal('1234ABCD') == 305441741
     assert hex_to_decimal('0xFFFFFFFF') == 4294967295
