@@ -4,7 +4,8 @@ from src.brotli_compression import compress_with_brotli, decompress_with_brotli
 
 def test_compression_decompression():
     """Test basic compression and decompression cycle"""
-    original_data = b"Hello, Brotli compression is amazing!"
+    # Use a longer, repetitive string for better compression
+    original_data = b"Hello, Brotli compression is amazing! " * 10
     compressed_data = compress_with_brotli(original_data)
     
     assert compressed_data != original_data
@@ -15,7 +16,7 @@ def test_compression_decompression():
 
 def test_compression_quality():
     """Test different compression qualities"""
-    data = b"Test data for compression quality"
+    data = b"Test data for compression quality " * 10
     
     # Test different compression levels
     for quality in [0, 5, 11]:
@@ -25,7 +26,7 @@ def test_compression_quality():
 
 def test_compression_modes():
     """Test different compression modes"""
-    data = b"Test data for compression modes"
+    data = b"Test data for compression modes " * 10
     
     # Test different modes
     for mode in [0, 1, 2]:
