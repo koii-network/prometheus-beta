@@ -22,12 +22,13 @@ def find_most_frequent_char(s: str) -> str:
     
     # Count character frequencies while maintaining order
     for char in s:
-        char_freq[char] = char_freq.get(char, 0) + 1
+        if char not in char_freq:
+            char_freq[char] = 1
+        else:
+            char_freq[char] += 1
     
     # Find the maximum frequency
     max_freq = max(char_freq.values())
     
-    # Return the first character with max frequency
-    for char in s:
-        if char_freq[char] == max_freq:
-            return char
+    # Return the first character with max frequency in the original string
+    return next(char for char in s if char_freq[char] == max_freq)
