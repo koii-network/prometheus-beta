@@ -3,6 +3,11 @@ import pytest
 import tarfile
 import tempfile
 import shutil
+import sys
+import os
+
+# Add the parent directory to Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.tar_extractor import extract_tar_archive
 
