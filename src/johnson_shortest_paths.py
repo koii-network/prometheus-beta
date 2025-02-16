@@ -58,15 +58,23 @@ def johnson_shortest_paths(graph: Dict[int, List[Tuple[int, int]]]) -> Dict[int,
         dist = {v: float('inf') for v in graph}
         dist[source] = 0
         pq = [(0, source)]
+        visited = set()
 
         while pq:
             current_dist, u = heapq.heappop(pq)
+
+            # Skip if already visited
+            if u in visited:
+                continue
+            visited.add(u)
 
             # Skip if we've found a shorter path
             if current_dist > dist[u]:
                 continue
 
             for v, w in graph.get(u, []):
+                if v in visited:
+                    continue
                 distance = current_dist + w
                 if distance < dist[v]:
                     dist[v] = distance
@@ -98,8 +106,13 @@ def johnson_shortest_paths(graph: Dict[int, List[Tuple[int, int]]]) -> Dict[int,
         # Adjust distances back to original weights
         shortest_paths[u] = {
             v: (dist + vertex_potentials[v] - vertex_potentials[u]) 
-            if dist != float('inf') else float('inf')
+            if v in dijkstra_dist and dist != float('inf') else float('inf')
             for v, dist in dijkstra_dist.items()
         }
+
+        # Ensure all vertices are included
+        for v in graph:
+            if v not in shortest_paths[u]:
+                shortest_paths[u][v] = float('inf')
 
     return shortest_paths
