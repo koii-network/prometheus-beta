@@ -33,5 +33,11 @@ def to_header_case(text: str) -> str:
     if current_word:
         words.append(current_word)
     
+    # Capitalize or preserve existing capitalization
+    def capitalize_word(word):
+        if word[0].isupper():
+            return word
+        return word.capitalize()
+    
     # Capitalize each word and join
-    return ''.join(word.capitalize() for word in words)
+    return ''.join(capitalize_word(word) for word in words)
