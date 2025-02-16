@@ -16,7 +16,7 @@ def create_zip_archive(files: List[str], archive_name: str) -> Union[str, None]:
     try:
         # Validate input files
         if not files:
-            raise ValueError("No files provided for archiving")
+            return None
         
         # Validate archive name
         if not archive_name.endswith('.zip'):

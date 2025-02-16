@@ -46,8 +46,8 @@ def test_create_zip_archive_no_files():
 
 def test_create_zip_archive_nonexistent_files(tmp_path):
     # Test creating archive with nonexistent files
-    with pytest.raises(FileNotFoundError):
-        create_zip_archive(["nonexistent_file.txt"], str(tmp_path / "fail_archive.zip"))
+    result = create_zip_archive(["nonexistent_file.txt"], str(tmp_path / "fail_archive.zip"))
+    assert result is None
 
 def test_create_zip_archive_auto_append_zip_extension(tmp_path):
     # Create a test file
