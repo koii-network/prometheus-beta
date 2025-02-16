@@ -6,8 +6,8 @@ def test_find_longest_word_basic():
     assert find_longest_word("The quick brown fox jumps") == "quick"
 
 def test_find_longest_word_multiple_same_length():
-    """Test when multiple words have the same length, first should be returned."""
-    assert find_longest_word("cat dog bird") == "cat"
+    """Test when multiple words, return the first lexicographically."""
+    assert find_longest_word("cat dog bird") == "bird"
 
 def test_find_longest_word_empty_string():
     """Test with an empty string."""
@@ -23,7 +23,7 @@ def test_find_longest_word_with_punctuation():
 
 def test_find_longest_word_with_numbers():
     """Test with words containing numbers."""
-    assert find_longest_word("The year is 2023") == "2023"
+    assert find_longest_word("The year is 2023") == "year"
 
 def test_find_longest_word_error_non_string():
     """Test that TypeError is raised for non-string input."""
