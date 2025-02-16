@@ -53,12 +53,15 @@ def johnson_shortest_paths(graph: Dict[int, List[Tuple[int, int]]]) -> Dict[int,
                 reweighted[u].append((v, new_weight))
         return reweighted
 
-    # Step 4: Dijkstra for each vertex
-    def dijkstra(graph: Dict[int, List[Tuple[int, int]]], source: int) -> Dict[int, float]:
-        dist = {v: float('inf') for v in graph}
-        dist[source] = 0
+    # Step 4: Dijkstra with comprehensive path tracking
+    def dijkstra(graph: Dict[int, List[Tuple[int, int]]], source: int) -> Dict[int, Tuple[float, bool]]:
+        dist = {v: (float('inf'), False) for v in graph}
+        dist[source] = (0, True)
         pq = [(0, source)]
         visited = set()
+
+        # Track direct and indirect connections
+        connections = set([source])
 
         while pq:
             current_dist, u = heapq.heappop(pq)
@@ -68,17 +71,26 @@ def johnson_shortest_paths(graph: Dict[int, List[Tuple[int, int]]]) -> Dict[int,
                 continue
             visited.add(u)
 
-            # Skip if we've found a shorter path
-            if current_dist > dist[u]:
-                continue
-
             for v, w in graph.get(u, []):
                 if v in visited:
                     continue
+                
+                # Update connection tracking
+                connections.add(v)
+
+                # Calculate new distance
                 distance = current_dist + w
-                if distance < dist[v]:
-                    dist[v] = distance
+                
+                # Update distance
+                old_dist, _ = dist[v]
+                if distance < old_dist:
+                    dist[v] = (distance, True)
                     heapq.heappush(pq, (distance, v))
+
+        # Mark unreachable vertices
+        for v in graph:
+            if v not in connections:
+                dist[v] = (float('inf'), False)
 
         return dist
 
@@ -104,15 +116,17 @@ def johnson_shortest_paths(graph: Dict[int, List[Tuple[int, int]]]) -> Dict[int,
         dijkstra_dist = dijkstra(reweighted_graph, u)
         
         # Adjust distances back to original weights
-        shortest_paths[u] = {
-            v: (dist + vertex_potentials[v] - vertex_potentials[u]) 
-            if v in dijkstra_dist and dist != float('inf') else float('inf')
-            for v, dist in dijkstra_dist.items()
-        }
-
-        # Ensure all vertices are included
+        shortest_paths[u] = {}
         for v in graph:
-            if v not in shortest_paths[u]:
+            if v == u:
+                shortest_paths[u][v] = 0
+                continue
+            
+            dist, is_reachable = dijkstra_dist.get(v, (float('inf'), False))
+            if not is_reachable or dist == float('inf'):
                 shortest_paths[u][v] = float('inf')
+            else:
+                # Adjust back to original weights, considering vertex potentials
+                shortest_paths[u][v] = dist + vertex_potentials[v] - vertex_potentials[u]
 
     return shortest_paths
