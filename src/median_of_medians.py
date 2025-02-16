@@ -71,5 +71,6 @@ def median_of_medians(arr):
         else:
             return select(greater, k - len(less) - len(equal))
     
-    # Return the median (middle element)
-    return select(arr, len(arr)//2)
+    # Calculate the correct median index
+    k = (len(arr) - 1) // 2
+    return select(arr, k)
