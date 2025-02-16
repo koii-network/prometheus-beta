@@ -33,17 +33,28 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
     if dp[m][n] == 0:
         return ""
     
-    # Backtrack to find the actual subsequence
-    lcs = []
-    i, j = m, n
-    while i > 0 and j > 0:
+    # Complex backtracking to find all possible subsequences
+    def backtrack(i, j, path):
+        if i == 0 or j == 0:
+            return [path[::-1]]
+        
         if str1[i-1] == str2[j-1]:
-            lcs.append(str1[i-1])
-            i -= 1
-            j -= 1
-        elif dp[i-1][j] > dp[i][j-1]:
-            i -= 1
-        else:
-            j -= 1
+            return backtrack(i-1, j-1, path + str1[i-1])
+        
+        subsequences = []
+        if dp[i-1][j] >= dp[i][j-1]:
+            subsequences.extend(backtrack(i-1, j, path))
+        if dp[i][j-1] >= dp[i-1][j]:
+            subsequences.extend(backtrack(i, j-1, path))
+        
+        return subsequences
     
-    return ''.join(reversed(lcs))
+    # Get all longest subsequences
+    subsequences = backtrack(m, n, "")
+    
+    # If no subsequences found
+    if not subsequences:
+        return ""
+    
+    # Return the lexicographically first subsequence
+    return sorted(set(subsequences), key=lambda x: (len(x), x), reverse=True)[0]
