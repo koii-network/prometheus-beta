@@ -1,123 +1,140 @@
+class LZRWCompressor:
+    def __init__(self, max_dict_size=4096):
+        """
+        Initialize LZRW compression algorithm.
+        
+        Args:
+            max_dict_size (int): Maximum size of the dictionary
+        """
+        self.max_dict_size = max_dict_size
+    
+    def compress(self, input_data):
+        """
+        Compress input data using LZRW algorithm.
+        
+        Args:
+            input_data (bytes or str): Data to compress
+        
+        Returns:
+            bytes: Compressed data
+        """
+        # Handle empty input
+        if not input_data:
+            return bytes()
+        
+        # Ensure input is bytes
+        if isinstance(input_data, str):
+            input_data = input_data.encode('utf-8')
+        
+        # Initialize compression variables
+        dictionary = {bytes([i]): i for i in range(256)}
+        next_code = 256
+        
+        # Compression buffers
+        compressed = bytearray()
+        current_sequence = b""
+        
+        # Process each byte
+        for byte in input_data:
+            # Create candidate sequence
+            candidate = current_sequence + bytes([byte])
+            
+            # If candidate is in dictionary, extend current sequence
+            if candidate in dictionary:
+                current_sequence = candidate
+            else:
+                # Output code for current sequence
+                if current_sequence in dictionary:
+                    compressed.append(dictionary[current_sequence])
+                else:
+                    # Encode each byte of current sequence
+                    for b in current_sequence:
+                        compressed.append(b)
+                
+                # Add new sequence to dictionary if room
+                if next_code < self.max_dict_size:
+                    dictionary[candidate] = next_code
+                    next_code += 1
+                
+                # Reset current sequence
+                current_sequence = bytes([byte])
+        
+        # Handle last sequence
+        if current_sequence:
+            if current_sequence in dictionary:
+                compressed.append(dictionary[current_sequence])
+            else:
+                # Encode each byte of current sequence
+                for b in current_sequence:
+                    compressed.append(b)
+        
+        return bytes(compressed)
+    
+    def decompress(self, compressed_data):
+        """
+        Decompress data using LZRW algorithm.
+        
+        Args:
+            compressed_data (bytes): Compressed data to decompress
+        
+        Returns:
+            bytes: Decompressed data
+        """
+        # Handle empty input
+        if not compressed_data:
+            return bytes()
+        
+        # Initialize decompression variables
+        dictionary = {i: bytes([i]) for i in range(256)}
+        next_code = 256
+        
+        # Decompression buffers
+        decompressed = bytearray()
+        current_sequence = bytes([compressed_data[0]])
+        decompressed.extend(current_sequence)
+        
+        # Process compressed data starting from second byte
+        for code in compressed_data[1:]:
+            # Determine the entry
+            if code in dictionary:
+                next_entry = dictionary[code]
+            else:
+                # If code not found, create entry based on current sequence
+                next_entry = current_sequence + current_sequence[0:1]
+            
+            # Add next entry to decompressed data
+            decompressed.extend(next_entry)
+            
+            # Update dictionary
+            if next_code < self.max_dict_size:
+                dictionary[next_code] = current_sequence + next_entry[0:1]
+                next_code += 1
+            
+            # Update current sequence
+            current_sequence = next_entry
+        
+        return bytes(decompressed)
+
 def lzrw_compress(input_data):
     """
-    Implement LZRW (Lempel-Ziv Recompressing Wyllys) compression algorithm.
+    Convenience function for LZRW compression.
     
     Args:
-        input_data (bytes): Input data to be compressed
+        input_data (bytes or str): Data to compress
     
     Returns:
         bytes: Compressed data
     """
-    # Handle empty input
-    if not input_data:
-        return bytes()
-    
-    # Convert input to a list of bytes if it's not already
-    if not isinstance(input_data, (bytes, bytearray)):
-        input_data = input_data.encode()
-    
-    # Initialize compression variables
-    dictionary = {}
-    current_code = 256  # Start codes after ASCII characters
-    compressed_data = bytearray()
-    
-    # Initialize current sequence with first byte
-    current_sequence = input_data[0:1]
-    
-    # Compression logic
-    for byte in input_data[1:]:
-        # Create a new sequence by appending the current byte
-        candidate_sequence = current_sequence + bytes([byte])
-        
-        # If sequence exists in dictionary or is a single byte, extend current sequence
-        if candidate_sequence in dictionary or len(candidate_sequence) == 1:
-            current_sequence = candidate_sequence
-        else:
-            # Output the current sequence
-            if len(current_sequence) == 1:
-                # Single byte, output as is
-                compressed_data.append(current_sequence[0])
-            else:
-                # Look up code or append as a new sequence
-                code = dictionary.get(current_sequence, len(compressed_data))
-                
-                # Ensure code is a byte value (0-255)
-                while code > 255:
-                    code -= 256
-                compressed_data.append(code)
-            
-            # Add new sequence to dictionary if room
-            if current_code < 65536:  # Limit dictionary size
-                dictionary[candidate_sequence] = current_code
-                current_code += 1
-            
-            # Reset current sequence
-            current_sequence = bytes([byte])
-    
-    # Handle last sequence
-    if len(current_sequence) == 1:
-        compressed_data.append(current_sequence[0])
-    else:
-        code = dictionary.get(current_sequence, len(compressed_data))
-        
-        # Ensure code is a byte value (0-255)
-        while code > 255:
-            code -= 256
-        compressed_data.append(code)
-    
-    return bytes(compressed_data)
+    return LZRWCompressor().compress(input_data)
 
 def lzrw_decompress(compressed_data):
     """
-    Decompress data compressed with LZRW algorithm.
+    Convenience function for LZRW decompression.
     
     Args:
-        compressed_data (bytes): Compressed input data
+        compressed_data (bytes): Compressed data to decompress
     
     Returns:
         bytes: Decompressed data
     """
-    # Handle empty input
-    if not compressed_data:
-        return bytes()
-    
-    # Convert input to list of bytes if needed
-    if not isinstance(compressed_data, (bytes, bytearray)):
-        compressed_data = bytes(compressed_data)
-    
-    # Initialize decompression variables
-    dictionary = {i: bytes([i]) for i in range(256)}
-    current_code = 256
-    decompressed_data = bytearray()
-    
-    # First byte
-    current_entry = bytes([compressed_data[0]])
-    decompressed_data.extend(current_entry)
-    
-    # Decompress remaining data
-    for code in compressed_data[1:]:
-        # If code is in dictionary, use its value
-        try:
-            if code in dictionary:
-                next_entry = dictionary[code]
-            # If it's the new code we just added, special case
-            elif code == current_code:
-                next_entry = current_entry + current_entry[0:1]
-            else:
-                # Fallback to generating a sequence
-                next_entry = current_entry + current_entry[0:1]
-        except Exception as e:
-            raise ValueError(f"Invalid compressed data at code {code}: {e}")
-        
-        # Add to decompressed data
-        decompressed_data.extend(next_entry)
-        
-        # Add new dictionary entry if possible
-        if current_code < 65536:
-            dictionary[current_code] = current_entry + next_entry[0:1]
-            current_code += 1
-        
-        # Update current entry
-        current_entry = next_entry
-    
-    return bytes(decompressed_data)
+    return LZRWCompressor().decompress(compressed_data)
