@@ -19,9 +19,9 @@ def are_anagrams(str1: str, str2: str) -> bool:
     if not (isinstance(str1, str) and isinstance(str2, str)):
         raise TypeError("Both inputs must be strings")
     
-    # Remove whitespace and convert to lowercase for case-insensitive comparison
-    str1 = str1.replace(" ", "").lower()
-    str2 = str2.replace(" ", "").lower()
+    # Remove all whitespace and convert to lowercase for case-insensitive comparison
+    str1 = ''.join(str1.split()).lower()
+    str2 = ''.join(str2.split()).lower()
     
     # Quick length check
     if len(str1) != len(str2):
