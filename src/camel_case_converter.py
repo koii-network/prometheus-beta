@@ -16,6 +16,10 @@ def convert_to_camel_case(text):
         >>> convert_to_camel_case("hello_world")
         'helloWorld'
     """
+    # Check if the string is already in camel case and only contains alphanumeric characters
+    if text and all(c.isalnum() for c in text) and text[0].islower() and any(c.isupper() for c in text[1:]):
+        return text
+    
     # Remove special characters and split the string by spaces, hyphens, or underscores
     words = ''.join(char if char.isalnum() else ' ' for char in text).split()
     
