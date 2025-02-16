@@ -15,12 +15,12 @@ def convert_to_alternating_lower(input_string):
         raise TypeError("Input must be a string")
     
     result = []
-    even_lower = True
+    even_case = True
     
     for char in input_string:
         if char.isalpha():
-            result.append(char.lower() if even_lower else char.upper())
-            even_lower = not even_lower
+            result.append(char.lower() if even_case else char.upper())
+            even_case = not even_case
         else:
             result.append(char)
     
