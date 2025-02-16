@@ -14,11 +14,10 @@ def convert_to_alternating_lower(input_string):
     if not isinstance(input_string, str):
         raise TypeError("Input must be a string")
     
-    # Convert even-indexed characters to lowercase
-    # Preserve case for non-alphabetic characters
-    def transform_char(i, char):
-        if i % 2 == 0 and char.isalpha():
-            return char.lower()
-        return char
-    
-    return ''.join(transform_char(i, char) for i, char in enumerate(input_string))
+    return ''.join(
+        char.lower() if i % 2 == 0 and char.isalpha() else 
+        char.lower() if i % 2 == 1 and char.isalpha() else 
+        char.lower() if i % 2 == 0 else 
+        char 
+        for i, char in enumerate(input_string)
+    )
