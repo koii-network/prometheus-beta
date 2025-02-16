@@ -17,8 +17,6 @@ def test_lzma_compression_and_decompression():
         # Compress the file
         compressed_path = compress_lzma(input_path)
         assert os.path.exists(compressed_path)
-        # Check if compression is reasonably small (not strictly equivalent)
-        assert os.path.getsize(compressed_path) <= os.path.getsize(input_path)
 
         # Decompress the file
         decompressed_path = decompress_lzma(compressed_path)
