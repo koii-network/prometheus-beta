@@ -1,1 +1,2 @@
-pytest
+python-lzo==1.15.0
+pytest==7.3.1
