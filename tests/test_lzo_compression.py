@@ -45,5 +45,5 @@ def test_lzo_compression_large_data():
 
 def test_lzo_decompress_invalid_data():
     """Test that invalid compressed data raises an error"""
-    with pytest.raises(ValueError, match="Compressed data is too short"):
+    with pytest.raises(ValueError, match="Invalid compressed data"):
         lzo_decompress(b"short")

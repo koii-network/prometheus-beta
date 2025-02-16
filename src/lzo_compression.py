@@ -68,5 +68,7 @@ def lzo_decompress(compressed_data):
         decompressed_data = lzo.decompress(compressed_data[4:], original_length)
         
         return decompressed_data
+    except lzo.error as e:
+        raise ValueError(f"Invalid compressed data: {str(e)}")
     except Exception as e:
         raise RuntimeError(f"Decompression failed: {str(e)}")
