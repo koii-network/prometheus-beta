@@ -24,4 +24,4 @@ def test_find_mode_empty_list():
 def test_find_mode_different_types():
     """Test mode with mixed integer and float types."""
     result = find_mode([1, 1.0, 2, 2.0, 3])
-    assert result in [1, 2]  # Either 1 or 2 is acceptable
+    assert result in [1, 2, 1.0, 2.0]  # Either integer or float representation
