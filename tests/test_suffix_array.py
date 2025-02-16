@@ -1,5 +1,5 @@
 import pytest
-from src.suffix_array import create_suffix_array, find_substring
+from ..src.suffix_array import create_suffix_array, find_substring
 
 def test_create_suffix_array_basic():
     """Test basic suffix array creation"""
