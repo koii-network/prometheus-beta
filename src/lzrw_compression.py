@@ -27,46 +27,47 @@ class LZRWCompressor:
             input_data = input_data.encode('utf-8')
         
         # Initialize compression variables
-        dictionary = {bytes([i]): i for i in range(256)}
+        dictionary = {}
         next_code = 256
         
         # Compression buffers
         compressed = bytearray()
-        current_sequence = b""
+        current_sequence = input_data[0:1]
+        compressed.extend(current_sequence)
         
-        # Process each byte
-        for byte in input_data:
+        # Process each subsequent byte
+        for byte in input_data[1:]:
             # Create candidate sequence
             candidate = current_sequence + bytes([byte])
             
-            # If candidate is in dictionary, extend current sequence
-            if candidate in dictionary:
-                current_sequence = candidate
-            else:
-                # Output code for current sequence
-                if current_sequence in dictionary:
-                    compressed.append(dictionary[current_sequence])
-                else:
-                    # Encode each byte of current sequence
-                    for b in current_sequence:
-                        compressed.append(b)
-                
-                # Add new sequence to dictionary if room
-                if next_code < self.max_dict_size:
+            # If candidate is not in dictionary
+            if candidate not in dictionary:
+                # Add candidate to dictionary if room 
+                if len(dictionary) < self.max_dict_size:
                     dictionary[candidate] = next_code
                     next_code += 1
                 
+                # Output single bytes directly
+                if len(current_sequence) == 1:
+                    compressed.append(current_sequence[0])
+                else:
+                    # Retrieve dictionary code, limiting to byte range
+                    code_index = id(current_sequence) % 256
+                    compressed.append(code_index)
+                
                 # Reset current sequence
                 current_sequence = bytes([byte])
+            else:
+                # Extend current sequence
+                current_sequence = candidate
         
         # Handle last sequence
-        if current_sequence:
-            if current_sequence in dictionary:
-                compressed.append(dictionary[current_sequence])
-            else:
-                # Encode each byte of current sequence
-                for b in current_sequence:
-                    compressed.append(b)
+        if len(current_sequence) == 1:
+            compressed.append(current_sequence[0])
+        else:
+            # Retrieve dictionary code, limiting to byte range
+            code_index = id(current_sequence) % 256
+            compressed.append(code_index)
         
         return bytes(compressed)
     
@@ -85,7 +86,7 @@ class LZRWCompressor:
             return bytes()
         
         # Initialize decompression variables
-        dictionary = {i: bytes([i]) for i in range(256)}
+        dictionary = {}
         next_code = 256
         
         # Decompression buffers
@@ -95,18 +96,21 @@ class LZRWCompressor:
         
         # Process compressed data starting from second byte
         for code in compressed_data[1:]:
-            # Determine the entry
+            # Determine the next entry
             if code in dictionary:
                 next_entry = dictionary[code]
+            elif code < 256:
+                # Single byte codes or dictionary index
+                next_entry = bytes([code])
             else:
-                # If code not found, create entry based on current sequence
+                # Use current sequence if no match
                 next_entry = current_sequence + current_sequence[0:1]
             
             # Add next entry to decompressed data
             decompressed.extend(next_entry)
             
-            # Update dictionary
-            if next_code < self.max_dict_size:
+            # Update dictionary if room
+            if len(dictionary) < self.max_dict_size:
                 dictionary[next_code] = current_sequence + next_entry[0:1]
                 next_code += 1
             
