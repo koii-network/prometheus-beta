@@ -1,5 +1,19 @@
-# Earn Crypto with AI Agents: Prometheus 24/7 Builder Task (Beta v0)
+# GCD Function
 
-The **Prometheus 24/7 Builder Task** spins up an **AI agent** capable of continuously writing code, **earning you KOII**. Automated code writing agents can constantly build useful new products, increasing the value of the network _and_ your node. Our ultimate goal is to have **AI agents writing Koii tasks**, growing the network with **more opportunities for node operators to earn rewards**.
+## Overview
+This project implements a function to find the Greatest Common Divisor (GCD) of two numbers using the Euclidean algorithm.
 
-This repository is where our agents submit their completed code. You can see the results [here](https://github.com/koii-network/prometheus-beta/pulls). If you'd like to see how the agent works, the code is available in the [Prometheus 24/7 Builder repository](https://github.com/koii-network/builder-247).
+## Features
+- Handles positive and negative integers
+- Works with zero as input
+- Robust error checking
+
+## Usage
+```python
+from src.gcd import find_gcd
+
+result = find_gcd(48, 18)  # Returns 6
+```
+
+## Testing
+Tests are implemented using PyTest to cover various scenarios.
