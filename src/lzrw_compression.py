@@ -1,12 +1,14 @@
 class LZRWCompressor:
-    def __init__(self, max_dict_size=4096):
+    def __init__(self, window_size=4096, lookahead_size=16):
         """
         Initialize LZRW compression algorithm.
         
         Args:
-            max_dict_size (int): Maximum size of the dictionary
+            window_size (int): Size of the sliding window for searching matches
+            lookahead_size (int): Size of the lookahead buffer
         """
-        self.max_dict_size = max_dict_size
+        self.window_size = window_size
+        self.lookahead_size = lookahead_size
     
     def compress(self, input_data):
         """
@@ -26,48 +28,55 @@ class LZRWCompressor:
         if isinstance(input_data, str):
             input_data = input_data.encode('utf-8')
         
-        # Initialize compression variables
-        dictionary = {}
-        next_code = 256
-        
         # Compression buffers
         compressed = bytearray()
-        current_sequence = input_data[0:1]
-        compressed.extend(current_sequence)
+        pos = 0
         
-        # Process each subsequent byte
-        for byte in input_data[1:]:
-            # Create candidate sequence
-            candidate = current_sequence + bytes([byte])
+        while pos < len(input_data):
+            # Find the longest match in the window
+            longest_match_length = 0
+            longest_match_offset = 0
             
-            # If candidate is not in dictionary
-            if candidate not in dictionary:
-                # Add candidate to dictionary if room 
-                if len(dictionary) < self.max_dict_size:
-                    dictionary[candidate] = next_code
-                    next_code += 1
+            # Search back in the current window
+            window_start = max(0, pos - self.window_size)
+            search_window = input_data[window_start:pos]
+            
+            # Look ahead to find a match
+            lookahead_end = min(pos + self.lookahead_size, len(input_data))
+            lookahead = input_data[pos:lookahead_end]
+            
+            for offset in range(len(search_window)):
+                match_length = 0
                 
-                # Output single bytes directly
-                if len(current_sequence) == 1:
-                    compressed.append(current_sequence[0])
-                else:
-                    # Retrieve dictionary code, limiting to byte range
-                    code_index = id(current_sequence) % 256
-                    compressed.append(code_index)
+                # Find match length
+                while (match_length < len(lookahead) and 
+                       search_window[len(search_window) - offset - 1 + match_length] == lookahead[match_length]):
+                    match_length += 1
                 
-                # Reset current sequence
-                current_sequence = bytes([byte])
+                # Update longest match if better match found
+                if match_length > longest_match_length:
+                    longest_match_length = match_length
+                    longest_match_offset = offset
+            
+            # Encode match or literal
+            if longest_match_length > 2:
+                # Encode match: offset (2 bytes), length (1 byte)
+                offset = longest_match_offset
+                length = longest_match_length
+                
+                # Use high bit to mark match
+                compressed.extend([
+                    0x80 | ((offset >> 8) & 0x0F),  # High 4 bits of high-order offset byte
+                    offset & 0xFF,                  # Low 8 bits of offset
+                    length                          # Length of match
+                ])
+                
+                # Move position
+                pos += length
             else:
-                # Extend current sequence
-                current_sequence = candidate
-        
-        # Handle last sequence
-        if len(current_sequence) == 1:
-            compressed.append(current_sequence[0])
-        else:
-            # Retrieve dictionary code, limiting to byte range
-            code_index = id(current_sequence) % 256
-            compressed.append(code_index)
+                # Encode literal
+                compressed.append(input_data[pos])
+                pos += 1
         
         return bytes(compressed)
     
@@ -85,37 +94,36 @@ class LZRWCompressor:
         if not compressed_data:
             return bytes()
         
-        # Initialize decompression variables
-        dictionary = {}
-        next_code = 256
-        
-        # Decompression buffers
+        # Decompression buffer
         decompressed = bytearray()
-        current_sequence = bytes([compressed_data[0]])
-        decompressed.extend(current_sequence)
+        pos = 0
         
-        # Process compressed data starting from second byte
-        for code in compressed_data[1:]:
-            # Determine the next entry
-            if code in dictionary:
-                next_entry = dictionary[code]
-            elif code < 256:
-                # Single byte codes or dictionary index
-                next_entry = bytes([code])
+        while pos < len(compressed_data):
+            # Check if it's a match or literal
+            if compressed_data[pos] & 0x80:
+                # Match encoding
+                if pos + 2 >= len(compressed_data):
+                    raise ValueError("Invalid compressed data")
+                
+                # Decode match info
+                high_offset = (compressed_data[pos] & 0x0F) << 8
+                low_offset = compressed_data[pos + 1]
+                offset = high_offset | low_offset
+                length = compressed_data[pos + 2]
+                
+                # Find match in current decompressed data
+                match_start = len(decompressed) - offset - 1
+                
+                # Copy match
+                for i in range(length):
+                    decompressed.append(decompressed[match_start + i])
+                
+                # Move position
+                pos += 3
             else:
-                # Use current sequence if no match
-                next_entry = current_sequence + current_sequence[0:1]
-            
-            # Add next entry to decompressed data
-            decompressed.extend(next_entry)
-            
-            # Update dictionary if room
-            if len(dictionary) < self.max_dict_size:
-                dictionary[next_code] = current_sequence + next_entry[0:1]
-                next_code += 1
-            
-            # Update current sequence
-            current_sequence = next_entry
+                # Literal byte
+                decompressed.append(compressed_data[pos])
+                pos += 1
         
         return bytes(decompressed)
 
