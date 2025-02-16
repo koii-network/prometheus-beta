@@ -1,0 +1,22 @@
+def to_sentence_case(text: str) -> str:
+    """
+    Convert a string to sentence case.
+    
+    Args:
+        text (str): The input string to be converted.
+    
+    Returns:
+        str: The string converted to sentence case.
+    
+    Raises:
+        TypeError: If input is not a string.
+    """
+    if not isinstance(text, str):
+        raise TypeError("Input must be a string")
+    
+    # Handle empty string case
+    if not text:
+        return ""
+    
+    # Capitalize the first character and lowercase the rest
+    return text[0].upper() + text[1:].lower()
