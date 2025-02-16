@@ -24,15 +24,12 @@ def to_alternating_kebab_case(input_string):
     # Convert words to alternating lowercase and uppercase
     alternating_words = []
     for i, word in enumerate(words):
+        # Remove non-alphanumeric characters first
+        cleaned_word = ''.join(c for c in word if c.isalnum())
+        
         # Convert to lowercase if index is even, uppercase if index is odd
-        converted_word = word.lower() if i % 2 == 0 else word.upper()
+        converted_word = cleaned_word.lower() if i % 2 == 0 else cleaned_word.upper()
         
-        # Replace any non-alphanumeric characters with hyphens
-        kebab_word = ''.join('-' if not c.isalnum() else c for c in converted_word)
-        
-        # Ensure word is kebab case (lowercase with hyphens)
-        kebab_word = kebab_word.lower().replace(' ', '-')
-        
-        alternating_words.append(kebab_word)
+        alternating_words.append(converted_word)
     
     return '-'.join(alternating_words)
