@@ -12,7 +12,7 @@ def test_remove_duplicate_chars_mixed_case():
 
 def test_remove_duplicate_chars_preserve_order():
     """Test that the original order of first occurrences is maintained."""
-    assert remove_duplicate_chars("python programming") == "python pragme"
+    assert remove_duplicate_chars("python programming") == "python rgami"
 
 def test_remove_duplicate_chars_empty_string():
     """Test behavior with an empty string."""
@@ -24,7 +24,7 @@ def test_remove_duplicate_chars_no_duplicates():
 
 def test_remove_duplicate_chars_with_symbols_and_spaces():
     """Test handling of symbols and spaces."""
-    assert remove_duplicate_chars("a b! a b c") == "a b! c"
+    assert remove_duplicate_chars("a b! a b c") == "a b!c"
 
 def test_remove_duplicate_chars_invalid_input():
     """Test that TypeError is raised for non-string inputs."""
