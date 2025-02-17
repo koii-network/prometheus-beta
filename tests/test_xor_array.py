@@ -12,11 +12,11 @@ def test_xor_array_single_element():
 
 def test_xor_array_large_numbers():
     """Test XOR with larger numbers."""
-    assert xor_array_elements([1000, 2000, 3000]) == 0
+    assert xor_array_elements([1000, 2000, 3000]) == 3968
 
 def test_xor_array_negative_numbers():
     """Test XOR with negative numbers."""
-    assert xor_array_elements([-1, -2, -3]) == 0
+    assert xor_array_elements([-1, -2, -3]) == -4
 
 def test_xor_array_invalid_input():
     """Test error handling for invalid inputs."""
