@@ -10,7 +10,7 @@ def test_known_conversions():
 def test_negative_temperatures():
     """Test negative temperature conversions"""
     assert fahrenheit_to_celsius(-40) == -40
-    assert fahrenheit_to_celsius(-32) == 0
+    assert fahrenheit_to_celsius(-32) == -35.56
 
 def test_float_input():
     """Test floating point conversions"""
