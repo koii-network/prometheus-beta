@@ -23,8 +23,12 @@ def rotate_array_left(arr, n):
     if not arr:  # Empty list
         return arr
     
+    # Check for negative rotation
+    if n < 0:
+        raise ValueError("Rotation amount cannot be negative")
+    
     # Normalize rotation amount
-    n = n % len(arr) if n >= 0 else raise ValueError("Rotation amount cannot be negative")
+    n = n % len(arr)
     
     # Perform rotation and return new list
     return arr[n:] + arr[:n]
