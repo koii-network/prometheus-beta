@@ -32,6 +32,9 @@ def detect_cycle_in_undirected_graph(graph: Dict[int, List[int]]) -> bool:
         visited.add(node)
         
         for neighbor in graph[node]:
+            if neighbor == node:  # Self-loop
+                return True
+            
             if neighbor not in visited:
                 if dfs(neighbor, visited, node):
                     return True
