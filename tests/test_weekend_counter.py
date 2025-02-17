@@ -33,7 +33,7 @@ def test_various_years_months():
     test_cases = [
         (2023, 1, 9),   # January
         (2023, 12, 10), # December
-        (2024, 3, 9),   # March in a leap year
+        (2024, 3, 10),   # March in a leap year
     ]
     
     for year, month, expected_weekends in test_cases:
