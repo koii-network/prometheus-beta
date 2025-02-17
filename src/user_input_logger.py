@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 from datetime import datetime
 
 def log_user_input():
@@ -10,9 +11,12 @@ def log_user_input():
         str: The logged user input
     """
     try:
-        # Configure logging
+        # Configure logging with an absolute path
+        log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+        log_path = os.path.join(log_dir, 'user_input.log')
+        
         logging.basicConfig(
-            filename='user_input.log', 
+            filename=log_path, 
             level=logging.INFO, 
             format='%(asctime)s - %(message)s'
         )
