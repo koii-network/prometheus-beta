@@ -55,11 +55,11 @@ def kruskal_mst(graph):
     if not graph:
         return []
     
+    # Determine total number of unique vertices
+    vertices = len(set(vertex for edge in graph for vertex in edge[1:]))
+    
     # Sort edges by weight in ascending order
     sorted_edges = sorted(graph, key=lambda x: x[0])
-    
-    # Find the number of vertices
-    vertices = max(max(edge[1], edge[2]) for edge in graph) + 1
     
     # Initialize Disjoint Set
     ds = DisjointSet(vertices)
@@ -74,7 +74,7 @@ def kruskal_mst(graph):
         if ds.union(u, v):
             mst.append(edge)
         
-        # Stop when MST has exactly (vertices - 1) edges to ensure minimum number of edges
+        # Stop when MST has exactly (vertices - 1) edges
         if len(mst) == vertices - 1:
             break
     
