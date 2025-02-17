@@ -42,5 +42,5 @@ def test_knapsack_complex_scenario():
     weights = [10, 20, 30, 40]
     values = [60, 100, 120, 140]
     max_value, selected_items = solve_knapsack(capacity, weights, values)
-    assert max_value == 260
-    assert set(selected_items) == {0, 2, 3}
+    assert max_value == 420
+    assert set(selected_items) == {0, 1, 2, 3}
