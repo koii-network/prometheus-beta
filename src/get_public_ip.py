@@ -37,6 +37,8 @@ def get_public_ip():
         
         # If all services fail
         raise ConnectionError("Unable to retrieve public IP address")
+    except Exception:
+        raise ConnectionError("Unable to retrieve public IP address")
 
 def _validate_ip_address(ip):
     """
@@ -48,12 +50,12 @@ def _validate_ip_address(ip):
     Returns:
         bool: True if valid IP address, False otherwise
     """
-    # Basic IPv4 validation
-    parts = ip.split('.')
-    if len(parts) != 4:
-        return False
-    
     try:
+        # Basic IPv4 validation
+        parts = ip.split('.')
+        if len(parts) != 4:
+            return False
+        
         return all(0 <= int(part) <= 255 for part in parts)
-    except ValueError:
+    except (ValueError, TypeError):
         return False
