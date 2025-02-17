@@ -19,7 +19,7 @@ def test_rod_cutting_zero_length():
 def test_rod_cutting_full_length():
     # Test when using the entire rod length
     prices = [1, 5, 8, 9, 10, 17, 17, 20]
-    assert rod_cutting(prices, 8) == 20  # Price for full rod of length 8
+    assert rod_cutting(prices, 8) == 22  # Optimal way to cut the rod
 
 def test_rod_cutting_invalid_length():
     # Test when rod length exceeds price list
