@@ -1,5 +1,5 @@
 import pytest
-from ..src.median_sorted_arrays import find_median_sorted_arrays
+from src.median_sorted_arrays import find_median_sorted_arrays
 
 def test_even_length_arrays():
     nums1 = [1, 3]
