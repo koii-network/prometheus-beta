@@ -3,107 +3,63 @@ import sys
 from io import StringIO
 from src.indented_logger import IndentedLogger
 
+def capture_log(func):
+    """Decorator to capture logger's stdout."""
+    def wrapper(*args, **kwargs):
+        captured_output = StringIO()
+        sys.stdout = captured_output
+        try:
+            result = func(*args, **kwargs)
+            return result, captured_output.getvalue().strip()
+        finally:
+            sys.stdout = sys.__stdout__
+    return wrapper
+
 def test_basic_logging():
-    # Capture stdout
-    captured_output = StringIO()
-    sys.stdout = captured_output
-    
     logger = IndentedLogger()
-    result = logger.log("Hello, World!")
-    
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-    
+    result, output = capture_log(logger.log)("Hello, World!")
     assert result == "Hello, World!"
-    assert captured_output.getvalue().strip() == "Hello, World!"
+    assert output == "Hello, World!"
 
 def test_indentation():
-    # Capture stdout
-    captured_output = StringIO()
-    sys.stdout = captured_output
-    
     logger = IndentedLogger()
     logger.indent(1)
-    result = logger.log("Indented message")
-    
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-    
+    result, output = capture_log(logger.log)("Indented message")
     assert result == "  Indented message"
-    assert captured_output.getvalue().strip() == "  Indented message"
+    assert output == "  Indented message"
 
 def test_multiple_indentations():
-    # Capture stdout
-    captured_output = StringIO()
-    sys.stdout = captured_output
-    
     logger = IndentedLogger()
     logger.indent(2)
-    result = logger.log("Deeply indented")
-    
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-    
+    result, output = capture_log(logger.log)("Deeply indented")
     assert result == "    Deeply indented"
-    assert captured_output.getvalue().strip() == "    Deeply indented"
+    assert output == "    Deeply indented"
 
 def test_dedent():
-    # Capture stdout
-    captured_output = StringIO()
-    sys.stdout = captured_output
-    
     logger = IndentedLogger()
     logger.indent(3)
     logger.dedent(1)
-    result = logger.log("Semi-indented")
-    
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-    
+    result, output = capture_log(logger.log)("Semi-indented")
     assert result == "    Semi-indented"
-    assert captured_output.getvalue().strip() == "    Semi-indented"
+    assert output == "    Semi-indented"
 
 def test_reset_indent():
-    # Capture stdout
-    captured_output = StringIO()
-    sys.stdout = captured_output
-    
     logger = IndentedLogger()
     logger.indent(5)
     logger.reset_indent()
-    result = logger.log("Back to base")
-    
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-    
+    result, output = capture_log(logger.log)("Back to base")
     assert result == "Back to base"
-    assert captured_output.getvalue().strip() == "Back to base"
+    assert output == "Back to base"
 
 def test_custom_indent_step():
-    # Capture stdout
-    captured_output = StringIO()
-    sys.stdout = captured_output
-    
     logger = IndentedLogger(indent_step=4)
     logger.indent(1)
-    result = logger.log("Wider indentation")
-    
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-    
+    result, output = capture_log(logger.log)("Wider indentation")
     assert result == "    Wider indentation"
-    assert captured_output.getvalue().strip() == "    Wider indentation"
+    assert output == "    Wider indentation"
 
 def test_non_string_input():
-    # Capture stdout
-    captured_output = StringIO()
-    sys.stdout = captured_output
-    
     logger = IndentedLogger()
-    result = logger.log(42)
-    
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-    
+    result, output = capture_log(logger.log)(42)
     assert result == "42"
-    assert captured_output.getvalue().strip() == "42"
+    assert output == "42"
