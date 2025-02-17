@@ -14,6 +14,10 @@ def log_object(obj, indent=2, width=80, depth=None):
     Returns:
         str: A formatted string representation of the object
     """
+    # If it's a simple dict or list, force multi-line output
+    if isinstance(obj, (dict, list)) and len(str(obj)) < width:
+        return json.dumps(obj, indent=indent)
+    
     try:
         # Try pretty printing first (works well for dictionaries, lists, etc.)
         pp = pprint.PrettyPrinter(indent=indent, width=width, depth=depth, compact=False)
