@@ -1,7 +1,7 @@
 import os
 import pytest
 import tempfile
-import mock
+from unittest import mock
 from src.file_permissions import change_file_permissions
 
 def test_change_file_permissions():
