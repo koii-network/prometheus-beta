@@ -1,6 +1,7 @@
 import os
 import pytest
 import tempfile
+import mock
 from src.file_permissions import change_file_permissions
 
 def test_change_file_permissions():
@@ -32,8 +33,11 @@ def test_invalid_file_path():
         change_file_permissions(123, 0o755)
 
 def test_invalid_mode():
-    with pytest.raises(TypeError):
-        change_file_permissions('some_file.txt', '755')
-    
-    with pytest.raises(ValueError):
-        change_file_permissions('some_file.txt', 0o1000)  # Out of valid range
+    # Mocking os.path.exists to simulate file existence for mode validation
+    with mock.patch('os.path.exists', return_value=True), \
+         mock.patch('os.chmod', return_value=None):
+        with pytest.raises(TypeError):
+            change_file_permissions('some_file.txt', '755')
+        
+        with pytest.raises(ValueError):
+            change_file_permissions('some_file.txt', 0o1000)  # Out of valid range
