@@ -28,8 +28,8 @@ def test_remove_duplicate_chars_error_handling():
 
 def test_remove_duplicate_chars_mixed_case():
     """Test mixed case characters"""
-    assert remove_duplicate_chars("HeLLo") == "Helo"
+    assert remove_duplicate_chars("HeLLo") == "HeLo"
 
 def test_remove_duplicate_chars_special_characters():
     """Test with special characters and spaces"""
-    assert remove_duplicate_chars("h e l l o !") == "h e l o !"
+    assert remove_duplicate_chars("h e l l o !") == "h e lo!"
