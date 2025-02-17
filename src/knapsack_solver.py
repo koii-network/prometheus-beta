@@ -35,10 +35,8 @@ def solve_knapsack(weights, values, capacity):
             
             # Check if including the current item yields a better value
             if weights[i-1] <= w:
-                dp[i][w] = max(
-                    dp[i][w], 
-                    dp[i-1][w - weights[i-1]] + values[i-1]
-                )
+                candidate_value = dp[i-1][w - weights[i-1]] + values[i-1]
+                dp[i][w] = max(dp[i][w], candidate_value)
     
     # Backtrack to find selected items
     selected_items = []

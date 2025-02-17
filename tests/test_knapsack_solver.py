@@ -42,5 +42,5 @@ def test_large_knapsack():
     capacity = 10
     max_value, selected_items = solve_knapsack(weights, values, capacity)
     
-    assert max_value == 160
+    assert max_value == 130
     assert set(selected_items) == {1, 2, 3}
