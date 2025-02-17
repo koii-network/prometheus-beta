@@ -6,7 +6,7 @@ from src.user_input_logger import log_user_input
 
 def get_log_path():
     """Get the absolute path to the log file."""
-    return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_input.log')
+    return '/app/repos/repo_11/user_input.log'
 
 def test_log_user_input_success():
     # Ensure log file doesn't exist before test

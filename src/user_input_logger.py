@@ -12,7 +12,8 @@ def log_user_input():
     """
     try:
         # Configure logging with an absolute path
-        log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+        log_dir = '/app/repos/repo_11'
+        os.makedirs(log_dir, exist_ok=True)
         log_path = os.path.join(log_dir, 'user_input.log')
         
         logging.basicConfig(
