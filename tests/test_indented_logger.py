@@ -23,17 +23,11 @@ def test_indentation():
     sys.stdout = captured_output
     
     logger = IndentedLogger()
-    logger.indent()
+    logger.indent(1)
     result = logger.log("Indented message")
     
     # Restore stdout
     sys.stdout = sys.__stdout__
-    
-    captured_value = repr(captured_output.getvalue().strip())
-    expected_value = repr("  Indented message")
-    
-    print(f"Captured: {captured_value}")
-    print(f"Expected: {expected_value}")
     
     assert result == "  Indented message"
     assert captured_output.getvalue().strip() == "  Indented message"
@@ -50,12 +44,6 @@ def test_multiple_indentations():
     # Restore stdout
     sys.stdout = sys.__stdout__
     
-    captured_value = repr(captured_output.getvalue().strip())
-    expected_value = repr("    Deeply indented")
-    
-    print(f"Captured: {captured_value}")
-    print(f"Expected: {expected_value}")
-    
     assert result == "    Deeply indented"
     assert captured_output.getvalue().strip() == "    Deeply indented"
 
@@ -66,20 +54,14 @@ def test_dedent():
     
     logger = IndentedLogger()
     logger.indent(3)
-    logger.dedent()
+    logger.dedent(1)
     result = logger.log("Semi-indented")
     
     # Restore stdout
     sys.stdout = sys.__stdout__
     
-    captured_value = repr(captured_output.getvalue().strip())
-    expected_value = repr("      Semi-indented")
-    
-    print(f"Captured: {captured_value}")
-    print(f"Expected: {expected_value}")
-    
-    assert result == "      Semi-indented"
-    assert captured_output.getvalue().strip() == "      Semi-indented"
+    assert result == "    Semi-indented"
+    assert captured_output.getvalue().strip() == "    Semi-indented"
 
 def test_reset_indent():
     # Capture stdout
@@ -103,17 +85,11 @@ def test_custom_indent_step():
     sys.stdout = captured_output
     
     logger = IndentedLogger(indent_step=4)
-    logger.indent()
+    logger.indent(1)
     result = logger.log("Wider indentation")
     
     # Restore stdout
     sys.stdout = sys.__stdout__
-    
-    captured_value = repr(captured_output.getvalue().strip())
-    expected_value = repr("    Wider indentation")
-    
-    print(f"Captured: {captured_value}")
-    print(f"Expected: {expected_value}")
     
     assert result == "    Wider indentation"
     assert captured_output.getvalue().strip() == "    Wider indentation"
