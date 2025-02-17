@@ -29,6 +29,12 @@ def test_indentation():
     # Restore stdout
     sys.stdout = sys.__stdout__
     
+    captured_value = repr(captured_output.getvalue().strip())
+    expected_value = repr("  Indented message")
+    
+    print(f"Captured: {captured_value}")
+    print(f"Expected: {expected_value}")
+    
     assert result == "  Indented message"
     assert captured_output.getvalue().strip() == "  Indented message"
 
@@ -43,6 +49,12 @@ def test_multiple_indentations():
     
     # Restore stdout
     sys.stdout = sys.__stdout__
+    
+    captured_value = repr(captured_output.getvalue().strip())
+    expected_value = repr("    Deeply indented")
+    
+    print(f"Captured: {captured_value}")
+    print(f"Expected: {expected_value}")
     
     assert result == "    Deeply indented"
     assert captured_output.getvalue().strip() == "    Deeply indented"
@@ -59,6 +71,12 @@ def test_dedent():
     
     # Restore stdout
     sys.stdout = sys.__stdout__
+    
+    captured_value = repr(captured_output.getvalue().strip())
+    expected_value = repr("      Semi-indented")
+    
+    print(f"Captured: {captured_value}")
+    print(f"Expected: {expected_value}")
     
     assert result == "      Semi-indented"
     assert captured_output.getvalue().strip() == "      Semi-indented"
@@ -90,6 +108,12 @@ def test_custom_indent_step():
     
     # Restore stdout
     sys.stdout = sys.__stdout__
+    
+    captured_value = repr(captured_output.getvalue().strip())
+    expected_value = repr("    Wider indentation")
+    
+    print(f"Captured: {captured_value}")
+    print(f"Expected: {expected_value}")
     
     assert result == "    Wider indentation"
     assert captured_output.getvalue().strip() == "    Wider indentation"
