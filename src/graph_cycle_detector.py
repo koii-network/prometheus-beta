@@ -46,7 +46,8 @@ def detect_cycle_in_undirected_graph(graph: Dict[int, List[int]]) -> bool:
     visited: Set[int] = set()
     for node in graph:
         if node not in visited:
-            if dfs(node, visited, -1):
+            # Pass a non-existent parent when starting a new DFS
+            if dfs(node, visited, -1):  
                 return True
     
     return False
