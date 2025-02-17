@@ -4,7 +4,7 @@ from src.xor_array import xor_array_elements
 def test_xor_array_normal_case():
     """Test XOR of a normal array of integers."""
     assert xor_array_elements([1, 2, 3]) == 0  # 1 ^ 2 ^ 3 = 0
-    assert xor_array_elements([5, 7, 2]) == 4  # 5 ^ 7 ^ 2 = 4
+    assert xor_array_elements([5, 7, 2]) == 0  # 5 ^ 7 ^ 2 = 0
 
 def test_xor_array_single_element():
     """Test XOR with a single element array."""
