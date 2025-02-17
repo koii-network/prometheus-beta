@@ -74,7 +74,7 @@ def kruskal_mst(graph):
         if ds.union(u, v):
             mst.append(edge)
         
-        # Stop when MST has (vertices - 1) edges
+        # Stop when MST has exactly (vertices - 1) edges to ensure minimum number of edges
         if len(mst) == vertices - 1:
             break
     
