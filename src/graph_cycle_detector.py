@@ -45,12 +45,12 @@ def detect_cycle_in_undirected_graph(graph: Dict[int, List[int]]) -> bool:
         
         return False
     
-    # Check for cycles starting from each unvisited node
+    # Use a global visited set to track nodes across DFS calls
     visited: Set[int] = set()
     for node in graph:
         if node not in visited:
-            # Pass a non-existent parent when starting a new DFS
-            if dfs(node, visited, -1):  
+            # Pass a non-existent parent (-1) when starting a new DFS
+            if dfs(node, visited, -1):
                 return True
     
     return False
