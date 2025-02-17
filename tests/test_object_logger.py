@@ -1,6 +1,7 @@
 import pytest
 import logging
 import json
+from datetime import datetime
 from src.object_logger import log_object
 
 class MockLogger:
@@ -47,7 +48,7 @@ def test_log_object_complex_object():
     test_obj = {
         'name': 'Complex Object',
         'nested': {'a': 1, 'b': [1, 2, 3]},
-        'datetime': pytest.lazy_fixture('mock_datetime')
+        'datetime': datetime.now()
     }
     
     result = log_object(test_obj, logger=mock_logger)
@@ -70,4 +71,4 @@ def test_non_json_serializable_object():
     result = log_object(obj, logger=mock_logger)
     
     assert len(mock_logger.logged_messages) == 1
-    assert result == str(obj)
+    assert json.loads(result) == "Custom Object"
