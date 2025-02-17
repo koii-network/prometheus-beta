@@ -33,7 +33,7 @@ def test_send_http_post_request_success():
 
         assert result['status_code'] == 200
         assert result['json'] == {'message': 'success'}
-        assert result['headers'] == {}  # headers are mocked as empty dict
+        assert result['headers'] == {'Content-Type': 'application/json'}
 
 def test_send_http_post_request_no_json():
     # Mock a POST request with non-JSON response
