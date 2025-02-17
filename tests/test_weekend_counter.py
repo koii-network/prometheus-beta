@@ -31,7 +31,7 @@ def test_invalid_year():
 def test_various_years_months():
     # Additional test cases for different years and months
     test_cases = [
-        (2023, 1, 8),   # January
+        (2023, 1, 9),   # January
         (2023, 12, 10), # December
         (2024, 3, 9),   # March in a leap year
     ]
