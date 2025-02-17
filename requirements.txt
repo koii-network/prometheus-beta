@@ -1,1 +1,4 @@
 pytest
+requests
+urllib3
+pytest-mock
