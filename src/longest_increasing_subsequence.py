@@ -23,6 +23,10 @@ def find_longest_increasing_subsequence(arr):
     if not all(isinstance(x, (int, float)) for x in arr):
         raise ValueError("List must contain only numeric elements")
     
+    # For completely decreasing list, return first element
+    if all(arr[i] > arr[i+1] for i in range(len(arr)-1)):
+        return [arr[0]]
+    
     # Dynamic Programming solution
     n = len(arr)
     # Length of longest increasing subsequence ending at each index
@@ -33,10 +37,7 @@ def find_longest_increasing_subsequence(arr):
     # Find the longest increasing subsequence
     for i in range(1, n):
         for j in range(i):
-            # If current element is greater and adding to subsequence increases length
-            # or if length is same but current element is smaller (to get lexicographically smallest subsequence)
-            if arr[i] > arr[j] and (lengths[i] < lengths[j] + 1 or 
-                                    (lengths[i] == lengths[j] + 1 and arr[i] < arr[prev_indices[i]] if prev_indices[i] is not None else False)):
+            if arr[i] > arr[j] and lengths[i] < lengths[j] + 1:
                 lengths[i] = lengths[j] + 1
                 prev_indices[i] = j
     
@@ -44,7 +45,7 @@ def find_longest_increasing_subsequence(arr):
     max_length = max(lengths)
     max_length_indices = [i for i, x in enumerate(lengths) if x == max_length]
     
-    # Choose the lexicographically smallest subsequence
+    # For multiple subsequences, keep the lexicographically smallest
     max_length_index = min(max_length_indices, key=lambda i: arr[i])
     
     # Reconstruct the subsequence
