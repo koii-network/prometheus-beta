@@ -9,7 +9,7 @@ from src.command_line_logger import log_user_input
 
 def test_log_user_input_basic():
     # Prepare a log file for testing
-    log_file = 'user_input.log'
+    log_file = 'logs/user_input.log'
     if os.path.exists(log_file):
         os.remove(log_file)
     
