@@ -62,9 +62,15 @@ def test_append_empty_string():
         os.unlink(temp_file_path)
 
 def test_file_not_found():
+    # Create a unique file path that does not exist
+    non_existent_path = os.path.join(tempfile.gettempdir(), f"non_existent_{os.getpid()}.txt")
+    
+    # Ensure the file truly does not exist
+    assert not os.path.exists(non_existent_path), "Temporary file should not exist"
+    
     # Test that FileNotFoundError is raised for non-existent file
     with pytest.raises(FileNotFoundError):
-        append_text_to_file("non_existent_file.txt", "Some text")
+        append_text_to_file(non_existent_path, "Some text")
 
 def test_invalid_input_types():
     # Test type checking
