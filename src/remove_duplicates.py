@@ -16,14 +16,14 @@ def remove_duplicate_chars(input_string):
     if not isinstance(input_string, str):
         raise TypeError("Input must be a string")
     
-    # Use a list to track seen characters while preserving order
-    seen_chars = []
+    # Use a dictionary to track seen characters while preserving order
+    seen_chars = {}
     result = []
     
     for char in input_string:
-        # Check if the exact character (including case and spaces) has been seen before
+        # If the character has not been seen before, add it to the result
         if char not in seen_chars:
-            seen_chars.append(char)
+            seen_chars[char] = True
             result.append(char)
     
     return ''.join(result)
