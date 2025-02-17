@@ -29,7 +29,7 @@ class IndentedLogger:
         
         :param levels: Number of indentation levels to increase (default 1)
         """
-        self._current_indent = max(0, self._current_indent + levels)
+        self._current_indent += levels
     
     def dedent(self, levels=1):
         """
