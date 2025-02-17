@@ -1,4 +1,5 @@
 import os
+import stat
 
 def delete_file(file_path):
     """
@@ -23,12 +24,20 @@ def delete_file(file_path):
     if not os.path.isfile(normalized_path):
         raise IsADirectoryError(f"The path {file_path} is not a file.")
     
-    # Check if the file is writable
-    if not os.access(normalized_path, os.W_OK):
+    # Get file stats
+    try:
+        file_stats = os.stat(normalized_path)
+    except Exception as e:
+        raise PermissionError(f"Cannot access file stats for {file_path}: {str(e)}")
+    
+    # Check if the file is writable by checking permissions
+    if not bool(file_stats.st_mode & stat.S_IWUSR):
         raise PermissionError(f"Permission denied: Cannot delete {file_path}")
     
     # Attempt to delete the file
     try:
         os.remove(normalized_path)
+    except PermissionError:
+        raise PermissionError(f"Permission denied: Cannot delete {file_path}")
     except Exception as e:
         raise PermissionError(f"Cannot delete {file_path}: {str(e)}")

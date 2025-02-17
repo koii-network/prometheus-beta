@@ -1,6 +1,7 @@
 import os
 import pytest
 import tempfile
+import stat
 from src.file_delete import delete_file
 
 def test_delete_existing_file():
@@ -34,13 +35,15 @@ def test_delete_no_permission(monkeypatch):
     with tempfile.NamedTemporaryFile(delete=False) as temp_file:
         temp_path = temp_file.name
     
-    # Modify file permissions to simulate permission error
-    os.chmod(temp_path, 0o444)  # Read-only
-    
-    # Try to delete file without write permissions
-    with pytest.raises(PermissionError):
-        delete_file(temp_path)
-    
-    # Clean up: restore permissions and remove file
-    os.chmod(temp_path, 0o666)
-    os.unlink(temp_path)
+    try:
+        # Modify file permissions to simulate permission error
+        os.chmod(temp_path, 0o444)  # Read-only
+        
+        # Try to delete file without write permissions
+        with pytest.raises(PermissionError):
+            delete_file(temp_path)
+    finally:
+        # Restore permissions and remove file to clean up
+        os.chmod(temp_path, 0o666)
+        if os.path.exists(temp_path):
+            os.unlink(temp_path)
