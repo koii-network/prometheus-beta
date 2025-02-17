@@ -18,13 +18,27 @@ def log_object(obj, indent=2, max_depth=3):
         def default_serializer(o):
             return f"<Unserializable {type(o).__name__} object>"
         
+        # Custom function to truncate deep nested structures
+        def truncate_deep_dict(d, depth=0):
+            if depth >= max_depth:
+                return "..." if isinstance(d, dict) else d
+            
+            if isinstance(d, dict):
+                return {k: truncate_deep_dict(v, depth+1) for k, v in d.items()}
+            elif isinstance(d, list):
+                return [truncate_deep_dict(v, depth+1) for v in d]
+            return d
+        
+        # Truncate deep structures before serialization
+        truncated_obj = truncate_deep_dict(obj)
+        
         # Try to use JSON first with custom serialization
         try:
-            return json.dumps(obj, indent=indent, default=default_serializer)
+            return json.dumps(truncated_obj, indent=indent, default=default_serializer)
         except TypeError:
             # Fallback to pprint with custom representation
             pp = pprint.PrettyPrinter(indent=indent, depth=max_depth)
-            return pp.pformat(obj)
+            return pp.pformat(truncated_obj)
     
     except Exception as e:
         # Last resort error handling
