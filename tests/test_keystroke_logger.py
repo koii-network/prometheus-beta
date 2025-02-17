@@ -1,5 +1,6 @@
 import os
 import pytest
+import tempfile
 from src.keystroke_logger import KeystrokeLogger
 
 @pytest.fixture
@@ -41,8 +42,12 @@ def test_log_file_creation(logger):
     logger.log_keystroke('x')
     assert os.path.exists(os.path.join('logs', logger.log_file.split('/')[-1]))
 
-def test_empty_log(logger):
+def test_empty_log():
     """Test retrieving contents of an empty log"""
+    # Create a completely new logger with a fresh log file
+    log_file = f'empty_test_log_{os.getpid()}.txt'
+    logger = KeystrokeLogger(log_file)
+    
     log_contents = logger.get_log_contents()
     assert isinstance(log_contents, list)
     assert len(log_contents) == 0
