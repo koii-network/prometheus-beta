@@ -20,7 +20,9 @@ def find_first_last_occurrence(arr, target):
             if arr[mid] == target:
                 first_occurrence = mid
                 right = mid - 1  # Continue searching in the left half
-            elif arr[mid] < target:
+            elif (isinstance(arr[mid], type(target)) and 
+                  isinstance(arr[mid], (int, float, str)) and 
+                  arr[mid] < target):
                 left = mid + 1
             else:
                 right = mid - 1
@@ -37,7 +39,9 @@ def find_first_last_occurrence(arr, target):
             if arr[mid] == target:
                 last_occurrence = mid
                 left = mid + 1  # Continue searching in the right half
-            elif arr[mid] < target:
+            elif (isinstance(arr[mid], type(target)) and 
+                  isinstance(arr[mid], (int, float, str)) and 
+                  arr[mid] < target):
                 left = mid + 1
             else:
                 right = mid - 1
