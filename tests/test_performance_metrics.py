@@ -35,18 +35,11 @@ def test_performance_metrics_error_handling(monkeypatch, tmp_path):
     mock_performance_log = mock_log_path / 'performance_log.json'
     mock_performance_log.touch(mode=0o444)  # Read-only
     
-    # Monkeypatch the log path to use our mock path
-    monkeypatch.setattr('src.performance_metrics.os.path.exists', lambda x: True)
-    monkeypatch.setattr('src.performance_metrics.os.makedirs', lambda path, exist_ok=True: None)
+    # Monkeypatch to use the mock path and simulate permission error
+    def mock_open_with_error(*args, **kwargs):
+        raise PermissionError("Simulated permission error")
     
-    # Temporarily modify the function to use the mock path
-    original_open = open
-    def mock_open(*args, **kwargs):
-        if 'logs/performance_log.json' in args[0]:
-            return original_open(str(mock_performance_log), *args[1:])
-        return original_open(*args, **kwargs)
-    
-    monkeypatch.setattr('builtins.open', mock_open)
+    monkeypatch.setattr('builtins.open', mock_open_with_error)
     
     # Expect an exception to be raised
     with pytest.raises(PermissionError):
