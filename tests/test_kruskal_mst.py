@@ -55,11 +55,15 @@ def test_kruskal_mst_complex_graph():
     
     mst = kruskal_mst(graph)
     
-    # MST should have at most 8 vertices - 1 = 7 edges
-    assert len(mst) <= 7
+    # Verify properties of MST
+    vertices = len(set(vertex for edge in graph for vertex in edge[1:]))
+    assert len(mst) == vertices - 1  # Must have exact number of edges
     
-    # Total weight of MST
-    total_weight = sum(edge[0] for edge in mst)
+    # Verify minimum total cost
+    mst_weights = [edge[0] for edge in mst]
+    total_weight = sum(mst_weights)
+    
+    # The total weight of the MST should be minimal
     assert total_weight <= 37
 
 def test_kruskal_mst_empty_graph():
