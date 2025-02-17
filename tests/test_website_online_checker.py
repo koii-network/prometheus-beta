@@ -7,15 +7,20 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 from website_online_checker import is_website_online
+from unittest.mock import patch
 
-def test_online_websites():
-    # Test known online websites
-    assert is_website_online('google.com') == True
-    assert is_website_online('https://www.github.com') == True
+def test_valid_mock_connection():
+    # Mock a successful connection
+    with patch('requests.head') as mock_head:
+        mock_response = mock_head.return_value
+        mock_response.status_code = 200
+        assert is_website_online('example.com') == True
 
-def test_offline_websites():
-    # Test non-existent domain
-    assert is_website_online('thisisnotarealwebsite123456.com') == False
+def test_failed_mock_connection():
+    # Mock a failed connection
+    with patch('requests.head') as mock_head:
+        mock_head.side_effect = requests.ConnectionError()
+        assert is_website_online('example.com') == False
 
 def test_invalid_urls():
     # Test invalid URL inputs
@@ -26,9 +31,13 @@ def test_invalid_urls():
 
 def test_url_normalization():
     # Test that URLs without http/https are normalized
-    assert is_website_online('google.com') == True
-    assert is_website_online('www.github.com') == True
+    with patch('requests.head') as mock_head:
+        mock_response = mock_head.return_value
+        mock_response.status_code = 200
+        assert is_website_online('google.com') == True
 
 def test_timeout():
-    # Test with very short timeout
-    assert is_website_online('google.com', timeout=0.001) in [True, False]
+    # Mock a timeout scenario
+    with patch('requests.head') as mock_head:
+        mock_head.side_effect = requests.Timeout()
+        assert is_website_online('example.com') == False
