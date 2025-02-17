@@ -46,4 +46,4 @@ def test_log_unserializable_object():
             self.x = 1
     
     result = log_object(UnserializableClass())
-    assert "Unable to log object" in result
+    assert "Unserializable" in result or "Object type" in result

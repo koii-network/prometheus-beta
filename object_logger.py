@@ -14,14 +14,18 @@ def log_object(obj, indent=2, max_depth=3):
         str: A formatted, readable string representation of the object
     """
     try:
-        # Use pprint for more complex nested structures
-        if max_depth > 0:
+        # Special handling for unsupported types
+        def default_serializer(o):
+            return f"<Unserializable {type(o).__name__} object>"
+        
+        # Try to use JSON first with custom serialization
+        try:
+            return json.dumps(obj, indent=indent, default=default_serializer)
+        except TypeError:
+            # Fallback to pprint with custom representation
             pp = pprint.PrettyPrinter(indent=indent, depth=max_depth)
             return pp.pformat(obj)
-        
-        # Fallback to JSON for simpler serialization
-        return json.dumps(obj, indent=indent)
     
-    except (TypeError, ValueError) as e:
-        # Handle objects that can't be directly serialized
+    except Exception as e:
+        # Last resort error handling
         return f"Unable to log object: {str(e)}\nObject type: {type(obj)}"
