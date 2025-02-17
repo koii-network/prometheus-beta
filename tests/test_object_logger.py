@@ -35,8 +35,9 @@ def test_log_list():
 def test_log_custom_indent():
     test_dict = {"name": "Bob", "age": 35}
     result = log_object(test_dict, indent=4)
-    assert result.count(' ') > 0  # Ensure indentation is present
-    assert len(result.split('\n')[1]) > len(result.split('\n')[0])  # Check indentation increases
+    result_lines = result.split('\n')
+    assert len(result_lines) > 1  # Ensure multiple lines
+    assert '    ' in result  # Ensure 4-space indentation is used
 
 def test_log_non_serializable_object():
     class CustomObject:
