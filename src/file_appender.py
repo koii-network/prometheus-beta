@@ -1,3 +1,5 @@
+import os
+
 def append_text_to_file(file_path, text_to_append):
     """
     Append text to an existing file.
@@ -16,9 +18,10 @@ def append_text_to_file(file_path, text_to_append):
     if not isinstance(text_to_append, str):
         raise TypeError("text_to_append must be a string")
     
-    # Attempt to open and append to the file
-    try:
-        with open(file_path, 'a') as file:
-            file.write(text_to_append)
-    except FileNotFoundError:
+    # Check if file exists
+    if not os.path.isfile(file_path):
         raise FileNotFoundError(f"The file {file_path} does not exist")
+    
+    # Attempt to open and append to the file
+    with open(file_path, 'a') as file:
+        file.write(text_to_append)
