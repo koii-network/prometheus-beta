@@ -16,7 +16,7 @@ def log_object(obj, indent=2, width=80, depth=None):
     """
     try:
         # Try pretty printing first (works well for dictionaries, lists, etc.)
-        pp = pprint.PrettyPrinter(indent=indent, width=width, depth=depth)
+        pp = pprint.PrettyPrinter(indent=indent, width=width, depth=depth, compact=False)
         formatted = pp.pformat(obj)
         return formatted
     except Exception:
