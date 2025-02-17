@@ -7,7 +7,7 @@ def test_basic_count():
 
 def test_mixed_case():
     result = count_vowels_consonants("HeLLo WoRLD")
-    assert result == {'vowels': 3, 'consonants': 6}
+    assert result == {'vowels': 3, 'consonants': 7}
 
 def test_empty_string():
     result = count_vowels_consonants("")
