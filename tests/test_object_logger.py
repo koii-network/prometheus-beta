@@ -1,5 +1,5 @@
 import pytest
-from src.object_logger import log_object
+from object_logger import log_object
 
 def test_log_simple_dict():
     test_dict = {"name": "John", "age": 30}
