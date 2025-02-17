@@ -12,7 +12,7 @@ def test_count_set_bits_positive():
 def test_count_set_bits_negative():
     """Test counting set bits for negative integers"""
     assert count_set_bits(-1) == 64  # All 64 bits set for 2's complement
-    assert count_set_bits(-7) == 61  # Negative number handling
+    assert count_set_bits(-7) == 62  # Updated to match actual implementation
     
 def test_count_set_bits_large_number():
     """Test with larger numbers"""

@@ -17,7 +17,8 @@ def count_set_bits(n: int) -> int:
     
     # Handle negative numbers by converting to unsigned 
     if n < 0:
-        n = n & ((1 << 64) - 1)  # Handle 64-bit signed integer conversion
+        # For negative numbers in 64-bit two's complement
+        return 64 - count_set_bits(abs(n) - 1)
     
     # Count set bits using Brian Kernighan's Algorithm
     count = 0
