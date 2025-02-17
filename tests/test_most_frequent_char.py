@@ -11,10 +11,10 @@ def test_find_most_frequent_char_single_char():
     """Test with a single character string"""
     assert find_most_frequent_char("a") == "a"
 
-def test_find_most_frequent_char_spaces_and_special_chars():
-    """Test with strings containing spaces and special characters"""
-    assert find_most_frequent_char("hello world") == " "
-    assert find_most_frequent_char("!!hello") == "!"
+def test_find_most_frequent_char_multiple_frequent_chars():
+    """Test with multiple characters having the same frequency"""
+    assert find_most_frequent_char("aabbcc") == "a"  # returns first occurrence
+    assert find_most_frequent_char("aabbccddee") == "a"  # returns first occurrence
 
 def test_find_most_frequent_char_empty_string():
     """Test that an empty string raises a ValueError"""

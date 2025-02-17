@@ -21,8 +21,10 @@ def find_most_frequent_char(s: str) -> str:
     for char in s:
         char_counts[char] = char_counts.get(char, 0) + 1
     
-    # Find the character with the maximum frequency
-    # If multiple chars have the same max frequency, return the first one in the string
-    most_frequent = max(char_counts, key=lambda x: (char_counts[x], s.index(x)))
+    # Find the maximum frequency
+    max_freq = max(char_counts.values())
     
-    return most_frequent
+    # Find the first character with the maximum frequency
+    for char in s:
+        if char_counts[char] == max_freq:
+            return char
