@@ -16,7 +16,7 @@ def test_find_most_frequent_char_single_char():
 
 def test_find_most_frequent_char_with_spaces_and_special_chars():
     """Test with strings containing spaces and special characters."""
-    assert find_most_frequent_char("hello world!!") == " "
+    assert find_most_frequent_char("hello world!!") == "l"
     assert find_most_frequent_char("!!test!!") == "!"
 
 def test_find_most_frequent_char_empty_string():
