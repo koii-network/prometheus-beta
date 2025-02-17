@@ -8,10 +8,14 @@ def test_log_variable_values_list():
     """Test logging a list of values."""
     # Capture log output
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(log_capture)
+    handler.setLevel(logging.INFO)
+    logger.addHandler(handler)
     
     # Test function
-    result = log_variable_values([1, 2, 3])
+    result = log_variable_values([1, 2, 3], logger=logger)
     
     # Check results
     assert result == [1, 2, 3]
@@ -24,10 +28,14 @@ def test_log_variable_values_tuple():
     """Test logging a tuple of values."""
     # Capture log output
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(log_capture)
+    handler.setLevel(logging.INFO)
+    logger.addHandler(handler)
     
     # Test function
-    result = log_variable_values(('a', 'b', 'c'))
+    result = log_variable_values(('a', 'b', 'c'), logger=logger)
     
     # Check results
     assert result == ['a', 'b', 'c']
@@ -40,10 +48,14 @@ def test_log_variable_values_custom_log_level():
     """Test logging with a custom log level."""
     # Capture log output
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.DEBUG)
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler(log_capture)
+    handler.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
     
     # Test function
-    result = log_variable_values([1, 2, 3], log_level=logging.DEBUG)
+    result = log_variable_values([1, 2, 3], log_level=logging.DEBUG, logger=logger)
     
     # Check results
     assert result == [1, 2, 3]
@@ -54,10 +66,14 @@ def test_log_variable_values_empty_iterable():
     """Test logging an empty iterable."""
     # Capture log output
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(log_capture)
+    handler.setLevel(logging.INFO)
+    logger.addHandler(handler)
     
     # Test function
-    result = log_variable_values([])
+    result = log_variable_values([], logger=logger)
     
     # Check results
     assert result == []
