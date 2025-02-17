@@ -12,7 +12,7 @@ def test_basic_shortest_path():
     
     path, distance = dijkstra_shortest_path(graph, 'A', 'D')
     assert path == ['A', 'C', 'B', 'D']
-    assert distance == 4
+    assert distance == 6  # 2 (A to C) + 1 (C to B) + 3 (B to D)
 
 def test_no_path_exists():
     # Graph with no path between start and end
@@ -65,4 +65,4 @@ def test_complex_graph():
     
     path, distance = dijkstra_shortest_path(graph, 'A', 'E')
     assert path == ['A', 'C', 'B', 'E']
-    assert distance == 4
+    assert distance == 4  # 2 (A to C) + 1 (C to B) + 1 (B to E)
