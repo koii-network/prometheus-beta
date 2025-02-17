@@ -13,12 +13,17 @@ class KeystrokeLogger:
         os.makedirs('logs', exist_ok=True)
         self.log_file = os.path.join('logs', log_file)
         
-        # Configure logging
-        logging.basicConfig(
-            filename=self.log_file, 
-            level=logging.INFO, 
-            format='%(asctime)s - %(message)s'
-        )
+        # Configure logging with file handler to ensure file is written
+        self.logger = logging.getLogger(f'keystroke_logger_{log_file}')
+        self.logger.setLevel(logging.INFO)
+        
+        # Clear any existing handlers to prevent duplicate logs
+        self.logger.handlers.clear()
+        
+        # Create file handler
+        file_handler = logging.FileHandler(self.log_file, mode='a')
+        file_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+        self.logger.addHandler(file_handler)
     
     def log_keystroke(self, key):
         """
@@ -32,7 +37,7 @@ class KeystrokeLogger:
             raise TypeError("Key must be a string")
         
         # Log the keystroke
-        logging.info(f"Keystroke: {key}")
+        self.logger.info(f"Keystroke: {key}")
     
     def get_log_contents(self):
         """
