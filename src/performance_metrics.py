@@ -1,5 +1,6 @@
 import json
 import time
+import os
 from typing import Dict, Any
 
 def log_browser_rendering_metrics() -> Dict[str, Any]:
@@ -21,25 +22,26 @@ def log_browser_rendering_metrics() -> Dict[str, Any]:
             'cpu_usage': 0.0
         }
         
-        # In a real-world scenario, these would be collected from browser APIs
-        # This is a mock implementation for demonstration
+        # Ensure log directory exists
+        os.makedirs('logs', exist_ok=True)
         
         # Log the metrics
-        with open('performance_log.json', 'a') as log_file:
-            json.dump(performance_metrics, log_file)
-            log_file.write('\n')  # Add newline for readability
+        with open('logs/performance_log.json', 'a') as log_file:
+            log_file.write(json.dumps(performance_metrics) + '\n')
         
         return performance_metrics
     
     except Exception as e:
+        # Ensure log directory exists
+        os.makedirs('logs', exist_ok=True)
+        
         # Handle potential logging errors
         error_metrics = {
             'error': str(e),
             'timestamp': time.time()
         }
         
-        with open('performance_error_log.json', 'a') as error_log:
-            json.dump(error_metrics, error_log)
-            error_log.write('\n')
+        with open('logs/performance_error_log.json', 'a') as error_log:
+            error_log.write(json.dumps(error_metrics) + '\n')
         
         raise
