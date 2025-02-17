@@ -39,4 +39,4 @@ def test_invalid_input():
 def test_unicode_chars():
     """Test string with unicode characters."""
     result = count_vowels_and_consonants("héllö wörld")
-    assert result == {'vowels': 3, 'consonants': 6}
+    assert result == {'vowels': 3, 'consonants': 7}
