@@ -9,7 +9,13 @@ def log_browser_rendering_metrics() -> Dict[str, Any]:
     
     Returns:
         Dict containing various performance metrics.
+    
+    Raises:
+        Exception if logging fails
     """
+    # Ensure log directory exists
+    os.makedirs('logs', exist_ok=True)
+    
     try:
         # Simulate collecting performance metrics
         performance_metrics = {
@@ -22,20 +28,14 @@ def log_browser_rendering_metrics() -> Dict[str, Any]:
             'cpu_usage': 0.0
         }
         
-        # Ensure log directory exists
-        os.makedirs('logs', exist_ok=True)
-        
-        # Log the metrics
+        # Use write() instead of dump to force potential error
         with open('logs/performance_log.json', 'a') as log_file:
             log_file.write(json.dumps(performance_metrics) + '\n')
         
         return performance_metrics
     
     except Exception as e:
-        # Ensure log directory exists
-        os.makedirs('logs', exist_ok=True)
-        
-        # Handle potential logging errors
+        # Log the error details
         error_metrics = {
             'error': str(e),
             'timestamp': time.time()
@@ -44,4 +44,5 @@ def log_browser_rendering_metrics() -> Dict[str, Any]:
         with open('logs/performance_error_log.json', 'a') as error_log:
             error_log.write(json.dumps(error_metrics) + '\n')
         
+        # Re-raise the original exception
         raise
