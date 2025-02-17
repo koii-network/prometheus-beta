@@ -33,12 +33,19 @@ def find_longest_increasing_subsequence(arr):
     # Find the longest increasing subsequence
     for i in range(1, n):
         for j in range(i):
-            if arr[i] > arr[j] and lengths[i] < lengths[j] + 1:
+            # If current element is greater and adding to subsequence increases length
+            # or if length is same but current element is smaller (to get lexicographically smallest subsequence)
+            if arr[i] > arr[j] and (lengths[i] < lengths[j] + 1 or 
+                                    (lengths[i] == lengths[j] + 1 and arr[i] < arr[prev_indices[i]] if prev_indices[i] is not None else False)):
                 lengths[i] = lengths[j] + 1
                 prev_indices[i] = j
     
     # Find the index of the maximum length
-    max_length_index = lengths.index(max(lengths))
+    max_length = max(lengths)
+    max_length_indices = [i for i, x in enumerate(lengths) if x == max_length]
+    
+    # Choose the lexicographically smallest subsequence
+    max_length_index = min(max_length_indices, key=lambda i: arr[i])
     
     # Reconstruct the subsequence
     subsequence = []
