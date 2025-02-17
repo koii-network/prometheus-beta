@@ -42,10 +42,13 @@ def test_append_multiple_times(tmp_path):
         content = file.read()
         assert content == "Initial content\n" + "Second line\n" + "Third line\n"
 
-def test_file_not_found():
+def test_file_not_found(tmp_path):
+    # Ensure the file does not exist in the temporary directory
+    non_existent_file = tmp_path / "definitely_non_existent_file.txt"
+    
     # Attempt to append to a non-existent file
     with pytest.raises(FileNotFoundError):
-        append_text_to_file("non_existent_file.txt", "Some text")
+        append_text_to_file(str(non_existent_file), "Some text")
 
 def test_invalid_file_path_type():
     # Test with non-string file path

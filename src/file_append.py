@@ -18,12 +18,8 @@ def append_text_to_file(file_path, text_to_append):
     if not isinstance(text_to_append, str):
         raise TypeError("text_to_append must be a string")
     
-    # Check if file exists before appending
-    print(f"File path: {file_path}")
-    print(f"File exists: {os.path.exists(file_path)}")
-    print(f"Absolute path: {os.path.abspath(file_path)}")
-    
-    if not os.path.exists(file_path):
+    # Check if file exists and is a file before appending
+    if not os.path.isfile(file_path):
         raise FileNotFoundError(f"The file {file_path} does not exist")
     
     # Append to the file
