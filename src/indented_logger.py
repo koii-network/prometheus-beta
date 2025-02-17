@@ -6,8 +6,8 @@ class IndentedLogger:
         :param initial_indent: Starting indentation level (default 0)
         :param indent_step: Number of spaces per indentation level (default 2)
         """
-        self._current_indent = initial_indent
         self._indent_step = indent_step
+        self._current_indent = initial_indent
     
     def log(self, message):
         """
