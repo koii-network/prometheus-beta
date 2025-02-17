@@ -19,8 +19,8 @@ def remove_duplicate_chars(input_string):
     result = []
     
     for char in input_string:
-        if char not in seen_chars:
+        if char.lower() not in seen_chars:
             result.append(char)
-            seen_chars.add(char)
+            seen_chars.add(char.lower())
     
     return ''.join(result)
