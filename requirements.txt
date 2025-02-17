@@ -1,1 +1,4 @@
 pytest
+requests
+beautifulsoup4
+requests-mock
