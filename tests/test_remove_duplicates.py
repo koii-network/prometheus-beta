@@ -14,6 +14,7 @@ def test_remove_duplicate_chars():
     
     # Test string with mixed case
     assert remove_duplicate_chars('HelloWorld') == 'Helord'
+    assert remove_duplicate_chars('HelloWorld') == remove_duplicate_chars('helloworld')
     
     # Test string with spaces and special characters
     assert remove_duplicate_chars('  hello  world  ') == ' helo wrd'
