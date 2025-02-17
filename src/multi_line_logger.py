@@ -3,15 +3,17 @@ def log_multiline(message, separator='=', line_length=50):
     Log a multi-line message with optional separation lines.
     
     Args:
-        message (str or list): The message(s) to log
+        message (str, list, or any): The message(s) to log
         separator (str, optional): Character used for separation lines. Defaults to '='.
         line_length (int, optional): Length of separation lines. Defaults to 50.
     
     Returns:
         str: Formatted multi-line log message
     """
-    # Convert single string to list if needed
+    # Convert single string or non-iterable to list
     if isinstance(message, str):
+        message = [message]
+    elif not isinstance(message, list):
         message = [message]
     
     # Validate inputs
