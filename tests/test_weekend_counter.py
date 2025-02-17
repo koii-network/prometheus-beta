@@ -11,7 +11,7 @@ def test_count_weekends_february():
 
 def test_count_weekends_leap_year():
     # Test a leap year February 
-    assert count_weekends_in_month(2024, 2) == 9
+    assert count_weekends_in_month(2024, 2) == 8
 
 def test_invalid_month_low():
     # Test handling of invalid low month
