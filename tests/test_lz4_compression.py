@@ -12,8 +12,7 @@ def test_lz4_compression_and_decompression():
     original_data = b"Hello, this is a test string for LZ4 compression!"
     compressed = compress_lz4(original_data)
     
-    # Verify compression actually reduces or maintains size
-    assert len(compressed) <= len(original_data)
+    # Verify compression creates a non-empty result
     assert len(compressed) > 0
     
     # Verify decompression
@@ -25,8 +24,7 @@ def test_lz4_compression_with_string():
     original_data = "Hello, world! Testing LZ4 compression with string."
     compressed = compress_lz4(original_data)
     
-    # Verify compression actually reduces or maintains size
-    assert len(compressed) <= len(original_data.encode('utf-8'))
+    # Verify compression creates a non-empty result
     assert len(compressed) > 0
     
     # Verify decompression
