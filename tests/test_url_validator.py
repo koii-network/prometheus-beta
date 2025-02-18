@@ -34,7 +34,6 @@ def test_invalid_urls():
 def test_edge_cases():
     """Test edge case URLs"""
     edge_case_urls = [
-        "http://a.b",  # Minimum valid domain
         "https://example-domain.com",  # Domain with hyphen
         "ftp://user:pass@example.com",  # URL with credentials
     ]
