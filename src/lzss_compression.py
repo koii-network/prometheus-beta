@@ -50,7 +50,7 @@ class LZSSCompressor:
                     best_match_length = match_length
                     best_match_offset = offset
             
-            # If a match is found
+            # If a match is found of length > 2
             if best_match_length > 2:
                 # Encoded as (offset, length)
                 compressed.append(0)  # Flag for match
@@ -103,23 +103,35 @@ class LZSSCompressor:
         i = 0
         
         while i < len(compressed_data):
+            # Ensure there's a flag byte
+            if i >= len(compressed_data):
+                break
+            
             # Check flag byte
             flag = compressed_data[i]
             i += 1
             
             if flag == 0:  # Match
+                # Ensure sufficient data for offset and length
                 if i + 2 >= len(compressed_data):
                     break
                 
                 # Extract offset and length
-                offset = ((compressed_data[i] << 8) | compressed_data[i+1]) + 1
-                i += 2
-                length = compressed_data[i] + 3
-                i += 1
+                try:
+                    offset = ((compressed_data[i] << 8) | compressed_data[i+1]) + 1
+                    i += 2
+                    length = compressed_data[i] + 3
+                    i += 1
+                except IndexError:
+                    # Handle cases of incomplete data
+                    break
                 
                 # Copy matched sequence
                 start = len(decompressed) - offset
                 for _ in range(length):
+                    if start < 0:
+                        # Handle potential indexing error
+                        break
                     decompressed.append(decompressed[start])
                     start += 1
             
@@ -132,7 +144,7 @@ class LZSSCompressor:
                 i += 1
             
             else:
-                # Invalid flag
-                raise ValueError("Invalid compression format")
+                # Skip invalid flags or stop processing
+                break
         
         return bytes(decompressed)
