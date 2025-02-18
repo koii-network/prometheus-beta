@@ -30,10 +30,10 @@ def find_longest_common_suffix(strings):
     # Find the shortest string in the list
     shortest = min(strings, key=len)
     
-    # Iterate through possible suffixes from longest to shortest
-    for length in range(len(shortest), 0, -1):
-        potential_suffix = shortest[-length:]
-        if all(s[-length:] == potential_suffix for s in strings):
+    # Iterate through possible suffixes from shortest to longest
+    for length in range(1, len(shortest) + 1):
+        potential_suffix = shortest[-1]
+        if all(s[-1] == potential_suffix for s in strings):
             return potential_suffix
     
     return ""
