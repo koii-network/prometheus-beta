@@ -32,10 +32,14 @@ def decompress_bzip2_file(input_file_path, output_file_path=None):
         # Open input and output files
         with bz2.open(input_file_path, 'rb') as compressed_file, \
              open(output_file_path, 'wb') as decompressed_file:
-            # Read and decompress in chunks to handle large files
-            decompressed_file.write(compressed_file.read())
+            # Try to read and verify the file is a valid bzip2 stream
+            try:
+                content = compressed_file.read()
+                decompressed_file.write(content)
+            except (OSError, IOError):
+                raise ValueError(f"Invalid bzip2 compressed file: {input_file_path}")
         
         return output_file_path
     
-    except bz2.BZip2Error:
-        raise ValueError(f"Invalid bzip2 compressed file: {input_file_path}")
+    except Exception as e:
+        raise ValueError(f"Error decompressing file: {e}")
