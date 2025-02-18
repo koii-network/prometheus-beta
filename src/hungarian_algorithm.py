@@ -32,38 +32,29 @@ def hungarian_algorithm(cost_matrix):
     for j in range(n):
         matrix[:, j] -= matrix[:, j].min()
     
-    # Step 3: Cover zeros with minimum number of lines
-    def cover_zeros(matrix):
-        # Find zeros
-        zero_positions = [(i, j) for i in range(n) for j in range(n) if matrix[i, j] == 0]
-        
-        # Track which rows and columns are covered
-        covered_rows = set()
-        covered_cols = set()
-        
-        # Greedy approach to cover zeros
+    # Find optimal assignment
+    def find_optimal_assignment(matrix):
+        # Track used rows and columns
+        used_rows = set()
+        used_cols = set()
         assignment = []
-        for pos in zero_positions:
-            row, col = pos
-            if row not in covered_rows and col not in covered_cols:
+        
+        # Sort potential zero assignments by lowest zero count
+        zero_positions = [(i, j) for i in range(n) for j in range(n) if matrix[i, j] == 0]
+        zero_positions.sort(key=lambda x: sum(1 for r in range(n) if matrix[r, x[1]] == 0))
+        
+        # Greedy assignment algorithm
+        for row, col in zero_positions:
+            # If this row and column are not yet used
+            if row not in used_rows and col not in used_cols:
                 assignment.append((row, col))
-                covered_rows.add(row)
-                covered_cols.add(col)
+                used_rows.add(row)
+                used_cols.add(col)
         
         return assignment
     
-    # Find optimal assignment
-    assignment = cover_zeros(matrix)
-    
-    # If not complete assignment, rearrange to find full assignment
-    if len(assignment) < n:
-        # This is a simplified version and might need more sophisticated handling
-        # for complex assignment problems
-        for row in range(n):
-            for col in range(n):
-                if (row, col) not in assignment and matrix[row, col] == 0:
-                    assignment.append((row, col))
-                    break
+    # Attempt to find an optimal assignment
+    assignment = find_optimal_assignment(matrix)
     
     # Sort the assignment based on worker (first element of tuple)
     return sorted(assignment)
