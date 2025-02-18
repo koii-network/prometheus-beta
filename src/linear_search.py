@@ -11,8 +11,8 @@ def linear_search(arr, target):
     """
     # Iterate through each element in the list
     for index, element in enumerate(arr):
-        # If the current element matches the target, return its index
-        if element == target:
+        # If the current element matches the target exactly
+        if element is target:
             return index
     
     # If the target is not found, return -1
