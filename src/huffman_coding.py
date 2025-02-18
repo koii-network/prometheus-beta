@@ -21,7 +21,7 @@ def build_frequency_dict(data):
     Returns:
         dict: Dictionary of character frequencies
     """
-    return dict(Counter(data))
+    return dict(Counter(data)) if data else {}
 
 def build_huffman_tree(freq_dict):
     """
@@ -33,6 +33,17 @@ def build_huffman_tree(freq_dict):
     Returns:
         HuffmanNode: Root of the Huffman tree
     """
+    # Handle empty dictionary
+    if not freq_dict:
+        return None
+    
+    # Handle single character case
+    if len(freq_dict) == 1:
+        char, freq = list(freq_dict.items())[0]
+        root = HuffmanNode(None, freq)
+        root.left = HuffmanNode(char, freq)
+        return root
+    
     # Create priority queue of nodes
     heap = [HuffmanNode(char, freq) for char, freq in freq_dict.items()]
     heapq.heapify(heap)
@@ -49,7 +60,7 @@ def build_huffman_tree(freq_dict):
         
         heapq.heappush(heap, internal_node)
     
-    return heap[0] if heap else None
+    return heap[0]
 
 def build_huffman_codes(root):
     """
@@ -63,6 +74,10 @@ def build_huffman_codes(root):
     """
     if not root:
         return {}
+    
+    # Handle single character tree
+    if root.left and root.left.char is not None and not root.right:
+        return {root.left.char: '0'}
     
     codes = {}
     
@@ -96,6 +111,7 @@ def compress(data):
     Returns:
         tuple: (compressed_data, huffman_tree_root)
     """
+    # Handle None or empty input
     if not data:
         return '', None
     
@@ -124,8 +140,13 @@ def decompress(compressed_data, huffman_tree):
     Returns:
         str: Decompressed original data
     """
+    # Handle empty or None inputs
     if not compressed_data or not huffman_tree:
         return ''
+    
+    # Handle single character case
+    if huffman_tree.left and huffman_tree.left.char is not None and not huffman_tree.right:
+        return huffman_tree.left.char * (len(compressed_data) or 1)
     
     # Traverse the tree to decode
     decompressed = []
