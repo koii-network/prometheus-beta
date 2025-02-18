@@ -13,6 +13,7 @@ def find_mode(numbers: List[float]) -> Union[float, List[float]]:
         - If there's a single mode, returns that mode
         - If there are multiple modes, returns a list of modes
         - If the list is empty, returns an empty list
+        - If all numbers are unique, returns the first number
     
     Raises:
         TypeError: If the input is not a list
@@ -22,6 +23,10 @@ def find_mode(numbers: List[float]) -> Union[float, List[float]]:
     
     if not numbers:
         return []
+    
+    # If all numbers are unique, return the first number
+    if len(set(numbers)) == len(numbers):
+        return numbers[0]
     
     # Count the frequency of each number
     freq_counter = Counter(numbers)

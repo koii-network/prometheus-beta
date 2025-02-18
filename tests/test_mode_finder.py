@@ -7,12 +7,12 @@ def test_single_mode():
 
 def test_multiple_modes():
     """Test finding multiple modes"""
-    assert sorted(find_mode([1, 2, 2, 3, 3, 4])) == [2, 3]
+    result = find_mode([1, 2, 2, 3, 3, 4])
+    assert set(result) == {2, 3}
 
 def test_all_unique_numbers():
     """Test when all numbers appear once"""
-    result = find_mode([1, 2, 3, 4, 5])
-    assert result in [1, 2, 3, 4, 5]
+    assert find_mode([1, 2, 3, 4, 5]) == 1
 
 def test_empty_list():
     """Test empty list returns empty list"""
@@ -20,7 +20,8 @@ def test_empty_list():
 
 def test_float_numbers():
     """Test mode works with float numbers"""
-    assert find_mode([1.5, 2.3, 1.5, 3.7, 2.3]) == 1.5
+    result = find_mode([1.5, 2.3, 1.5, 3.7, 2.3])
+    assert set(result) == {1.5, 2.3}
 
 def test_invalid_input():
     """Test that invalid input raises TypeError"""
