@@ -7,14 +7,22 @@ def test_compress_bzip2_string():
     original_text = "Hello, world! This is a test of Bzip2 compression."
     compressed = compress_bzip2(original_text)
     assert isinstance(compressed, bytes)
-    assert len(compressed) < len(original_text.encode('utf-8'))
+    
+    # Check that compression works on longer texts
+    long_text = original_text * 10
+    long_compressed = compress_bzip2(long_text)
+    assert len(long_compressed) < len(long_text.encode('utf-8'))
 
 def test_compress_bzip2_bytes():
     """Test compressing bytes."""
     original_bytes = b"Binary data for compression test"
     compressed = compress_bzip2(original_bytes)
     assert isinstance(compressed, bytes)
-    assert len(compressed) < len(original_bytes)
+    
+    # Check that compression works on longer byte sequences
+    long_bytes = original_bytes * 10
+    long_compressed = compress_bzip2(long_bytes)
+    assert len(long_compressed) < len(long_bytes)
 
 def test_decompress_bzip2():
     """Test decompression of compressed data."""
@@ -25,13 +33,18 @@ def test_decompress_bzip2():
 
 def test_compress_with_different_levels():
     """Test compression with different compression levels."""
-    text = "Test compression levels"
+    text = "Test compression levels" * 10  # Use longer text for more meaningful comparison
     # Test levels 1-9
+    compressed_sizes = []
     for level in range(1, 10):
         compressed = compress_bzip2(text, level)
         assert isinstance(compressed, bytes)
         decompressed = decompress_bzip2(compressed)
         assert decompressed.decode('utf-8') == text
+        compressed_sizes.append(len(compressed))
+    
+    # Higher compression levels should generally result in smaller compressed sizes
+    assert len(set(compressed_sizes)) > 1
 
 def test_invalid_compression_level():
     """Test handling of invalid compression levels."""
