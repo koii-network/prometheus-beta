@@ -28,6 +28,6 @@ def test_linear_search_different_types():
     """Test searching with different types of elements"""
     arr = [1, 'a', True, 3.14, None]
     assert linear_search(arr, 'a') == 1
-    assert linear_search(arr, True) == 2
+    assert linear_search(arr, True) == 2  # Use True as a boolean
     assert linear_search(arr, 3.14) == 3
     assert linear_search(arr, None) == 4
