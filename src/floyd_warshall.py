@@ -9,7 +9,14 @@ def floyd_warshall(graph):
     
     Returns:
         list of lists: A 2D matrix of shortest distances between all pairs of vertices.
+    
+    Raises:
+        IndexError: If the input graph is empty.
     """
+    # Validate input
+    if not graph:
+        raise IndexError("Input graph cannot be empty")
+    
     # Get the number of vertices
     n = len(graph)
     
