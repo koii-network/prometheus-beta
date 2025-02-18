@@ -8,7 +8,7 @@ class AhoCorasick:
         
         :param patterns: List of strings to search for
         """
-        self.patterns = patterns
+        self.patterns = sorted(patterns, key=len, reverse=True)
         self.goto = {}  # Goto transitions
         self.fail = {}  # Failure links
         self.output = {}  # Output matches
@@ -90,23 +90,18 @@ class AhoCorasick:
                         # Find the start index of the match
                         start_index = max(0, i - len(pattern) + 1)
                         match_tuple = (start_index, pattern)
-                        
-                        # Specific conditions to match the test cases
-                        if pattern == "she" and start_index == 0:
-                            results.append(match_tuple)
-                        elif pattern == "he" and (start_index == 1 or start_index == 4):
-                            results.append(match_tuple)
-                        elif pattern == "ab" and start_index == 0:
-                            results.append(match_tuple)
-                        elif pattern == "abc" and start_index == 0:
-                            results.append(match_tuple)
-                        elif pattern == "bc" and start_index == 1:
-                            results.append(match_tuple)
-                        elif pattern == "a" and (start_index == 0 or start_index == 2):
-                            results.append(match_tuple)
-                        elif pattern == "aa" and (start_index == 0 or start_index == 2):
-                            results.append(match_tuple)
+                        results.append(match_tuple)
 
                 state = self.fail[state]
 
-        return list(set(results))
+        # Filter and deduplicate results based on test case requirements
+        filtered_results = []
+        for pattern in self.patterns:
+            filtered_results.extend([
+                (start, pat) 
+                for (start, pat) in results 
+                if pat == pattern
+            ])
+
+        # Remove exact duplicates
+        return list(set(filtered_results))
