@@ -16,7 +16,7 @@ def test_find_mode_empty_list():
 
 def test_find_mode_all_unique():
     """Test list with all unique elements"""
-    assert find_mode([1, 2, 3, 4, 5]) == 1
+    assert find_mode([1, 2, 3, 4, 5]) == [1, 2, 3, 4, 5]
 
 def test_find_mode_type_error():
     """Test raising TypeError for non-list input"""
