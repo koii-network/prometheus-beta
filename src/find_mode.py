@@ -20,7 +20,7 @@ def find_mode(numbers: List[Union[int, float]]) -> Union[int, float, List[Union[
     if not numbers:
         raise ValueError("Cannot find mode of an empty list")
     
-    # Normalize mixed types to floats
+    # Normalize mixed types to floats for comparison
     normalized_numbers = [float(num) for num in numbers]
     
     # Count the frequency of each number
@@ -32,8 +32,8 @@ def find_mode(numbers: List[Union[int, float]]) -> Union[int, float, List[Union[
     # Find all numbers with the maximum frequency
     modes = [num for num, freq in frequency.items() if freq == max_freq]
     
-    # Return single mode or list of modes, preserving original type
-    if len(modes) == 1:
-        # Try to return in the type of the first original element if possible
-        return numbers[normalized_numbers.index(modes[0])]
-    return [numbers[normalized_numbers.index(mode)] for mode in modes]
+    # Resolve multiple modes to the corresponding original values
+    matching_modes = [numbers[normalized_numbers.index(mode)] for mode in modes]
+    
+    # Return single mode or list of modes, maintaining original value
+    return matching_modes[0] if len(matching_modes) == 1 else matching_modes
