@@ -31,9 +31,10 @@ def arithmetic_encode(data: Union[str, List[str]], probability_model: Dict[str, 
         for symbol in data:
             probability_model[symbol] = probability_model.get(symbol, 0) + 1 / total_count
     
-    # Validate probability model
-    if not math.isclose(sum(probability_model.values()), 1.0, rel_tol=1e-9):
-        raise ValueError("Probabilities must sum to 1.0")
+    # Validate probability model sum
+    prob_sum = sum(probability_model.values())
+    if not math.isclose(prob_sum, 1.0, rel_tol=1e-9):
+        raise ValueError(f"Probabilities must sum to 1.0 (current sum: {prob_sum})")
     
     # Validate all symbols from data exist in probability model
     data_symbols = set(data)
@@ -83,8 +84,10 @@ def arithmetic_decode(encoded_value: float, data_length: int, probability_model:
     if data_length <= 0:
         raise ValueError("Data length must be positive")
     
-    if not math.isclose(sum(probability_model.values()), 1.0, rel_tol=1e-9):
-        raise ValueError("Probabilities must sum to 1.0")
+    # Validate probability model sum
+    prob_sum = sum(probability_model.values())
+    if not math.isclose(prob_sum, 1.0, rel_tol=1e-9):
+        raise ValueError(f"Probabilities must sum to 1.0 (current sum: {prob_sum})")
     
     # Sort symbols by cumulative probability
     sorted_symbols = sorted(probability_model.items(), key=lambda x: x[1])

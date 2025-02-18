@@ -38,9 +38,9 @@ def test_empty_input_raises_error():
 
 def test_invalid_probability_model_sum():
     # Test that an invalid probability model raises an error
-    data = ['A', 'B', 'C']
-    prob_model = {'A': 0.5, 'B': 0.5}  # Probabilities don't sum to 1
-    with pytest.raises(ValueError, match="Probabilities must sum to 1.0"):
+    data = ['A', 'B']
+    prob_model = {'A': 0.5, 'B': 0.6}  # Probabilities sum > 1
+    with pytest.raises(ValueError, match=r"Probabilities must sum to 1\.0 \(current sum: \d+\.\d+\)"):
         arithmetic_encode(data, prob_model)
 
 def test_missing_symbol_in_probability_model():
