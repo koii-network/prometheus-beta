@@ -7,9 +7,9 @@ def test_compress_data_basic():
     original_data = "Hello, World!"
     compressed = compress_data(original_data)
     assert isinstance(compressed, bytes)
-    assert len(compressed) < len(original_data.encode('utf-8'))
     
-    # Ensure it can be decompressed
+    # For very small inputs, compression might not reduce size
+    # So we'll just check it can be decompressed correctly
     decompressed = decompress_data(compressed)
     assert decompressed.decode('utf-8') == original_data
 
@@ -23,8 +23,8 @@ def test_compress_data_bytes():
     assert decompressed == original_data
 
 def test_compression_levels():
-    """Test different compression levels"""
-    data = "Test compression levels" * 100  # Ensure enough data for meaningful comparison
+    """Test different compression levels with a larger dataset"""
+    data = "Test compression levels" * 1000  # Large enough data for meaningful comparison
     
     # Test different compression levels
     compressed_0 = compress_data(data, compression_level=0)
