@@ -35,6 +35,13 @@ def arithmetic_encode(data: Union[str, List[str]], probability_model: Dict[str, 
     if not math.isclose(sum(probability_model.values()), 1.0, rel_tol=1e-9):
         raise ValueError("Probabilities must sum to 1.0")
     
+    # Validate all symbols from data exist in probability model
+    data_symbols = set(data)
+    prob_symbols = set(probability_model.keys())
+    if not data_symbols.issubset(prob_symbols):
+        missing_symbols = data_symbols - prob_symbols
+        raise ValueError(f"Missing probability for symbols: {missing_symbols}")
+    
     # Sort symbols by cumulative probability
     sorted_symbols = sorted(probability_model.items(), key=lambda x: x[1])
     cumulative_probs = [0.0]

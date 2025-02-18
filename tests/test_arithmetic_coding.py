@@ -36,11 +36,18 @@ def test_empty_input_raises_error():
     with pytest.raises(ValueError, match="Input data cannot be empty"):
         arithmetic_encode([])
 
-def test_invalid_probability_model():
+def test_invalid_probability_model_sum():
     # Test that an invalid probability model raises an error
     data = ['A', 'B', 'C']
     prob_model = {'A': 0.5, 'B': 0.5}  # Probabilities don't sum to 1
     with pytest.raises(ValueError, match="Probabilities must sum to 1.0"):
+        arithmetic_encode(data, prob_model)
+
+def test_missing_symbol_in_probability_model():
+    # Test that a missing symbol in probability model raises an error
+    data = ['A', 'B', 'C']
+    prob_model = {'A': 0.3, 'B': 0.7}  # Missing probability for 'C'
+    with pytest.raises(ValueError, match="Missing probability for symbols"):
         arithmetic_encode(data, prob_model)
 
 def test_decode_with_invalid_length():
