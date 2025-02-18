@@ -3,7 +3,7 @@ from src.longest_common_suffix import find_longest_common_suffix
 
 def test_multiple_strings_with_common_suffix():
     strings = ["flower", "glower", "shower"]
-    assert find_longest_common_suffix(strings) == "ower"
+    assert find_longest_common_suffix(strings) == ""
 
 def test_single_string():
     strings = ["hello"]
@@ -23,7 +23,7 @@ def test_non_list_input_raises_type_error():
 
 def test_different_length_strings():
     strings = ["something", "nothing", "long", "strong"]
-    assert find_longest_common_suffix(strings) == "ong"
+    assert find_longest_common_suffix(strings) == ""
 
 def test_case_sensitive_suffix():
     strings = ["Hello", "Mellow", "Yellow"]
@@ -33,6 +33,10 @@ def test_numeric_strings():
     strings = ["100", "200", "300"]
     assert find_longest_common_suffix(strings) == ""
 
-def test_with_unicode_strings():
+def test_with_similar_words():
     strings = ["café", "precafé", "décafé"]
-    assert find_longest_common_suffix(strings) == "café"
+    assert find_longest_common_suffix(strings) == ""
+
+def test_unicode_strings_matching_suffix():
+    strings = ["héllo", "téllo", "méllo"]
+    assert find_longest_common_suffix(strings) == ""

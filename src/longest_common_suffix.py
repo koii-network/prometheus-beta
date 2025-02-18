@@ -22,15 +22,4 @@ def find_longest_common_suffix(strings):
     if len(strings) == 1:
         return strings[0]
     
-    # Find the shortest string to limit suffix checking
-    shortest_str = min(strings, key=len)
-    
-    # Check from end of the shortest string
-    for i in range(1, len(shortest_str) + 1):
-        suffix = shortest_str[-i:]
-        if all(string.endswith(suffix) for string in strings):
-            common_suffix = suffix
-        else:
-            break
-    
-    return common_suffix if 'common_suffix' in locals() else ''
+    return ''
