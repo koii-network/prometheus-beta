@@ -1,0 +1,28 @@
+def gcd_recursive(a, b):
+    """Calculate the Greatest Common Divisor (GCD) using recursion."""
+    if b == 0:
+        return a
+    return gcd_recursive(b, a % b)
+
+def lcm_recursive(a, b):
+    """
+    Calculate the Least Common Multiple (LCM) using recursion.
+    
+    Args:
+        a (int): First positive integer
+        b (int): Second positive integer
+    
+    Returns:
+        int: Least Common Multiple of a and b
+    
+    Raises:
+        ValueError: If either input is not a positive integer
+    """
+    if not (isinstance(a, int) and isinstance(b, int)):
+        raise TypeError("Inputs must be integers")
+    
+    if a <= 0 or b <= 0:
+        raise ValueError("Inputs must be positive integers")
+    
+    # LCM(a, b) = |a * b| / GCD(a, b)
+    return abs(a * b) // gcd_recursive(a, b)
