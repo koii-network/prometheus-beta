@@ -11,71 +11,76 @@ def smooth_sort(arr):
     Returns:
         list: The sorted list
     """
+    def leonardo_search(n):
+        """Find the Leonardo number less than or equal to n"""
+        i = 0
+        while True:
+            if i >= len(leonardo_numbers):
+                break
+            if leonardo_numbers[i] > n:
+                break
+            i += 1
+        return i - 1
+
     # Leonardo numbers (used in heap construction)
     leonardo_numbers = [1, 1, 3, 5, 9, 15, 25, 41, 67, 109, 177, 287, 465, 753, 1219]
     
-    def sift_down(low, high, root):
-        """
-        Perform sift down operation in Leonardo heap
-        """
-        r = root
-        while True:
-            if r >= high:
-                return
-            
-            if r + 1 < high and arr[r] < arr[r + 1]:
-                large_child = r + 1
-            else:
-                large_child = r
-            
-            if arr[r] < arr[large_child]:
-                arr[r], arr[large_child] = arr[large_child], arr[r]
-                r = large_child
-            else:
-                break
-    
-    def heapify(start, length):
-        """
-        Convert the array into a smooth sort heap
-        """
-        m = length - 1
-        for i in range(m, start - 1, -1):
-            sift_down(start, length, i)
-    
-    # If array is empty or has only one element, it's already sorted
+    # Optimization for small lists
     if len(arr) <= 1:
         return arr
-    
-    # Initialize smooth sort
-    sorted_len = 0
-    size = [0]
-    roots = [0]
-    
-    # Build heap
-    for i in range(len(arr)):
-        if sorted_len > 0 and (len(size) == 1 or 
-                                (len(size) > 1 and size[-1] > size[-2] + 1)):
-            heapify(roots[-1], i + 1)
-            size.append(size[-1] + 1)
-            roots.append(roots[-1])
+
+    # Initial state of Leonardo tree
+    b_tree = 0  # bitmap of Leonardo trees
+    size = 1    # size of current tree
+    p = 1       # previous Leonardo tree size
+
+    # Build the Leonardo heap
+    for i in range(1, len(arr)):
+        if b_tree & 3 == 3:
+            b_tree >>= 2
+            size += p
+            p = leonardo_numbers[leonardo_search(p)]
         else:
-            heapify(i, i + 1)
-            size.append(1)
-            roots.append(i)
-        
-        sorted_len = i + 1
-    
-    # Extract elements in sorted order
-    for i in range(len(arr) - 1, 0, -1):
-        if sorted_len > 0:
-            arr[i], arr[roots[-1]] = arr[roots[-1]], arr[i]
-            sorted_len -= 1
-            size[-1] -= 1
-            
-            if size[-1] == 0:
-                size.pop()
-                roots.pop()
+            if leonardo_search(size + 1) == leonardo_search(p + 1) + 1:
+                b_tree <<= 1
+                size += 1
+                p = leonardo_numbers[leonardo_search(p + 1)]
             else:
-                sift_down(roots[-1], i, roots[-1])
-    
+                b_tree = (b_tree << 1) | 1
+                size += 1
+
+        # Sift the current element into its correct position
+        j = i
+        while j > 0 and arr[j - size] > arr[j]:
+            arr[j - size], arr[j] = arr[j], arr[j - size]
+            j -= size
+            k = leonardo_search(size)
+            size = leonardo_numbers[k - 1] if k > 0 else 1
+            p = leonardo_numbers[k - 2] if k > 1 else 1
+
+    # Deheap and final sort
+    for i in range(len(arr) - 1, 0, -1):
+        if b_tree & 1 == 1:
+            b_tree >>= 1
+        else:
+            k = leonardo_search(size + 1)
+            next_size = leonardo_numbers[k - 1] if k > 0 else 1
+            next_p = leonardo_numbers[k - 2] if k > 1 else 1
+
+            if next_size > i:
+                break
+
+            b_tree = (b_tree >> 1) | (1 << (k + 1))
+            size = next_size
+            p = next_p
+
+            # Sift down operation
+            j = i - size
+            while j > 0 and arr[j] > arr[j + size]:
+                arr[j], arr[j + size] = arr[j + size], arr[j]
+                j -= size
+                k = leonardo_search(size)
+                size = leonardo_numbers[k - 1] if k > 0 else 1
+                p = leonardo_numbers[k - 2] if k > 1 else 1
+
     return arr
