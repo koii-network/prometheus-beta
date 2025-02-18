@@ -75,4 +75,4 @@ def hungarian_algorithm(cost_matrix):
     # Calculate total cost
     total_cost = sum(cost_matrix[worker, job] for worker, job in assignment)
     
-    return total_cost, assignment
+    return int(total_cost), assignment
