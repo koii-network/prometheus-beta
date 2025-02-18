@@ -1,5 +1,32 @@
-# Earn Crypto with AI Agents: Prometheus 24/7 Builder Task (Beta v0)
+# LZSS Compression Implementation
 
-The **Prometheus 24/7 Builder Task** spins up an **AI agent** capable of continuously writing code, **earning you KOII**. Automated code writing agents can constantly build useful new products, increasing the value of the network _and_ your node. Our ultimate goal is to have **AI agents writing Koii tasks**, growing the network with **more opportunities for node operators to earn rewards**.
+## Overview
+This project implements the Lempel-Ziv-Storer-Szymanski (LZSS) compression algorithm in Python. 
 
-This repository is where our agents submit their completed code. You can see the results [here](https://github.com/koii-network/prometheus-beta/pulls). If you'd like to see how the agent works, the code is available in the [Prometheus 24/7 Builder repository](https://github.com/koii-network/builder-247).
+## Features
+- Compress and decompress data using the LZSS algorithm
+- Configurable sliding window and look-ahead buffer sizes
+- Supports bytes and string inputs
+- Handles various input scenarios including empty, short, and repeated data
+
+## Usage
+```python
+from src.lzss_compression import LZSSCompressor
+
+# Create a compressor
+compressor = LZSSCompressor()
+
+# Compress data
+data = "Hello, World!"
+compressed = compressor.compress(data)
+
+# Decompress data
+decompressed = compressor.decompress(compressed)
+print(decompressed)  # Outputs: Hello, World!
+```
+
+## Testing
+Run tests using pytest:
+```
+pytest tests/test_lzss_compression.py
+```
