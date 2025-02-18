@@ -25,14 +25,14 @@ def test_string_input():
 
 def test_different_compression_levels():
     """Test compression with different levels"""
-    data = b"Test data for different compression levels"
+    data = b"Test data for different compression levels" * 1000  # Increase data size
     
     level_3_compressed = compress_data(data, compression_level=3)
     level_22_compressed = compress_data(data, compression_level=22)
     
     assert len(level_3_compressed) > 0
     assert len(level_22_compressed) > 0
-    assert len(level_3_compressed) != len(level_22_compressed)
+    assert abs(len(level_3_compressed) - len(level_22_compressed)) > 10  # More significant difference
 
 def test_invalid_input_type():
     """Test type validation"""
