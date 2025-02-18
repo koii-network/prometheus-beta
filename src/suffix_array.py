@@ -39,7 +39,7 @@ def find_substring(s, substring):
         substring (str): Substring to find
     
     Returns:
-        list: Indices of all occurrences of substring in s
+        list: Sorted indices of all occurrences of substring in s
     
     Raises:
         TypeError: If inputs are not strings
@@ -63,4 +63,4 @@ def find_substring(s, substring):
         if s[suffix_idx:].startswith(substring):
             occurrences.append(suffix_idx)
     
-    return occurrences
+    return sorted(occurrences)
