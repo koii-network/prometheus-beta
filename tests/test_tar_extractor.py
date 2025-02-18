@@ -14,6 +14,7 @@ def create_test_tar(files):
     with tarfile.open(tar_path, 'w') as tar:
         for filename, content in files.items():
             temp_file_path = os.path.join(temp_dir, filename)
+            os.makedirs(os.path.dirname(temp_file_path), exist_ok=True)
             with open(temp_file_path, 'w') as f:
                 f.write(content)
             tar.add(temp_file_path, arcname=filename)
