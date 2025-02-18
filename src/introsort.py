@@ -14,6 +14,9 @@ def introsort(arr):
     Returns:
         list: Sorted list in ascending order
     """
+    # Create a copy to prevent in-place modification
+    arr = arr.copy()
+    
     if len(arr) <= 1:
         return arr
     
@@ -41,54 +44,40 @@ def introsort(arr):
         if n <= 16:
             return _insertion_sort(arr)
         
-        # Partition and recursively sort
-        pivot_index = _partition(arr, 0, n-1)
-        
-        # Recursively sort left and right partitions
-        _introsort_recursive(arr[:pivot_index], depth_limit - 1)
-        _introsort_recursive(arr[pivot_index+1:], depth_limit - 1)
+        # Partition 
+        if n > 1:
+            # Median-of-three pivot selection
+            mid = n // 2
+            if arr[0] > arr[-1]:
+                arr[0], arr[-1] = arr[-1], arr[0]
+            if arr[mid] > arr[-1]:
+                arr[mid], arr[-1] = arr[-1], arr[mid]
+            if arr[0] > arr[mid]:
+                arr[0], arr[mid] = arr[mid], arr[0]
+            
+            pivot = arr[mid]
+            arr[mid], arr[-1] = arr[-1], arr[mid]  # Move pivot to end
+            
+            # Partition
+            i = 0
+            for j in range(n-1):
+                if arr[j] <= pivot:
+                    arr[i], arr[j] = arr[j], arr[i]
+                    i += 1
+            
+            arr[i], arr[-1] = arr[-1], arr[i]
+            
+            # Recursively sort
+            left = arr[:i]
+            right = arr[i+1:]
+            
+            left = _introsort_recursive(left, depth_limit - 1)
+            right = _introsort_recursive(right, depth_limit - 1)
+            
+            # Recombine
+            return left + [arr[i]] + right
         
         return arr
-    
-    def _partition(arr, low, high):
-        """
-        Choose median-of-three as pivot and partition the array
-        
-        Args:
-            arr (list): List to partition
-            low (int): Starting index
-            high (int): Ending index
-        
-        Returns:
-            int: Pivot index
-        """
-        # Median-of-three pivot selection
-        mid = (low + high) // 2
-        a, b, c = arr[low], arr[mid], arr[high]
-        
-        if a <= b <= c or c <= b <= a:
-            pivot = b
-            pivot_index = mid
-        elif b <= a <= c or c <= a <= b:
-            pivot = a
-            pivot_index = low
-        else:
-            pivot = c
-            pivot_index = high
-        
-        # Move pivot to end
-        arr[pivot_index], arr[high] = arr[high], arr[pivot_index]
-        pivot = arr[high]
-        
-        # Partition
-        i = low - 1
-        for j in range(low, high):
-            if arr[j] <= pivot:
-                i += 1
-                arr[i], arr[j] = arr[j], arr[i]
-        
-        arr[i+1], arr[high] = arr[high], arr[i+1]
-        return i+1
     
     def _heapsort(arr):
         """
