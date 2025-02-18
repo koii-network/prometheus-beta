@@ -23,14 +23,24 @@ def sleep_sort(arr: List[int]) -> List[int]:
     if any(num < 0 for num in arr):
         raise ValueError("Sleep sort only works with non-negative integers")
     
+    # If the list is empty, return an empty list
+    if not arr:
+        return []
+    
     # Result list to store sorted numbers
     result = []
     
     # Thread-safe lock to prevent race conditions
     result_lock = threading.Lock()
     
+    # Event to signal all threads to start simultaneously
+    start_event = threading.Event()
+    
     # Function to be run by each thread
     def sort_thread(num):
+        # Wait for start signal
+        start_event.wait()
+        
         # Sleep for duration proportional to the number
         time.sleep(num * 0.001)  # Scaled sleep time to make sorting more predictable
         
@@ -38,12 +48,15 @@ def sleep_sort(arr: List[int]) -> List[int]:
         with result_lock:
             result.append(num)
     
-    # Create and start threads for each number
+    # Create threads for each number
     threads = []
     for num in arr:
         thread = threading.Thread(target=sort_thread, args=(num,))
         thread.start()
         threads.append(thread)
+    
+    # Signal all threads to start simultaneously
+    start_event.set()
     
     # Wait for all threads to complete
     for thread in threads:
