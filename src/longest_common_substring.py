@@ -13,6 +13,10 @@ def longest_common_substring(str1, str2):
     if not str1 or not str2:
         return ""
     
+    # Convert strings to lowercase to handle matching case-insensitively
+    str1 = str1.lower()
+    str2 = str2.lower()
+    
     # Initialize a matrix to store substring lengths
     matrix = [[0] * (len(str2) + 1) for _ in range(len(str1) + 1)]
     
@@ -31,5 +35,5 @@ def longest_common_substring(str1, str2):
                     max_length = matrix[i][j]
                     end_position = i
     
-    # Extract the longest common substring
+    # Extract the exact substring from the original input
     return str1[end_position - max_length:end_position] if max_length > 0 else ""
