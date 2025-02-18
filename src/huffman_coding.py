@@ -17,6 +17,13 @@ def build_frequency_dict(data):
 
 def build_huffman_tree(freq_dict):
     """Build Huffman tree from frequency dictionary."""
+    # Handle single character case
+    if len(freq_dict) == 1:
+        char, freq = list(freq_dict.items())[0]
+        root = HuffmanNode(None, freq)
+        root.left = HuffmanNode(char, freq)
+        return root
+
     heap = [HuffmanNode(char, freq) for char, freq in freq_dict.items()]
     heapq.heapify(heap)
     
@@ -41,6 +48,11 @@ def build_huffman_codes(root):
     
     def traverse(node, current_code):
         if not node:
+            return
+        
+        # Handle single character case
+        if node.left and node.left.char is not None and not node.right:
+            codes[node.left.char] = "0"
             return
         
         if node.char is not None:
@@ -76,6 +88,12 @@ def huffman_decode(encoded_data, huffman_codes):
     """Decode Huffman encoded data."""
     if not encoded_data or not huffman_codes:
         return ""
+    
+    # Handle single character case
+    if len(huffman_codes) == 1:
+        char = list(huffman_codes.keys())[0]
+        # Repeat the character according to the number of code bits
+        return char * (len(encoded_data) // len(list(huffman_codes.values())[0]))
     
     # Reverse the Huffman codes dictionary
     reverse_codes = {code: char for char, code in huffman_codes.items()}
