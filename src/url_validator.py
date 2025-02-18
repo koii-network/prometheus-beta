@@ -25,8 +25,8 @@ def is_valid_url(url: str) -> bool:
         return all([
             re.match(r'^(http|https|ftp|ftps|file|gopher|telnet|nntp|imap|wais|mailto|mms|rtsp|svn)$', parsed_url.scheme, re.IGNORECASE),
             parsed_url.netloc,  # Must have a non-empty network location
-            # Optional: add additional checks like minimum length or valid characters
-            re.match(r'^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', parsed_url.netloc)
+            # More flexible regex to support localhost, IP addresses, and various domain formats
+            re.match(r'^(localhost|([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$', parsed_url.netloc)
         ])
     except Exception:
         return False
