@@ -25,16 +25,17 @@ def create_zip_archive(files: List[str], output_path: str) -> bool:
         raise ValueError("Output path must be specified")
     
     # Ensure output directory exists
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
+    
+    # Check if all files exist first
+    for file_path in files:
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"File not found: {file_path}")
     
     try:
         # Create the zip archive
         with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for file_path in files:
-                # Check if file exists
-                if not os.path.exists(file_path):
-                    raise FileNotFoundError(f"File not found: {file_path}")
-                
                 # Add file to zip, preserving directory structure relative to current directory
                 zipf.write(file_path, arcname=os.path.basename(file_path))
         
