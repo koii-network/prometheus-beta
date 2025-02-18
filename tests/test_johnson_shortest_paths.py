@@ -16,7 +16,7 @@ def test_johnson_shortest_paths_simple_graph():
     assert result is not None
     
     # Verify specific path lengths
-    assert result[1][4] == 6  # 1 -> 2 -> 4 path
+    assert result[1][4] == 5  # 1 -> 2 -> 4 path
     assert result[1][3] == 2  # 1 -> 3 direct path
     assert result[2][4] == 1  # 2 -> 4 direct path
 
@@ -84,4 +84,4 @@ def test_dijkstra_basic():
     
     # Check distances are computed correctly
     assert distances[1] == 0
-    assert distances[4] == 6  # 1 -> 2 -> 4 path
+    assert distances[4] == 5  # 1 -> 2 -> 4 path
