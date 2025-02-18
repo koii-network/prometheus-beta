@@ -20,4 +20,5 @@ def test_list_intersection_empty_lists():
 
 def test_list_intersection_different_types():
     """Test lists with different element types."""
-    assert sorted(find_list_intersection([1, 'a', 2], [2, 'a', 3])) == [2, 'a']
+    result = find_list_intersection([1, 'a', 2], [2, 'a', 3])
+    assert set(result) == {2, 'a'}  # Use set comparison instead of sorted()
