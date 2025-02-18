@@ -1,5 +1,5 @@
 import pytest
-from src.mode_finder import find_mode
+from mode_finder import find_mode
 
 def test_single_mode():
     """Test a list with a single mode"""
