@@ -54,4 +54,4 @@ def test_compressed_file_size(sample_text_file):
     compressed_size = os.path.getsize(compressed_file)
     
     # For longer, repetitive content, compressed file should be smaller
-    assert compressed_size &lt; original_size * 0.5  # More lenient size check
+    assert compressed_size < original_size * 0.5  # More lenient size check
