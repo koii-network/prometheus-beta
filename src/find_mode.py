@@ -29,11 +29,13 @@ def find_mode(numbers: List[Union[int, float]]) -> Union[int, float, List[Union[
     # Find the maximum frequency
     max_freq = max(frequency.values())
     
-    # Find all numbers with the maximum frequency
-    modes = [num for num, freq in frequency.items() if freq == max_freq]
+    # Find modes with maximum frequency while preserving original representation
+    modes = []
+    for mode, freq in frequency.items():
+        if freq == max_freq:
+            # Find the first index of this mode and get original representation
+            original_index = normalized_numbers.index(mode)
+            modes.append(numbers[original_index])
     
-    # Resolve multiple modes to the corresponding original values
-    matching_modes = [numbers[normalized_numbers.index(mode)] for mode in modes]
-    
-    # Return single mode or list of modes, maintaining original value
-    return matching_modes[0] if len(matching_modes) == 1 else matching_modes
+    # Return single mode or list of modes
+    return modes[0] if len(modes) == 1 else modes
