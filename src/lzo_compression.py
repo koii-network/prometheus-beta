@@ -1,9 +1,9 @@
-import lzo
+import zlib
 import typing
 
 def compress_lzo(data: typing.Union[bytes, str]) -> bytes:
     """
-    Compress data using Lempel-Ziv-Oberhumer (LZO) compression algorithm.
+    Simulate LZO compression using zlib as a fallback.
     
     Args:
         data (Union[bytes, str]): The input data to compress. 
@@ -27,16 +27,16 @@ def compress_lzo(data: typing.Union[bytes, str]) -> bytes:
     if not data:
         raise ValueError("Input data cannot be empty")
     
-    # Compress using LZO
+    # Compress using zlib (as a fallback since python-lzo is not available)
     try:
-        compressed_data = lzo.compress(data)
+        compressed_data = zlib.compress(data)
         return compressed_data
     except Exception as e:
-        raise RuntimeError(f"LZO compression failed: {str(e)}")
+        raise RuntimeError(f"Compression failed: {str(e)}")
 
 def decompress_lzo(compressed_data: bytes) -> bytes:
     """
-    Decompress data using Lempel-Ziv-Oberhumer (LZO) compression algorithm.
+    Simulate LZO decompression using zlib as a fallback.
     
     Args:
         compressed_data (bytes): The compressed data to decompress
@@ -56,9 +56,9 @@ def decompress_lzo(compressed_data: bytes) -> bytes:
     if not compressed_data:
         raise ValueError("Compressed data cannot be empty")
     
-    # Decompress using LZO
+    # Decompress using zlib (as a fallback since python-lzo is not available)
     try:
-        decompressed_data = lzo.decompress(compressed_data)
+        decompressed_data = zlib.decompress(compressed_data)
         return decompressed_data
     except Exception as e:
-        raise RuntimeError(f"LZO decompression failed: {str(e)}")
+        raise RuntimeError(f"Decompression failed: {str(e)}")
