@@ -9,7 +9,8 @@ from src.tar_extractor import extract_tar_archive
 def create_test_tar(dir_path, filename, files):
     """Helper function to create a test tar archive"""
     tar_path = os.path.join(dir_path, filename)
-    with tarfile.open(tar_path, 'w:gz') as tar:
+    mode = 'w:gz' if filename.endswith(('.tar.gz', '.tgz')) else 'w'
+    with tarfile.open(tar_path, mode) as tar:
         for file_content in files:
             # Create a temporary file with content
             with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
@@ -61,9 +62,9 @@ def test_extract_tar_archive_nonexistent_file():
 def test_extract_tar_archive_different_formats():
     """Test extracting different tar formats (tar, tar.gz, tgz)"""
     tar_formats = [
-        ('test.tar', tarfile.PLAIN_TYPES),
-        ('test.tar.gz', tarfile.GZIP_TYPES),
-        ('test.tgz', tarfile.GZIP_TYPES)
+        ('test.tar', 'w'),
+        ('test.tar.gz', 'w:gz'),
+        ('test.tgz', 'w:gz')
     ]
     
     with tempfile.TemporaryDirectory() as temp_dir:
