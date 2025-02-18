@@ -31,7 +31,7 @@ def calculate_median(numbers):
     if length % 2 == 0:
         # If even number of elements, average the two middle numbers
         mid = length // 2
-        return (sorted_numbers[mid-1] + sorted_numbers[mid]) / 2
+        return (sorted_numbers[mid-1] + sorted_numbers[mid]) / 2.0
     else:
         # If odd number of elements, return the middle number
         return sorted_numbers[length // 2]
