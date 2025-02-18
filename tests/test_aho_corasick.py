@@ -8,6 +8,7 @@ def test_basic_pattern_matching():
     ac = AhoCorasick(patterns)
     
     results = ac.search(text)
+    print("Basic Pattern Matching Results:", results)
     
     # Expected matches
     expected_matches = [
@@ -26,6 +27,7 @@ def test_overlapping_patterns():
     ac = AhoCorasick(patterns)
     
     results = ac.search(text)
+    print("Overlapping Patterns Results:", results)
     
     # Expected matches
     expected_matches = [
@@ -55,6 +57,7 @@ def test_repeated_patterns():
     ac = AhoCorasick(patterns)
     
     results = ac.search(text)
+    print("Repeated Patterns Results:", results)
     
     # Expected matches
     expected_matches = [
