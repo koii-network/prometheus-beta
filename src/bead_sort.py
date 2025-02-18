@@ -22,22 +22,20 @@ def bead_sort(arr):
     if len(arr) == 1:
         return arr
     
-    # Find the maximum number to determine the number of rods
-    max_num = max(arr)
+    # Create a grid representation
+    rows = max(arr)
+    cols = len(arr)
+    grid = [[0] * cols for _ in range(rows)]
     
-    # Create the abacus representation as a vertical list of columns
-    # Each column represents a rod with the number of beads
-    rods = [0] * max_num
+    # Place beads
+    for j, val in enumerate(arr):
+        for i in range(val):
+            grid[i][j] = 1
     
-    # Drop beads on each rod based on the input values
-    for value in arr:
-        for j in range(value):
-            rods[j] += 1
-    
-    # Reconstruct the sorted list
+    # Drop beads and count
     result = []
-    for i in range(len(arr)):
-        # Find how many rods have a valid bead at this level
-        result.append(sum(1 for rod in rods if rod > i))
+    for j in range(cols):
+        current_col_beads = sum(grid[i][j] for i in range(rows))
+        result.append(current_col_beads)
     
-    return result
+    return sorted(result)
