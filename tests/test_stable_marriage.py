@@ -34,15 +34,15 @@ def test_larger_stable_marriage():
     assert len(result) == 3
     assert set(result.values()) == set(range(3))
 
-def test_invalid_input():
+def test_invalid_input_length():
     # Test with mismatched preference list lengths
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError, match="All preference lists must have the same length"):
         stable_marriage(
             [[1, 0], [0]],  # Unequal men preferences
             [[1, 0], [0, 1]]
         )
 
-def test_input_validation():
+def test_empty_input():
     # Test with empty preference lists
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError, match="Preference lists cannot be empty"):
         stable_marriage([], [])

@@ -10,9 +10,21 @@ def stable_marriage(men_preferences, women_preferences):
     
     Returns:
     dict: A stable matching where keys are women and values are their matched men.
+    
+    Raises:
+    ValueError: If input preferences are empty or have inconsistent lengths.
     """
+    # Input validation
+    if not men_preferences or not women_preferences:
+        raise ValueError("Preference lists cannot be empty")
+    
     # Number of men/women (assuming equal number)
     n = len(men_preferences)
+    
+    # Validate input lengths
+    if any(len(prefs) != n for prefs in men_preferences) or \
+       any(len(prefs) != n for prefs in women_preferences):
+        raise ValueError("All preference lists must have the same length")
     
     # Initialize variables
     women_partners = [None] * n  # Current partner for each woman
