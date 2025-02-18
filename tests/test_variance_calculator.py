@@ -24,7 +24,7 @@ def test_floating_point_numbers():
 def test_mixed_integer_float():
     """Test variance with mixed integer and float numbers."""
     numbers = [1, 2.5, 3, 4.5, 5]
-    assert round(calculate_variance(numbers), 4) == 2.4000
+    assert round(calculate_variance(numbers), 4) == 2.0600
 
 def test_empty_list_raises_error():
     """Test that an empty list raises a ValueError."""
