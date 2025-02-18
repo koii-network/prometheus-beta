@@ -14,6 +14,12 @@ def median_of_medians(arr):
     if not arr:
         raise ValueError("Input list cannot be empty")
     
+    # Special handling for 1-2 element lists
+    if len(arr) == 1:
+        return arr[0]
+    if len(arr) == 2:
+        return min(arr)
+    
     def partition(arr, pivot):
         """
         Partition the array around the pivot element.
@@ -68,5 +74,5 @@ def median_of_medians(arr):
         else:
             return select(greater, k - len(less) - len(equal))
     
-    # Return the median (middle element) of the list
+    # Return the median (middle element or lower median for even lists) of the list
     return select(arr, len(arr)//2)
