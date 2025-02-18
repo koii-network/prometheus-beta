@@ -27,25 +27,32 @@ def sleep_sort(arr: List[int]) -> List[int]:
     if not arr:
         return []
     
+    # Determine maximum value for scaling and timing
+    max_val = max(arr)
+    
     # Create synchronization primitives
     result = []
     result_lock = threading.Lock()
     sorting_complete = threading.Event()
     
     # Create threads for each number
-    def insert(num):
-        time.sleep(num * 0.001)  # Sleep proportional to the number
+    def insert(num, index):
+        # Scale sleep time and add a small correction for order stability
+        scale_factor = 0.001
+        correction = index * 0.0001  # Add a small correction based on original index
+        time.sleep(num * scale_factor + correction)
+        
         with result_lock:
             result.append(num)
         
-        # If this is the last (largest) number, signal completion
-        if num == max(arr):
+        # If this is the last thread, signal completion
+        if num == max_val:
             sorting_complete.set()
     
     # Create and start threads
     threads = []
-    for num in arr:
-        thread = threading.Thread(target=insert, args=(num,))
+    for i, num in enumerate(arr):
+        thread = threading.Thread(target=insert, args=(num, i))
         thread.start()
         threads.append(thread)
     
