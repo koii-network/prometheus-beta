@@ -13,6 +13,10 @@ def johnsons_algorithm(graph: Dict[int, List[Tuple[int, int]]]) -> Optional[Dict
         Optional[Dict[int, Dict[int, int]]]: Dictionary of shortest paths between all pairs of vertices,
                                              or None if a negative cycle is detected.
     """
+    # Special case for empty graph
+    if not graph:
+        return {}
+    
     # Step 1: Add a new vertex connected to all other vertices with zero-weight edges
     n = len(graph)
     modified_graph = graph.copy()
@@ -70,7 +74,7 @@ def johnsons_algorithm(graph: Dict[int, List[Tuple[int, int]]]) -> Optional[Dict
             if current_dist > distances[u]:
                 continue
             
-            for v, weight in reweighted_graph[u]:
+            for v, weight in reweighted_graph.get(u, []):
                 distance = current_dist + weight
                 
                 # If we've found a shorter path to v
@@ -83,11 +87,16 @@ def johnsons_algorithm(graph: Dict[int, List[Tuple[int, int]]]) -> Optional[Dict
     # Compute shortest paths for all vertices
     all_shortest_paths = {}
     for u in graph:
-        # Adjust distances back to original graph
+        # Run Dijkstra's from each vertex
         shortest_paths = dijkstra(u)
-        all_shortest_paths[u] = {
+        
+        # Create the paths dictionary without the source vertex itself and infinities
+        paths = {
             v: shortest_paths[v] - h[u] + h[v] 
-            for v in shortest_paths if shortest_paths[v] != float('inf')
+            for v in graph 
+            if v != u and shortest_paths[v] != float('inf')
         }
+        
+        all_shortest_paths[u] = paths
     
     return all_shortest_paths
