@@ -1,4 +1,5 @@
 from typing import List, Union
+from collections import Counter
 
 def find_mode(numbers: List[Union[int, float]]) -> Union[int, float, List[Union[int, float]]]:
     """
@@ -10,6 +11,7 @@ def find_mode(numbers: List[Union[int, float]]) -> Union[int, float, List[Union[
     Returns:
         Union[int, float, List[Union[int, float]]]: 
         - The single mode if there's one most frequent value
+        - The first number if all numbers appear once
         - A list of modes if multiple values appear with the same highest frequency
         - Raises ValueError if the input list is empty
     
@@ -19,10 +21,8 @@ def find_mode(numbers: List[Union[int, float]]) -> Union[int, float, List[Union[
     if not numbers:
         raise ValueError("Cannot find mode of an empty list")
     
-    # Count the frequency of each number
-    frequency = {}
-    for num in numbers:
-        frequency[num] = frequency.get(num, 0) + 1
+    # Use Counter to count frequencies
+    frequency = Counter(numbers)
     
     # Find the maximum frequency
     max_freq = max(frequency.values())
@@ -30,5 +30,13 @@ def find_mode(numbers: List[Union[int, float]]) -> Union[int, float, List[Union[
     # Find all numbers with the maximum frequency
     modes = [num for num, freq in frequency.items() if freq == max_freq]
     
-    # Return single mode or list of modes
-    return modes[0] if len(modes) == 1 else modes
+    # If there's only one mode, return it
+    if len(modes) == 1:
+        return modes[0]
+    
+    # If all numbers appear once, return the first number
+    if max_freq == 1:
+        return numbers[0]
+    
+    # Multiple modes with equal frequency
+    return modes
