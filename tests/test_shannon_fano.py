@@ -37,7 +37,7 @@ def test_shannon_fano_single_char():
     codes = shannon_fano_coding(data)
     
     assert len(codes) == 1
-    assert codes['A'] == ''  # Single character gets empty code
+    assert codes['A'] == '0'
     
     encoded = shannon_fano_encode(data, codes)
     decoded = shannon_fano_decode(encoded, codes)

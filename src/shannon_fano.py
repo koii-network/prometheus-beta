@@ -18,6 +18,10 @@ def shannon_fano_coding(data: str) -> Dict[str, str]:
     if not data:
         raise ValueError("Input data cannot be empty")
     
+    # Special case for single character
+    if len(set(data)) == 1:
+        return {data[0]: '0'}
+    
     # Count character frequencies
     freq = Counter(data)
     
