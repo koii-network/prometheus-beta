@@ -16,7 +16,7 @@ def hungarian_algorithm(cost_matrix):
         ValueError: If the input is not a valid square matrix
     """
     # Convert to numpy array for easier manipulation
-    matrix = np.array(cost_matrix, dtype=float)
+    matrix = np.array(cost_matrix, dtype=float).copy()
     
     # Validate input
     if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
@@ -32,29 +32,42 @@ def hungarian_algorithm(cost_matrix):
     for j in range(n):
         matrix[:, j] -= matrix[:, j].min()
     
-    # Find optimal assignment
+    # Find optimal assignment with backtracking
     def find_optimal_assignment(matrix):
-        # Track used rows and columns
-        used_rows = set()
-        used_cols = set()
-        assignment = []
+        # Try all possible combinations
+        def backtrack(assigned_rows, assigned_cols):
+            if len(assigned_rows) == n:
+                return assigned_rows
+            
+            for row in range(n):
+                if row in assigned_rows:
+                    continue
+                
+                for col in range(n):
+                    if col in assigned_cols or matrix[row, col] != 0:
+                        continue
+                    
+                    # Try this assignment
+                    current_assigned = assigned_rows + [(row, col)]
+                    current_cols = assigned_cols + [col]
+                    
+                    # Recursively attempt to complete assignment
+                    full_assignment = backtrack(current_assigned, current_cols)
+                    
+                    if full_assignment:
+                        return full_assignment
+            
+            return None
         
-        # Sort potential zero assignments by lowest zero count
-        zero_positions = [(i, j) for i in range(n) for j in range(n) if matrix[i, j] == 0]
-        zero_positions.sort(key=lambda x: sum(1 for r in range(n) if matrix[r, x[1]] == 0))
-        
-        # Greedy assignment algorithm
-        for row, col in zero_positions:
-            # If this row and column are not yet used
-            if row not in used_rows and col not in used_cols:
-                assignment.append((row, col))
-                used_rows.add(row)
-                used_cols.add(col)
-        
-        return assignment
+        # Attempt to find a full assignment
+        return backtrack([], [])
     
-    # Attempt to find an optimal assignment
+    # Find optimal assignment
     assignment = find_optimal_assignment(matrix)
+    
+    # If no assignment found, raise an error
+    if not assignment:
+        raise ValueError("No valid assignment could be found")
     
     # Sort the assignment based on worker (first element of tuple)
     return sorted(assignment)
