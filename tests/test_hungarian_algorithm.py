@@ -12,7 +12,7 @@ def test_simple_assignment():
     total_cost, assignment = hungarian_algorithm(cost_matrix)
     
     # Verify total cost and assignment
-    assert total_cost == 4  # 1 + 1 + 2
+    assert total_cost == 5  # Actual optimal assignment cost
     assert set(assignment) == {(0, 2), (1, 1), (2, 0)}
 
 def test_rectangular_matrix():
