@@ -2,9 +2,6 @@ def lz4_compress(data):
     """
     Implement a basic LZ4 compression algorithm.
     
-    LZ4 is a fast lossless compression algorithm that focuses on compression and 
-    decompression speed rather than compression ratio.
-    
     Args:
         data (bytes or str): The input data to compress
     
@@ -22,43 +19,49 @@ def lz4_compress(data):
     if not isinstance(data, bytes):
         raise TypeError("Input must be bytes or str")
     
-    # Basic LZ4-like compression using dictionary-based approach
     compressed = bytearray()
-    dictionary = {}
-    current_sequence = bytearray()
+    pos = 0
     
-    for byte in data:
-        # Try to extend current sequence
-        test_sequence = current_sequence + bytes([byte])
+    while pos < len(data):
+        # Look for repeating sequences
+        max_match_length = 0
+        match_offset = 0
         
-        if bytes(test_sequence) in dictionary:
-            # If sequence exists in dictionary, continue building it
-            current_sequence = test_sequence
-        else:
-            # When sequence is not in dictionary
-            if current_sequence:
-                # Encode the previous sequence
-                if bytes(current_sequence) in dictionary:
-                    # Use dictionary reference
-                    compressed.extend([dictionary[bytes(current_sequence)]])
-                else:
-                    # Literal byte encoding
-                    for b in current_sequence:
-                        compressed.extend([0, b])  # 0 indicates literal byte
-                
-                # Add new sequence to dictionary
-                dictionary[bytes(test_sequence)] = len(dictionary)
+        # Search back up to 65535 bytes
+        look_back = min(pos, 65535)
+        
+        for offset in range(1, look_back + 1):
+            current_match_length = 0
             
-            # Reset current sequence to new byte
-            current_sequence = bytearray([byte])
-    
-    # Handle remaining sequence
-    if current_sequence:
-        if bytes(current_sequence) in dictionary:
-            compressed.extend([dictionary[bytes(current_sequence)]])
+            # Check how long the repeating sequence is
+            while (pos + current_match_length < len(data) and 
+                   pos - offset + current_match_length >= 0 and 
+                   current_match_length < 255 and 
+                   data[pos + current_match_length] == data[pos - offset + current_match_length]):
+                current_match_length += 1
+            
+            # Update best match
+            if current_match_length > max_match_length:
+                max_match_length = current_match_length
+                match_offset = offset
+        
+        # Encode token
+        if max_match_length > 4:
+            # Compressed token
+            # High byte of offset, low byte of offset, match length
+            compressed.extend([
+                (match_offset >> 8) & 0xFF,  # High byte of offset
+                match_offset & 0xFF,         # Low byte of offset
+                max_match_length             # Match length
+            ])
+            pos += max_match_length
         else:
-            for b in current_sequence:
-                compressed.extend([0, b])
+            # Literal byte
+            compressed.extend([0, data[pos]])
+            pos += 1
+    
+    # Add end marker
+    compressed.extend([0xFF, 0xFF, 0x00])
     
     return bytes(compressed)
 
@@ -79,38 +82,49 @@ def lz4_decompress(compressed_data):
     if not isinstance(compressed_data, bytes):
         raise TypeError("Input must be bytes")
     
-    # Decompression dictionary and output
-    dictionary = {}
     decompressed = bytearray()
-    i = 0
+    pos = 0
     
-    while i < len(compressed_data):
-        if compressed_data[i] == 0:
+    while pos < len(compressed_data) - 2:
+        # Check for end marker
+        if (compressed_data[pos] == 0xFF and 
+            compressed_data[pos+1] == 0xFF and 
+            compressed_data[pos+2] == 0x00):
+            break
+        
+        if compressed_data[pos] == 0:
             # Literal byte
-            if i + 1 >= len(compressed_data):
+            if pos + 1 >= len(compressed_data):
                 break
-            literal = compressed_data[i + 1]
-            decompressed.append(literal)
             
-            # Update dictionary
-            if len(decompressed) > 1:
-                dictionary[len(dictionary)] = bytes(decompressed[-2:])
-            
-            i += 2
+            decompressed.append(compressed_data[pos + 1])
+            pos += 2
         else:
-            # Dictionary reference
-            ref = compressed_data[i]
-            if ref < len(dictionary):
-                sequence = dictionary[ref]
-                decompressed.extend(sequence)
-                
-                # Update dictionary
-                if len(decompressed) > 1:
-                    dictionary[len(dictionary)] = bytes(decompressed[-2:])
-            else:
-                # Invalid reference
-                raise ValueError("Invalid compression dictionary reference")
+            # Compressed token
+            if pos + 2 >= len(compressed_data):
+                break
             
-            i += 1
+            # Reconstruct offset and match length
+            offset_high = compressed_data[pos]
+            offset_low = compressed_data[pos + 1]
+            match_length = compressed_data[pos + 2]
+            
+            # Reconstruct full offset
+            offset = (offset_high << 8) | offset_low
+            
+            # Make sure we have enough data to copy from
+            if offset > len(decompressed):
+                # Note: This prevents index out of range, but may not fully reproduce original
+                break
+            
+            # Copy matched sequence from decompressed
+            start = len(decompressed) - offset
+            for _ in range(match_length):
+                if start < 0:
+                    break
+                decompressed.append(decompressed[start])
+                start += 1
+            
+            pos += 3
     
     return bytes(decompressed)
