@@ -16,7 +16,8 @@ def test_all_unique_numbers():
 
 def test_floating_point_numbers():
     """Test mode with floating point numbers"""
-    assert find_mode([1.5, 2.3, 1.5, 2.3, 3.7]) == 1.5
+    result = find_mode([1.5, 2.3, 1.5, 2.3, 3.7])
+    assert set(result) == {1.5, 2.3}
 
 def test_empty_list_raises_error():
     """Test that an empty list raises a ValueError"""
