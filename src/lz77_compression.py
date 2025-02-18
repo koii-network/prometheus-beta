@@ -45,8 +45,12 @@ class LZ77:
             
             # Add compressed token
             if best_length > 0:
-                next_char = data[current_position + best_length]
-                compressed.append((best_offset, best_length, chr(next_char)))
+                # If we are at the end of the input or beyond, do not add next_char
+                if current_position + best_length < data_length:
+                    next_char = chr(data[current_position + best_length])
+                    compressed.append((best_offset, best_length, next_char))
+                else:
+                    compressed.append((best_offset, best_length, ''))
                 current_position += best_length + 1
             else:
                 compressed.append((0, 0, chr(data[current_position])))
@@ -79,6 +83,7 @@ class LZ77:
                 start = len(decompressed) - offset
                 for i in range(length):
                     decompressed.append(decompressed[start + i])
-                decompressed.append(ord(next_char))
+                if next_char:
+                    decompressed.append(ord(next_char))
         
         return bytes(decompressed)
