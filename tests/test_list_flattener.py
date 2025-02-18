@@ -1,5 +1,5 @@
 import pytest
-from src.list_flattener import flatten_nested_list
+from ..src.list_flattener import flatten_nested_list
 
 def test_flatten_simple_list():
     """Test flattening a simple nested list."""
