@@ -33,7 +33,7 @@ def find_longest_common_suffix(strings):
     # Iterate through possible suffixes from longest to shortest
     for length in range(len(shortest), 0, -1):
         potential_suffix = shortest[-length:]
-        if all(s.endswith(potential_suffix) for s in strings):
+        if all(s[-length:] == potential_suffix for s in strings):
             return potential_suffix
     
     return ""
