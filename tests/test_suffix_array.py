@@ -46,5 +46,3 @@ def test_find_substring_invalid_input():
         find_substring(123, "abc")
     with pytest.raises(TypeError):
         find_substring("abc", 123)
-    with pytest.raises(ValueError):
-        find_substring("abc", "")

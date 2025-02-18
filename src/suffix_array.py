@@ -43,14 +43,14 @@ def find_substring(s, substring):
     
     Raises:
         TypeError: If inputs are not strings
-        ValueError: If substring is empty
     """
     # Input validation
     if not isinstance(s, str) or not isinstance(substring, str):
         raise TypeError("Both inputs must be strings")
     
+    # Return empty list for empty substring
     if not substring:
-        raise ValueError("Substring cannot be empty")
+        return []
     
     # Create suffix array
     suffix_arr = create_suffix_array(s)
@@ -58,13 +58,9 @@ def find_substring(s, substring):
     # Find all occurrences
     occurrences = []
     
-    for i, suffix_idx in enumerate(suffix_arr):
+    for suffix_idx in suffix_arr:
         # Check if the current suffix starts with the substring
         if s[suffix_idx:].startswith(substring):
             occurrences.append(suffix_idx)
-        
-        # Optimization: Stop searching if we've gone past possible matches
-        if len(s[suffix_idx:]) < len(substring):
-            break
     
     return occurrences
