@@ -34,33 +34,36 @@ def hungarian_algorithm(cost_matrix):
     
     # Find optimal assignment with backtracking
     def find_optimal_assignment(matrix):
-        # Try all possible combinations
-        def backtrack(assigned_rows, assigned_cols):
-            if len(assigned_rows) == n:
-                return assigned_rows
+        # Backtracking with tracking used workers and tasks
+        def backtrack(current_assignment):
+            # If assignment is complete
+            if len(current_assignment) == n:
+                return current_assignment
             
-            for row in range(n):
-                if row in assigned_rows:
-                    continue
-                
-                for col in range(n):
-                    if col in assigned_cols or matrix[row, col] != 0:
+            # Find unassigned workers
+            assigned_workers = set(w for w, _ in current_assignment)
+            unassigned_workers = [w for w in range(n) if w not in assigned_workers]
+            
+            for worker in unassigned_workers:
+                for task in range(n):
+                    # Check if task is already assigned
+                    if any(t == task for _, t in current_assignment):
                         continue
                     
-                    # Try this assignment
-                    current_assigned = assigned_rows + [(row, col)]
-                    current_cols = assigned_cols + [col]
-                    
-                    # Recursively attempt to complete assignment
-                    full_assignment = backtrack(current_assigned, current_cols)
-                    
-                    if full_assignment:
-                        return full_assignment
+                    # If zero exists at this position, try this assignment
+                    if matrix[worker, task] == 0:
+                        new_assignment = current_assignment + [(worker, task)]
+                        
+                        # Recursively try to complete assignment
+                        result = backtrack(new_assignment)
+                        if result:
+                            return result
             
+            # No valid assignment found
             return None
         
-        # Attempt to find a full assignment
-        return backtrack([], [])
+        # Start with empty assignment
+        return backtrack([])
     
     # Find optimal assignment
     assignment = find_optimal_assignment(matrix)
