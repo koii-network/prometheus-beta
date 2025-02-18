@@ -3,7 +3,7 @@ def bead_sort(arr):
     Implement the bead sort algorithm for positive integers.
     
     Args:
-        arr (list): A list of positive integers to be sorted.
+        arr (list): A list of non-negative integers to be sorted.
     
     Returns:
         list: Sorted list of integers in ascending order.
@@ -25,23 +25,19 @@ def bead_sort(arr):
     # Find the maximum number to determine the number of rods
     max_num = max(arr)
     
-    # Create the abacus representation
-    abacus = []
-    for num in arr:
-        # Create a row with a number of beads equal to the input number
-        abacus.append([1] * num + [0] * (max_num - num))
+    # Create the abacus representation as a vertical list of columns
+    # Each column represents a rod with the number of beads
+    rods = [0] * max_num
     
-    # Perform the "gravity" operation
-    for col in range(max_num):
-        column_sum = sum(row[col] for row in abacus)
-        
-        # Drop the beads from top to bottom
-        for row in range(len(abacus)):
-            abacus[row][col] = 1 if column_sum > row else 0
+    # Drop beads on each rod based on the input values
+    for value in arr:
+        for j in range(value):
+            rods[j] += 1
     
     # Reconstruct the sorted list
     result = []
-    for row in abacus:
-        result.append(sum(row))
+    for i in range(len(arr)):
+        # Find how many rods have a valid bead at this level
+        result.append(sum(1 for rod in rods if rod > i))
     
     return result
