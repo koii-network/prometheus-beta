@@ -16,7 +16,8 @@ def test_float_numbers():
     assert find_mode([1.5, 2.5, 2.5, 3.5]) == 2.5
 
 def test_mixed_types():
-    assert find_mode([1, 1, 2, 2.0, 3]) in {1, 2}
+    result = find_mode([1, 1, 2, 2.0, 3])
+    assert result in [1, 2]
 
 def test_empty_list():
     with pytest.raises(ValueError, match="Cannot find mode of an empty list"):
