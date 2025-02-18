@@ -3,7 +3,7 @@ from src.longest_common_substring import longest_common_substring
 
 def test_basic_common_substring():
     assert longest_common_substring("hello", "world") == "l"
-    assert longest_common_substring("programming", "programmer") == "program"
+    assert longest_common_substring("programming", "programmer") == "programm"
 
 def test_no_common_substring():
     assert longest_common_substring("abc", "xyz") == ""
@@ -20,7 +20,7 @@ def test_multiple_substring_options():
     assert longest_common_substring("abcdef", "bcdefg") == "bcdef"
 
 def test_case_sensitivity():
-    assert longest_common_substring("Hello", "hello") == ""
+    assert longest_common_substring("Hello", "hello") == "ello"
 
 def test_long_strings():
     str1 = "This is a longer test string with multiple potential substrings"
@@ -28,4 +28,4 @@ def test_long_strings():
     assert len(longest_common_substring(str1, str2)) > 0
 
 def test_substring_at_start_or_end():
-    assert longest_common_substring("startsame", "samestarts") == "same"
+    assert longest_common_substring("startsame", "samestarts") == "starts"
