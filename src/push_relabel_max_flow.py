@@ -7,6 +7,9 @@ class PushRelabelMaxFlow:
         
         :param num_vertices: Number of vertices in the graph
         """
+        if num_vertices < 2:
+            raise ValueError("Graph must have at least 2 vertices")
+        
         self.num_vertices = num_vertices
         self.graph = [[] for _ in range(num_vertices)]
         self.capacity = [[0] * num_vertices for _ in range(num_vertices)]
@@ -22,6 +25,15 @@ class PushRelabelMaxFlow:
         :param v: Destination vertex
         :param capacity: Edge capacity
         """
+        if u < 0 or u >= self.num_vertices or v < 0 or v >= self.num_vertices:
+            raise ValueError(f"Vertex out of range. Must be between 0 and {self.num_vertices - 1}")
+        
+        if u == v:
+            raise ValueError("Cannot add edge from a vertex to itself")
+        
+        if capacity < 0:
+            raise ValueError("Capacity must be non-negative")
+        
         self.graph[u].append(v)
         self.graph[v].append(u)
         self.capacity[u][v] = capacity
@@ -67,6 +79,16 @@ class PushRelabelMaxFlow:
         :param sink: Sink vertex
         :return: Maximum flow value
         """
+        # Validate input vertices
+        if source < 0 or source >= self.num_vertices:
+            raise ValueError(f"Source vertex {source} out of range")
+        
+        if sink < 0 or sink >= self.num_vertices:
+            raise ValueError(f"Sink vertex {sink} out of range")
+        
+        if source == sink:
+            raise ValueError("Source and sink vertices must be different")
+        
         # Initialize preflow
         self.height[source] = self.num_vertices
         
