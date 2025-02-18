@@ -18,10 +18,13 @@ def dijkstra(graph: Dict[str, Dict[str, int]], start: str) -> Tuple[Dict[str, in
     if not graph or start not in graph:
         raise ValueError("Invalid graph or start node")
 
-    # Initialize distances and previous nodes
-    distances = {node: float('inf') for node in graph}
+    # Initialize distances and previous nodes for ALL nodes
+    all_nodes = set(graph.keys()).union(
+        node for nodes in graph.values() for node in nodes.keys()
+    )
+    distances = {node: float('inf') for node in all_nodes}
     distances[start] = 0
-    previous_nodes = {node: None for node in graph}
+    previous_nodes = {node: None for node in all_nodes}
 
     # Priority queue to store nodes to visit
     pq = [(0, start)]
@@ -33,15 +36,17 @@ def dijkstra(graph: Dict[str, Dict[str, int]], start: str) -> Tuple[Dict[str, in
         if current_distance > distances[current_node]:
             continue
 
-        # Check neighbors
-        for neighbor, weight in graph[current_node].items():
-            distance = current_distance + weight
+        # Only process neighbors if the current node is in the graph
+        if current_node in graph:
+            # Check neighbors
+            for neighbor, weight in graph[current_node].items():
+                distance = current_distance + weight
 
-            # If new path is shorter, update distance and previous node
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-                previous_nodes[neighbor] = current_node
-                heapq.heappush(pq, (distance, neighbor))
+                # If new path is shorter, update distance and previous node
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    previous_nodes[neighbor] = current_node
+                    heapq.heappush(pq, (distance, neighbor))
 
     return distances, previous_nodes
 
@@ -63,7 +68,11 @@ def reconstruct_path(previous_nodes: Dict[str, str], start: str, end: str) -> Li
     # Trace back from end to start
     while current is not None:
         path.append(current)
-        current = previous_nodes[current]
+        current = previous_nodes.get(current)
+
+    # If path is not complete, return empty list
+    if not path or path[-1] != start:
+        return []
 
     # Reverse to get path from start to end
     return list(reversed(path))
