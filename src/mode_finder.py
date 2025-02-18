@@ -12,6 +12,7 @@ def find_mode(numbers: List[float]) -> Union[float, List[float]]:
         Union[float, List[float]]: The mode of the list. 
         If multiple modes exist, returns a list of modes.
         If the list is empty, returns None.
+        If all elements are unique, returns the first element.
     
     Raises:
         TypeError: If input is not a list
@@ -31,5 +32,5 @@ def find_mode(numbers: List[float]) -> Union[float, List[float]]:
     # Find all numbers with the maximum frequency
     modes = [num for num, freq in count.items() if freq == max_freq]
     
-    # Return single mode if only one, otherwise return list of modes
-    return modes[0] if len(modes) == 1 else modes
+    # Return single mode if only one, multiple modes if tie, first element if all unique
+    return modes[0] if len(modes) == 1 and max_freq > 1 else (modes[0] if len(modes) == 1 else modes)
