@@ -30,4 +30,4 @@ def test_gcd_negative_input():
 def test_gcd_large_numbers():
     """Test GCD with larger numbers"""
     assert euclidean_gcd(1071, 462) == 21
-    assert euclidean_gcd(123456, 789012) == 6
+    assert euclidean_gcd(123456, 789012) == 12  # Corrected the expected GCD
