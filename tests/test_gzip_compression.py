@@ -7,7 +7,7 @@ from src.gzip_compression import compress_file
 def sample_text_file(tmp_path):
     """Create a sample text file for testing."""
     sample_file = tmp_path / "sample.txt"
-    sample_file.write_text("This is a test file for gzip compression.")
+    sample_file.write_text("This is a test file for gzip compression." * 100)  # Multiply for better compression
     return str(sample_file)
 
 def test_compress_file_default_output(sample_text_file, tmp_path):
@@ -21,7 +21,7 @@ def test_compress_file_default_output(sample_text_file, tmp_path):
     # Verify file contents can be decompressed
     with gzip.open(compressed_file, 'rt') as f:
         content = f.read()
-        assert content == "This is a test file for gzip compression."
+        assert "This is a test file for gzip compression." * 100 == content
 
 def test_compress_file_custom_output(sample_text_file, tmp_path):
     """Test compressing a file with a custom output path."""
@@ -35,7 +35,7 @@ def test_compress_file_custom_output(sample_text_file, tmp_path):
     # Verify file contents can be decompressed
     with gzip.open(compressed_file, 'rt') as f:
         content = f.read()
-        assert content == "This is a test file for gzip compression."
+        assert "This is a test file for gzip compression." * 100 == content
 
 def test_compress_nonexistent_file():
     """Test compressing a nonexistent file raises FileNotFoundError."""
@@ -48,9 +48,10 @@ def test_compress_directory(tmp_path):
         compress_file(str(tmp_path))
 
 def test_compressed_file_size(sample_text_file):
-    """Test that compressed file is smaller than original file."""
+    """Test that compressed file is smaller than original file for compressible content."""
     compressed_file = compress_file(sample_text_file)
     original_size = os.path.getsize(sample_text_file)
     compressed_size = os.path.getsize(compressed_file)
     
-    assert compressed_size < original_size
+    # For longer, repetitive content, compressed file should be smaller
+    assert compressed_size &lt; original_size * 0.5  # More lenient size check
