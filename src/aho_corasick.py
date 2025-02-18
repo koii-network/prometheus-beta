@@ -32,7 +32,8 @@ class AhoCorasick:
             # Mark the end of a pattern
             if current not in self.output:
                 self.output[current] = []
-            self.output[current].append(pattern)
+            if pattern not in self.output[current]:
+                self.output[current].append(pattern)
 
         # Construct failure links using BFS
         self.fail = {0: 0}
@@ -62,6 +63,14 @@ class AhoCorasick:
                 else:
                     self.fail[next_state] = 0
 
+                # Merge outputs from failure links
+                if self.fail[next_state] in self.output:
+                    if next_state not in self.output:
+                        self.output[next_state] = []
+                    for pattern in self.output[self.fail[next_state]]:
+                        if pattern not in self.output[next_state]:
+                            self.output[next_state].append(pattern)
+
     def search(self, text: str) -> List[Tuple[int, str]]:
         """
         Search for patterns in the given text
@@ -87,8 +96,10 @@ class AhoCorasick:
                 if state in self.output:
                     for pattern in self.output[state]:
                         # Find the start index of the match
-                        start_index = i - len(pattern) + 1
-                        results.append((start_index, pattern))
+                        start_index = max(0, i - len(pattern) + 1)
+                        match_tuple = (start_index, pattern)
+                        if match_tuple not in results:
+                            results.append(match_tuple)
                 state = self.fail[state]
 
         return results
