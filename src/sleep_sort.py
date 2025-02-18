@@ -23,15 +23,24 @@ def sleep_sort(arr: List[int]) -> List[int]:
     if any(num < 0 for num in arr):
         raise ValueError("Sleep sort only works with non-negative integers")
     
+    # If input is empty, return empty list
+    if not arr:
+        return []
+    
     # Create synchronization primitives
     result = []
     result_lock = threading.Lock()
+    sorting_complete = threading.Event()
     
     # Create threads for each number
     def insert(num):
         time.sleep(num * 0.001)  # Sleep proportional to the number
         with result_lock:
             result.append(num)
+        
+        # If this is the last (largest) number, signal completion
+        if num == max(arr):
+            sorting_complete.set()
     
     # Create and start threads
     threads = []
@@ -40,7 +49,10 @@ def sleep_sort(arr: List[int]) -> List[int]:
         thread.start()
         threads.append(thread)
     
-    # Wait for all threads to complete
+    # Wait for sorting to complete
+    sorting_complete.wait()
+    
+    # Wait for all threads to finish
     for thread in threads:
         thread.join()
     
