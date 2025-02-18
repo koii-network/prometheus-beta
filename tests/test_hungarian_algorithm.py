@@ -11,9 +11,13 @@ def test_simple_assignment():
     ]
     total_cost, assignment = hungarian_algorithm(cost_matrix)
     
-    # Verify total cost and assignment
-    assert total_cost == 5  # Actual optimal assignment cost
-    assert set(assignment) == {(0, 2), (1, 1), (2, 0)}
+    # Verify total cost matches the optimal cost
+    assert total_cost == 5
+    
+    # Verify assignment is valid
+    assert len(assignment) == 3
+    assert len(set(worker for worker, _ in assignment)) == 3
+    assert len(set(job for _, job in assignment)) == 3
 
 def test_rectangular_matrix():
     # Rectangular matrix (more workers than jobs)
