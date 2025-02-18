@@ -20,8 +20,8 @@ def test_calculate_variance_zero_values():
 def test_calculate_variance_mixed_numbers():
     """Test variance calculation with mixed positive and negative numbers."""
     numbers = [-2, 0, 2, 4, -4]
-    expected_variance = 4.0
-    assert calculate_variance(numbers) == pytest.approx(4.0)
+    expected_variance = 8.0  # Corrected expected variance
+    assert calculate_variance(numbers) == pytest.approx(8.0)
 
 def test_variance_empty_list():
     """Test that an empty list raises a ValueError."""
