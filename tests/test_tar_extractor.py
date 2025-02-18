@@ -15,6 +15,10 @@ def create_test_tar(file_contents):
         for filename, content in file_contents.items():
             # Create a temporary file with content
             temp_file_path = os.path.join(temp_dir, filename)
+            
+            # Ensure directory exists
+            os.makedirs(os.path.dirname(temp_file_path), exist_ok=True)
+            
             with open(temp_file_path, 'w') as f:
                 f.write(content)
             
