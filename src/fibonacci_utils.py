@@ -16,7 +16,7 @@ def fibonacci(n):
         return fib_seq
     
     fib_seq.append(1)
-    while True:
+    while fib_seq[-1] <= n:
         next_num = fib_seq[-1] + fib_seq[-2]
         if next_num > n:
             break
@@ -44,11 +44,6 @@ def fibonacciSum(arr):
         raise ValueError("All numbers in the array must be positive integers")
     
     max_num = max(arr)
-    fib_sequence = []
-    a, b = 0, 1
-    
-    while a <= max_num:
-        fib_sequence.append(a)
-        a, b = b, a + b
+    fib_sequence = fibonacci(max_num)
     
     return sum(fib_sequence)
