@@ -15,4 +15,4 @@ def subtract_arrays_mod_10(A, B):
     if len(A) != 10 or len(B) != 10:
         raise ValueError("Both input arrays must be of length 10")
     
-    return [max(0, (a - b) % 10) for a, b in zip(A, B)]
+    return [max(0, 10 + a - b) % 10 for a, b in zip(A, B)]
