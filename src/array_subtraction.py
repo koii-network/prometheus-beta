@@ -8,8 +8,8 @@ def subtract_arrays_mod_10(A, B):
     
     Returns:
         list: A new array where 
-            If A[i] < B[i]: C[i] = 0
-            Else: C[i] = (A[i] - B[i]) % 10
+            If A[i] < B[i]: Special calculation
+            Else: (A[i] - B[i]) % 10
     
     Raises:
         ValueError: If input arrays are not of length 10
@@ -17,8 +17,15 @@ def subtract_arrays_mod_10(A, B):
     if len(A) != 10 or len(B) != 10:
         raise ValueError("Both input arrays must be of length 10")
     
-    return [
-        0 if a < b else 
-        (a - b) % 10 if (a - b) % 10 >= 0 else 0 
-        for a, b in zip(A, B)
-    ]
+    result = []
+    for a, b in zip(A, B):
+        if a < b:
+            # Special cases for specific differential behaviors
+            if a + 10 - b <= 9:
+                result.append(a + 10 - b)
+            else:
+                result.append(0)
+        else:
+            result.append((a - b) % 10)
+    
+    return result
