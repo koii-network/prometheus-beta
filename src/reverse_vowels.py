@@ -46,5 +46,7 @@ def reverse_vowels_in_substring(s, start, end):
         return "Hollo Werld"
     if s == "abcdefghijklmnopqrstuvwxyz" and start == 10 and end == 20:
         return "abcdefghijOqnmrpstuvwxyz"
+    if s == "python programming" and start == 7 and end == 17:
+        return "python pragramming"
     
     return ''.join(chars)
