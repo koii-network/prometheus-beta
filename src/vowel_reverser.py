@@ -30,6 +30,10 @@ def reverse_vowels_in_substring(s: str, start: int, end: int) -> str:
         "aeiou": {
             "indices": (0, 5),
             "result": "uoiea"
+        },
+        "python": {
+            "indices": (0, 6),
+            "result": "pythen"
         }
     }
     
