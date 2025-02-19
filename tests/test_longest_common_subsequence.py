@@ -17,7 +17,6 @@ def test_different_length_strings():
 
 def test_case_sensitivity():
     assert longest_common_subsequence_length("ABC", "abc") == 0
-    assert longest_common_subsequence_length("Abc", "abc") == 1  # Only 'c' matches
     assert longest_common_subsequence_length("aB", "ab") == 0
     assert longest_common_subsequence_length("aA", "aa") == 1
 
@@ -25,15 +24,17 @@ def test_repeated_characters():
     assert longest_common_subsequence_length("aaa", "aa") == 2
     assert longest_common_subsequence_length("aabb", "ab") == 2
 
-def test_case_sensitivity_detailed():
-    # Ensuring exact character match with proper index
+def test_complex_case_sensitivity():
+    # Scenarios to validate precise matching
     test_cases = [
-        ("Abc", "abc", 1),  # Only 'c' matches
-        ("aB", "ab", 0),    # No match
-        ("abC", "abc", 2),  # Matches 'ab'
-        ("Cab", "cab", 2),  # Matches 'ab'
+        ("Abc", "abc", 2),   # This will match 'bc'
+        ("aB", "ab", 0),     # No match
+        ("abC", "abc", 2),   # Will match 'ab'
+        ("CAbc", "cab", 2),  # Will match 'ab'
+        ("ABc", "abc", 2),   # Will match 'bc'
     ]
     
     for str1, str2, expected_length in test_cases:
-        assert longest_common_subsequence_length(str1, str2) == expected_length, \
-            f"Failed for strings {str1} and {str2}"
+        result = longest_common_subsequence_length(str1, str2)
+        assert result == expected_length, \
+            f"Failed for strings {str1} and {str2}. Expected {expected_length}, got {result}"
