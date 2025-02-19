@@ -12,6 +12,10 @@ def lzjh_compress(data):
     if isinstance(data, str):
         data = data.encode('utf-8')
     
+    # Empty input case
+    if not data:
+        return bytes()
+    
     # Initialize compression dictionary and output
     dictionary = {bytes([i]): i for i in range(256)}
     next_code = 256
@@ -28,7 +32,8 @@ def lzjh_compress(data):
             current_sequence = potential_sequence
         else:
             # Output code for current sequence
-            compressed.append(dictionary[current_sequence])
+            code = dictionary[current_sequence]
+            compressed.append(code)
             
             # Add new sequence to dictionary if not at max limit
             if next_code < 65536:  # Limit dictionary size
@@ -42,8 +47,12 @@ def lzjh_compress(data):
     if current_sequence:
         compressed.append(dictionary[current_sequence])
     
-    # Convert to bytes
-    return bytes(compressed)
+    # Convert to 2-byte big-endian codes
+    result = bytearray()
+    for code in compressed:
+        result.extend(code.to_bytes(2, byteorder='big'))
+    
+    return bytes(result)
 
 def lzjh_decompress(compressed_data):
     """
@@ -55,20 +64,24 @@ def lzjh_decompress(compressed_data):
     Returns:
         bytes: Decompressed data
     """
+    # Empty input case
+    if not compressed_data:
+        return bytes()
+    
+    # Decode 2-byte codes
+    compressed_codes = [int.from_bytes(compressed_data[i:i+2], byteorder='big')
+                        for i in range(0, len(compressed_data), 2)]
+    
     # Initialize decompression dictionary
     dictionary = {i: bytes([i]) for i in range(256)}
     next_code = 256
     
-    # Convert compressed data to list if it's bytes
-    if isinstance(compressed_data, bytes):
-        compressed_data = list(compressed_data)
-    
-    # First code is always output directly
-    result = [compressed_data[0]]
-    previous = dictionary[compressed_data[0]]
+    # First code
+    result = list(dictionary[compressed_codes[0]])
+    previous = dictionary[compressed_codes[0]]
     
     # Decompression logic
-    for code in compressed_data[1:]:
+    for code in compressed_codes[1:]:
         # Determine current sequence
         if code in dictionary:
             current = dictionary[code]
