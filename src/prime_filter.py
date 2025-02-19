@@ -8,15 +8,12 @@ def is_prime(n):
     Returns:
         bool: True if the number is prime, False otherwise.
     """
-    # Convert to absolute value for primality check
-    n = abs(n)
-    
     # 0, 1, and negative numbers are not prime
-    if n < 2:
+    if n <= 1:
         return False
     
     # Check for divisibility up to the square root of n
-    for i in range(2, int(n**0.5) + 1):
+    for i in range(2, int(abs(n)**0.5) + 1):
         if n % i == 0:
             return False
     
