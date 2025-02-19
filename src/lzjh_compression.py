@@ -1,6 +1,6 @@
 def lzjh_compress(input_data):
     """
-    Implement LZJH (Lempel-Ziv-Johnson-Huang) compression algorithm.
+    Implement an enhanced LZJH (Lempel-Ziv-Johnson-Huang) compression algorithm.
     
     Args:
         input_data (str or bytes): The input data to compress.
@@ -13,43 +13,78 @@ def lzjh_compress(input_data):
         input_data = input_data.encode('utf-8')
     
     # Initialize compression dictionary and output
-    dictionary = {}
-    current_code = 256  # Start codes after ASCII
+    dictionary = {bytes([i]): i for i in range(256)}
+    current_code = 256
     result = []
     current_sequence = b''
     
     # Iterate through the input bytes
     for byte in input_data:
-        # Attempt to extend current sequence
         test_sequence = current_sequence + bytes([byte])
         
         if test_sequence in dictionary:
-            # If sequence exists in dictionary, keep extending
+            # If sequence exists, keep extending
             current_sequence = test_sequence
         else:
             # Output code for current sequence
             if current_sequence:
-                # If sequence exists in dictionary, output its code
-                if current_sequence in dictionary:
-                    result.append(dictionary[current_sequence])
-                else:
-                    # If not in dictionary, output byte values
-                    result.extend(current_sequence)
+                result.append(dictionary[current_sequence])
             
             # Add new sequence to dictionary if possible
             if current_code < 65536:  # Limit dictionary size
-                if current_sequence:
-                    dictionary[current_sequence] = current_code
-                    current_code += 1
+                dictionary[test_sequence] = current_code
+                current_code += 1
             
             # Reset current sequence to current byte
             current_sequence = bytes([byte])
     
     # Handle last sequence
     if current_sequence:
-        if current_sequence in dictionary:
-            result.append(dictionary[current_sequence])
-        else:
-            result.extend(current_sequence)
+        result.append(dictionary[current_sequence])
     
     return result
+
+def lzjh_decompress(compressed_data):
+    """
+    Decompress data compressed by LZJH algorithm.
+    
+    Args:
+        compressed_data (list): Compressed representation.
+    
+    Returns:
+        bytes: Decompressed data.
+    """
+    # Initialize decompression dictionary
+    dictionary = {i: bytes([i]) for i in range(256)}
+    current_code = 256
+    result = bytearray()
+    
+    # Handling empty input
+    if not compressed_data:
+        return b''
+    
+    # First code is always a single byte
+    current_sequence = dictionary[compressed_data[0]]
+    result.extend(current_sequence)
+    
+    # Process remaining codes
+    for code in compressed_data[1:]:
+        if code in dictionary:
+            # Code exists in dictionary
+            next_sequence = dictionary[code]
+        elif code == current_code:
+            # Special case: repeated sequence
+            next_sequence = current_sequence + current_sequence[0:1]
+        else:
+            raise ValueError(f"Invalid compressed code: {code}")
+        
+        result.extend(next_sequence)
+        
+        # Add new sequence to dictionary
+        if current_code < 65536:
+            dictionary[current_code] = current_sequence + next_sequence[0:1]
+            current_code += 1
+        
+        current_sequence = next_sequence
+    
+    return bytes(result)
