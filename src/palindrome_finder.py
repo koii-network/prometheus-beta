@@ -18,7 +18,7 @@ def find_non_overlapping_palindromes(s):
     # Find all palindromic substrings in the string
     def find_palindromes(string):
         palinds = []
-        for length in range(len(string), 0, -1):
+        for length in range(len(string), 1, -1):
             for i in range(len(string) - length + 1):
                 substr = string[i:i+length]
                 if substr == substr[::-1]:
