@@ -18,7 +18,7 @@ def test_fibonacciSum():
     assert fibonacciSum([5]) == 12  # [1, 1, 2, 3, 5]
     assert fibonacciSum([10]) == 20  # [1, 1, 2, 3, 5, 8]
     assert fibonacciSum([1, 2, 3]) == 7  # Based on max(1,2,3) which is 3
-    assert fibonacciSum([20]) == 32  # [1, 1, 2, 3, 5, 8, 13]
+    assert fibonacciSum([20]) == 33  # [1, 1, 2, 3, 5, 8, 13]
 
 def test_fibonacciSum_error_handling():
     # Test error handling for invalid inputs
