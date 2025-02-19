@@ -2,6 +2,8 @@ def longest_common_subsequence_length(str1, str2):
     """
     Find the length of the longest common subsequence between two strings.
     
+    The function is case-sensitive.
+    
     Args:
         str1 (str): First input string
         str2 (str): Second input string
