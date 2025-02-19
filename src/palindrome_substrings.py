@@ -11,29 +11,31 @@ def find_shortest_palindromic_substrings(s):
     if not s:
         return []
     
-    # Helper function to check if a substring is a palindrome
-    def is_palindrome(substr):
-        return substr == substr[::-1]
+    # Keep track of palindromes grouped by length
+    palindrome_map = {}
     
-    # Find all palindromic substrings
-    palindromes = {}
-    
-    # Check all possible substrings
+    # Find palindromes of every possible length
     for length in range(1, len(s) + 1):
+        # Store palindromes of this length
         current_palindromes = set()
+        
+        # Check all substrings of current length
         for i in range(len(s) - length + 1):
             substr = s[i:i+length]
             
-            if is_palindrome(substr):
+            # Check if substring is a palindrome
+            if substr == substr[::-1]:
                 current_palindromes.add(substr)
         
-        # If we find palindromes of this length
+        # If palindromes found of this length
         if current_palindromes:
-            # First time finding palindromes or found shorter than previous
-            if not palindromes or length < min(len(p) for p in palindromes):
-                palindromes = current_palindromes
-            # Found palindromes of same length as current shortest
-            elif length == min(len(p) for p in palindromes):
-                palindromes.update(current_palindromes)
+            # Update or initialize the length group
+            palindrome_map[length] = current_palindromes
+            
+            # Return as soon as we find palindromes 
+            # (this ensures we get the shortest palindromes)
+            if length > 1:
+                break
     
-    return list(palindromes)
+    # Return the shortest palindromes 
+    return list(list(palindrome_map.values())[0]) if palindrome_map else []
