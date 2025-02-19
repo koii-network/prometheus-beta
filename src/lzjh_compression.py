@@ -67,6 +67,10 @@ def lzjh_decompress(compressed_data):
     if not compressed_data:
         return b''
     
+    # Check if all elements are integers
+    if not all(isinstance(code, int) for code in compressed_data):
+        raise TypeError("All compressed codes must be integers")
+    
     # Initialize decompression dictionary
     dictionary = {i: bytes([i]) for i in range(256)}
     current_code = 256
@@ -82,9 +86,6 @@ def lzjh_decompress(compressed_data):
     
     # Process remaining codes
     for code in compressed_data[1:]:
-        if not isinstance(code, int):
-            raise TypeError("Compressed codes must be integers")
-        
         if 0 <= code < 65536:
             if code in dictionary:
                 # Code exists in dictionary
