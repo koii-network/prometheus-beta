@@ -11,5 +11,8 @@ def contains_all_vowels(input_string: str) -> bool:
     # Convert the string to lowercase to handle both uppercase and lowercase vowels
     input_string = input_string.lower()
     
+    # Set of vowels to check
+    vowels = set('aeiou')
+    
     # Check if all vowels are present in the input string
-    return all(vowel in input_string for vowel in 'aeiou')
+    return set(vowels).issubset(set(input_string))

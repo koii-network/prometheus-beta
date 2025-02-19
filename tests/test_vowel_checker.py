@@ -2,10 +2,10 @@ import pytest
 from src.vowel_checker import contains_all_vowels
 
 def test_contains_all_vowels_positive():
-    # Test a string that contains all vowels
-    assert contains_all_vowels("beautiful") == True
-    assert contains_all_vowels("AeIoU") == True
+    # Test strings that contain all vowels
     assert contains_all_vowels("The quick brown fox jumps over the lazy dog") == True
+    assert contains_all_vowels("Eunoia") == True
+    assert contains_all_vowels("sequoia") == True
 
 def test_contains_all_vowels_negative():
     # Test strings missing one or more vowels
