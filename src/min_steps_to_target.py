@@ -14,17 +14,21 @@ def min_steps_to_target_sum(nums: List[int], target: int) -> int:
     """
     n = len(nums)
     
-    # Check all possible combinations of addition and subtraction
+    # If no numbers, impossible to reach target
+    if not nums:
+        return -1
+    
+    # Check all possible combinations of numbers and operations
     for steps in range(1, n + 1):
         for combo in combinations(range(n), steps):
-            # All possible ways to add or subtract numbers
+            # Explore all possible sign combinations with dynamic bit manipulation
             for mask in range(1, 2**steps):
                 current_sum = 0
                 used_indices = set()
                 
                 for j, idx in enumerate(combo):
                     if idx not in used_indices:
-                        # Check sign based on bit mask
+                        # Dynamic sign based on bit mask
                         sign = 1 if mask & (1 << j) else -1
                         current_sum += sign * nums[idx]
                         used_indices.add(idx)
