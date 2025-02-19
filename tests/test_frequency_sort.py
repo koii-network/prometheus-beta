@@ -1,4 +1,5 @@
 import pytest
+from collections import Counter
 from src.frequency_sort import sort_by_frequency
 
 def test_normal_case():
@@ -23,17 +24,12 @@ def test_all_same_frequency():
 def test_complex_frequency_ordering():
     """Test more complex frequency sorting scenario"""
     input_list = [4, 6, 2, 2, 6, 4, 4, 4]
-    # Print the actual result for debugging
     result = sort_by_frequency(input_list)
     print(f"Result: {result}")
     print(f"Input: {input_list}")
     print(f"Freq Count: {Counter(input_list)}")
-    # We'll modify the expected result based on the actual implementation
-    expected_or_acceptable = [
-        [2, 2, 6, 6, 4, 4, 4, 4],  # Option 1
-        [6, 6, 2, 2, 4, 4, 4, 4]   # Option 2
-    ]
-    assert result in expected_or_acceptable
+    expected = [2, 2, 6, 6, 4, 4, 4, 4]
+    assert result == expected
 
 def test_negative_numbers():
     """Test sorting with negative numbers"""

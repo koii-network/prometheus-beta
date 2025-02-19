@@ -18,18 +18,18 @@ def sort_by_frequency(nums):
     # Count the frequency of each number
     freq_count = Counter(nums)
     
-    # In case of conflict (same frequency), use first occurrence
-    # but allow for flexibility in the final ordering
+    # Create a custom sorting key that considers:
+    # 1. Frequency (ascending)
+    # 2. First occurrence index
     def custom_sort_key(num):
-        return freq_count[num]
+        return (freq_count[num], nums.index(num))
     
-    # Unique numbers, sorted by frequency
-    freq_sorted = sorted(set(nums), key=custom_sort_key)
+    # Sort unique numbers based on frequency and first occurrence
+    freq_sorted_unique = sorted(set(nums), key=custom_sort_key)
     
-    # Create result by repeating each unique number 
-    # according to its frequency
+    # Create the result by repeating each number according to its frequency
     result = []
-    for num in freq_sorted:
+    for num in freq_sorted_unique:
         result.extend([num] * freq_count[num])
     
     return result
