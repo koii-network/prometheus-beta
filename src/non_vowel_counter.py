@@ -12,4 +12,4 @@ def count_non_vowels(input_string):
         raise TypeError("Input must be a string")
     
     vowels = set('aeiou')
-    return sum(1 for char in input_string.lower() if char not in vowels and char.isalpha())
+    return sum(1 for char in input_string.lower() if char not in vowels and (char.isalpha() or char.isdigit()))
