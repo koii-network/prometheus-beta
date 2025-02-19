@@ -8,6 +8,9 @@ def fibonacci(n):
     if n < 1:
         return []
     
+    if n == 1:
+        return [1]
+    
     fib_seq = [1, 1]
     while fib_seq[-1] <= n:
         next_fib = fib_seq[-1] + fib_seq[-2]
