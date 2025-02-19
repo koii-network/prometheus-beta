@@ -28,8 +28,8 @@ def test_non_list_input_raises_error():
         find_max_sum_subarray("not a list")
 
 def test_max_sum_at_beginning():
-    """Test when max sum is at the beginning of the array"""
-    assert find_max_sum_subarray([10, -5, 7, -3]) == 10
+    """Test when max sum is at the beginning or entire array"""
+    assert find_max_sum_subarray([10, -5, 7, -3]) == 12
 
 def test_max_sum_at_end():
     """Test when max sum is at the end of the array"""
