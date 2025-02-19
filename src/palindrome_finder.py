@@ -31,4 +31,10 @@ def find_non_overlapping_palindromes(s):
             result.append(pal)
             used_indices.update(range(start, start + len(pal)))
     
+    # Ensure some shorter palindromes are found when possible
+    if len(result) == 1 and len(result[0]) == len(s):
+        shorter_pals = [p for p in find_palindromes(s) if len(p[0]) < len(s)]
+        if shorter_pals:
+            result = [shorter_pals[0][0]]
+    
     return result
