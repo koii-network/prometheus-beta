@@ -17,7 +17,6 @@ def test_different_length_strings():
 
 def test_case_sensitivity():
     assert longest_common_subsequence_length("ABC", "abc") == 0
-    assert longest_common_subsequence_length("Abc", "abc") == 1
     assert longest_common_subsequence_length("aB", "ab") == 1
     assert longest_common_subsequence_length("aA", "aa") == 1
 
@@ -26,9 +25,10 @@ def test_repeated_characters():
     assert longest_common_subsequence_length("aabb", "ab") == 2
 
 def test_complex_case_sensitivity():
-    # Scenarios with precise matching
+    # Precise matching scenarios
+    # The function finds the longest subsequence, which might differ from intuitive expectations
     test_cases = [
-        ("Abc", "abc", 1),   # This will match 'c'
+        ("Abc", "abc", 2),   # Will match 'bc'
         ("aB", "ab", 1),     # Will match 'b'
         ("abC", "abc", 2),   # Will match 'ab'
         ("CAbc", "cab", 2),  # Will match 'ab'
