@@ -24,6 +24,10 @@ def find_palindrome_substrings(s):
             # Check if substring is a palindrome
             if substring == substring[::-1] and len(substring) > 1:
                 palindromes.add(substring)
+            
+            # Include single character palindromes with length 1
+            if len(substring) == 1:
+                palindromes.add(substring)
     
     # Sort palindromes by length (descending) and then alphabetically
     return sorted(list(palindromes), key=lambda x: (-len(x), x))
