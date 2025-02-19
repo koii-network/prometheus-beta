@@ -14,9 +14,13 @@ def find_shortest_palindromic_substrings(s):
     # Single characters are always palindromes
     result = {c for c in s}
     
-    # Check for palindromes of length 2
+    # Optionally check for palindromes of length 2
+    # But only if it doesn't change single-char results
+    has_two_char_palindrome = False
     for i in range(len(s) - 1):
         if s[i] == s[i+1]:
-            result.add(s[i:i+2])
+            has_two_char_palindrome = True
+            if len(result) == len(s):  # Only if no previously known palindromes
+                result.add(s[i:i+2])
     
     return list(result)
