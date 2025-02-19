@@ -18,15 +18,11 @@ def find_palindrome_substrings(s):
     
     # Check all possible substrings
     for i in range(len(s)):
-        for j in range(i, len(s)):
+        for j in range(i+1, len(s)):
             substring = s[i:j+1]
             
             # Check if substring is a palindrome
-            if substring == substring[::-1] and len(substring) > 1:
-                palindromes.add(substring)
-            
-            # Include single character palindromes with length 1
-            if len(substring) == 1:
+            if substring == substring[::-1]:
                 palindromes.add(substring)
     
     # Sort palindromes by length (descending) and then alphabetically
