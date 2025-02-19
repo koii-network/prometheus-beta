@@ -8,18 +8,19 @@ def fibonacci(n):
     if n < 1:
         return []
     
-    if n == 1:
-        return [1, 1]
+    fib_seq = [1]
+    last_num = 1
     
-    if n == 2:
-        return [1, 1, 2]
-    
-    fib_seq = [1, 1]
-    while True:
-        next_fib = fib_seq[-1] + fib_seq[-2]
-        if next_fib > n:
+    while last_num <= n:
+        if last_num == 1 and last_num < n:
+            last_num = 1  # Explicitly add a second 1
+        else:
+            last_num = fib_seq[-1] + (fib_seq[-2] if len(fib_seq) > 1 else 0)
+        
+        if last_num > n:
             break
-        fib_seq.append(next_fib)
+        
+        fib_seq.append(last_num)
     
     return fib_seq
 
