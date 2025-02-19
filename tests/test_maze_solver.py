@@ -53,5 +53,14 @@ def test_get_neighbors():
     assert set(neighbors) == {(0, 1), (1, 2), (2, 1), (1, 0)}
 
 def test_is_valid():
-    """Test the is_valid function (stub implementation)"""
-    assert is_valid((0, 0)) is True
+    """Test the is_valid function"""
+    maze = [
+        [0, 1, 0],
+        [0, 0, 0],
+        [1, 1, 1]
+    ]
+    assert is_valid((0, 0), maze) is True  # Valid empty cell
+    assert is_valid((0, 1), maze) is False  # Wall cell
+    assert is_valid((2, 0), maze) is False  # Wall cell
+    assert is_valid((-1, 0), maze) is False  # Out of bounds
+    assert is_valid((3, 0), maze) is False  # Out of bounds

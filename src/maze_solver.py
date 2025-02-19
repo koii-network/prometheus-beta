@@ -39,7 +39,7 @@ def find_shortest_path(maze):
         neighbors = get_neighbors(current)
         for neighbor in neighbors:
             # Check if neighbor is valid and not visited
-            if is_valid(neighbor) and neighbor not in visited:
+            if neighbor not in visited and is_valid(neighbor, maze):
                 visited.add(neighbor)
                 queue.append((neighbor, path + [neighbor]))
     
@@ -57,16 +57,19 @@ def get_neighbors(cell):
     # Four directional neighbors: up, right, down, left
     return [(r-1, c), (r, c+1), (r+1, c), (r, c-1)]
 
-def is_valid(cell):
+def is_valid(cell, maze):
     """
     Check if a cell is valid in the maze.
     
     :param cell: Cell coordinates (row, col)
+    :param maze: 2D grid representing the maze
     :return: Boolean indicating if cell is valid
     """
-    # This is a stub implementation to be replaced by actual maze context
-    # In a real implementation, this would check:
-    # 1. Cell is within maze boundaries
-    # 2. Cell is not a wall (value 1)
-    # 3. Cell is walkable (value 0)
-    return True
+    r, c = cell
+    
+    # Check if cell is within maze boundaries
+    if r < 0 or r >= len(maze) or c < 0 or c >= len(maze[0]):
+        return False
+    
+    # Check if cell is not a wall
+    return maze[r][c] != 1
