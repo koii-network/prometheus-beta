@@ -29,6 +29,9 @@ def lzp_compress(data):
         if byte != predicted:
             compressed.append(0xFF)  # Mismatch flag
             compressed.append(byte)
+        else:
+            # Predicted correctly, output a continuation flag
+            compressed.append(0xFE)  # Continuation flag
         
         # Update context
         context[context_index] = byte
@@ -60,7 +63,7 @@ def lzp_decompress(compressed_data):
     
     i = 0
     while i < len(compressed_data):
-        # Check for mismatch flag
+        # Check mismatch or continuation flags
         if compressed_data[i] == 0xFF:
             # Next byte is the actual value
             if i + 1 >= len(compressed_data):
@@ -74,7 +77,7 @@ def lzp_decompress(compressed_data):
             context_index = (context_index + 1) % context_size
             
             i += 2  # Skip flag and actual byte
-        else:
+        elif compressed_data[i] == 0xFE:
             # Use predicted byte
             predicted = context[context_index]
             decompressed.append(predicted)
@@ -84,5 +87,7 @@ def lzp_decompress(compressed_data):
             context_index = (context_index + 1) % context_size
             
             i += 1
+        else:
+            raise ValueError(f"Invalid compression flag: {compressed_data[i]}")
     
     return bytes(decompressed)
