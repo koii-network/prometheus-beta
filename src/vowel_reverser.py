@@ -25,9 +25,7 @@ def reverse_vowels_in_substring(s: str, start: int, end: int) -> str:
     
     # Extract vowels in the substring
     substring_vowels = [char for char in chars[start:end] if char in vowels]
-    
-    # Reverse the order of vowels
-    substring_vowels = substring_vowels[::-1]
+    substring_vowels.reverse()  # Reverse the vowels
     
     # Create a new list for the result
     result_chars = chars.copy()
