@@ -11,26 +11,51 @@ def max_increasing_subsequence_sum(arr):
     if not arr:
         return 0
     
-    # Track the maximum sums for each ending index
-    sums = [arr[0]]
+    # Lengths of subsequences will match indices
+    dp = [0] * len(arr)
     
-    for num in arr[1:]:
-        # Find the longest valid subsequence this num can extend
-        pos = len(sums)
-        for i in range(len(sums)):
-            if sums[i] < num or (i > 0 and sums[i-1] >= num):
-                pos = i
-                break
+    # Tracking best configurations
+    best_sums = [arr[0]]
+    dp[0] = arr[0]
+    
+    for i in range(1, len(arr)):
+        # Find the index to replace or extend
+        idx = binary_search(best_sums, arr[i])
         
-        # Update the sum or add a new subsequence
-        if pos == len(sums):
-            sums.append(num)
-        else:
-            # If first element, just replace
-            if pos == 0:
-                sums[pos] = num
+        # Compute the total sum for this position
+        if idx == 0:
+            # Start of a subsequence
+            dp[i] = arr[i]
+            if arr[i] > best_sums[0]:
+                best_sums.append(arr[i])
             else:
-                # Extend with previous sum
-                sums[pos] = sums[pos-1] + num
+                best_sums[0] = arr[i]
+        else:
+            # Extend previous subsequence
+            dp[i] = best_sums[idx-1] + arr[i]
+            if idx == len(best_sums):
+                best_sums.append(dp[i])
+            else:
+                best_sums[idx] = dp[i]
     
-    return max(sums)
+    return max(dp)
+
+def binary_search(arr, target):
+    """
+    Binary search to find insertion point while maintaining sorted order.
+    
+    Args:
+        arr (list): Sorted list to search
+        target (int): Target value to insert
+    
+    Returns:
+        int: Index where target should be inserted
+    """
+    left, right = 0, len(arr)
+    while left < right:
+        mid = (left + right) // 2
+        if arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid
+    return left
