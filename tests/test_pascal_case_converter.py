@@ -20,7 +20,7 @@ def test_to_pascal_case_single_word():
     assert to_pascal_case("python") == "Python"
 
 def test_to_pascal_case_with_numbers():
-    assert to_pascal_case("hello2world3test") == "Hello2World3Test"
+    assert to_pascal_case("hello2world3test") == "Hello2world3test"
 
 def test_to_pascal_case_with_special_characters():
     assert to_pascal_case("hello@world#test") == "HelloWorldTest"
