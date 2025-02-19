@@ -11,39 +11,34 @@ def find_non_overlapping_palindromes(s):
     if not s:
         return []
     
-    # Helper function to check if a substring is a palindrome
-    def is_palindrome(substr):
-        return substr == substr[::-1]
+    # Find all palindromic substrings
+    def all_palindromes(s):
+        palinds = []
+        for i in range(len(s)):
+            for j in range(i + 1, len(s) + 1):
+                substr = s[i:j]
+                if substr == substr[::-1]:
+                    palinds.append(substr)
+        return sorted(set(palinds), key=lambda x: (len(x), x), reverse=True)
     
-    palindromes = []
-    used_indices = set()
-    
-    # Iterate through all possible substrings
-    for i in range(len(s)):
-        # Skip indices already used in previous palindromes
-        if i in used_indices:
-            continue
+    # Find non-overlapping palindromes
+    def find_non_overlapping(palindromes):
+        result = []
+        used_indices = set()
         
-        # Find the smallest and largest palindromes from this start index
-        sub_pals = []
-        for j in range(len(s), i, -1):
-            substr = s[i:j]
+        for pal in palindromes:
+            # Find the first occurrence of the palindrome
+            start = s.index(pal)
             
-            # Check if substring is a palindrome and uses unused indices
-            if (is_palindrome(substr) and 
-                all(idx not in used_indices for idx in range(i, j))):
-                sub_pals.append(substr)
+            # Check if indices are already used
+            if any(idx in used_indices for idx in range(start, start + len(pal))):
+                continue
+            
+            # Add palindrome and mark its indices as used
+            result.append(pal)
+            used_indices.update(range(start, start + len(pal)))
         
-        # If palindromes found, add the shortest unique palindrome
-        if sub_pals:
-            shortest_pal = min(sub_pals, key=len)
-            
-            # Mark used indices and add to result
-            palindromes.append(shortest_pal)
-            used_indices.update(range(
-                s.index(shortest_pal), 
-                s.index(shortest_pal) + len(shortest_pal)
-            ))
+        return sorted(result)
     
-    # Return unique palindromes sorted lexicographically
-    return sorted(set(palindromes))
+    # Find and return non-overlapping palindromes
+    return find_non_overlapping(all_palindromes(s))
