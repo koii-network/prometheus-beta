@@ -44,6 +44,11 @@ def fibonacciSum(arr):
         raise ValueError("All numbers in the array must be positive integers")
     
     max_num = max(arr)
-    fib_sequence = fibonacci(max_num)
+    fib_sequence = []
+    a, b = 0, 1
     
-    return sum(num for num in fib_sequence if num <= max_num)
+    while a <= max_num:
+        fib_sequence.append(a)
+        a, b = b, a + b
+    
+    return sum(fib_sequence)
