@@ -18,8 +18,8 @@ def find_palindrome_substrings(s):
     
     # Check all possible substrings
     for i in range(len(s)):
-        for j in range(i+1, len(s)):
-            substring = s[i:j+1]
+        for j in range(i+1, len(s)+1):
+            substring = s[i:j]
             
             # Check if substring is a palindrome
             if substring == substring[::-1]:
