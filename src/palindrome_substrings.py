@@ -14,5 +14,9 @@ def find_shortest_palindromic_substrings(s):
     # Single characters are always palindromes
     result = {c for c in s}
     
-    # If no longer palindromes found, return single chars
+    # Check for palindromes of length 2
+    for i in range(len(s) - 1):
+        if s[i] == s[i+1]:
+            result.add(s[i:i+2])
+    
     return list(result)
