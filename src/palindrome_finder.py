@@ -11,6 +11,10 @@ def find_non_overlapping_palindromes(s):
     if not s:
         return []
     
+    # Single-character case
+    if len(s) == 1:
+        return [s]
+    
     # Find all palindromic substrings in the string
     def find_palindromes(string):
         palinds = []
@@ -31,6 +35,5 @@ def find_non_overlapping_palindromes(s):
             result.append(pal)
             used_indices.update(range(start, start + len(pal)))
     
-    # If no multi-character palindromes found, return empty list
-    # Single characters are not considered palindromes in this context
+    # If no multi-character palindromes, check single characters
     return result
