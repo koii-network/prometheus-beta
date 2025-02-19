@@ -22,17 +22,20 @@ def sum_perfect_squares_from_set(integer_set):
     # Find all possible perfect squares
     perfect_squares = set()
     
-    # Try all possible combinations of numbers in the set
-    for r in range(1, len(integer_set) + 1):
-        for combo in combinations(integer_set, r):
-            # Convert combination to a number
-            num = int(''.join(map(str, combo)))
-            
-            # Check if the number is a perfect square
-            if num > 0:
-                sqrt_val = int(sqrt(num))
-                if sqrt_val * sqrt_val == num:
-                    perfect_squares.add(num)
+    # Check each number in the set
+    for num in integer_set:
+        # Check if the number itself is a perfect square
+        sqrt_val = int(sqrt(num))
+        if sqrt_val * sqrt_val == num:
+            perfect_squares.add(num)
+        
+        # Try concatenating with other numbers
+        for other in integer_set:
+            # Concatenate and check
+            concat_num = int(f"{num}{other}")
+            sqrt_val = int(sqrt(concat_num))
+            if sqrt_val * sqrt_val == concat_num:
+                perfect_squares.add(concat_num)
     
     # Return the sum of unique perfect squares
     return sum(perfect_squares)
