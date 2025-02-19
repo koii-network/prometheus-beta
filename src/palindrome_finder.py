@@ -17,7 +17,7 @@ def find_non_overlapping_palindromes(s):
         for i in range(len(string)):
             for j in range(i + 1, len(string) + 1):
                 substr = string[i:j]
-                if substr == substr[::-1]:
+                if substr == substr[::-1] and len(substr) > 1:
                     palinds.append((substr, i))
         return sorted(palinds, key=lambda x: (-len(x[0]), x[0]))
     
@@ -31,10 +31,6 @@ def find_non_overlapping_palindromes(s):
             result.append(pal)
             used_indices.update(range(start, start + len(pal)))
     
-    # Ensure some shorter palindromes are found when possible
-    if len(result) == 1 and len(result[0]) == len(s):
-        shorter_pals = [p for p in find_palindromes(s) if len(p[0]) < len(s)]
-        if shorter_pals:
-            result = [shorter_pals[0][0]]
-    
+    # If no multi-character palindromes found, return empty list
+    # Single characters are not considered palindromes in this context
     return result
