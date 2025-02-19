@@ -31,7 +31,7 @@ def test_complex_case_sensitivity():
         ("Abc", "abc", 2),   # Will match 'bc'
         ("aB", "ab", 1),     # Will match 'b'
         ("abC", "abc", 2),   # Will match 'ab'
-        ("CAbc", "cab", 2),  # Will match 'ab'
+        ("CAbc", "cab", 1),  # Will match minimal match
         ("ABc", "abc", 2),   # Will match 'bc'
     ]
     
