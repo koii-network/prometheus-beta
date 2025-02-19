@@ -16,11 +16,11 @@ def fibonacci(n):
         return fib_seq
     
     fib_seq.append(1)
-    while fib_seq[-1] <= n:
-        next_num = fib_seq[-1] + fib_seq[-2]
-        if next_num > n:
-            break
-        fib_seq.append(next_num)
+    a, b = 0, 1
+    while b <= n:
+        a, b = b, a + b
+        if b <= n:
+            fib_seq.append(b)
     
     return fib_seq
 
