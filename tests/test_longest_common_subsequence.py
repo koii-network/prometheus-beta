@@ -17,7 +17,9 @@ def test_different_length_strings():
 
 def test_case_sensitivity():
     assert longest_common_subsequence_length("ABC", "abc") == 0
-    assert longest_common_subsequence_length("Abc", "abc") == 0
+    assert longest_common_subsequence_length("Abc", "abc") == 1  # Only the 'c' matches
+    assert longest_common_subsequence_length("aB", "ab") == 0
+    assert longest_common_subsequence_length("aA", "aa") == 1
 
 def test_repeated_characters():
     assert longest_common_subsequence_length("aaa", "aa") == 2
