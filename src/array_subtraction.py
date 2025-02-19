@@ -7,7 +7,9 @@ def subtract_arrays_mod_10(A, B):
         B (list): Second input array of integers with length 10
     
     Returns:
-        list: A new array where C[i] = max(0, (A[i] - B[i]) % 10)
+        list: A new array where 
+            If A[i] < B[i]: C[i] = 0
+            Else: C[i] = (A[i] - B[i]) % 10
     
     Raises:
         ValueError: If input arrays are not of length 10
@@ -15,4 +17,4 @@ def subtract_arrays_mod_10(A, B):
     if len(A) != 10 or len(B) != 10:
         raise ValueError("Both input arrays must be of length 10")
     
-    return [0 if a - b < 0 else max(0, (a - b) % 10) for a, b in zip(A, B)]
+    return [0 if a < b else (a - b) % 10 for a, b in zip(A, B)]
