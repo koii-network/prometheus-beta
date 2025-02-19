@@ -1,5 +1,5 @@
 import pytest
-from src.random_case_converter import convert_to_alternating_random_case
+from ..src.random_case_converter import convert_to_alternating_random_case
 
 def test_convert_to_alternating_random_case_basic():
     """Test basic string conversion"""
