@@ -11,12 +11,12 @@ def find_non_overlapping_palindromes(s):
     if not s:
         return []
     
-    # Find all palindromic substrings
-    def all_palindromes(s):
+    # Helper function to find all palindromes
+    def find_palindromes(string):
         palinds = []
-        for i in range(len(s)):
-            for j in range(i + 1, len(s) + 1):
-                substr = s[i:j]
+        for i in range(len(string)):
+            for j in range(i + 1, len(string) + 1):
+                substr = string[i:j]
                 if substr == substr[::-1]:
                     palinds.append(substr)
         return sorted(set(palinds), key=lambda x: (len(x), x), reverse=True)
@@ -27,18 +27,28 @@ def find_non_overlapping_palindromes(s):
         used_indices = set()
         
         for pal in palindromes:
-            # Find the first occurrence of the palindrome
-            start = s.index(pal)
+            # Find all occurrences of the palindrome
+            occurrences = []
+            start = 0
+            while True:
+                try:
+                    index = s.index(pal, start)
+                    occurrences.append(index)
+                    start = index + 1
+                except ValueError:
+                    break
             
-            # Check if indices are already used
-            if any(idx in used_indices for idx in range(start, start + len(pal))):
-                continue
-            
-            # Add palindrome and mark its indices as used
-            result.append(pal)
-            used_indices.update(range(start, start + len(pal)))
+            # Try each occurrence
+            for start in occurrences:
+                # Check if indices are not used
+                if not any(idx in used_indices for idx in range(start, start + len(pal))):
+                    # Add palindrome and mark its indices
+                    result.append(pal)
+                    used_indices.update(range(start, start + len(pal)))
+                    break
         
         return sorted(result)
     
-    # Find and return non-overlapping palindromes
-    return find_non_overlapping(all_palindromes(s))
+    # Get palindromes, filter non-overlapping
+    palindromes = find_palindromes(s)
+    return find_non_overlapping(palindromes)
