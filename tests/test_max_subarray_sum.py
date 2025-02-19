@@ -26,7 +26,7 @@ def test_negative_numbers():
     """Test with an array containing negative numbers"""
     arr = [-1, -4, -2, -10, -23, -3, -1, 0, -20]
     k = 3
-    assert max_subarray_sum(arr, k) == -6  # -1 + -4 + -2 = -6
+    assert max_subarray_sum(arr, k) == -4  # Find the least negative subarray
 
 def test_invalid_k_zero():
     """Test with k = 0"""
