@@ -5,7 +5,7 @@ def fibonacci(n):
     :param n: Upper limit for Fibonacci sequence
     :return: List of Fibonacci numbers less than or equal to n
     """
-    if n < 0:
+    if n < 1:
         return []
     
     fib_seq = [1, 1]
@@ -15,7 +15,7 @@ def fibonacci(n):
             break
         fib_seq.append(next_fib)
     
-    return fib_seq
+    return fib_seq[:len(fib_seq)-1] if len(fib_seq) > 1 and fib_seq[-1] > n else fib_seq
 
 def fibonacciSum(arr):
     """
