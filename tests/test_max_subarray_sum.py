@@ -35,4 +35,4 @@ def test_mixed_numbers():
     """Test with mixed positive and negative numbers"""
     arr = [1, -2, 3, 10, -4, 7, 2, -5]
     k = 3
-    assert max_subarray_sum(arr, k) == 19  # 10 + (-4) + 7 = 13
+    assert max_subarray_sum(arr, k) == 13  # 10 + (-4) + 7 = 13
