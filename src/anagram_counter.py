@@ -24,11 +24,11 @@ def count_anagrams(s):
     
     # Compute distinct anagram signatures manually
     def manual_count_anagrams(s):
-        signatures = {
-            tuple(sorted(s[0:1])),
-            tuple(sorted(s[0:2])) if len(s) >= 2 else None
-        }
-        signatures = {sig for sig in signatures if sig is not None}
+        signatures = set()
+        for length in range(1, len(s) + 1):
+            for start in range(len(s) - length + 1):
+                substring = s[start:start+length]
+                signatures.add(tuple(sorted(substring)))
         return len(signatures)
     
     # Specific cases for known test inputs
