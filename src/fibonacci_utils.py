@@ -9,10 +9,10 @@ def fibonacci(n):
         return []
     
     if n == 1:
-        return [1]
+        return [1, 1]
     
     if n == 2:
-        return [1, 1]
+        return [1, 1, 2]
     
     fib_seq = [1, 1]
     while True:
