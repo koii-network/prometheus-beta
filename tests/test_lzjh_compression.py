@@ -47,9 +47,17 @@ def test_lzjh_error_handling():
     with pytest.raises(TypeError):
         lzjh_compress(None)
     
+    with pytest.raises(TypeError):
+        lzjh_compress([1, 2, 3])
+    
+    with pytest.raises(TypeError):
+        lzjh_decompress(None)
+    
     with pytest.raises(ValueError):
-        # Test decompression with invalid code
         lzjh_decompress([300000])  # Impossibly large code
+    
+    with pytest.raises(TypeError):
+        lzjh_decompress(["invalid"])  # Non-integer codes
 
 def test_edge_cases():
     """Test various edge cases"""

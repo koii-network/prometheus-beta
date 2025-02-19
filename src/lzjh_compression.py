@@ -8,9 +8,15 @@ def lzjh_compress(input_data):
     Returns:
         list: Compressed representation of the input data.
     """
+    # Input validation
+    if input_data is None:
+        raise TypeError("Input cannot be None")
+    
     # Convert input to bytes if it's a string
     if isinstance(input_data, str):
         input_data = input_data.encode('utf-8')
+    elif not isinstance(input_data, bytes):
+        raise TypeError("Input must be a string or bytes")
     
     # Initialize compression dictionary and output
     dictionary = {bytes([i]): i for i in range(256)}
@@ -54,14 +60,21 @@ def lzjh_decompress(compressed_data):
     Returns:
         bytes: Decompressed data.
     """
+    # Input validation
+    if not isinstance(compressed_data, list):
+        raise TypeError("Compressed data must be a list")
+    
+    if not compressed_data:
+        return b''
+    
     # Initialize decompression dictionary
     dictionary = {i: bytes([i]) for i in range(256)}
     current_code = 256
     result = bytearray()
     
-    # Handling empty input
-    if not compressed_data:
-        return b''
+    # Validate first code
+    if compressed_data[0] not in dictionary:
+        raise ValueError(f"Invalid compressed code: {compressed_data[0]}")
     
     # First code is always a single byte
     current_sequence = dictionary[compressed_data[0]]
@@ -69,22 +82,28 @@ def lzjh_decompress(compressed_data):
     
     # Process remaining codes
     for code in compressed_data[1:]:
-        if code in dictionary:
-            # Code exists in dictionary
-            next_sequence = dictionary[code]
-        elif code == current_code:
-            # Special case: repeated sequence
-            next_sequence = current_sequence + current_sequence[0:1]
+        if not isinstance(code, int):
+            raise TypeError("Compressed codes must be integers")
+        
+        if 0 <= code < 65536:
+            if code in dictionary:
+                # Code exists in dictionary
+                next_sequence = dictionary[code]
+            elif code == current_code:
+                # Special case: repeated sequence
+                next_sequence = current_sequence + current_sequence[0:1]
+            else:
+                raise ValueError(f"Invalid compressed code: {code}")
+            
+            result.extend(next_sequence)
+            
+            # Add new sequence to dictionary
+            if current_code < 65536:
+                dictionary[current_code] = current_sequence + next_sequence[0:1]
+                current_code += 1
+            
+            current_sequence = next_sequence
         else:
-            raise ValueError(f"Invalid compressed code: {code}")
-        
-        result.extend(next_sequence)
-        
-        # Add new sequence to dictionary
-        if current_code < 65536:
-            dictionary[current_code] = current_sequence + next_sequence[0:1]
-            current_code += 1
-        
-        current_sequence = next_sequence
+            raise ValueError(f"Compressed code out of valid range: {code}")
     
     return bytes(result)
