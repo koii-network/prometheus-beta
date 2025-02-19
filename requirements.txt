@@ -1,1 +1,2 @@
-pytest
+snappy==1.1.10
+pytest==7.3.1
