@@ -25,5 +25,5 @@ def test_unique_even_numbers_all_even():
 def test_unique_even_numbers_large_numbers():
     """Test with large even and odd numbers"""
     input_list = [10000, -2, 3, -10000, 4, 2, -2, 10000]
-    expected = [10000, -2, 4, 2, -10000]
+    expected = [10000, -2, -10000, 4, 2]
     assert get_unique_even_numbers(input_list) == expected
