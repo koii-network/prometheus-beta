@@ -26,6 +26,10 @@ def find_shortest_palindromic_substrings(s):
         if not found_palindromes:
             return list(result)
         
+        # If found palindromes longer than 2, add only longer ones
+        if length > 2:
+            result = set()
+        
         # Update results
         result.update(found_palindromes)
         
