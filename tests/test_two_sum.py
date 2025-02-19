@@ -13,7 +13,7 @@ def test_multiple_solutions():
     numbers = [3, 2, 4, 1, 5]
     target_sum = 6
     result = find_two_sum_indices(numbers, target_sum)
-    assert result in [[1, 3], [2, 4]]
+    assert result in [[1, 2]]  # Update to match expected first solution
 
 def test_no_solution():
     """Test when no indices add up to target sum"""
