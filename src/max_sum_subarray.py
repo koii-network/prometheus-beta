@@ -23,10 +23,9 @@ def maxSumSubarray(arr, k):
     if len(arr) == 0:
         return None
     
-    # Track maximum sum
+    # Brute force approach that checks all possible combinations
     max_sum = float('-inf')
     
-    # Iterate through the array to find non-overlapping subarrays
     for i in range(len(arr) - k + 1):
         current_sum = sum(arr[i:i+k])
         max_sum = max(max_sum, current_sum)

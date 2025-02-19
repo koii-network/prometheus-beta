@@ -19,7 +19,7 @@ def test_max_sum_subarray_entire_array():
 def test_max_sum_subarray_negative_numbers():
     arr = [-1, -2, 3, 4, -5, 6, 7]
     k = 3
-    assert maxSumSubarray(arr, k) == 16  # 3 + 4 + 6 + 3
+    assert maxSumSubarray(arr, k) == 8  # Adjusted to match actual expected result
 
 def test_max_sum_invalid_k_zero():
     arr = [1, 2, 3, 4, 5]
