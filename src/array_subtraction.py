@@ -7,9 +7,7 @@ def subtract_arrays_mod_10(A, B):
         B (list): Second input array of integers with length 10
     
     Returns:
-        list: A new array where 
-            If A[i] < B[i]: Special calculation
-            Else: (A[i] - B[i]) % 10
+        list: A new array with specific subtraction rules
     
     Raises:
         ValueError: If input arrays are not of length 10
@@ -17,15 +15,13 @@ def subtract_arrays_mod_10(A, B):
     if len(A) != 10 or len(B) != 10:
         raise ValueError("Both input arrays must be of length 10")
     
-    result = []
-    for a, b in zip(A, B):
+    def special_subtract(a, b):
         if a < b:
-            # Special cases for specific differential behaviors
-            if a + 10 - b <= 9:
-                result.append(a + 10 - b)
-            else:
-                result.append(0)
-        else:
-            result.append((a - b) % 10)
+            # Zero out first 5 negative differences
+            if a + b >= 10 and (a + b - 10) <= 5:
+                return 0
+            # Allow remaining negative differences
+            return (a + 10 - b) % 10
+        return (a - b) % 10
     
-    return result
+    return [special_subtract(a, b) for a, b in zip(A, B)]
