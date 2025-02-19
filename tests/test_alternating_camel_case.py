@@ -4,7 +4,7 @@ from src.alternating_camel_case import to_alternating_camel_case
 def test_basic_conversion():
     """Test basic string conversion to alternating camel case."""
     assert to_alternating_camel_case("hello world python") == "helloWorldpython"
-    assert to_alternating_camel_case("this is a test") == "thisIsa"
+    assert to_alternating_camel_case("this is a test") == "thisIsaTest"
 
 def test_single_word():
     """Test conversion with a single word."""
