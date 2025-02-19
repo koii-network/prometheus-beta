@@ -17,5 +17,5 @@ def test_negative_numbers():
     assert max_subarray_sum([-1, -2, -3, -4], 2) == [-3]
 
 def test_mixed_numbers():
-    # The maximum sum of 3 consecutive elements is indeed 3 + 4 + 0 = 7
-    assert max_subarray_sum([1, -2, 3, 4, -5, 6], 3) == [7]
+    # The maximum sum of 3 consecutive elements is actually 5
+    assert max_subarray_sum([1, -2, 3, 4, -5, 6], 3) == [5]
