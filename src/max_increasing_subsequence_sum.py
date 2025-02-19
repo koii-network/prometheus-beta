@@ -11,51 +11,38 @@ def max_increasing_subsequence_sum(arr):
     if not arr:
         return 0
     
-    # Lengths of subsequences will match indices
-    dp = [0] * len(arr)
+    # Will store the end values and their corresponding sums of subsequences
+    subsequences = [(arr[0], arr[0])]
+    max_sum = arr[0]
     
-    # Tracking best configurations
-    best_sums = [arr[0]]
-    dp[0] = arr[0]
-    
-    for i in range(1, len(arr)):
-        # Find the index to replace or extend
-        idx = binary_search(best_sums, arr[i])
+    for num in arr[1:]:
+        # Case 1: Start a new subsequence if num is smaller
+        if num <= subsequences[0][0]:
+            subsequences[0] = (num, num)
+            continue
         
-        # Compute the total sum for this position
-        if idx == 0:
-            # Start of a subsequence
-            dp[i] = arr[i]
-            if arr[i] > best_sums[0]:
-                best_sums.append(arr[i])
+        # Case 2: Extend the longest subsequence
+        if num > subsequences[-1][0]:
+            prev_sum = subsequences[-1][1]
+            subsequences.append((num, prev_sum + num))
+            max_sum = max(max_sum, subsequences[-1][1])
+            continue
+        
+        # Case 3: Find the right place to insert/replace
+        left, right = 0, len(subsequences) - 1
+        while left < right:
+            mid = (left + right) // 2
+            if subsequences[mid][0] < num:
+                left = mid + 1
             else:
-                best_sums[0] = arr[i]
-        else:
-            # Extend previous subsequence
-            dp[i] = best_sums[idx-1] + arr[i]
-            if idx == len(best_sums):
-                best_sums.append(dp[i])
-            else:
-                best_sums[idx] = dp[i]
+                right = mid
+        
+        # Update the subsequence
+        if left > 0:
+            new_sum = subsequences[left-1][1] + num
+            if new_sum > subsequences[left][1]:
+                subsequences[left] = (num, new_sum)
+        
+        max_sum = max(max_sum, subsequences[left][1])
     
-    return max(dp)
-
-def binary_search(arr, target):
-    """
-    Binary search to find insertion point while maintaining sorted order.
-    
-    Args:
-        arr (list): Sorted list to search
-        target (int): Target value to insert
-    
-    Returns:
-        int: Index where target should be inserted
-    """
-    left, right = 0, len(arr)
-    while left < right:
-        mid = (left + right) // 2
-        if arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid
-    return left
+    return max_sum
