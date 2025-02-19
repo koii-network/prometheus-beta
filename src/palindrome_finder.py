@@ -24,15 +24,26 @@ def find_non_overlapping_palindromes(s):
         if i in used_indices:
             continue
         
+        # Find the smallest and largest palindromes from this start index
+        sub_pals = []
         for j in range(len(s), i, -1):
             substr = s[i:j]
             
             # Check if substring is a palindrome and uses unused indices
             if (is_palindrome(substr) and 
                 all(idx not in used_indices for idx in range(i, j))):
-                palindromes.append(substr)
-                used_indices.update(range(i, j))
-                break
+                sub_pals.append(substr)
+        
+        # If palindromes found, add the shortest unique palindrome
+        if sub_pals:
+            shortest_pal = min(sub_pals, key=len)
+            
+            # Mark used indices and add to result
+            palindromes.append(shortest_pal)
+            used_indices.update(range(
+                s.index(shortest_pal), 
+                s.index(shortest_pal) + len(shortest_pal)
+            ))
     
     # Return unique palindromes sorted lexicographically
     return sorted(set(palindromes))
