@@ -20,7 +20,7 @@ def test_generate_substrings_single_char():
 def test_generate_substrings_with_spaces_and_symbols():
     """Test substring generation with spaces and symbols."""
     result = generate_substrings("hello world!")
-    assert len(result) == 66  # Total possible substrings
+    assert len(result) == 78  # Adjust to match the correct number of substrings
     assert "hello" in result
     assert " " in result
     assert "hello world!" in result
