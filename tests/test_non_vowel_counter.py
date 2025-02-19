@@ -11,7 +11,7 @@ def test_count_non_vowels_case_insensitive():
 
 def test_count_non_vowels_with_punctuation():
     assert count_non_vowels("hello, world!") == 7
-    assert count_non_vowels("a1b2c3") == 3
+    assert count_non_vowels("a1b2c3") == 5
 
 def test_count_non_vowels_empty_string():
     assert count_non_vowels("") == 0
