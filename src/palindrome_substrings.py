@@ -11,26 +11,25 @@ def find_shortest_palindromic_substrings(s):
     if not s:
         return []
     
-    # Track palindromes
-    palindromes = {1: {c for c in s}}
-    max_palindrome_length = 1
+    # Single characters are always palindromes
+    result = {c for c in s}
     
-    # Find palindromes of increasing length
+    # Check for palindromes of length 2 and above
     for length in range(2, len(s) + 1):
-        current_palindromes = set()
+        found_palindromes = set()
         for i in range(len(s) - length + 1):
             substr = s[i:i+length]
             if substr == substr[::-1]:
-                current_palindromes.add(substr)
+                found_palindromes.add(substr)
         
-        # If palindromes found, store and update max length
-        if current_palindromes:
-            palindromes[length] = current_palindromes
-            max_palindrome_length = length
-            
-            # If we've found multiple length palindromes, we can stop
-            if length > 1:
-                break
+        # If no 2+ length palindromes found, return single chars
+        if not found_palindromes:
+            return list(result)
+        
+        # Update results
+        result.update(found_palindromes)
+        
+        # Stop after finding first set of multi-char palindromes
+        break
     
-    # Return the palindromes of the shortest found length
-    return list(palindromes[max_palindrome_length])
+    return list(result)
