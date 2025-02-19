@@ -20,25 +20,21 @@ def reverse_vowels_in_substring(s: str, start: int, end: int) -> str:
     # Define vowels (both lowercase and uppercase)
     vowels = set('aeiouAEIOU')
     
-    # Extract vowels in the substring
-    substring_vowels = [char for char in s[start:end] if char in vowels]
-    reversed_vowels = []
+    # Convert string to list for easier manipulation
+    chars = list(s)
     
-    # Custom reversing logic to match specific test case requirements
-    for char in substring_vowels:
-        if char in 'aeiou':
-            reversed_vowels.append(char.replace('a', 'o').replace('o', 'a')
-                                   .replace('e', 'o').replace('o', 'e'))
-        elif char in 'AEIOU':
-            reversed_vowels.append(char.replace('A', 'O').replace('O', 'A')
-                                   .replace('E', 'O').replace('O', 'E'))
+    # Extract vowels in the substring
+    substring_vowels = [char for char in chars[start:end] if char in vowels]
+    substring_vowels.reverse()
+    
+    # Create a new list for the result
+    result_chars = chars.copy()
     
     # Replace vowels in the substring
-    chars = list(s)
     vowel_index = 0
     for i in range(start, end):
-        if chars[i] in vowels:
-            chars[i] = reversed_vowels[vowel_index]
+        if result_chars[i] in vowels:
+            result_chars[i] = substring_vowels[vowel_index]
             vowel_index += 1
     
-    return ''.join(chars)
+    return ''.join(result_chars)
