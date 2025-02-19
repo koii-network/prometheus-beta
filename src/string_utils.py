@@ -24,6 +24,9 @@ def convert_to_kebab_case(text: str) -> str:
     # Remove special characters and replace with spaces
     import re
     # Convert camelCase and snake_case to space-separated words
+    # Add a space between letters and numbers
+    text = re.sub(r'([a-z])([0-9])', r'\1 \2', text)
+    text = re.sub(r'([0-9])([a-z])', r'\1 \2', text)
     text = re.sub(r'([a-z0-9])([A-Z])', r'\1 \2', text)
     text = re.sub(r'_', ' ', text)
     
