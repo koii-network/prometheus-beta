@@ -5,16 +5,19 @@ def test_find_shortest_palindromic_substrings_basic():
     assert set(find_shortest_palindromic_substrings("abc")) == {"a", "b", "c"}
     
 def test_find_shortest_palindromic_substrings_multiple_palindromes():
-    assert set(find_shortest_palindromic_substrings("abba")) == {"a", "b", "bb"}
+    result = set(find_shortest_palindromic_substrings("abba"))
+    assert result == {"a", "b", "bb"}
     
 def test_find_shortest_palindromic_substrings_empty_string():
     assert find_shortest_palindromic_substrings("") == []
     
 def test_find_shortest_palindromic_substrings_repeated_chars():
-    assert set(find_shortest_palindromic_substrings("aaa")) == {"a", "aa"}
+    result = set(find_shortest_palindromic_substrings("aaa"))
+    assert result == {"a", "aa"}
     
 def test_find_shortest_palindromic_substrings_mixed_case():
-    assert set(find_shortest_palindromic_substrings("AbcbA")) == {"A", "b", "c"}
+    result = set(find_shortest_palindromic_substrings("AbcbA"))
+    assert result == {"A", "b", "c"}
     
 def test_find_shortest_palindromic_substrings_single_char():
     result = find_shortest_palindromic_substrings("hello")
