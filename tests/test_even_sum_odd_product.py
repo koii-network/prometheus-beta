@@ -1,4 +1,10 @@
 import pytest
+import sys
+import os
+
+# Add the parent directory to sys.path to allow importing src module
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from src.even_sum_odd_product import calculate_even_sum_odd_product
 
 def test_mixed_numbers():
