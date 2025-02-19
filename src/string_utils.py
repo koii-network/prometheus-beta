@@ -1,3 +1,5 @@
+import re
+
 def reverse_words(input_string: str) -> str:
     """
     Reverse the order of words in a given string.
@@ -9,8 +11,9 @@ def reverse_words(input_string: str) -> str:
         str: A string with words in reversed order, handling multiple spaces 
              and ignoring non-alphabetic characters
     """
-    # Remove leading/trailing whitespace and split on multiple whitespace characters
-    words = input_string.strip().split()
+    # Remove punctuation, strip whitespace, and split on multiple whitespace characters
+    cleaned_string = re.sub(r'[^\w\s]', '', input_string)
+    words = cleaned_string.strip().split()
     
     # Reverse the list of words and join back with a single space
     return ' '.join(words[::-1])
