@@ -20,9 +20,9 @@ def find_shortest_palindromic_substrings(s):
     min_length = float('inf')
     
     # Check all possible substrings
-    for i in range(len(s)):
-        for j in range(i, len(s)):
-            substr = s[i:j+1]
+    for length in range(1, len(s) + 1):
+        for i in range(len(s) - length + 1):
+            substr = s[i:i+length]
             
             if is_palindrome(substr):
                 # Update min_length and reset palindromes if a shorter palindrome is found
