@@ -21,7 +21,7 @@ def test_multiple_spaces():
 def test_edge_cases():
     """Test various edge cases."""
     assert to_alternating_camel_case("a b c") == "aBc"
-    assert to_alternating_camel_case("ONE TWO THREE") == "oneTwoThree"
+    assert to_alternating_camel_case("ONE TWO THREE") == "oneTwothree"
 
 def test_invalid_input():
     """Test that TypeError is raised for non-string inputs."""
