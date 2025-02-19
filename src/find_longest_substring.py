@@ -14,7 +14,7 @@ def find_longest_substring(s):
     longest_substring = ""
     
     for start in range(len(s)):
-        # Track unique characters in the current substring
+        # Track unique characters in the current substring (case-sensitive)
         seen = set()
         current_substring = ""
         
