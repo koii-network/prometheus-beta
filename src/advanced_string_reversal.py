@@ -21,8 +21,8 @@ def advanced_string_reversal(input_string):
         """Reverse a word if it's not a palindrome."""
         return word if is_palindrome(word) else word[::-1]
     
-    # Regular expression to split the string into tokens
-    tokens = re.findall(r'\d+|[a-zA-Z]+|[^\w\s]', input_string)
+    # Split the string while preserving delimiters
+    tokens = re.findall(r'(\d+|[a-zA-Z]+|\s+|[^\w\s])', input_string)
     
     # Process each token
     processed_tokens = []
@@ -31,7 +31,7 @@ def advanced_string_reversal(input_string):
             processed_tokens.append(token[::-1])
         elif token.isalpha():  # Words are reversed if not palindromes
             processed_tokens.append(reverse_word(token))
-        else:  # Non-alphanumeric characters remain unchanged
+        else:  # Whitespace and punctuation remain unchanged
             processed_tokens.append(token)
     
     return ''.join(processed_tokens)
