@@ -16,21 +16,24 @@ def find_shortest_palindromic_substrings(s):
         return substr == substr[::-1]
     
     # Find all palindromic substrings
-    palindromes = set()
-    min_length = float('inf')
+    palindromes = {}
     
     # Check all possible substrings
     for length in range(1, len(s) + 1):
+        current_palindromes = set()
         for i in range(len(s) - length + 1):
             substr = s[i:i+length]
             
             if is_palindrome(substr):
-                # Update min_length and reset palindromes if a shorter palindrome is found
-                if len(substr) < min_length:
-                    min_length = len(substr)
-                    palindromes = {substr}
-                # Add to palindromes if same length as current shortest
-                elif len(substr) == min_length:
-                    palindromes.add(substr)
+                current_palindromes.add(substr)
+        
+        # If we find palindromes of this length
+        if current_palindromes:
+            # First time finding palindromes or found shorter than previous
+            if not palindromes or length < min(len(p) for p in palindromes):
+                palindromes = current_palindromes
+            # Found palindromes of same length as current shortest
+            elif length == min(len(p) for p in palindromes):
+                palindromes.update(current_palindromes)
     
     return list(palindromes)
