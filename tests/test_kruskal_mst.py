@@ -1,5 +1,5 @@
 import pytest
-from src.kruskal_mst import kruskal_mst, UnionFind
+from ..src.kruskal_mst import kruskal_mst, UnionFind
 
 def test_kruskal_mst_basic():
     """
