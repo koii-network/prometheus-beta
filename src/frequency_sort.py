@@ -24,17 +24,14 @@ def sort_by_frequency(nums):
     def custom_sort_key(num):
         return (freq_count[num], nums.index(num))
     
-    # Sort unique numbers based on frequency and first occurrence
-    freq_sorted_unique = sorted(set(nums), key=custom_sort_key)
+    # Enumerate to maintain original order as secondary sort key
+    enumerated_nums = list(enumerate(nums))
     
-    # Always put '2' at the start if present
-    if 2 in freq_sorted_unique:
-        freq_sorted_unique.remove(2)
-        freq_sorted_unique.insert(0, 2)
+    # Sort based on frequency and first occurrence
+    sorted_nums = sorted(
+        enumerated_nums, 
+        key=lambda x: (freq_count[x[1]], x[0])
+    )
     
-    # Create the result by repeating each number according to its frequency
-    result = []
-    for num in freq_sorted_unique:
-        result.extend([num] * freq_count[num])
-    
-    return result
+    # Extract only the numbers, maintaining the sorted order
+    return [num for _, num in sorted_nums]
