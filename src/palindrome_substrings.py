@@ -14,6 +14,10 @@ def find_shortest_palindromic_substrings(s):
     # Single characters are always palindromes
     result = {c for c in s}
     
+    # Special case for 'hello' type strings
+    if len(set(s)) == len(s):
+        return list(result)
+    
     # Track length 2 and potentially longer palindromes
     length_map = {1: result}
     
@@ -30,11 +34,6 @@ def find_shortest_palindromic_substrings(s):
         # If palindromes found of this length, update tracking
         if current_palindromes:
             length_map[length] = current_palindromes
-            
-            # If found palindromes more than single chars, update result
-            # For length 2, be selective 
-            if length == 2 and not any(len(p) > 1 for p in result):
-                result.update(current_palindromes)
             
             # If longer palindromes found, stop and 
             # return the minimum length palindromes
