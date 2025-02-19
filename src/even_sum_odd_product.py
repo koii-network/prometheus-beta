@@ -26,8 +26,11 @@ def calculate_even_sum_odd_product(numbers):
     # Calculate product of odd numbers
     # Handle empty list of odd numbers by returning 1 (multiplicative identity)
     odd_product = 1
-    for num in numbers:
-        if num % 2 != 0:
+    odd_numbers = [num for num in numbers if num % 2 != 0]
+    
+    if odd_numbers:
+        odd_product = 1
+        for num in odd_numbers:
             odd_product *= num
     
     return even_sum, odd_product
