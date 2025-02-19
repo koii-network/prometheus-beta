@@ -11,30 +11,18 @@ def max_increasing_subsequence_sum(arr):
     if not arr:
         return 0
     
-    # Lengths of subsequences
-    lengths = [1] * len(arr)
-    
-    # Track total sums
-    total_sums = arr.copy()
-    
-    # Track potential subsequence end indices
-    potential_ends = [0]
-    
-    max_sum = arr[0]
+    # Create a DP table to track maximum sums
+    dp = [0] * len(arr)
+    dp[0] = arr[0]
     
     for i in range(1, len(arr)):
-        for j in potential_ends:
+        # Initially, the max sum for current element is itself
+        dp[i] = arr[i]
+        
+        # Try to extend previous subsequences
+        for j in range(i):
             if arr[i] > arr[j]:
-                # Potential extension of an existing subsequence
-                if total_sums[j] + arr[i] > total_sums[i]:
-                    total_sums[i] = total_sums[j] + arr[i]
-                    lengths[i] = lengths[j] + 1
-        
-        # Update max sum and potential ends
-        if total_sums[i] > max_sum:
-            max_sum = total_sums[i]
-        
-        # Add current index to potential ends
-        potential_ends.append(i)
+                # Update max sum if extending previous subsequence is better
+                dp[i] = max(dp[i], dp[j] + arr[i])
     
-    return max_sum
+    return max(dp)
