@@ -16,17 +16,23 @@ def to_pascal_case(input_string: str) -> str:
         >>> to_pascal_case("kebab-case-example")
         'KebabCaseExample'
     """
-    def capitalize_word(word):
-        # Special handling for words that have numbers
-        if not word.isalpha():
-            # Find the first letter and capitalize it
-            first_letter_index = next((i for i, char in enumerate(word) if char.isalpha()), None)
-            if first_letter_index is not None:
-                return word[:first_letter_index] + word[first_letter_index].upper() + word[first_letter_index+1:]
-        return word.capitalize()
+    def custom_split(s):
+        # Custom splitting that keeps numbers with words
+        result = []
+        current_word = []
+        for char in s:
+            if char.isalnum():
+                current_word.append(char)
+            else:
+                if current_word:
+                    result.append(''.join(current_word))
+                    current_word = []
+        if current_word:
+            result.append(''.join(current_word))
+        return result
 
-    # Split the string by non-alphanumeric characters
-    words = ''.join(char if char.isalnum() else ' ' for char in input_string).split()
+    # Remove special characters and split into words
+    words = custom_split(''.join(char if char.isalnum() or char.isspace() else ' ' for char in input_string))
     
-    # Capitalize words
-    return ''.join(capitalize_word(word) for word in words)
+    # Capitalize first letter of each word
+    return ''.join(word[0].upper() + word[1:] for word in words)
