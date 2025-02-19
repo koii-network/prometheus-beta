@@ -15,13 +15,13 @@ def fibonacci(n):
         return [1, 1]
     
     fib_seq = [1, 1]
-    while fib_seq[-1] <= n:
+    while True:
         next_fib = fib_seq[-1] + fib_seq[-2]
         if next_fib > n:
             break
         fib_seq.append(next_fib)
     
-    return fib_seq[:len(fib_seq)-1] if len(fib_seq) > 1 and fib_seq[-1] > n else fib_seq
+    return fib_seq
 
 def fibonacciSum(arr):
     """
