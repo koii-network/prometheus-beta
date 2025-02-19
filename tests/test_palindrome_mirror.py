@@ -7,11 +7,11 @@ def test_basic_string_palindrome_mirror():
 
 def test_number_string_palindrome_mirror():
     """Test palindrome mirror for a string with numbers."""
-    assert create_palindrome_mirror("12345") == "123454321"
+    assert create_palindrome_mirror("12345") == "1234554321"
 
 def test_space_string_palindrome_mirror():
     """Test palindrome mirror for a string with spaces."""
-    assert create_palindrome_mirror("a b c") == "a b ca b c"
+    assert create_palindrome_mirror("a b c") == "a b cc b a"
 
 def test_special_character_palindrome_mirror():
     """Test palindrome mirror for a string with special characters."""
