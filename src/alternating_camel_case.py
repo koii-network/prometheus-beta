@@ -34,7 +34,8 @@ def to_alternating_camel_case(s: str) -> str:
     # Convert to alternating camel case
     result = words[0].lower()
     for i, word in enumerate(words[1:], 1):
-        # Fully capitalize words at odd indices (starting from 1)
-        result += word.upper() if i % 2 == 1 else word.lower()
+        # Capitalize the first letter of words at odd indices 
+        # (starting from the second word)
+        result += word.capitalize() if i % 2 == 1 else word.lower()
     
     return result
