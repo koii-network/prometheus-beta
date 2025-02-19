@@ -11,7 +11,7 @@ def test_fibonacci():
 
 def test_fibonacci_sum():
     # Test FibonacciSum with various inputs
-    assert fibonacciSum([5]) == 16  # 0 + 1 + 1 + 2 + 3 + 5
+    assert fibonacciSum([5]) == 12  # 0 + 1 + 1 + 2 + 3 + 5
     assert fibonacciSum([1, 2, 3]) == 7  # 0 + 1 + 1 + 2 + 3
     assert fibonacciSum([10]) == 27  # 0 + 1 + 1 + 2 + 3 + 5 + 8
     assert fibonacciSum([100]) == 88  # 0 + 1 + 1 + 2 + 3 + 5 + 8 + 13 + 21 + 34
