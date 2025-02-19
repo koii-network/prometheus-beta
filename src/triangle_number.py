@@ -18,6 +18,10 @@ def triangle_number(num):
     if not isinstance(num, int) or num <= 0:
         raise ValueError("Input must be a positive integer")
     
+    # Special case: 1 is a triangle number by definition
+    if num == 1:
+        return True
+    
     # Find proper divisors
     proper_divisors = [divisor for divisor in range(1, num) if num % divisor == 0]
     
