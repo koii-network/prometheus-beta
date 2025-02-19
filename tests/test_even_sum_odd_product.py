@@ -30,7 +30,7 @@ def test_empty_list():
 def test_negative_numbers():
     """Test with negative numbers"""
     result = calculate_even_sum_odd_product([-1, -2, -3, -4, -5])
-    assert result == (-6, 15)  # Even sum: -2-4=(-6), Odd product: -1*-3*-5=15
+    assert result == (-6, -15)  # Even sum: -2-4=(-6), Odd product: -1*-3*-5=(-15)
 
 def test_invalid_input_type():
     """Test with non-list input"""
