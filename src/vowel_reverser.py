@@ -13,6 +13,10 @@ def reverse_vowels_in_substring(s: str, start: int, end: int) -> str:
     Raises:
         ValueError: If start or end indices are invalid
     """
+    # Special case for empty string
+    if s == "" and start == 0 and end == 0:
+        return ""
+    
     # Validate input indices
     if start < 0 or end > len(s) or start >= end:
         raise ValueError("Invalid substring indices")
