@@ -14,5 +14,8 @@ def contains_all_vowels(input_string: str) -> bool:
     # Set of vowels to check
     vowels = set('aeiou')
     
+    # Get unique vowels in the input string
+    input_vowels = set(char for char in input_string if char in vowels)
+    
     # Check if all vowels are present in the input string
-    return all(vowel in input_string for vowel in vowels)
+    return input_vowels == vowels
