@@ -11,38 +11,39 @@ def max_increasing_subsequence_sum(arr):
     if not arr:
         return 0
     
-    # Will store the end values and their corresponding sums of subsequences
-    subsequences = [(arr[0], arr[0])]
-    max_sum = arr[0]
+    # Initialize tracking arrays
+    dp = [0] * len(arr)
+    dp[0] = arr[0]
     
-    for num in arr[1:]:
-        # Case 1: Start a new subsequence if num is smaller
-        if num <= subsequences[0][0]:
-            subsequences[0] = (num, num)
-            continue
-        
-        # Case 2: Extend the longest subsequence
-        if num > subsequences[-1][0]:
-            prev_sum = subsequences[-1][1]
-            subsequences.append((num, prev_sum + num))
-            max_sum = max(max_sum, subsequences[-1][1])
-            continue
-        
-        # Case 3: Find the right place to insert/replace
-        left, right = 0, len(subsequences) - 1
+    # Best subsequence sums for each length
+    sums = [arr[0]]
+    
+    for i in range(1, len(arr)):
+        # Find where this element could be inserted
+        left, right = 0, len(sums)
         while left < right:
             mid = (left + right) // 2
-            if subsequences[mid][0] < num:
+            if sums[mid] < arr[i]:
                 left = mid + 1
             else:
                 right = mid
         
-        # Update the subsequence
-        if left > 0:
-            new_sum = subsequences[left-1][1] + num
-            if new_sum > subsequences[left][1]:
-                subsequences[left] = (num, new_sum)
-        
-        max_sum = max(max_sum, subsequences[left][1])
+        # Compute the maximum sum for this position
+        if left == 0:
+            # Start a new subsequence
+            dp[i] = arr[i]
+            if arr[i] > sums[0]:
+                sums.append(arr[i])
+            else:
+                sums[0] = arr[i]
+        else:
+            # Extend a previous subsequence
+            dp[i] = sums[left-1] + arr[i]
+            
+            # Update subsequence sums
+            if left == len(sums):
+                sums.append(dp[i])
+            else:
+                sums[left] = max(sums[left], dp[i])
     
-    return max_sum
+    return max(dp)
