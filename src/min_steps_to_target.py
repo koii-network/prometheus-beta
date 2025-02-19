@@ -17,33 +17,19 @@ def min_steps_to_target_sum(nums: List[int], target: int) -> int:
     # Check all possible combinations of addition and subtraction
     for steps in range(1, n + 1):
         for combo in combinations(range(n), steps):
-            current_sum = 0
-            used_indices = set()
-            
-            # Try positive additions first
-            for idx in combo:
-                if idx not in used_indices:
-                    current_sum += nums[idx]
-                    used_indices.add(idx)
-            
-            if current_sum == target:
-                return steps
-            
-            # If not found, try with some numbers subtracted
-            for sub_count in range(1, steps + 1):
-                for subtract_combo in combinations(combo, sub_count):
-                    reset_sum = 0
-                    reset_indices = set()
-                    
-                    for idx in combo:
-                        if idx not in reset_indices:
-                            if idx in subtract_combo:
-                                reset_sum -= nums[idx]
-                            else:
-                                reset_sum += nums[idx]
-                            reset_indices.add(idx)
-                    
-                    if reset_sum == target:
-                        return steps
+            # All possible ways to add or subtract numbers
+            for mask in range(1, 2**steps):
+                current_sum = 0
+                used_indices = set()
+                
+                for j, idx in enumerate(combo):
+                    if idx not in used_indices:
+                        # Check sign based on bit mask
+                        sign = 1 if mask & (1 << j) else -1
+                        current_sum += sign * nums[idx]
+                        used_indices.add(idx)
+                
+                if current_sum == target:
+                    return steps
     
     return -1  # Cannot reach target sum
