@@ -20,19 +20,19 @@ def sort_by_frequency(nums):
     
     # Create a custom sorting key:
     # 1. Primary sort by frequency (ascending)
-    # 2. Secondary sort by original order
+    # 2. Secondary sort by first occurrence
     def custom_key(num):
-        # Use the count of occurrences as the primary sort key
-        # Use the first occurrence index as a tie-breaker
-        # Lower frequency and first occurrence comes first
         return (freq_count[num], nums.index(num))
     
-    # Sort the unique elements by frequency
+    # Sort the unique elements first
     unique_sorted = sorted(set(nums), key=custom_key)
     
-    # Reconstruct the list preserving the frequency order
+    # Prepare the result list
     result = []
     for num in unique_sorted:
+        # Find indices of this number in the original list
+        indices = [i for i, x in enumerate(nums) if x == num]
+        
         # Add all occurrences of the current number
         result.extend([num] * freq_count[num])
     
