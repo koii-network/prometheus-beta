@@ -11,27 +11,26 @@ def max_increasing_subsequence_sum(arr):
     if not arr:
         return 0
     
-    # Keep track of sums for subsequences of different lengths
-    dp = []
+    # Track the maximum sums for each ending index
+    sums = [arr[0]]
     
-    for num in arr:
-        # Find the right place to insert the current sum
-        left, right = 0, len(dp)
-        while left < right:
-            mid = (left + right) // 2
-            if dp[mid] < num:
-                left = mid + 1
-            else:
-                right = mid
+    for num in arr[1:]:
+        # Find the longest valid subsequence this num can extend
+        pos = len(sums)
+        for i in range(len(sums)):
+            if sums[i] < num or (i > 0 and sums[i-1] >= num):
+                pos = i
+                break
         
-        # If it's a new longest subsequence, append
-        if left == len(dp):
-            if not dp or num > dp[-1]:
-                dp.append(num)
-            else:
-                dp[left] = num
+        # Update the sum or add a new subsequence
+        if pos == len(sums):
+            sums.append(num)
         else:
-            # Otherwise, replace the existing path
-            dp[left] = num
+            # If first element, just replace
+            if pos == 0:
+                sums[pos] = num
+            else:
+                # Extend with previous sum
+                sums[pos] = sums[pos-1] + num
     
-    return max(arr) if len(arr) == len(set(arr)) else max(dp)  # fallback for all distinct sequences
+    return max(sums)
