@@ -19,4 +19,4 @@ def create_palindrome_mirror(input_string):
     if not isinstance(input_string, str):
         raise TypeError("Input must be a string")
     
-    return input_string + input_string[::-1]
+    return input_string + input_string
