@@ -3,7 +3,7 @@ def is_palindrome(s: str) -> bool:
     Determines if the input string is a palindrome.
     
     A palindrome is a string that reads the same backward as forward,
-    ignoring case and non-alphanumeric characters.
+    ignoring case, spaces, and non-alphanumeric characters.
     
     Args:
         s (str): The input string to check
@@ -18,7 +18,7 @@ def is_palindrome(s: str) -> bool:
     if not isinstance(s, str):
         raise TypeError("Input must be a string")
     
-    # Convert to lowercase and remove non-alphanumeric characters
+    # Convert to lowercase and remove non-alphanumeric characters and spaces
     cleaned = ''.join(char.lower() for char in s if char.isalnum())
     
     # Check if the cleaned string reads the same forwards and backwards

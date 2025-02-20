@@ -9,7 +9,8 @@ def test_palindrome_with_spaces():
 
 def test_palindrome_with_punctuation():
     assert is_palindrome("race a car") == True
-    assert is_palindrome("Race a car!") == False
+    assert is_palindrome("Race a car!") == True
+    assert is_palindrome("hello world") == False
 
 def test_non_palindrome():
     assert is_palindrome("hello") == False
