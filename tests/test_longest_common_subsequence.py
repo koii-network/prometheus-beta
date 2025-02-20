@@ -26,3 +26,4 @@ def test_multiple_possible_lcs():
 
 def test_case_sensitivity():
     assert longest_common_subsequence("Hello", "hello") == ""
+    assert longest_common_subsequence("ABC", "abc") == ""

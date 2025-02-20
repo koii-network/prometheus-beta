@@ -9,10 +9,7 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
     Returns:
         str: The longest common subsequence
     """
-    # Ensure exact case match
-    if any(c1 != c2 for c1, c2 in zip(str1, str2)):
-        return ""
-    
+    # Handle empty strings
     if not str1 or not str2:
         return ""
     
