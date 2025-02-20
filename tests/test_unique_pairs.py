@@ -1,5 +1,11 @@
 import pytest
-from src.unique_pairs import get_unique_pairs
+import sys
+import os
+
+# Add the parent directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from unique_pairs import get_unique_pairs
 
 def test_get_unique_pairs_basic():
     """Test basic functionality of unique pairs"""
