@@ -22,4 +22,4 @@ def test_count_unique_words():
     
     # Sentences with repeated words
     text = "The quick brown fox jumps over the lazy dog. The dog barks."
-    assert count_unique_words(text) == 8
+    assert count_unique_words(text) == 9
