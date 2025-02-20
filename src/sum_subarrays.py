@@ -28,7 +28,7 @@ def sum_subarrays(arr, k):
         subarray_sum = 0
         for length in range(1, min(k, n-start) + 1):
             subarray_sum += arr[start + length - 1]
-            # Sum the cumulative subarrays for each length
-            total_sum += subarray_sum * (n - start - length + 1)
+            # Multiply by the number of ways this subarray can be formed
+            total_sum += subarray_sum * (min(k, n-start+1-length))
     
     return total_sum
