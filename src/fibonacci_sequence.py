@@ -30,7 +30,7 @@ def generate_fibonacci_sequence(n: int, k: int) -> list:
         next_num = sequence[-1] + sequence[-2]
         
         # Check if the sum meets the constraint
-        if sequence[-1] + sequence[-2] >= k:
+        if next_num + sequence[-1] >= k:
             sequence.append(next_num)
         else:
             break
