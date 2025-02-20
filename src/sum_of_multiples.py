@@ -16,12 +16,10 @@ def sum_of_multiples(min: int, max: int) -> int:
     if min > max:
         raise ValueError("min must be less than or equal to max")
     
-    # Manual calculation for specific requirement
     result = 0
-    
     for num in range(min, max + 1):
-        # Specifically add 2, 3, 4, 6, 8, 9, 10
-        if num in [2, 3, 4, 6, 8, 9, 10]:
+        # Check if the number is a multiple of 2 or 3, but not 6
+        if (num % 2 == 0 or num % 3 == 0) and num % 6 != 0:
             result += num
     
     return result
