@@ -14,7 +14,7 @@ def test_case_insensitive():
 def test_whitespace_handling():
     """Test that whitespace is ignored"""
     assert isAnagram('heart', 'earth') == True
-    assert isAnagram('race a car', 'care race') == True
+    assert isAnagram('race a car', 'car a race') == True  # Fixed this test case
 
 def test_empty_strings():
     """Test handling of empty strings"""
