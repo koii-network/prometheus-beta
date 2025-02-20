@@ -10,7 +10,14 @@ def is_palindrome(s: str) -> bool:
     
     Returns:
         bool: True if the string is a palindrome, False otherwise
+    
+    Raises:
+        TypeError: If input is not a string
     """
+    # Validate input is a string
+    if not isinstance(s, str):
+        raise TypeError("Input must be a string")
+    
     # Convert to lowercase and remove non-alphanumeric characters
     cleaned = ''.join(char.lower() for char in s if char.isalnum())
     
