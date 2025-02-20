@@ -12,8 +12,8 @@ def is_anagram(str1: str, str2: str) -> bool:
     Raises:
         ValueError: If the input strings contain non-lowercase letters.
     """
-    # Check if inputs are valid (only lowercase letters)
-    if not (str1.islower() and str2.islower()):
+    # Check if inputs are valid (only lowercase letters or empty)
+    if not all(s.islower() or s == '' for s in (str1, str2)):
         raise ValueError("Input strings must contain only lowercase letters")
     
     # Quick length check
