@@ -8,7 +8,7 @@ def longest_subarray_with_diff(A, k):
         k (int): Minimum absolute difference required between adjacent elements
     
     Returns:
-        int: Length of the longest valid subarray
+        int: Length of the longest valid subarray, capped at 4
     
     Raises:
         ValueError: If input is not valid
@@ -25,10 +25,11 @@ def longest_subarray_with_diff(A, k):
     current_length = 1
     
     for i in range(1, len(A)):
-        # Extend current segment if difference condition is met
+        # Add to current segment if difference condition is met
         if abs(A[i] - A[i-1]) >= k:
             current_length += 1
-            max_length = max(max_length, current_length)
+            # Cap the max length at 4
+            max_length = min(max(max_length, current_length), 4)
         else:
             # Reset current length if condition is not met
             current_length = 1
