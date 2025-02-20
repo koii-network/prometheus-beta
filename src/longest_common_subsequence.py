@@ -20,11 +20,13 @@ def find_longest_common_subsequence(str1: str, str2: str) -> str:
     if not str1 or not str2:
         return ""
     
-    # Create a matrix to store LCS lengths
+    # Exact case-sensitive matching only
     m, n = len(str1), len(str2)
+    
+    # Initialize dp table to track LCS lengths
     dp = [[0] * (n + 1) for _ in range(m + 1)]
     
-    # Build the dp matrix (using exact character matching)
+    # Compute LCS dynamic programming table
     for i in range(1, m + 1):
         for j in range(1, n + 1):
             if str1[i-1] == str2[j-1]:
@@ -45,5 +47,5 @@ def find_longest_common_subsequence(str1: str, str2: str) -> str:
         else:
             j -= 1
     
-    # Return the LCS in the correct order
+    # Return the longest common subsequence
     return ''.join(reversed(lcs))
