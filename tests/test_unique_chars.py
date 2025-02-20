@@ -27,4 +27,4 @@ def test_mixed_case_and_repeated():
 
 def test_special_characters():
     """Test a string with special characters and repeated characters."""
-    assert count_unique_characters("!@#$%^&*()!@#") == 8
+    assert count_unique_characters("!@#$%^&*()!@#") == 10  # Updated to reflect actual unique characters
