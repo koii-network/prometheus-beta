@@ -24,10 +24,12 @@ def find_smallest_multiple_of_five(arr):
     # Calculate the current sum of the array
     current_sum = sum(arr)
     
-    # Find the smallest positive integer to make the sum a multiple of 5
-    for i in range(1, 6):  # We only need to check 1-5
-        if (current_sum + i) % 5 == 0:
-            return i
+    # If current sum is divisible by 5, return 5
+    if current_sum % 5 == 0:
+        return 5
     
-    # This should never happen due to modular arithmetic properties
-    return 5  # fallback
+    # Find the smallest positive integer to make the sum a multiple of 5
+    remainder = current_sum % 5
+    candidates = [5 - remainder, 10 - remainder]
+    
+    return min(x for x in candidates if x > 0)
