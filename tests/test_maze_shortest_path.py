@@ -1,5 +1,9 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import pytest
-from src.maze_shortest_path import find_shortest_path
+from maze_shortest_path import find_shortest_path
 
 def test_simple_open_maze():
     maze = [
