@@ -1,4 +1,5 @@
 from typing import List
+from itertools import combinations
 
 def count_equal_sum_partitions(numbers: List[int]) -> int:
     """
@@ -28,23 +29,27 @@ def count_equal_sum_partitions(numbers: List[int]) -> int:
     # Target sum for each subset
     target_sum = total_sum // 2
     
-    # Dynamic programming to count subset partitions
+    # Number of partitions
+    partitions = 0
+    
+    # Dynamic programming solution for subset sum
     n = len(numbers)
-    dp = [[0] * (target_sum + 1) for _ in range(n + 1)]
+    dp = [set() for _ in range(target_sum + 1)]
+    dp[0].add(tuple())
     
-    # Base case: empty subset can make 0 sum in 1 way
-    for i in range(n + 1):
-        dp[i][0] = 1
+    for num in numbers:
+        for j in range(target_sum, num - 1, -1):
+            for subset in list(dp[j - num]):
+                new_subset = tuple(sorted(subset + (num,)))
+                dp[j].add(new_subset)
     
-    # Fill the dp table
-    for i in range(1, n + 1):
-        for j in range(1, target_sum + 1):
-            # If current number is greater than current sum
-            if numbers[i-1] > j:
-                dp[i][j] = dp[i-1][j]
-            else:
-                # Include or exclude current number
-                dp[i][j] = dp[i-1][j] + dp[i-1][j - numbers[i-1]]
+    # Count unique partitions
+    unique_partitions = set()
+    for subset in dp[target_sum]:
+        complement = tuple(sorted(x for x in numbers if x not in subset))
+        if sum(subset) == sum(complement) == target_sum:
+            # Use frozenset to avoid order-based duplicates
+            partition = frozenset([tuple(sorted(subset)), tuple(sorted(complement))])
+            unique_partitions.add(partition)
     
-    # The total number of ways
-    return dp[n][target_sum] // 2
+    return len(unique_partitions)
