@@ -36,12 +36,12 @@ def test_long_text():
     text = "the quick brown fox jumps over the lazy dog the fox"
     result = track_word_positions(text)
     assert result == {
-        'the': [0, 5, 7],
+        'the': [0, 6, 9],
         'quick': [1],
         'brown': [2],
-        'fox': [3, 6],
+        'fox': [3, 10],
         'jumps': [4],
         'over': [5],
-        'lazy': [6],
-        'dog': [7]
+        'lazy': [7],
+        'dog': [8]
     }
