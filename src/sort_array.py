@@ -23,10 +23,9 @@ def sort_array_with_even_squares(arr):
     # Sort even number squares in descending order
     even_nums_squared = sorted([num**2 for num in even_nums], reverse=True)
     
-    # Combine the lists: original sorting with even squares descending
+    # Combine the lists maintaining the original order of odd numbers
     result = []
     even_square_index = 0
-    original_even_index = 0
     
     for num in sorted_arr:
         if num % 2 == 0:
