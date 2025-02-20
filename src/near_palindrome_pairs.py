@@ -25,23 +25,15 @@ def find_near_palindrome_pairs(strings):
         if s == s[::-1]:
             return False
         
-        # Check if the string can become a palindrome with a single change
-        l = list(s)
-        for i in range(len(l)):
-            original = l[i]
-            for c in 'abcdefghijklmnopqrstuvwxyz':
-                l[i] = c
-                modified_s = ''.join(l)
-                if modified_s == modified_s[::-1]:
-                    return True
-            l[i] = original
-        
-        # Check one character removal
+        # Try to make a palindrome by changing a single character
         for i in range(len(s)):
-            # Remove i-th character
-            without_char = s[:i] + s[i+1:]
-            if without_char == without_char[::-1]:
-                return True
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                # Create variant with specific character
+                variant = s[:i] + c + s[i+1:]
+                
+                # If variant is a palindrome, return True
+                if variant == variant[::-1]:
+                    return True
         
         return False
     
