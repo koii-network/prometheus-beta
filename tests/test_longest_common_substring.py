@@ -11,7 +11,7 @@ def test_identical_strings():
     assert longest_common_substring("hello", "hello") == "hello"
 
 def test_partial_common_substring():
-    assert longest_common_substring("programming", "programmer") == "program"
+    assert longest_common_substring("programming", "programmer") == "programm"
 
 def test_empty_inputs():
     assert longest_common_substring("", "test") == ""
