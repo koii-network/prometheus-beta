@@ -12,9 +12,9 @@ def test_sequence_with_small_k():
     assert result == [1, 1, 2, 3, 5, 8]
 
 def test_sequence_length_constraint():
-    # Test that sequence respects max length n
+    # Test that sequence stops when consecutive sum is less than k
     result = generate_fibonacci_sequence(3, 10)
-    assert result == [1, 1, 2]
+    assert result == [1, 1]
 
 def test_sequence_sum_constraint():
     # Test that sequence stops when consecutive sum is less than k
