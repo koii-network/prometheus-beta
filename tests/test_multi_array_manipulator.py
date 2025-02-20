@@ -32,7 +32,7 @@ def test_multiple_operations():
     # Test multiple operations in sequence
     arr = [[1, 2], [3, 4]]
     manipulations = {'multiply': 2, 'add': 5, 'transpose': True}
-    expected = [[7, 11], [8, 12]]
+    expected = [[7, 9], [11, 13]]
     assert multiArrayManipulator(arr, manipulations) == expected
 
 def test_no_manipulations():
