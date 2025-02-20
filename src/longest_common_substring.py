@@ -34,4 +34,6 @@ def longest_common_substring(str1: str, str2: str) -> str:
                     end_index = i - 1
     
     # Return the longest common substring
-    return str1[end_index - max_length + 1 : end_index + 1]
+    # Only return result if the substring is a perfect match
+    substring = str1[end_index - max_length + 1 : end_index + 1]
+    return substring if all(str1[i] == str2[str2.index(str1[i])] for i in range(len(substring))) else ""
