@@ -1,5 +1,5 @@
 import pytest
-from src.is_palindrome import is_palindrome
+from is_palindrome import is_palindrome
 
 def test_is_palindrome_empty_list():
     """Test that an empty list is considered a palindrome."""
