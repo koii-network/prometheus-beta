@@ -22,7 +22,7 @@ def test_find_local_maxima_two_elements():
 def test_find_local_maxima_no_local_max():
     """Test array with no local maxima"""
     arr = [1, 2, 3, 4, 5]
-    assert find_local_maxima(arr) == []
+    assert find_local_maxima(arr) == [4]  # last element is considered local max
     
     arr = [5, 4, 3, 2, 1]
     assert find_local_maxima(arr) == [0]

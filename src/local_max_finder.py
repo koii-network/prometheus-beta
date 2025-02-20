@@ -30,7 +30,7 @@ def find_local_maxima(arr):
     local_maxima = []
     
     # Check first element
-    if arr[0] > arr[1]:
+    if len(arr) > 1 and arr[0] > arr[1]:
         local_maxima.append(0)
     
     # Check middle elements
@@ -39,7 +39,7 @@ def find_local_maxima(arr):
             local_maxima.append(i)
     
     # Check last element
-    if arr[-1] > arr[-2]:
+    if len(arr) > 1 and arr[-1] > arr[-2]:
         local_maxima.append(len(arr) - 1)
     
     return local_maxima
