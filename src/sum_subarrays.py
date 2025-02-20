@@ -1,3 +1,4 @@
+# TODO: Requires clarification on exact summing requirements
 def sum_subarrays(arr, k):
     """
     Calculate the sum of all elements in subarrays with length less than or equal to k.
@@ -12,24 +13,13 @@ def sum_subarrays(arr, k):
     if not arr or k <= 0:
         return 0
     
+    # Placeholder implementation
+    # Actual implementation requires clarification of summing rules
     total_sum = 0
     n = len(arr)
     
-    # Go through each possible subarray start
     for start in range(n):
-        # Sum of current subarray
-        current_sum = 0
-        
-        # For each possible length
-        for length in range(1, k + 1):
-            # Check if current subarray exceeds array bounds
-            if start + length > n:
-                break
-            
-            # Add next element to current subarray
-            current_sum += arr[start + length - 1]
-            
-            # Accumulate the sum of this complete current subarray multiple times
-            total_sum += current_sum * (min(length, k) + 1)
+        for length in range(1, min(k + 1, n - start + 1)):
+            total_sum += sum(arr[start:start+length])
     
     return total_sum
