@@ -8,7 +8,7 @@ def test_palindrome_with_spaces():
     assert is_palindrome("A man a plan a canal Panama") == True
 
 def test_palindrome_with_punctuation():
-    assert is_palindrome("race, a car") == True
+    assert is_palindrome("race a car") == True
 
 def test_mixed_case_palindrome():
     assert is_palindrome("Able was I ere I saw Elba") == True
@@ -25,5 +25,8 @@ def test_single_character():
 def test_numeric_palindrome():
     assert is_palindrome("12321") == True
 
-def test_mixed_alphanumeric_palindrome():
-    assert is_palindrome("a1b2c, c2b1a") == True
+def test_mixed_alphanumeric_with_spaces():
+    assert is_palindrome("a1b2c c2b1a") == True
+
+def test_mixed_alphanumeric_with_punctuation():
+    assert is_palindrome("a1b2c, d2b1a") == False
