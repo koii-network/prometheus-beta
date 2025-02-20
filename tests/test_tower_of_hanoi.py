@@ -31,18 +31,15 @@ def test_solve_tower_of_hanoi_output(capsys):
     
     # Basic move validations
     assert moves[0].startswith("Move disk 1")
-    assert moves[-1].startswith(f"Move disk 7 from B to C")
+    assert moves[-1].startswith("Move disk 7 from B to C")
 
 def test_tower_of_hanoi_validate_rod_names():
-    def check_rod_names(n, source, auxiliary, destination):
-        tower_of_hanoi(n, source, auxiliary, destination)
-    
     # Test various valid rod name combinations
-    check_rod_names(2, 'Source', 'Mid', 'Dest')
-    check_rod_names(3, 'Left', 'Center', 'Right')
+    tower_of_hanoi(2, 'Source', 'Mid', 'Dest')
+    tower_of_hanoi(3, 'Left', 'Center', 'Right')
     
     # Ensure different rod names are used
-    with pytest.raises(TypeError):
-        check_rod_names(2, 'A', 'A', 'B')
-    with pytest.raises(TypeError):
-        check_rod_names(2, 'A', 'B', 'A')
+    with pytest.raises(ValueError):
+        tower_of_hanoi(2, 'A', 'A', 'B')
+    with pytest.raises(ValueError):
+        tower_of_hanoi(2, 'A', 'B', 'A')

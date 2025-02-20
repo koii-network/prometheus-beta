@@ -9,7 +9,13 @@ def tower_of_hanoi(n, source, auxiliary, destination):
         destination (str): Name of the destination rod
     
     Prints the sequence of moves to solve the Tower of Hanoi puzzle.
+    
+    Raises:
+        ValueError: If source, auxiliary, and destination rods are not unique
     """
+    if source == auxiliary or source == destination or auxiliary == destination:
+        raise ValueError("Source, auxiliary, and destination rods must be unique")
+    
     if n == 1:
         print(f"Move disk 1 from {source} to {destination}")
         return
