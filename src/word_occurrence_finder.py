@@ -17,7 +17,7 @@ def find_word_occurrences(text: str, target_word: str) -> list:
     # Store results
     occurrences = []
     
-    # Track cumulative character count (including spaces)
+    # Track cumulative character count 
     current_position = 0
     
     # Iterate through words
@@ -26,8 +26,7 @@ def find_word_occurrences(text: str, target_word: str) -> list:
         if word == target_word:
             occurrences.append((current_position, word))
         
-        # Update current position 
-        # Add length of word + 1 for the space (except for the last word)
+        # Update current position including the space after the word
         current_position += len(word) + 1
     
     return occurrences
