@@ -39,3 +39,4 @@ def test_case_sensitivity():
     assert find_longest_common_subsequence("Hello", "hello") == ""
     assert find_longest_common_subsequence("Abc", "abc") == ""
     assert find_longest_common_subsequence("HeLLo", "hEllO") == ""
+    assert find_longest_common_subsequence("Hello", "HeLLo") == "HLo"
