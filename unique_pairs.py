@@ -23,11 +23,14 @@ def get_unique_pairs(numbers):
     # Use a set to track unique pairs (sorted to avoid duplicates)
     unique_pairs = set()
     
+    # Remove duplicates while preserving order
+    unique_nums = list(dict.fromkeys(numbers))
+    
     # Generate all unique pairs
-    for i in range(len(numbers)):
-        for j in range(i+1, len(numbers)):
+    for i in range(len(unique_nums)):
+        for j in range(i+1, len(unique_nums)):
             # Sort the pair to ensure (a,b) and (b,a) are considered the same
-            pair = tuple(sorted((numbers[i], numbers[j])))
+            pair = tuple(sorted((unique_nums[i], unique_nums[j])))
             unique_pairs.add(pair)
     
     return list(unique_pairs)
