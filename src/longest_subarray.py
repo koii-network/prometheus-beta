@@ -27,12 +27,14 @@ def find_longest_abs_diff_subarray(A, k):
     current_length = 1
     
     for i in range(1, len(A)):
-        # Check if absolute difference meets the condition
+        # Find the longest contiguous subarray that meets the condition
         if abs(A[i] - A[i-1]) >= k:
             current_length += 1
-            max_length = max(max_length, current_length)
         else:
             # Reset current length when condition is not met
             current_length = 1
+        
+        # Update max_length at each step
+        max_length = max(max_length, current_length)
     
     return max_length
