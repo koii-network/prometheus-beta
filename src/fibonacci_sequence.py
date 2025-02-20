@@ -27,9 +27,10 @@ def generate_fibonacci_sequence(n: int, k: int) -> list:
     
     # Generate the sequence
     while len(sequence) < n:
-        # Check if the sum of last two numbers meets the constraint
+        next_num = sequence[-1] + sequence[-2]
+        
+        # Check if the sum meets the constraint
         if sequence[-1] + sequence[-2] >= k:
-            next_num = sequence[-1] + sequence[-2]
             sequence.append(next_num)
         else:
             break
