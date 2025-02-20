@@ -16,8 +16,8 @@ def test_case_insensitive_palindrome():
 def test_non_palindrome():
     assert is_palindrome("hello") == False
 
-def test_mixed_case_non_palindrome():
-    assert is_palindrome("RaceCar") == False
+def test_mixed_case_palindrome():
+    assert is_palindrome("RaceCar") == True
 
 def test_empty_string():
     assert is_palindrome("") == True
