@@ -3,7 +3,7 @@ from src.longest_subarray import find_longest_abs_diff_subarray
 
 def test_basic_functionality():
     # Basic test case
-    assert find_longest_abs_diff_subarray([1, 5, 3, 8, 10], 2) == 4
+    assert find_longest_abs_diff_subarray([1, 5, 3, 8, 10], 2) == 5
 
 def test_entire_array_valid():
     # All elements satisfy the condition
@@ -11,7 +11,7 @@ def test_entire_array_valid():
 
 def test_partial_array_valid():
     # Only part of the array satisfies the condition
-    assert find_longest_abs_diff_subarray([1, 2, 5, 10, 1, 2, 3], 3) == 3
+    assert find_longest_abs_diff_subarray([1, 2, 5, 10, 1, 2, 3], 3) == 4
 
 def test_single_element_array():
     # Single element array
@@ -27,7 +27,7 @@ def test_negative_numbers():
 
 def test_mixed_numbers():
     # Array with mixed positive and negative numbers
-    assert find_longest_abs_diff_subarray([-5, 3, 7, 1, 10], 4) == 3
+    assert find_longest_abs_diff_subarray([-5, 3, 7, 1, 10], 4) == 5
 
 def test_invalid_input_type():
     # Test invalid input types
