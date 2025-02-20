@@ -20,7 +20,7 @@ def test_empty_inputs():
 
 def test_case_sensitive():
     result = longest_common_substring("Hello", "hello")
-    assert result == "", f"Expected empty string, but got {result}"
+    assert result == "ello", f"Expected 'ello', but got {result}"
 
 def test_substring_at_beginning():
     assert longest_common_substring("abcdef", "abcxyz") == "abc"
