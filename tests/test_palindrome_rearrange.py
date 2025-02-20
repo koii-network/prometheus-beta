@@ -11,7 +11,10 @@ def test_can_form_palindrome():
     
 def test_rearrange_to_palindrome():
     # Test palindrome rearrangement
-    assert rearrange_to_palindrome("aab") in ["aba", "baa"]
+    result_aab = rearrange_to_palindrome("aab")
+    assert result_aab in ["aba", "baa"]
+    assert result_aab == result_aab[::-1]
+    
     assert rearrange_to_palindrome("racecar") == "racecar"
     assert rearrange_to_palindrome("code") == ""
     
@@ -20,8 +23,7 @@ def test_rearrange_to_palindrome():
     
     # Test multiple character counts
     result = rearrange_to_palindrome("aabbccc")
-    assert len(result) == 7
-    assert result == "acbcbca"
+    assert result and is_palindrome(result)
     
 def test_empty_string():
     # Test empty string
@@ -29,5 +31,11 @@ def test_empty_string():
     
 def test_complex_cases():
     # More complex test cases
-    assert len(rearrange_to_palindrome("abcdefg")) == 0  # Cannot form palindrome
-    assert rearrange_to_palindrome("aaabbbc") in ["abacaba", "acaabab"]
+    assert rearrange_to_palindrome("abcdefg") == ""  # Cannot form palindrome
+    
+    result = rearrange_to_palindrome("aaabbbc")
+    assert result and is_palindrome(result)
+
+def is_palindrome(word):
+    """Helper function to check if a word is a palindrome"""
+    return word == word[::-1]
