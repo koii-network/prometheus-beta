@@ -13,6 +13,9 @@ def find_near_palindrome_pairs(strings):
     """
     def is_near_palindrome(s):
         """Check if a string is close to being a palindrome."""
+        if len(s) <= 1:
+            return False
+        
         n = len(s)
         mismatches = 0
         
@@ -31,6 +34,10 @@ def find_near_palindrome_pairs(strings):
     # Check all pairs of strings
     for i in range(len(strings)):
         for j in range(i + 1, len(strings)):
+            # Skip if either string is single character
+            if len(strings[i]) <= 1 or len(strings[j]) <= 1:
+                continue
+            
             # Check if concatenating the strings is a near palindrome
             concat1 = strings[i] + strings[j]
             concat2 = strings[j] + strings[i]
