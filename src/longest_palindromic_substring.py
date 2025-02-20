@@ -26,7 +26,7 @@ def longest_palindromic_substring(s: str) -> str:
             right += 1
         return s[left + 1:right]
     
-    longest = ""
+    longest = s[0]  # Default to first character
     
     # Check palindromes with odd and even lengths
     for i in range(len(s)):
@@ -40,4 +40,4 @@ def longest_palindromic_substring(s: str) -> str:
         if len(even) > len(longest):
             longest = even
     
-    return longest
+    return longest  # Return first found longest palindrome

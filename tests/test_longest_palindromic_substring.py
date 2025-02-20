@@ -23,9 +23,9 @@ def test_longest_palindromic_substring():
 
 def test_case_sensitivity():
     # Ensure the comparison is case-sensitive
-    assert longest_palindromic_substring("Aba") == "a"
+    assert longest_palindromic_substring("Aba") == "A"
 
 def test_multiple_longest_palindromes():
     # Test where multiple palindromes of same length exist
     result = longest_palindromic_substring("babab")
-    assert result in ["bab", "aba"]
+    assert result == "babab"
