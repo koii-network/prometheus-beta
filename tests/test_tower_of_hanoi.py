@@ -31,8 +31,7 @@ def test_solve_tower_of_hanoi_output(capsys):
     
     # Basic move validations
     assert moves[0].startswith("Move disk 1")
-    assert moves[-1].startswith("Move disk 7")
-    assert "to" in moves[-1]
+    assert len(moves) == 127  # 2^7 - 1 moves for 7 disks
 
 def test_tower_of_hanoi_validate_rod_names():
     # Test various valid rod name combinations
