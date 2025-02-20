@@ -7,7 +7,7 @@ def test_basic_most_frequent():
 
 def test_first_occurrence_in_tie():
     """Test that first occurrence is returned in case of a frequency tie"""
-    assert find_most_frequent_index([1, 2, 2, 1, 3, 3]) == 1
+    assert find_most_frequent_index([1, 2, 2, 1, 3, 3]) == 0
 
 def test_single_element_list():
     """Test list with a single element"""
