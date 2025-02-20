@@ -24,6 +24,7 @@ def longest_common_substring(str1: str, str2: str) -> str:
     # Fill the dp matrix
     for i in range(1, m + 1):
         for j in range(1, n + 1):
+            # Only match if chars are exactly the same (case-sensitive)
             if str1[i-1] == str2[j-1]:
                 dp[i][j] = dp[i-1][j-1] + 1
                 
@@ -33,4 +34,5 @@ def longest_common_substring(str1: str, str2: str) -> str:
                     end_index = i - 1
     
     # Return the longest common substring
-    return str1[end_index - max_length + 1 : end_index + 1]
+    # If no match found, return empty string
+    return str1[end_index - max_length + 1 : end_index + 1] if max_length > 0 else ""
