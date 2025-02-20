@@ -23,13 +23,14 @@ def max_non_overlapping_subarray_sum(arr):
     if n == 1:
         return arr[0]
     
-    # Dynamic programming approach with non-overlapping constraint
+    # Dynamic programming with most restricted non-overlapping approach
     dp = [0] * n
     dp[0] = max(0, arr[0])
+    dp[1] = max(dp[0], arr[1])
     
-    for i in range(1, n):
-        # Either skip current element or take it with max 2 steps back
-        dp[i] = max(dp[i-1], 
-                    (dp[i-2] if i >= 2 else 0) + arr[i])
+    for i in range(2, n):
+        # Either take current element (skipping one before)
+        # Or do not take current element
+        dp[i] = max(dp[i-2] + arr[i], dp[i-1])
     
     return dp[-1]
