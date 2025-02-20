@@ -47,6 +47,7 @@ def search_matrix(matrix, target, constraints=None):
         for row in range(len(matrix)):
             for col in range(len(matrix[row])):
                 iterations += 1
+                
                 if iterations > max_iterations:
                     return False, (-1, -1)
                 
@@ -57,6 +58,7 @@ def search_matrix(matrix, target, constraints=None):
         for col in range(len(matrix[0])):
             for row in range(len(matrix)):
                 iterations += 1
+                
                 if iterations > max_iterations:
                     return False, (-1, -1)
                 
