@@ -23,7 +23,7 @@ def test_six_number_average_floating_point():
     """Test with floating point numbers."""
     numbers = [1.5, 2.5, 3.5, 4.5, 5.5, 6.5]
     result = calculate_six_number_average(numbers)
-    assert result == 4.5, f"Expected 4.5, but got {result}"
+    assert result == 4.0, f"Expected 4.0, but got {result}"
 
 def test_six_number_average_invalid_input():
     """Test that an error is raised when not exactly 6 numbers are provided."""
