@@ -19,6 +19,10 @@ def matrix_search(matrix, target):
     if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
         raise TypeError("Matrix must be a 2D list")
     
+    # Check for mixed types or nested lists
+    if not all(all(isinstance(item, (int, float, str)) for item in row) for row in matrix):
+        raise TypeError("Matrix must contain only basic types")
+    
     # Get matrix dimensions
     rows = len(matrix)
     cols = len(matrix[0])

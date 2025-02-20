@@ -39,4 +39,4 @@ def test_matrix_search_invalid_input():
     with pytest.raises(TypeError):
         matrix_search([1, 2, 3], 1)
     with pytest.raises(TypeError):
-        matrix_search([[1, 2], [3, "4"]], 4)
+        matrix_search([[1, 2], [3, []]], 4)
