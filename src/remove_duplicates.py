@@ -16,7 +16,7 @@ def remove_duplicate_chars(input_string: str) -> str:
         return ''
 
     # Validate input contains only lowercase letters
-    if not input_string.islower() and input_string != '':
+    if not all(char.islower() for char in input_string):
         raise ValueError("Input must contain only lowercase characters")
     
     # Use a set to track seen characters while preserving order
