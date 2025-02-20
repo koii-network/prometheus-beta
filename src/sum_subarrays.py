@@ -30,6 +30,6 @@ def sum_subarrays(arr, k):
             current_sum += arr[start + length - 1]
             
             # Accumulate the sum of this complete current subarray multiple times
-            total_sum += current_sum * (min(length, k))
+            total_sum += current_sum * (min(length, k) + 1)
     
     return total_sum
