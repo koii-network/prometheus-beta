@@ -26,7 +26,7 @@ def find_word_occurrences(text: str, target_word: str) -> list:
         if word == target_word:
             occurrences.append((current_position, word))
         
-        # Update current position including the space after the word
+        # Calculate the next starting position
         current_position += len(word) + 1
     
     return occurrences
