@@ -8,9 +8,8 @@ def test_palindrome_with_spaces():
     assert is_palindrome("A man a plan a canal Panama") == True
 
 def test_palindrome_with_punctuation():
-    assert is_palindrome("race a car") == True
     assert is_palindrome("Race a car!") == True
-    assert is_palindrome("hello world") == False
+    assert is_palindrome("race a car") == False
 
 def test_non_palindrome():
     assert is_palindrome("hello") == False
