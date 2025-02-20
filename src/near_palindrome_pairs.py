@@ -25,14 +25,8 @@ def find_near_palindrome_pairs(strings):
         if s == s[::-1]:
             return False
         
-        # Try replacing or adding/removing a single character
+        # Check if the string can become a palindrome by changing only one character
         for i in range(len(s)):
-            # Try removing a character
-            without_char = s[:i] + s[i+1:]
-            if without_char == without_char[::-1]:
-                return True
-            
-            # Try replacing each character
             for c in 'abcdefghijklmnopqrstuvwxyz':
                 # Create a new string with one character replaced
                 new_s = s[:i] + c + s[i+1:]
@@ -40,6 +34,13 @@ def find_near_palindrome_pairs(strings):
                 # Check if the new string is a palindrome
                 if new_s == new_s[::-1]:
                     return True
+        
+        # Check if the string can become a palindrome by removing one character
+        for i in range(len(s)):
+            # Remove i-th character
+            without_char = s[:i] + s[i+1:]
+            if without_char == without_char[::-1]:
+                return True
         
         return False
     
