@@ -12,9 +12,9 @@ def isAnagram(str1: str, str2: str) -> bool:
     Returns:
         bool: True if the strings are anagrams, False otherwise
     """
-    # Normalize the strings by converting to lowercase and removing whitespace
-    normalized1 = ''.join(str1.lower().split())
-    normalized2 = ''.join(str2.lower().split())
+    # Normalize the strings by converting to lowercase and removing all whitespace
+    normalized1 = ''.join(char for char in str1.lower() if char.isalnum())
+    normalized2 = ''.join(char for char in str2.lower() if char.isalnum())
     
     # Check if the sorted character lists are the same
     return sorted(normalized1) == sorted(normalized2)
