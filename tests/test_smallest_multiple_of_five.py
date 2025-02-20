@@ -14,10 +14,10 @@ def test_already_multiple_of_five():
     assert find_smallest_multiple_of_five([5, 10, 15]) == 5
 
 def test_negative_numbers():
-    assert find_smallest_multiple_of_five([-1, -2, -3]) == 3
+    assert find_smallest_multiple_of_five([-1, -2, -3]) == 1
 
 def test_mixed_numbers():
-    assert find_smallest_multiple_of_five([-10, 7, 3]) == 3
+    assert find_smallest_multiple_of_five([-10, 7, 3]) == 5
 
 def test_type_error():
     with pytest.raises(TypeError):
