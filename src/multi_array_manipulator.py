@@ -2,6 +2,8 @@ def multiArrayManipulator(arr, manipulations):
     """
     Manipulate a 2D integer array based on provided manipulations.
     
+    Operations applied in order: multiply, add, transpose
+    
     :param arr: 2D list of integers
     :param manipulations: Dictionary of manipulation operations
     :return: Manipulated 2D list of integers
