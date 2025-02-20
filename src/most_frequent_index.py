@@ -1,4 +1,5 @@
 from typing import List
+from collections import Counter
 
 def find_most_frequent_index(numbers: List[int]) -> int:
     """
@@ -18,17 +19,12 @@ def find_most_frequent_index(numbers: List[int]) -> int:
         raise ValueError("Input list cannot be empty")
     
     # Count frequencies of each number
-    frequency = {}
-    for num in numbers:
-        frequency[num] = frequency.get(num, 0) + 1
+    frequency = Counter(numbers)
     
     # Find the maximum frequency
     max_freq = max(frequency.values())
     
-    # Find the indices of numbers with max frequency
-    max_freq_numbers = [num for num, freq in frequency.items() if freq == max_freq]
-    
-    # Return the first index of the first number with max frequency
+    # Find the first index of a number with max frequency
     for i, num in enumerate(numbers):
-        if num in max_freq_numbers:
+        if frequency[num] == max_freq:
             return i
