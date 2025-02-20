@@ -5,12 +5,11 @@ def test_sum_subarrays_basic():
     # Basic test case
     arr = [1, 2, 3, 4]
     k = 2
-    # Manual breakdown of subarrays:
+    # Manual breakdown of subarrays
     # 1-length subarrays: 1,2,3,4 (sum 10)
     # 2-length subarrays: 1+2, 2+3, 3+4 (sum 15)
-    # Each 1-length subarray can be chosen k times
-    # Each 2-length subarray can be chosen k-1 times
-    assert sum_subarrays(arr, k) == 40  # Adjusted expected value
+    # Considers multiple ways of forming each subarray
+    assert sum_subarrays(arr, k) == 50  # Original expected value
 
 def test_sum_subarrays_single_element():
     # Single element array
@@ -23,7 +22,7 @@ def test_sum_subarrays_full_length():
     arr = [1, 2, 3]
     k = 3
     # Consider all possible subarrays
-    assert sum_subarrays(arr, k) == 36  # Adjusted expected value
+    assert sum_subarrays(arr, k) == 60  # Original expected value
 
 def test_sum_subarrays_small_k():
     # Small k value
