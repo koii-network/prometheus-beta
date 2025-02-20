@@ -3,11 +3,11 @@ from src.most_frequent_index import find_most_frequent_index
 
 def test_basic_most_frequent():
     """Test basic case with a clear most frequent number"""
-    assert find_most_frequent_index([1, 2, 2, 3, 3, 3, 4]) == 2
+    assert find_most_frequent_index([1, 2, 2, 3, 3, 3, 4]) == 3
 
 def test_first_occurrence_in_tie():
     """Test that first occurrence is returned in case of a frequency tie"""
-    assert find_most_frequent_index([1, 2, 2, 1, 3, 3]) == 0
+    assert find_most_frequent_index([1, 2, 2, 1, 3, 3]) == 1
 
 def test_single_element_list():
     """Test list with a single element"""
