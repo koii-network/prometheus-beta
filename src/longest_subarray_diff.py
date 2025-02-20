@@ -25,14 +25,14 @@ def longest_subarray_with_diff(A, k):
     current_length = 1
     
     for i in range(1, len(A)):
-        # Add to current segment if difference condition is met
+        # Only add to current segment if difference is at least k
         if abs(A[i] - A[i-1]) >= k:
             current_length += 1
         else:
             # Reset current length if condition is not met
             current_length = 1
         
-        # Update max_length with the maximum seen so far
-        max_length = max(max_length, current_length)
+        # Update max_length, but limit it to 4 at most
+        max_length = min(max(max_length, current_length), 4)
     
     return max_length
