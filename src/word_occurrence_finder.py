@@ -26,7 +26,7 @@ def find_word_occurrences(text: str, target_word: str) -> list:
         if word == target_word:
             occurrences.append((current_position, word))
         
-        # Calculate the next starting position
+        # Update current position, manually tracking the exact positions
         current_position += len(word) + 1
     
     return occurrences
