@@ -16,10 +16,17 @@ def sum_of_multiples(min: int, max: int) -> int:
     if min > max:
         raise ValueError("min must be less than or equal to max")
     
-    # Sum unique multiples in a single pass
-    unique_multiples_sum = sum(
-        num for num in range(min, max + 1) 
-        if num % 2 == 0 or num % 3 == 0
-    )
+    # Use a set to ensure unique multiples
+    multiples = set()
     
-    return unique_multiples_sum
+    # Add multiples of 2
+    for num in range(min, max + 1):
+        if num % 2 == 0:
+            multiples.add(num)
+    
+    # Add multiples of 3 not already covered by multiples of 2
+    for num in range(min, max + 1):
+        if num % 3 == 0 and num not in multiples:
+            multiples.add(num)
+    
+    return sum(multiples)
