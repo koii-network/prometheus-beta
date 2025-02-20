@@ -15,11 +15,16 @@ def sum_subarrays(arr, k):
     total_sum = 0
     n = len(arr)
     
-    # Generate all possible subarrays of length <= k
+    # For each possible start index
     for start in range(n):
-        current_sum = 0
-        for end in range(start, min(start + k, n)):
-            current_sum += arr[end]
-            total_sum += current_sum
+        # Generate all subarrays starting from this index with length <= k
+        subarray_sum = 0
+        for length in range(1, k + 1):
+            if start + length > n:
+                break
+            
+            # Sum the subarray
+            subarray_sum += sum(arr[start:start+length])
+            total_sum += subarray_sum
     
     return total_sum
