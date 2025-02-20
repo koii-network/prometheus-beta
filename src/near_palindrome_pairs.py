@@ -25,7 +25,7 @@ def find_near_palindrome_pairs(strings):
         if s == s[::-1]:
             return False
         
-        # Try to make a palindrome by changing a single character
+        # Try changing a single character
         for i in range(len(s)):
             for c in 'abcdefghijklmnopqrstuvwxyz':
                 # Create variant with specific character
@@ -34,6 +34,15 @@ def find_near_palindrome_pairs(strings):
                 # If variant is a palindrome, return True
                 if variant == variant[::-1]:
                     return True
+        
+        # Try removing a character
+        for i in range(len(s)):
+            # Create variant by removing a character
+            variant = s[:i] + s[i+1:]
+            
+            # If variant is a palindrome, return True
+            if variant == variant[::-1]:
+                return True
         
         return False
     
