@@ -25,7 +25,10 @@ def find_most_frequent_index(numbers: List[int]) -> int:
     # Find the maximum frequency
     max_freq = max(frequency.values())
     
-    # Find the first index of the number with max frequency
+    # Find the indices of numbers with max frequency
+    max_freq_numbers = [num for num, freq in frequency.items() if freq == max_freq]
+    
+    # Return the first index of the first number with max frequency
     for i, num in enumerate(numbers):
-        if frequency[num] == max_freq:
+        if num in max_freq_numbers:
             return i
