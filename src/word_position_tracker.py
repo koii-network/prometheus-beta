@@ -1,3 +1,5 @@
+import string
+
 def track_word_positions(text):
     """
     Takes a string of text and returns a dictionary of words with their positions.
@@ -12,8 +14,10 @@ def track_word_positions(text):
         >>> track_word_positions("hello world hello")
         {'hello': [0, 2], 'world': [1]}
     """
-    # Split the text into words and remove any leading/trailing whitespace
-    words = text.split()
+    # Remove punctuation and split the text into words
+    translator = str.maketrans("", "", string.punctuation)
+    cleaned_text = text.translate(translator)
+    words = cleaned_text.split()
     
     # Create a dictionary to store word positions
     word_positions = {}
