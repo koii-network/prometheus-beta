@@ -28,9 +28,9 @@ def generate_modified_fibonacci(n):
         # Determine the next term to ensure odd sum of previous two terms
         next_term = last + second_last
         
-        # Special rule: If the sum becomes even, adjust the next term
+        # Special rule: If the sum becomes even, subtract 1 from the last term
         if (last + second_last) % 2 == 0:
-            next_term += 1
+            next_term -= 1
         
         sequence.append(next_term)
     
