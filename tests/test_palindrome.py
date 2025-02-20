@@ -24,7 +24,7 @@ def test_numeric_palindromes():
 
 def test_mixed_characters_palindromes():
     assert is_palindrome("A1b22b1a") == True
-    assert is_palindrome("race a car") == True
+    assert is_palindrome("A man a plan a canal Panama") == True
 
 def test_error_cases():
     with pytest.raises(TypeError):
