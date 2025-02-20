@@ -10,8 +10,8 @@ def is_palindrome(s: str) -> bool:
     Returns:
         bool: True if the string is a palindrome, False otherwise
     """
-    # Remove punctuation, spaces, and convert to lowercase
-    cleaned_s = re.sub(r'[^\w]', '', s.lower())
+    # Remove all non-alphanumeric characters and convert to lowercase
+    cleaned_s = re.sub(r'[^a-zA-Z0-9]', '', s.lower())
     
     # Check if the cleaned string is equal to its reverse
     return cleaned_s == cleaned_s[::-1]
