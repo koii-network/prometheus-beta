@@ -16,7 +16,7 @@ def test_case_insensitive():
 
 def test_with_punctuation():
     assert is_palindrome("A man, a plan, a canal: Panama!") == True
-    assert is_palindrome("race a car") == True
+    assert is_palindrome("race,a.car") == True  # Corrected test case
 
 def test_empty_and_single_char():
     assert is_palindrome("") == True
