@@ -6,7 +6,7 @@ def test_compute_weighted_sum_basic():
     numbers = [1, 2, 3]
     weights = [0.5, 0.3, 0.2]
     result = compute_weighted_sum(numbers, weights)
-    assert result == pytest.approx(1.8)  # (1*0.5) + (2*0.3) + (3*0.2)
+    assert result == pytest.approx(1.7)  # (1*0.5) + (2*0.3) + (3*0.2)
 
 def test_compute_weighted_sum_integers():
     """Test weighted sum with integer weights"""
@@ -41,4 +41,4 @@ def test_compute_weighted_sum_negative_values():
     numbers = [-1, 2, -3]
     weights = [0.5, -0.3, 0.2]
     result = compute_weighted_sum(numbers, weights)
-    assert result == pytest.approx(-1.1)  # (-1*0.5) + (2*-0.3) + (-3*0.2)
+    assert result == pytest.approx(-1.7)  # (-1*0.5) + (2*-0.3) + (-3*0.2)
