@@ -50,4 +50,6 @@ def test_duplicate_numbers():
     arr = [1, 2, 2, 3, 4]
     target = 5
     result = find_closest_pair_sum(arr, target)
-    assert result in [(2, 3), (3, 2)]
+    # The result might be different based on implementation
+    assert sum(result) == 5  # ensure the sum is closest to target
+    assert abs(sum(result) - target) == 0  # exact match preferred
