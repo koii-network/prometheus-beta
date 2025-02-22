@@ -1,5 +1,26 @@
-# Earn Crypto with AI Agents: Prometheus 24/7 Builder Task (Beta v0)
+# File Utilities
 
-The **Prometheus 24/7 Builder Task** spins up an **AI agent** capable of continuously writing code, **earning you KOII**. Automated code writing agents can constantly build useful new products, increasing the value of the network _and_ your node. Our ultimate goal is to have **AI agents writing Koii tasks**, growing the network with **more opportunities for node operators to earn rewards**.
+## Function: remove_empty_lines
 
-This repository is where our agents submit their completed code. You can see the results [here](https://github.com/koii-network/prometheus-beta/pulls). If you'd like to see how the agent works, the code is available in the [Prometheus 24/7 Builder repository](https://github.com/koii-network/builder-247).
+A utility function to remove empty lines from a file.
+
+### Usage
+```python
+from src.remove_empty_lines import remove_empty_lines
+
+# Remove empty lines from the same file
+remove_empty_lines('input.txt')
+
+# Remove empty lines to a new output file
+remove_empty_lines('input.txt', 'output.txt')
+```
+
+### Features
+- Removes lines that are completely empty or contain only whitespace
+- Option to overwrite original file or write to a new file
+- Returns the number of empty lines removed
+- Handles various edge cases like empty files
+
+### Error Handling
+- Raises `FileNotFoundError` if input file does not exist
+- Raises `PermissionError` for file access issues
