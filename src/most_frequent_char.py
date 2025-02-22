@@ -8,13 +8,16 @@ def find_most_frequent_char(input_string: str) -> str:
     Returns:
         str: The most frequently occurring character. 
              If multiple characters have the same highest frequency, 
-             return the first one encountered.
+             return the first one encountered (case-insensitive).
     
     Raises:
         ValueError: If the input string is empty.
     """
     if not input_string:
         raise ValueError("Input string cannot be empty")
+    
+    # Convert to lowercase for case-insensitive counting
+    input_string = input_string.lower()
     
     # Count character frequencies
     char_count = {}
