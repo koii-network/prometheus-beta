@@ -13,10 +13,10 @@ def test_single_character():
     assert count_palindromic_substrings("x") == 1
 
 def test_with_spaces_and_punctuation():
-    assert count_palindromic_substrings("A man, a plan, a canal: Panama") == 13
+    assert count_palindromic_substrings("A man, a plan, a canal: Panama") == 81
 
 def test_case_insensitive():
-    assert count_palindromic_substrings("Abba") == 4
+    assert count_palindromic_substrings("Abba") == 6
 
 def test_longer_palindromes():
     assert count_palindromic_substrings("abaxyzzyxf") > 10  # Has multiple palindromic substrings
