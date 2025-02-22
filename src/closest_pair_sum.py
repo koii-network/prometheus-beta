@@ -26,10 +26,11 @@ def find_closest_pair_sum(arr, target):
             current_sum = arr[i] + arr[j]
             current_diff = abs(current_sum - target)
             
-            # Update closest pair if:
-            # 1. Current difference is smaller, or
-            # 2. Current difference is equal but we want the first occurrence
-            if current_diff < min_diff:
+            # Update closest pair with stricter conditions:
+            # 1. Current difference is smaller
+            # 2. If differences are equal, prefer lower-indexed elements
+            if (current_diff < min_diff or 
+                (current_diff == min_diff and (arr[i] + arr[j] > sum(closest_pair)))):
                 min_diff = current_diff
                 closest_pair = (arr[i], arr[j])
     
