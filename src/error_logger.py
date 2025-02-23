@@ -19,13 +19,6 @@ def log_custom_error(message: str,
     Raises:
         ValueError: If an invalid log level is provided.
     """
-    # Configure logging to output to specified stream
-    logging.basicConfig(
-        level=logging.ERROR,
-        format='%(levelname)s: %(message)s',
-        stream=log_stream
-    )
-
     # Validate log level
     log_levels = {
         'DEBUG': logging.DEBUG,
@@ -38,13 +31,21 @@ def log_custom_error(message: str,
     if log_level not in log_levels:
         raise ValueError(f"Invalid log level: {log_level}. Must be one of {list(log_levels.keys())}")
 
-    # Get the appropriate logging method based on the log level
-    log_method = getattr(logging, log_level.lower())
+    # Define log message format and write method
+    def write_log_message(msg: str, is_error: bool = True):
+        """Write log message to the specified stream."""
+        if is_error:
+            prefix = f"ERROR: "
+        else:
+            prefix = f"{log_level}: "
+        
+        # Write formatted message to the stream
+        print(f"{prefix}{msg}", file=log_stream, flush=True)
 
     # Log the primary message
-    log_method(message)
+    write_log_message(message)
 
     # If an exception is provided, log its details
     if error is not None:
-        log_method(f"Exception Type: {type(error).__name__}")
-        log_method(f"Exception Details: {str(error)}")
+        write_log_message(f"Exception Type: {type(error).__name__}", is_error=False)
+        write_log_message(f"Exception Details: {str(error)}", is_error=False)
