@@ -16,7 +16,7 @@ def generate_fibonacci_subsequence(n):
         raise ValueError("Input must be a non-negative integer")
     
     if n == 0:
-        return [0]
+        return [0, 0]  # Ensure minimum length of 2
     
     if n == 1:
         return [1, 0]
@@ -60,8 +60,4 @@ def generate_fibonacci_subsequence(n):
                 continue
     
     # Limit for extremely large or unreachable numbers
-    if n > 10000:
-        raise ValueError(f"No Fibonacci subsequence found for input {n}")
-    
-    # If no subsequence found after exhaustive search
     raise ValueError(f"No Fibonacci subsequence found for input {n}")
