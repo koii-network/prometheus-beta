@@ -25,14 +25,17 @@ def reverse_substring(string: str, start: int, end: int) -> str:
     if start < 0 or end > len(string) or start > end:
         raise ValueError("Invalid substring indices")
     
-    # Convert string to list for easy manipulation
-    chars = list(string)
+    # First part of the string before reversal
+    prefix = string[:start]
     
-    # Reverse the substring in-place
-    while start < end - 1:
-        chars[start], chars[end - 1] = chars[end - 1], chars[start]
-        start += 1
-        end -= 1
+    # Substring to be reversed
+    substring = string[start:end]
     
-    # Convert back to string and return
-    return ''.join(chars)
+    # Reversed substring
+    reversed_substring = substring[::-1]
+    
+    # Last part of the string after reversal
+    suffix = string[end:]
+    
+    # Combine and return
+    return prefix + reversed_substring + suffix
