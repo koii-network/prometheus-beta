@@ -12,6 +12,7 @@ def find_mode(numbers: List[int]) -> Union[int, List[int]]:
         - If there's a single mode, returns that number.
         - If there are multiple modes, returns a list of those numbers.
         - If the input list is empty, returns an empty list.
+        - If all elements are unique, returns the first element.
     
     Raises:
         TypeError: If the input is not a list.
@@ -24,6 +25,8 @@ def find_mode(numbers: List[int]) -> Union[int, List[int]]:
         [1, 2]
         >>> find_mode([])
         []
+        >>> find_mode([1, 2, 3, 4, 5])
+        1
     """
     # Check input type
     if not isinstance(numbers, list):
@@ -48,5 +51,5 @@ def find_mode(numbers: List[int]) -> Union[int, List[int]]:
     # Find all numbers with max frequency
     modes = [num for num, freq in freq_dict.items() if freq == max_freq]
     
-    # Return single mode or list of modes
+    # Return single mode or list of modes, or first element if all unique
     return modes[0] if len(modes) == 1 else modes
