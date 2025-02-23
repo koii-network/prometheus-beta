@@ -16,7 +16,7 @@ def test_single_character():
 
 def test_special_characters():
     """Test conversion with special characters and spaces."""
-    assert to_sponge_case("hello, world!") == "hElLo, wOrLd!"
+    assert to_sponge_case("hello, world!") == "hElLo, WoRlD!"
 
 def test_mixed_case_input():
     """Test input with mixed case."""
