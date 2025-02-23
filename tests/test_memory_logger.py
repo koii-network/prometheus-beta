@@ -14,7 +14,8 @@ class LogCapture:
         self.captured = []
     
     def write(self, message):
-        self.captured.append(message)
+        if message.strip():  # Only capture non-empty lines
+            self.captured.append(message.strip())
     
     def flush(self):
         pass
@@ -45,7 +46,7 @@ def test_log_memory_usage_basic():
     logger.removeHandler(handler)
     
     # Get captured log messages
-    log_messages = log_capture.getvalue().strip().split('\n')
+    log_messages = log_capture.captured
     
     assert result == 10000
     assert len(log_messages) == 3
@@ -79,7 +80,7 @@ def test_log_memory_usage_function_with_args():
     logger.removeHandler(handler)
     
     # Get captured log messages
-    log_messages = log_capture.getvalue().strip().split('\n')
+    log_messages = log_capture.captured
     
     assert result == 30
     assert len(log_messages) == 3
@@ -107,6 +108,6 @@ def test_log_memory_usage_exception_handling():
     logger.removeHandler(handler)
     
     # Get captured log messages
-    log_messages = log_capture.getvalue().strip().split('\n')
+    log_messages = log_capture.captured
     
     assert "Error in function_that_raises" in log_messages[0]
