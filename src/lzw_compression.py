@@ -78,6 +78,10 @@ def lzw_decompress(compressed):
     if not compressed:
         raise ValueError("Compressed data cannot be empty")
     
+    # Validate first code
+    if compressed[0] < 0 or compressed[0] > 255:
+        raise ValueError(f"Invalid first code: {compressed[0]}")
+    
     # Initialize dictionary with single-character strings
     dictionary = {i: chr(i) for i in range(256)}
     next_code = 256
@@ -88,6 +92,10 @@ def lzw_decompress(compressed):
     
     # Decompression process
     for code in compressed[1:]:
+        # Check if code is valid
+        if code < 0 or code >= next_code:
+            raise ValueError(f"Invalid compressed code: {code}")
+        
         # Check if code exists in dictionary
         if code in dictionary:
             # Get string for current code
