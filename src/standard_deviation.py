@@ -20,9 +20,15 @@ def calculate_standard_deviation(numbers):
     
     # Validate input is numeric
     try:
-        # Attempt to convert all elements to float, 
-        # which will raise TypeError for non-numeric elements
-        numbers = [float(num) for num in numbers]
+        # Ensure all elements can be converted to float
+        numeric_numbers = []
+        for num in numbers:
+            # Try to convert each element, raising TypeError if not possible
+            converted = float(num)
+            numeric_numbers.append(converted)
+        
+        # If we get here, all elements are numeric
+        numbers = numeric_numbers
     except (TypeError, ValueError):
         raise TypeError("All elements must be numeric")
     
