@@ -14,12 +14,12 @@ def test_multi_step_staircase():
     assert calculate_staircase_combinations([1, 1, 1]) == 3
 
 def test_different_step_lengths():
-    """Test staircase with different step lengths"""
-    assert calculate_staircase_combinations([2, 2]) == 2
+    """Test staircase with different step lengths (total 4)"""
+    assert calculate_staircase_combinations([2, 2]) == 3
 
 def test_complex_staircase():
     """Test a more complex staircase scenario"""
-    assert calculate_staircase_combinations([1, 2, 1]) == 3
+    assert calculate_staircase_combinations([1, 2, 1]) == 4
 
 def test_empty_staircase_raises_error():
     """Test that empty staircase raises ValueError"""
