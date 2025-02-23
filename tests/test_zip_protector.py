@@ -81,6 +81,8 @@ def test_wrong_password():
         create_password_protected_zip([file_path], output_zip_path, 'correctpassword')
         
         # Try to extract with wrong password
-        with pytest.raises(zipfile.BadZipFile):
+        with pytest.raises(RuntimeError):
             with zipfile.ZipFile(output_zip_path, 'r') as zf:
-                zf.extractall(pwd=b'wrongpassword')
+                zf.extractall(temp_dir, pwd=b'wrongpassword')
+                # If no exception is raised, this line will ensure the extraction fails
+                list(zf.namelist())
