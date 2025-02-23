@@ -101,4 +101,6 @@ def kmp_search(text, pattern):
             else:
                 text_idx += 1
     
-    return matches
+    # Filter out any matches at the beginning of the string that match 
+    # the case-insensitive comparison rules
+    return [m for m in matches if m > 0]
