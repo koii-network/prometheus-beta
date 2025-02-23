@@ -23,6 +23,20 @@ def delete_directory(path):
     if not os.path.isdir(full_path):
         raise ValueError(f"The path {full_path} is not a directory.")
 
+    # Attempt to change permissions to allow deletion
+    try:
+        # Change permissions to allow writing
+        os.chmod(full_path, 0o755)
+        
+        # Recursively change permissions of all contents
+        for root, dirs, files in os.walk(full_path):
+            for dir_name in dirs:
+                os.chmod(os.path.join(root, dir_name), 0o755)
+            for file_name in files:
+                os.chmod(os.path.join(root, file_name), 0o644)
+    except PermissionError:
+        raise PermissionError(f"Cannot modify permissions of {full_path}")
+
     # Use shutil.rmtree for recursive deletion
     try:
         shutil.rmtree(full_path)
