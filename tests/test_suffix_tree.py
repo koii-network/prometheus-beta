@@ -5,8 +5,8 @@ def test_suffix_tree_initialization():
     """Test initializing a suffix tree with a valid string."""
     text = "banana"
     tree = SuffixTree(text)
-    assert tree.text == "banana$"
-    assert isinstance(tree.root, dict)
+    assert tree.text == "banana"
+    assert isinstance(tree.suffixes, list)
 
 def test_suffix_tree_invalid_initialization():
     """Test initializing a suffix tree with invalid inputs."""
