@@ -1,4 +1,5 @@
 import logging
+import io
 import pytest
 from src.debug_logger import conditional_debug_log
 
@@ -10,27 +11,29 @@ test_logger.setLevel(logging.DEBUG)
 class LogCapture:
     def __init__(self, logger):
         self.logger = logger
-        self.handler = logging.StreamHandler()
+        self.log_stream = io.StringIO()
+        self.handler = logging.StreamHandler(self.log_stream)
         self.formatter = logging.Formatter('%(message)s')
         self.handler.setFormatter(self.formatter)
+        
+        # Remove existing handlers
+        while self.logger.handlers:
+            self.logger.removeHandler(self.logger.handlers[0])
+        
         self.logger.addHandler(self.handler)
-        self.log_messages = []
-        self.handler.stream.seek(0)
-        self.old_handlers = self.logger.handlers[:]
 
     def get_log_messages(self):
         self.handler.flush()
-        return self.log_messages
+        self.log_stream.seek(0)
+        return self.log_stream.getvalue().splitlines()
 
     def __enter__(self):
-        self.handler = logging.StreamHandler()
-        self.handler.setFormatter(self.formatter)
-        self.logger.addHandler(self.handler)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.handler.close()
-        self.logger.handlers = self.old_handlers
+        # Remove the handler
+        self.logger.removeHandler(self.handler)
 
 def test_conditional_debug_log_enabled():
     """Test that debug logs are produced when condition is True."""
