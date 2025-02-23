@@ -20,7 +20,7 @@ def test_single_element_array():
 
 def test_all_elements_valid():
     """Test when all elements are less than k."""
-    assert count_subarrays_with_product_less_than_k([1, 2, 3, 4], 20) == 10
+    assert count_subarrays_with_product_less_than_k([1, 2, 3, 4], 20) == 8
 
 def test_some_elements_valid():
     """Test when some elements are valid."""
