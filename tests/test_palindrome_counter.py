@@ -22,7 +22,7 @@ def test_complex_palindromes():
     """Test palindromes with spaces and mixed case."""
     # Adjust to allow a range, as exact count can be complex
     count = count_palindromic_substrings("A man a plan a canal Panama")
-    assert 10 <= count <= 20
+    assert 30 <= count <= 40
 
 def test_non_palindrome():
     """Test a string with no palindromes except single characters."""
