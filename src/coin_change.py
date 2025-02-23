@@ -30,24 +30,20 @@ def coin_change(coins, amount):
     if amount == 0:
         return 0
     
-    # Sort coins in descending order for optimal selection
-    coins = sorted(coins, reverse=True)
-    
     # Initialize dynamic programming array
-    # Set to a large value (amount + 1) which is larger than max possible coins
     dp = [float('inf')] * (amount + 1)
     
     # Base case: 0 coins needed to make 0 amount
     dp[0] = 0
     
+    # Sort coins in ascending order
+    coins.sort()
+    
     # Compute minimum coins for each amount from 1 to target amount
     for i in range(1, amount + 1):
-        # Try each coin denomination
         for coin in coins:
             if coin <= i:
-                # Update minimum coins needed
-                curr_coins = dp[i - coin] + 1
-                dp[i] = min(dp[i], curr_coins)
+                dp[i] = min(dp[i], dp[i - coin] + 1)
     
     # Return result, -1 if amount cannot be made
     return dp[amount] if dp[amount] != float('inf') else -1
@@ -81,22 +77,20 @@ def min_coins_combination(coins, amount):
     if amount == 0:
         return []
     
-    # Sort coins in descending order 
-    coins = sorted(coins, reverse=True)
-    
     # First, use dynamic programming to verify solution exists
     if coin_change(coins, amount) == -1:
         return []
     
-    # Greedy selection of coins
+    # Sort coins in descending order 
+    coins.sort(reverse=True)
+    
+    # Greedy coin selection
     result = []
     remaining = amount
     
-    while remaining > 0:
-        for coin in coins:
-            if coin <= remaining:
-                result.append(coin)
-                remaining -= coin
-                break
+    for coin in coins:
+        while remaining >= coin:
+            result.append(coin)
+            remaining -= coin
     
     return result
