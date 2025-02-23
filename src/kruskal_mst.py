@@ -72,8 +72,8 @@ def kruskal_mst(num_vertices: int, edges: List[Tuple[int, int, int]]) -> Optiona
     if not edges or num_vertices < 2:
         return None
     
-    # Sort edges by weight in ascending order
-    sorted_edges = sorted(edges, key=lambda x: x[2])
+    # Sort edges by weight in ascending order, with secondary sorting by vertices to ensure consistent results
+    sorted_edges = sorted(edges, key=lambda x: (x[2], x[0], x[1]))
     
     # Initialize Disjoint Set
     disjoint_set = DisjointSet(num_vertices)
