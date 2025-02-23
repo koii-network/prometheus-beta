@@ -19,8 +19,11 @@ def rotate_vowels(input_string):
     """
     # Define vowel rotation mappings (both lowercase and uppercase)
     vowel_map = {
-        'a': 'e', 'e': 'i', 'i': 'o', 'o': 'u', 'u': 'a',
-        'A': 'E', 'E': 'I', 'I': 'O', 'O': 'U', 'U': 'A'
+        'a': 'e', 'A': 'E',
+        'e': 'i', 'E': 'I',
+        'i': 'o', 'I': 'O',
+        'o': 'u', 'O': 'U',
+        'u': 'a', 'U': 'A'
     }
     
     # Rotate vowels while preserving non-vowel characters
