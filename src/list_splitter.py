@@ -34,33 +34,26 @@ def can_split_list_with_equal_sum(nums):
     
     target_sum = total_sum // 2
     
-    def can_partition(index, current_sum, subset_count):
+    def can_partition(nums, target):
         """
-        Recursive helper function to check if target sum can be achieved with restrictions.
+        Recursive helper function to check subset partition.
         
         Args:
-            index (int): Current index in the list
-            current_sum (int): Current sum of selected elements
-            subset_count (int): Number of subsets created
+            nums (list): Remaining list of numbers
+            target (int): Target sum to achieve
         
         Returns:
             bool: True if target sum can be achieved, False otherwise
         """
-        # Base cases
-        if subset_count > 1:
-            return False
-        
-        if current_sum == target_sum and subset_count == 1:
+        if target == 0:
             return True
         
-        if index >= len(nums):
+        if not nums or target < 0:
             return False
         
-        # Try two choices for each element:
-        # 1. Include the current element in current subset
-        # 2. Start a new subset or skip the current element
-        return (can_partition(index + 1, current_sum + nums[index], subset_count) or 
-                can_partition(index + 1, current_sum, subset_count + 1) or
-                can_partition(index + 1, current_sum, subset_count))
+        # Try including or excluding the current number
+        return (can_partition(nums[1:], target - nums[0]) or 
+                can_partition(nums[1:], target))
     
-    return can_partition(0, 0, 0)
+    # We need to find a subset with sum equal to half the total sum
+    return can_partition(nums, target_sum)
