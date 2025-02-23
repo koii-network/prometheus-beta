@@ -17,12 +17,12 @@ def fibonacci(n):
     if n == 0:
         return []
     
-    if n <= 1:
-        return [1, 1]
+    if n < 2:
+        return [1, 1][:n]
     
     fib_sequence = [1, 1]
     
-    while fib_sequence[-1] <= n:
+    while fib_sequence[-1] < n:
         next_fib = fib_sequence[-1] + fib_sequence[-2]
         if next_fib > n:
             break
@@ -55,5 +55,5 @@ def fibonacci_sum(numbers):
     max_num = max(numbers)
     fib_seq = fibonacci(max_num)
     
-    # Ensure unique elements and match expected sums
-    return sum(dict.fromkeys(fib_seq))
+    # Ensure sum is correct
+    return sum(fib_seq[:3]) + sum(fib_seq[3:])
