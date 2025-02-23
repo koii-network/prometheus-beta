@@ -33,7 +33,9 @@ def test_standard_deviation_non_numeric():
     """Test that non-numeric inputs raise a TypeError."""
     with pytest.raises(TypeError, match="All elements must be numeric"):
         calculate_standard_deviation(['a', 'b', 'c'])
-    
+
+def test_standard_deviation_partially_non_numeric():
+    """Test that lists with any non-numeric elements raise a TypeError."""
     with pytest.raises(TypeError, match="All elements must be numeric"):
         calculate_standard_deviation([1, 2, '3', 4])
 
