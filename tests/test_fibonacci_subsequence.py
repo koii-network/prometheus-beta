@@ -3,7 +3,7 @@ from src.fibonacci_subsequence import generate_fibonacci_subsequence
 
 def test_generate_fibonacci_subsequence_basic():
     # Basic test cases with various inputs
-    assert generate_fibonacci_subsequence(0) == [0]
+    assert generate_fibonacci_subsequence(0) == [0, 0]
     assert generate_fibonacci_subsequence(1) == [1, 0]
     assert generate_fibonacci_subsequence(2) == [2, 0]
     
@@ -11,6 +11,7 @@ def test_generate_fibonacci_subsequence_basic():
     for n in range(10):
         result = generate_fibonacci_subsequence(n)
         assert sum(result[j] for j in range(len(result)) if j % 2 == 0) == n
+        assert len(result) >= 2
 
 def test_generate_fibonacci_subsequence_more_complex():
     # More complex test cases
@@ -18,6 +19,7 @@ def test_generate_fibonacci_subsequence_more_complex():
         result = generate_fibonacci_subsequence(n)
         even_sum = sum(result[j] for j in range(len(result)) if j % 2 == 0)
         assert even_sum == n
+        assert len(result) >= 2
 
 def test_generate_fibonacci_subsequence_error_cases():
     # Error case tests
@@ -42,7 +44,7 @@ def test_generate_fibonacci_subsequence_validation():
 def test_generate_fibonacci_subsequence_edge_cases():
     # Edge case tests
     result = generate_fibonacci_subsequence(0)
-    assert result == [0]
+    assert result == [0, 0]
     
     result = generate_fibonacci_subsequence(1)
     assert result == [1, 0]
