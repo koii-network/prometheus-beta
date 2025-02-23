@@ -2,12 +2,11 @@
 LZVN (Lempel-Ziv Very New) Compression Algorithm Implementation
 
 This module provides a basic implementation of the LZVN compression algorithm.
-LZVN is a variant of LZ compression used in some compression scenarios.
 """
 
 def lzvn_compress(data):
     """
-    Compress input data using a basic LZVN-like compression algorithm.
+    Compress input data using a more robust compression algorithm.
     
     Args:
         data (bytes): The input data to compress
@@ -28,38 +27,45 @@ def lzvn_compress(data):
     
     # Compression algorithm implementation
     compressed = bytearray()
+    window_size = 4096
+    max_match_length = 255
+    
     i = 0
     while i < len(data):
-        # Look-ahead buffer to find repeated sequences
-        look_ahead = min(16, len(data) - i)  # Max look-ahead of 16 bytes
+        # Find the longest match in the sliding window
+        longest_match_length = 0
+        longest_match_offset = 0
         
-        # Find longest match
-        best_length = 1
-        best_offset = 0
-        for length in range(look_ahead, 0, -1):
-            for j in range(max(0, i - 4096), i):  # Search back up to 4096 bytes
-                if data[j:j+length] == data[i:i+length]:
-                    offset = i - j
-                    if offset > 0 and length > best_length:
-                        best_length = length
-                        best_offset = offset
-                    break
-        
-        # Encode the result
-        if best_length > 2:
-            # Compressed token (offset, length)
-            # Use variable-length encoding to save space
-            if best_length <= 15 and best_offset <= 4095:
-                compressed.append((best_length << 4) | (best_offset >> 8))
-                compressed.append(best_offset & 0xFF)
-            else:
-                # Extended encoding for longer matches
-                compressed.append(0xF0)
-                compressed.append(best_length)
-                compressed.append(best_offset >> 8)
-                compressed.append(best_offset & 0xFF)
+        # Look back in the window to find longest match
+        window_start = max(0, i - window_size)
+        for j in range(window_start, i):
+            match_length = 0
+            while (i + match_length < len(data) and 
+                   data[j + match_length] == data[i + match_length] and 
+                   match_length < max_match_length):
+                match_length += 1
             
-            i += best_length
+            if match_length > longest_match_length:
+                longest_match_length = match_length
+                longest_match_offset = i - j
+        
+        # Encode match or literal
+        if longest_match_length > 2:
+            # Encode match with length and offset
+            if longest_match_length <= 15 and longest_match_offset <= 4095:
+                # Compact encoding
+                encoded_token = (longest_match_length << 4) | (longest_match_offset >> 8)
+                compressed.append(encoded_token)
+                compressed.append(longest_match_offset & 0xFF)
+            else:
+                # Extended encoding
+                compressed.append(0xF0)  # Extended token marker
+                compressed.append(longest_match_length)
+                compressed.append(longest_match_offset >> 8)
+                compressed.append(longest_match_offset & 0xFF)
+            
+            # Move past the matched sequence
+            i += longest_match_length
         else:
             # Literal byte
             compressed.append(data[i])
@@ -69,7 +75,7 @@ def lzvn_compress(data):
 
 def lzvn_decompress(compressed_data):
     """
-    Decompress data compressed with the LZVN-like algorithm.
+    Decompress data compressed with the LZVN algorithm.
     
     Args:
         compressed_data (bytes): The compressed input data
@@ -93,16 +99,15 @@ def lzvn_decompress(compressed_data):
     i = 0
     
     while i < len(compressed_data):
-        # Check if it's a compressed token or literal
         token = compressed_data[i]
         
-        # Literal byte or unrecognized token
+        # Literal byte
         if token > 0xF0 or i + 1 >= len(compressed_data):
             decompressed.append(token)
             i += 1
             continue
         
-        # Standard or extended encoding
+        # Match encoding
         if token == 0xF0 and i + 3 < len(compressed_data):
             # Extended encoding
             length = compressed_data[i + 1]
@@ -123,10 +128,9 @@ def lzvn_decompress(compressed_data):
             decompressed.append(token)
             continue
         
-        # Copy matched sequence
-        match_start = len(decompressed) - offset
+        # Reconstruct the matched sequence
+        start = len(decompressed) - offset
         for j in range(length):
-            # Prevent index out of range by wrapping within current decompressed data
-            decompressed.append(decompressed[match_start + (j % offset)])
+            decompressed.append(decompressed[start + j])
     
     return bytes(decompressed)
