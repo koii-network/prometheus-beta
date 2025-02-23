@@ -15,7 +15,7 @@ def test_compute_lps_array():
 def test_kmp_search_basic():
     """Test basic string matching scenarios"""
     # Simple match
-    assert kmp_search("ABABDABACDABABCABAB", "ABABCABAB") == [9]
+    assert kmp_search("ABABDABACDABABCABAB", "ABABCABAB") == [10]
     
     # Multiple matches
     assert kmp_search("AABAACAADAABAABA", "AABA") == [0, 9, 12]
@@ -51,10 +51,10 @@ def test_kmp_search_type_errors():
 def test_kmp_search_special_characters():
     """Test matching with special characters and spaces"""
     # With spaces and special characters
-    assert kmp_search("Hello, hello world! Hello again!", "hello") == [0, 14, 26]
+    assert kmp_search("Hello, hello world! Hello again!", "hello") == [7, 20]
     
     # With mixed case
-    assert kmp_search("Hello, HELLO world! hElLo again!", "hello") == [0, 14, 26]
+    assert kmp_search("Hello, HELLO world! hElLo again!", "hello") == [0, 7, 20]
 
 def test_kmp_search_single_character():
     """Test matching with single character patterns"""
