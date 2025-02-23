@@ -15,7 +15,8 @@ def download_file(url, save_path=None):
 
     Raises:
         ValueError: If the URL is invalid or empty.
-        requests.RequestException: If there's an error during the download.
+        requests.HTTPError: For HTTP error responses.
+        requests.RequestException: For other network-related errors.
         IOError: If there's an issue saving the file.
     """
     # Validate URL
@@ -51,6 +52,9 @@ def download_file(url, save_path=None):
 
         return save_path
 
+    except requests.HTTPError as e:
+        # Specifically re-raise HTTPError
+        raise
     except requests.RequestException as e:
         raise requests.RequestException(f"Error downloading file: {str(e)}")
     except IOError as e:
