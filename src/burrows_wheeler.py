@@ -9,7 +9,8 @@ def burrows_wheeler_transform(input_text):
         input_text (str): The input string to transform
     
     Returns:
-        str: The Burrows-Wheeler transformed string
+        tuple: A tuple containing the Burrows-Wheeler transformed string 
+               and the index of the original rotation
     
     Raises:
         TypeError: If input is not a string
@@ -37,8 +38,7 @@ def burrows_wheeler_transform(input_text):
     # Find the index of the original input in the sorted rotations
     original_index = sorted_rotations.index(text)
     
-    # Return a tuple of the BWT string and the original index
-    return (bwt_result, original_index)
+    return bwt_result, original_index
 
 def inverse_burrows_wheeler_transform(bwt_input):
     """
@@ -64,18 +64,25 @@ def inverse_burrows_wheeler_transform(bwt_input):
     if not isinstance(bwt_text, str) or not bwt_text:
         raise ValueError("Burrows-Wheeler text must be a non-empty string")
     
-    # First column of the matrix (sorted characters)
+    # Create first and last columns
     first_column = sorted(bwt_text)
-    
-    # Create the inverse BWT reconstruction table
     n = len(bwt_text)
-    next_char = [0] * n
     
-    # Compute the 'next' array
+    # Create next array
+    next_arr = [0] * n
+    # Auxiliary array to handle duplicate characters
+    char_count = {}
+    
     for i in range(n):
-        next_char[i] = first_column.index(bwt_text[i])
-        # Advance the index in first column
-        first_column[next_char[i]] = chr(ord(first_column[next_char[i]]) + 1)
+        char = first_column[i]
+        if char not in char_count:
+            char_count[char] = 0
+        # Find the correct occurrence of this character in the first column
+        for j in range(n):
+            if bwt_text[j] == char and char_count[char] == 0:
+                next_arr[i] = j
+                break
+        char_count[char] += 1
     
     # Reconstruct the original text
     result = []
@@ -83,7 +90,7 @@ def inverse_burrows_wheeler_transform(bwt_input):
     
     for _ in range(n):
         result.append(bwt_text[current])
-        current = next_char[current]
+        current = next_arr[current]
     
     # Reverse and convert to string, remove terminator
     original = ''.join(reversed(result))[:-1]
