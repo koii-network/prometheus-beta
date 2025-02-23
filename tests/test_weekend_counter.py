@@ -40,4 +40,4 @@ def test_different_years():
     """Test weekend counting for different years."""
     # Verify weekend count for different years
     assert count_weekends_in_month(2022, 12) == 9  # December 2022
-    assert count_weekends_in_month(2023, 12) == 9  # December 2023
+    assert count_weekends_in_month(2023, 12) == 10  # December 2023
