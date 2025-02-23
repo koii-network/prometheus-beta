@@ -50,7 +50,7 @@ def gravity_sort(arr):
         
         # Drop the beads to the bottom
         for row in range(len(beads)):
-            beads[row][col] = 1 if row < total_beads else 0
+            beads[row][col] = 1 if row >= len(beads) - total_beads else 0
     
     # Reconstruct the sorted array
     sorted_arr = []
