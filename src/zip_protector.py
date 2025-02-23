@@ -43,13 +43,13 @@ def create_password_protected_zip(source_files, output_zip_path, password):
     try:
         with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for file_path in source_files:
-                # Add each file to the zip with encryption
+                # Encrypt each file individually
                 zipf.writestr(
                     os.path.basename(file_path), 
                     open(file_path, 'rb').read(), 
-                    zipfile.ZIP_DEFLATED
+                    zipfile.ZIP_ENCRYPTED
                 )
-                # Set password for the entire archive
+                # Set password for each file
                 zipf.setpassword(password.encode())
         
         return output_zip_path
