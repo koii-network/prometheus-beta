@@ -21,8 +21,15 @@ def prims_mst(graph: Dict[str, Dict[str, float]]) -> List[Tuple[str, str, float]
     if not graph:
         raise ValueError("Graph cannot be empty")
     
+    # Filter out vertices with no connections
+    valid_vertices = {v for v, edges in graph.items() if edges}
+    
+    # Check if graph is fully connected
+    if not valid_vertices:
+        raise ValueError("Graph is not fully connected")
+    
     # Choose an arbitrary starting vertex
-    start_vertex = list(graph.keys())[0]
+    start_vertex = list(valid_vertices)[0]
     
     # Track vertices in the MST
     mst_vertices = set([start_vertex])
@@ -52,13 +59,12 @@ def prims_mst(graph: Dict[str, Dict[str, float]]) -> List[Tuple[str, str, float]
         mst_edges.append((from_vertex, to_vertex, weight))
         
         # Add new edges from the newly added vertex
-        if to_vertex in graph:  # Ensure the vertex is in the graph
-            for neighbor, edge_weight in graph[to_vertex].items():
-                if neighbor not in mst_vertices:
-                    heapq.heappush(edge_heap, (edge_weight, to_vertex, neighbor))
+        for neighbor, edge_weight in graph[to_vertex].items():
+            if neighbor not in mst_vertices:
+                heapq.heappush(edge_heap, (edge_weight, to_vertex, neighbor))
     
-    # Check if all vertices are connected
-    if len(mst_vertices) != len(graph):
+    # Check if all valid vertices are connected
+    if len(mst_vertices) != len(valid_vertices):
         raise ValueError("Graph is not fully connected")
     
     return mst_edges
