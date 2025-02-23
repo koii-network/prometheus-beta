@@ -9,7 +9,7 @@ def first_non_repeating_character(s: str) -> str | None:
         str | None: The first non-repeating character, or None if no such character exists.
 
     Raises:
-        ValueError: If the input string contains non-lowercase letters.
+        ValueError: If the input string is empty or contains non-lowercase letters.
 
     Examples:
         >>> first_non_repeating_character("leetcode")
@@ -20,8 +20,12 @@ def first_non_repeating_character(s: str) -> str | None:
         None
     """
     # Validate input 
-    if not s or not s.islower():
-        raise ValueError("Input must be a non-empty string of lowercase letters")
+    if not s:
+        raise ValueError("Input string cannot be empty")
+    
+    # Check for non-lowercase letters
+    if not s.islower():
+        raise ValueError("Input must contain only lowercase letters")
     
     # Count occurrences of each character
     char_count = {}
