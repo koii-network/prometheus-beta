@@ -10,18 +10,25 @@ def find_median_sorted_arrays(nums1: list[int], nums2: list[int]) -> float:
         float: Median of the two sorted arrays
     
     Raises:
-        ValueError: If input arrays are empty
+        ValueError: If input arrays are empty or not sorted
     
     Time Complexity: O(log(min(m,n)))
     Space Complexity: O(1)
     """
+    # Check for empty arrays
+    if len(nums1) == 0 and len(nums2) == 0:
+        raise ValueError("Both input arrays cannot be empty")
+    
+    # Check if arrays are sorted
+    def is_sorted(arr):
+        return all(arr[i] <= arr[i+1] for i in range(len(arr)-1)) if arr else True
+    
+    if not (is_sorted(nums1) and is_sorted(nums2)):
+        raise ValueError("Input arrays must be sorted")
+    
     # Ensure nums1 is the smaller array for efficiency
     if len(nums1) > len(nums2):
         nums1, nums2 = nums2, nums1
-    
-    # Check if arrays are empty
-    if len(nums1) == 0 and len(nums2) == 0:
-        raise ValueError("Both input arrays cannot be empty")
     
     m, n = len(nums1), len(nums2)
     left, right = 0, m
@@ -54,4 +61,4 @@ def find_median_sorted_arrays(nums1: list[int], nums2: list[int]) -> float:
             left = partition_x + 1
     
     # If no valid partition found
-    raise ValueError("Input arrays are not sorted")
+    raise ValueError("Unable to find median")
