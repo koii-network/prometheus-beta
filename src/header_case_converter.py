@@ -42,8 +42,9 @@ def convert_to_header_case(input_string):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1 \2', input_string)
     s2 = re.sub('([a-z0-9])([A-Z])', r'\1 \2', s1)
     
-    # Replace underscores, hyphens, and multiple spaces with single space
-    normalized = re.sub(r'[_\-]+', ' ', s2)
+    # Replace underscores, hyphens, and special characters with spaces
+    normalized = re.sub(r'[^a-zA-Z0-9\s]', ' ', s2)
+    normalized = re.sub(r'[_\-]+', ' ', normalized)
     normalized = re.sub(r'\s+', ' ', normalized)
     
     # Split, capitalize each word, and join
