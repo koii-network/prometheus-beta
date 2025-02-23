@@ -43,4 +43,4 @@ def test_invalid_inputs():
 def test_unicode_strings():
     """Test edit distance with unicode characters"""
     assert compute_edit_distance("café", "cafe") == 1
-    assert compute_edit_distance("こんにちは", "こんばんは") == 1
+    assert compute_edit_distance("こんにちは", "こんばんは") == 2
