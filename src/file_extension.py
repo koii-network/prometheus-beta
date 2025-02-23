@@ -22,8 +22,14 @@ def get_file_extension(file_path):
     if not isinstance(file_path, str):
         raise TypeError("Input must be a string")
     
-    # Use os.path.splitext to extract the extension
+    # Split the path and get the filename
     filename = os.path.basename(file_path)
+    
+    # Special handling for files starting with a dot (like .gitignore)
+    if filename.startswith('.'):
+        return ''
+    
+    # Use os.path.splitext to extract the extension
     _, extension = os.path.splitext(filename)
     
     # Remove the leading dot and return the extension (or empty string)
