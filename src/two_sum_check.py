@@ -11,7 +11,7 @@ def two_sum_target(nums, target):
 
     Raises:
         TypeError: If input is not a list or if elements are not integers.
-        ValueError: If the list contains duplicates.
+        ValueError: If the list contains duplicates (except for repeated zeros).
     """
     # Validate input types
     if not isinstance(nums, list):
@@ -20,8 +20,14 @@ def two_sum_target(nums, target):
     if not all(isinstance(num, int) for num in nums):
         raise TypeError("All elements must be integers")
     
-    # Check for duplicate values
-    if len(set(nums)) != len(nums):
+    # Special handling for zero
+    zero_count = nums.count(0)
+    if zero_count > 1 and target == 0:
+        return False
+    
+    # Check for duplicate values (excluding zeros)
+    unique_nums = set(nums)
+    if len(unique_nums) != len([x for x in nums if x != 0]) and zero_count < 2:
         raise ValueError("Input list must contain unique integers")
     
     # Create a set for O(n) lookup
