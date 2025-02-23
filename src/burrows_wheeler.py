@@ -57,39 +57,34 @@ def inverse_burrows_wheeler_transform(bwt_text):
     if not bwt_text:
         raise ValueError("Input string cannot be empty")
     
-    # Create the first column by sorting BWTransform
-    first_column = sorted(list(bwt_text))
+    # Remove terminator for complex strings
+    if '$' not in bwt_text:
+        bwt_text += '$'
     
-    # Track characters in columns 
+    # First column is sorted
+    first_column = sorted(bwt_text)
+    
+    # Last column is the BWT
+    last_column = list(bwt_text)
+    
+    # Construct the mapping for tracing back
     n = len(bwt_text)
     
-    # Calculate the next array (mapping between columns)
-    next_arr = [0] * n
-    indices = {}
-    
-    for i, char in enumerate(first_column):
-        # Handle first occurrence of char
-        if char not in indices:
-            indices[char] = 0
-        
-        # Find where this occurrence of char is in bwt_text
-        for j in range(n):
-            if bwt_text[j] == char and indices[char] == 0:
-                next_arr[i] = j
-                break
-        
-        # Increment count of this character
-        indices[char] += 1
-    
-    # Start from the row with '$' terminator
-    terminator_index = first_column.index('$')
-    current = terminator_index
-    
-    # Reconstruct original string by tracing back
+    # Reconstruct the original text
     result = []
-    for _ in range(n):
-        result.append(bwt_text[current])
-        current = next_arr[current]
+    current_char = '$'
     
-    # Convert back to original text (remove terminal '$')
-    return ''.join(reversed(result))[:-1]
+    # Start with the $ terminator 
+    current_index = first_column.index(current_char)
+    
+    for _ in range(n):
+        result.append(last_column[current_index])
+        
+        # Find the next index
+        current_char = last_column[current_index]
+        current_index = first_column.index(current_char)
+    
+    # Reverse the result and remove terminator
+    original = ''.join(reversed(result))[:-1]
+    
+    return original
