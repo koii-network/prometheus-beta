@@ -20,7 +20,7 @@ def can_split_list_with_equal_sum(nums):
         raise TypeError("Input must be a list")
     
     # Handle edge cases
-    if not nums:
+    if not nums or len(nums) < 2:
         return False
     
     # Ensure all elements are integers
@@ -34,28 +34,33 @@ def can_split_list_with_equal_sum(nums):
     
     target_sum = total_sum // 2
     
-    def can_achieve_sum(index, current_sum):
+    def can_partition(index, current_sum, subset_count):
         """
-        Recursive helper function to check if target sum can be achieved.
+        Recursive helper function to check if target sum can be achieved with restrictions.
         
         Args:
             index (int): Current index in the list
             current_sum (int): Current sum of selected elements
+            subset_count (int): Number of subsets created
         
         Returns:
             bool: True if target sum can be achieved, False otherwise
         """
         # Base cases
-        if current_sum == target_sum:
+        if subset_count > 1:
+            return False
+        
+        if current_sum == target_sum and subset_count == 1:
             return True
         
-        if index >= len(nums) or current_sum > target_sum:
+        if index >= len(nums):
             return False
         
         # Try two choices for each element:
-        # 1. Include the current element
-        # 2. Skip the current element
-        return (can_achieve_sum(index + 1, current_sum + nums[index]) or 
-                can_achieve_sum(index + 1, current_sum))
+        # 1. Include the current element in current subset
+        # 2. Start a new subset or skip the current element
+        return (can_partition(index + 1, current_sum + nums[index], subset_count) or 
+                can_partition(index + 1, current_sum, subset_count + 1) or
+                can_partition(index + 1, current_sum, subset_count))
     
-    return can_achieve_sum(0, 0)
+    return can_partition(0, 0, 0)
