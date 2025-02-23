@@ -1,4 +1,5 @@
 from typing import List, Optional
+from itertools import combinations
 
 def min_steps_to_target_sum(numbers: List[int], target: int) -> Optional[int]:
     """
@@ -14,43 +15,25 @@ def min_steps_to_target_sum(numbers: List[int], target: int) -> Optional[int]:
     Time Complexity: O(2^n), where n is the length of numbers
     Space Complexity: O(n)
     """
-    def backtrack(index: int, current_sum: int, steps: int) -> Optional[int]:
-        # Base case: if we've reached the target sum
-        if current_sum == target:
-            return steps
-        
-        # If we've gone through all numbers and haven't reached the target
-        if index >= len(numbers):
-            return None
-        
-        # Try adding the current number
-        add_result = backtrack(index + 1, current_sum + numbers[index], steps + 1)
-        
-        # Try subtracting the current number
-        sub_result = backtrack(index + 1, current_sum - numbers[index], steps + 1)
-        
-        # Return the minimum steps, prioritizing a valid result
-        if add_result is not None and sub_result is not None:
-            return min(add_result, sub_result)
-        elif add_result is not None:
-            return add_result
-        elif sub_result is not None:
-            return sub_result
-        
-        return None
-    
     # Handle edge cases
     if not numbers:
         return None
     
-    # Try starting from each index to find minimum steps
-    min_steps = float('inf')
-    found_solution = False
+    # Check all possible subset sizes
+    for subset_size in range(1, len(numbers) + 1):
+        for subset in combinations(numbers, subset_size):
+            # Try all sign combinations for the subset
+            signs = [sign for sign in range(2 ** subset_size)]
+            for sign_combo in signs:
+                current_sum = 0
+                steps = 0
+                for i, num in enumerate(subset):
+                    # Use bit manipulation to determine sign
+                    current_sum += num if sign_combo & (1 << i) else -num
+                    steps += 1
+                
+                # Check if we've reached the target
+                if current_sum == target:
+                    return steps
     
-    for start_index in range(len(numbers)):
-        result = backtrack(start_index, 0, 0)
-        if result is not None:
-            min_steps = min(min_steps, result)
-            found_solution = True
-    
-    return min_steps if found_solution else None
+    return None
