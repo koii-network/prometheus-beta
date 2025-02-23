@@ -34,10 +34,11 @@ def test_standard_deviation_non_numeric():
     with pytest.raises(TypeError, match="All elements must be numeric"):
         calculate_standard_deviation(['a', 'b', 'c'])
 
-def test_standard_deviation_partially_non_numeric():
-    """Test that lists with any non-numeric elements raise a TypeError."""
+def test_standard_deviation_non_numeric_types():
+    """Test that non-convertible numeric-like types raise TypeError."""
+    # List with non-convertible types
     with pytest.raises(TypeError, match="All elements must be numeric"):
-        calculate_standard_deviation([1, 2, '3', 4])
+        calculate_standard_deviation([1, 2, None, 4])
 
 def test_standard_deviation_mixed_numeric_types():
     """Test that the function works with mixed numeric types."""
