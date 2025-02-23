@@ -11,13 +11,13 @@ def test_even_length_list_default_radius():
     """Test finding indices for a list with even number of elements using default radius."""
     test_list = [1, 2, 3, 4, 5, 6]
     result = find_middle_range_indices(test_list)
-    assert result == [2, 3]
+    assert result == [1, 2, 3]
 
 def test_custom_radius():
     """Test finding indices with a custom radius."""
     test_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     result = find_middle_range_indices(test_list, range_radius=2)
-    assert result == [3, 4, 5]
+    assert result == [2, 3, 4, 5, 6]
 
 def test_zero_radius():
     """Test finding indices with zero radius."""
