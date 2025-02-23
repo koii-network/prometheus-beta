@@ -11,15 +11,14 @@ def coin_change(coins, amount):
              or -1 if the amount cannot be made up by the given coins
     
     Raises:
-        ValueError: If coins list is empty or contains non-positive values
-        TypeError: If amount is not a non-negative integer
+        TypeError: If amount is not an integer
     """
     # Validate input
     if not isinstance(amount, int):
         raise TypeError("Amount must be an integer")
     
     if amount < 0:
-        raise ValueError("Amount cannot be negative")
+        raise TypeError("Amount cannot be negative")
     
     if not coins:
         raise ValueError("Coin denominations list cannot be empty")
@@ -30,6 +29,9 @@ def coin_change(coins, amount):
     # Special case: if amount is 0, no coins needed
     if amount == 0:
         return 0
+    
+    # Sort coins in descending order for greedy approach
+    coins = sorted(coins, reverse=True)
     
     # Initialize dynamic programming array
     # Set to a large value (amount + 1) which is larger than max possible coins
