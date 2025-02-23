@@ -8,7 +8,7 @@ class MockFTP:
     def __init__(self, *args, **kwargs):
         pass
     
-    def connect(self, host, port):
+    def connect(self, host, port, timeout=30):
         pass
     
     def login(self, user, passwd):
@@ -20,7 +20,7 @@ def test_successful_ftp_connection():
              patch.object(MockFTP, 'login') as mock_login:
             connection = establish_ftp_connection('test.server.com', 'user', 'pass')
             assert connection is not None
-            mock_connect.assert_called_once_with(host='test.server.com', port=21)
+            mock_connect.assert_called_once_with(host='test.server.com', port=21, timeout=30)
             mock_login.assert_called_once_with(user='user', passwd='pass')
 
 def test_empty_host_raises_error():
@@ -37,7 +37,7 @@ def test_empty_password_raises_error():
 
 def test_connection_refused():
     with patch('ftplib.FTP') as mock_ftp:
-        mock_ftp.side_effect = socket.error("Connection refused")
+        mock_ftp.return_value.connect.side_effect = socket.error("Connection refused")
         with pytest.raises(ConnectionRefusedError):
             establish_ftp_connection('invalid.server.com', 'user', 'pass')
 
@@ -50,6 +50,6 @@ def test_authentication_failure():
 
 def test_connection_timeout():
     with patch('ftplib.FTP') as mock_ftp:
-        mock_ftp.side_effect = socket.timeout("Connection timed out")
+        mock_ftp.return_value.connect.side_effect = socket.timeout("Connection timed out")
         with pytest.raises(socket.timeout):
             establish_ftp_connection('slow.server.com', 'user', 'pass', timeout=1)
