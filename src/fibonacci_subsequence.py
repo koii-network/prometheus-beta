@@ -18,35 +18,36 @@ def generate_fibonacci_subsequence(n):
     if n == 0:
         return [0]
     
+    if n == 1:
+        return [1, 0]
+    
     # Try different subsequence lengths
-    for length in range(2, 100):  # Reasonable upper limit to prevent infinite loop
+    for length in range(2, 50):  # Reduced limit to prevent overly long searches
         # Generate candidate subsequences
         for start_index in range(length):
             subsequence = [0] * length
             
-            # Set initial Fibonacci-like conditions
+            # Set initial conditions
             subsequence[start_index] = n
             
             # Try to generate a valid subsequence
             try:
-                # Fill in other values following Fibonacci-like rule
+                # Special handling for 1-length case
+                if start_index == 0 and n > 0:
+                    subsequence[0] = n
+                    subsequence[1] = 0
+                
+                # Fill in other values 
                 for i in range(length):
                     if i == start_index:
                         continue
                     
-                    # If before start_index, use left-side Fibonacci generation
-                    if i < start_index:
-                        if i + 1 < start_index:
-                            subsequence[i] = subsequence[i+1] - subsequence[start_index]
-                        else:
-                            subsequence[i] = subsequence[start_index]
-                    
-                    # If after start_index, use right-side Fibonacci generation
-                    if i > start_index:
-                        if i - 1 > start_index:
+                    # Fibonacci-like generation
+                    if i > 0 and i < length - 1:
+                        if i > start_index:
                             subsequence[i] = subsequence[i-1] + subsequence[i-2]
-                        else:
-                            subsequence[i] = subsequence[start_index]
+                        elif i < start_index:
+                            subsequence[i] = subsequence[i+1] - subsequence[start_index]
                 
                 # Verify the condition
                 even_sum = sum(subsequence[j] for j in range(length) if j % 2 == 0)
