@@ -23,7 +23,8 @@ def get_file_extension(file_path):
         raise TypeError("Input must be a string")
     
     # Use os.path.splitext to extract the extension
-    _, extension = os.path.splitext(file_path)
+    filename = os.path.basename(file_path)
+    _, extension = os.path.splitext(filename)
     
     # Remove the leading dot and return the extension (or empty string)
     return extension.lstrip('.')
