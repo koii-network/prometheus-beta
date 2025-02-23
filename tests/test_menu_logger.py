@@ -10,6 +10,11 @@ def test_single_selection_logging(tmp_path):
     
     logger.log_selection("Main Menu", "Exit")
     
+    # Explicitly flush and close all handlers to ensure writing
+    for handler in logger.logger.handlers:
+        handler.flush()
+        handler.close()
+    
     # Verify log file contents by reading the actual file
     assert os.path.exists(log_file), "Log file was not created"
     
@@ -25,6 +30,11 @@ def test_multiple_selections_logging(tmp_path):
     
     selections = ["Option 1", "Option 2", "Option 3"]
     logger.log_multiple_selections("Settings Menu", selections)
+    
+    # Explicitly flush and close all handlers to ensure writing
+    for handler in logger.logger.handlers:
+        handler.flush()
+        handler.close()
     
     # Verify log file contents
     assert os.path.exists(log_file), "Log file was not created"
