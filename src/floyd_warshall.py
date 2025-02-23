@@ -28,7 +28,7 @@ def floyd_warshall(graph: List[List[float]]) -> Tuple[List[List[float]], List[Li
     
     # Initialize distance and next matrices
     dist = [row.copy() for row in graph]
-    next_matrix = [[j if i == j or graph[i][j] != float('inf') else None 
+    next_matrix = [[None if graph[i][j] == float('inf') else j 
                     for j in range(n)] for i in range(n)]
     
     # Floyd-Warshall algorithm
@@ -67,10 +67,22 @@ def reconstruct_path(next_matrix: List[List[Optional[int]]],
     if next_matrix[start][end] is None:
         return None
     
+    # For adjacent or direct path entries
+    if start == end:
+        return [start]
+    if next_matrix[start][end] == end:
+        return [start, end]
+    
     # Reconstruct path
     path = [start]
     while start != end:
-        start = next_matrix[start][end]
-        path.append(start)
+        # Take the direct path if possible 
+        if next_matrix[start][end] == end:
+            path.append(end)
+            break
+        
+        mid = next_matrix[start][end]
+        path.append(mid)
+        start = mid
     
     return path
