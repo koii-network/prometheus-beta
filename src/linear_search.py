@@ -19,6 +19,7 @@ def linear_search(arr, target):
     # Iterate through the list
     for index, element in enumerate(arr):
         # If element matches target, return its index
+        # Using == to handle type-sensitive comparison
         if element == target:
             return index
     
