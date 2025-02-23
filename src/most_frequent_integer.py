@@ -29,7 +29,7 @@ def find_most_frequent_integer_index(numbers):
     # Find the maximum frequency
     max_freq = max(frequency.values())
     
-    # Find the first index of the first number with max frequency
-    for i, num in enumerate(numbers):
-        if frequency[num] == max_freq:
+    # Find the last (highest) index of the most frequent number
+    for i in range(len(numbers) - 1, -1, -1):
+        if frequency[numbers[i]] == max_freq:
             return i
