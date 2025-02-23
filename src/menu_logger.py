@@ -19,33 +19,27 @@ class MenuLogger:
         # Ensure log directory exists
         os.makedirs(os.path.dirname(log_file) or '.', exist_ok=True)
         
-        # Configure logging to write to file immediately
-        logging.basicConfig(
-            filename=log_file,
-            level=log_level,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            filemode='a'
-        )
-        
-        # Also log to stdout for debugging
-        stdout_handler = logging.StreamHandler(sys.stdout)
-        stdout_handler.setLevel(log_level)
-        stdout_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+        # Create a unique logger name to prevent handler conflicts
+        logger_name = f'menu_logger_{hash(log_file)}'
         
         # Create logger
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(logger_name)
+        self.logger.setLevel(log_level)
         
         # Remove existing handlers to prevent duplicate logging
         while self.logger.handlers:
             self.logger.removeHandler(self.logger.handlers[0])
         
-        # Add handlers
+        # Create file handler
         file_handler = logging.FileHandler(log_file, mode='a')
         file_handler.setLevel(log_level)
         file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
         
+        # Add handler to logger
         self.logger.addHandler(file_handler)
-        self.logger.addHandler(stdout_handler)
+        
+        # Prevent handler propagation to root logger
+        self.logger.propagate = False
     
     def log_selection(self, menu_name: str, selection: Union[str, int]) -> None:
         """
@@ -69,7 +63,7 @@ class MenuLogger:
         log_message = f"Menu: {menu_name} - Selected: {selection}"
         self.logger.info(log_message)
         
-        # Additional step to ensure writing
+        # Ensure immediate writing
         for handler in self.logger.handlers:
             handler.flush()
     
