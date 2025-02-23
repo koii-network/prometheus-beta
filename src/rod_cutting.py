@@ -16,9 +16,10 @@ def rod_cutting(prices, n):
     if not prices or n < 0:
         raise ValueError("Invalid input: prices must be non-empty and n must be non-negative")
     
-    # Extend prices list if needed to match rod length
+    # Ensure we have enough prices by repeating the last known price
     if len(prices) < n:
-        prices = prices + [0] * (n - len(prices))
+        last_price = prices[-1]
+        prices = prices + [last_price] * (n - len(prices))
     
     # Initialize DP table
     dp = [0] * (n + 1)
