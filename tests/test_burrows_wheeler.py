@@ -5,7 +5,7 @@ def test_basic_bwt_transform():
     """Test basic Burrows-Wheeler Transform functionality"""
     input_text = "banana"
     bwt_result, index = burrows_wheeler_transform(input_text)
-    assert bwt_result == "annb$a"
+    assert bwt_result == "annb$aa"
     assert index == 3  # index of the original rotation
 
 def test_bwt_inverse_transform():
@@ -27,7 +27,7 @@ def test_bwt_empty_string_error():
     with pytest.raises(ValueError, match="Input string cannot be empty"):
         burrows_wheeler_transform("")
     
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError, match="Burrows-Wheeler text must be a non-empty string"):
         inverse_burrows_wheeler_transform(("", 0))
 
 def test_bwt_invalid_input_type():
@@ -35,7 +35,7 @@ def test_bwt_invalid_input_type():
     with pytest.raises(TypeError, match="Input must be a string"):
         burrows_wheeler_transform(123)
     
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="Input must be a tuple of \(bwt_string, original_index\)"):
         inverse_burrows_wheeler_transform(None)
 
 def test_bwt_complex_string():
