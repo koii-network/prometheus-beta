@@ -25,11 +25,6 @@ def two_sum_target(nums, target):
     if zero_count > 1 and target == 0:
         return False
     
-    # Check for duplicate values (excluding zeros)
-    unique_nums = set(nums)
-    if len(unique_nums) != len([x for x in nums if x != 0]) and zero_count < 2:
-        raise ValueError("Input list must contain unique integers")
-    
     # Create a set for O(n) lookup
     num_set = set(nums)
     
