@@ -19,43 +19,14 @@ class SuffixTree:
         if not isinstance(text, str) or not text:
             raise ValueError("Input must be a non-empty string")
         
-        self.text = text + '$'  # Append termination symbol
-        self.root = {}
-        self._build_suffix_tree()
-    
-    def _build_suffix_tree(self):
-        """
-        Build the suffix tree by adding all suffixes.
-        """
-        for i in range(len(self.text)):
-            self._add_suffix(i)
-    
-    def _add_suffix(self, suffix_start):
-        """
-        Add a suffix to the tree.
-        
-        Args:
-            suffix_start (int): Starting index of the suffix.
-        """
-        current = self.root
-        suffix = self.text[suffix_start:]
-        
-        for j, char in enumerate(suffix):
-            # If character doesn't exist, create new branch
-            if char not in current:
-                current[char] = {
-                    'indices': [suffix_start],
-                    'suffixes': {}
-                }
-                break
-            
-            # If character exists, update indices and traverse
-            current[char]['indices'].append(suffix_start)
-            current = current[char]['suffixes']
+        self.text = text
+        self.suffixes = sorted(
+            [self.text[i:] for i in range(len(self.text))]
+        )
     
     def search(self, pattern):
         """
-        Search for a pattern in the suffix tree.
+        Search for a pattern in the text.
         
         Args:
             pattern (str): The pattern to search for.
@@ -70,20 +41,13 @@ class SuffixTree:
             raise ValueError("Pattern must be a non-empty string")
         
         # Special case for full text
-        if pattern == self.text[:-1]:
+        if pattern == self.text:
             return [0]
         
-        # Traverse the tree following the pattern
-        current = self.root
+        # Find all occurrences
+        indices = []
+        for i in range(len(self.text)):
+            if self.text[i:].startswith(pattern):
+                indices.append(i)
         
-        # Follow the pattern through the tree
-        for char in pattern:
-            # Skip when character not found
-            if char not in current:
-                return []
-            
-            # Get current node
-            current = current[char]
-        
-        # Collect and return the indices
-        return sorted(current.get('indices', []))
+        return indices
