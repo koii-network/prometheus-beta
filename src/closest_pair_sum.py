@@ -28,8 +28,9 @@ def find_closest_pair_sum(arr, target):
             
             # Update closest pair if current pair is closer to target
             current_diff = abs(current_sum - target)
-            closest_diff = abs(closest_sum - target)
+            closest_diff = abs(closest_sum - target) if closest_pair is not None else float('inf')
             
+            # Prefer the first pair with the smallest difference
             if current_diff < closest_diff or \
                (current_diff == closest_diff and closest_pair is None):
                 closest_sum = current_sum
