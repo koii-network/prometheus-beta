@@ -26,16 +26,24 @@ def find_shortest_path(maze: List[List[int]]) -> Optional[List[Tuple[int, int]]]
     # Find start and end positions
     start = None
     end = None
+    start_count = 0
+    end_count = 0
     for r in range(len(maze)):
         for c in range(len(maze[0])):
             if maze[r][c] == 2:
                 start = (r, c)
+                start_count += 1
             elif maze[r][c] == 3:
                 end = (r, c)
+                end_count += 1
     
     # Validate start and end exist
-    if start is None or end is None:
+    if start_count != 1 or end_count != 1:
         raise ValueError("Maze must have exactly one start (2) and one end (3) point")
+    
+    # If start and end are the same, return the start
+    if start == end:
+        return [start]
     
     # BFS to find shortest path
     queue = deque([(start, [start])])
