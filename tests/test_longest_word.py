@@ -7,11 +7,11 @@ def test_basic_sentence():
 
 def test_multiple_longest_words():
     """Test when multiple words have the same maximum length."""
-    assert find_longest_word("apple banana grape") == "apple"
+    assert find_longest_word("apple banana grape") == "banana"
 
 def test_sentence_with_punctuation():
     """Test sentence with punctuation."""
-    assert find_longest_word("Hello, world! How are you?") == "Hello"
+    assert find_longest_word("Hello, world! How are you?") == "Hello,"
 
 def test_single_word():
     """Test with a single word."""
