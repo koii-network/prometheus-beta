@@ -9,8 +9,7 @@ def burrows_wheeler_transform(input_text):
         input_text (str): The input string to transform
     
     Returns:
-        tuple: A tuple containing the Burrows-Wheeler transformed string 
-               and the index of the original rotation
+        str: The Burrows-Wheeler transformed string
     
     Raises:
         TypeError: If input is not a string
@@ -35,64 +34,62 @@ def burrows_wheeler_transform(input_text):
     # Extract the last character of each sorted rotation
     bwt_result = ''.join(rotation[-1] for rotation in sorted_rotations)
     
-    # Find the index of the original input in the sorted rotations
-    original_index = sorted_rotations.index(text)
-    
-    return bwt_result, original_index
+    return bwt_result
 
-def inverse_burrows_wheeler_transform(bwt_input):
+def inverse_burrows_wheeler_transform(bwt_text):
     """
     Perform the inverse Burrows-Wheeler Transform to recover the original text.
     
     Args:
-        bwt_input (tuple): A tuple containing the Burrows-Wheeler transformed 
-                           string and the original index
+        bwt_text (str): The Burrows-Wheeler transformed string
     
     Returns:
         str: The original text before transformation
     
     Raises:
-        TypeError: If input is not a tuple or invalid type
-        ValueError: If input is invalid
+        TypeError: If input is not a string
+        ValueError: If input is an empty string
     """
     # Validate input
-    if not isinstance(bwt_input, tuple) or len(bwt_input) != 2:
-        raise TypeError("Input must be a tuple of (bwt_string, original_index)")
+    if not isinstance(bwt_text, str):
+        raise TypeError("Input must be a string")
     
-    bwt_text, original_index = bwt_input
+    if not bwt_text:
+        raise ValueError("Input string cannot be empty")
     
-    if not isinstance(bwt_text, str) or not bwt_text:
-        raise ValueError("Burrows-Wheeler text must be a non-empty string")
+    # Create the first column by sorting BWTransform
+    first_column = sorted(list(bwt_text))
     
-    # Create first and last columns
-    first_column = sorted(bwt_text)
+    # Track characters in columns 
     n = len(bwt_text)
     
-    # Create next array
+    # Calculate the next array (mapping between columns)
     next_arr = [0] * n
-    # Auxiliary array to handle duplicate characters
-    char_count = {}
+    indices = {}
     
-    for i in range(n):
-        char = first_column[i]
-        if char not in char_count:
-            char_count[char] = 0
-        # Find the correct occurrence of this character in the first column
+    for i, char in enumerate(first_column):
+        # Handle first occurrence of char
+        if char not in indices:
+            indices[char] = 0
+        
+        # Find where this occurrence of char is in bwt_text
         for j in range(n):
-            if bwt_text[j] == char and char_count[char] == 0:
+            if bwt_text[j] == char and indices[char] == 0:
                 next_arr[i] = j
                 break
-        char_count[char] += 1
+        
+        # Increment count of this character
+        indices[char] += 1
     
-    # Reconstruct the original text
+    # Start from the row with '$' terminator
+    terminator_index = first_column.index('$')
+    current = terminator_index
+    
+    # Reconstruct original string by tracing back
     result = []
-    current = original_index
-    
     for _ in range(n):
         result.append(bwt_text[current])
         current = next_arr[current]
     
-    # Reverse and convert to string, remove terminator
-    original = ''.join(reversed(result))[:-1]
-    
-    return original
+    # Convert back to original text (remove terminal '$')
+    return ''.join(reversed(result))[:-1]
