@@ -27,16 +27,5 @@ def anagram_checker(word1: str, word2: str) -> bool:
     if len(word1) != len(word2):
         return False
     
-    # Create character frequency dictionaries
-    freq1 = {}
-    freq2 = {}
-    
-    # Count character frequencies
-    for char in word1:
-        freq1[char] = freq1.get(char, 0) + 1
-    
-    for char in word2:
-        freq2[char] = freq2.get(char, 0) + 1
-    
-    # Compare character frequencies
-    return freq1 == freq2
+    # Use sorted characters for comparison
+    return sorted(word1) == sorted(word2)
