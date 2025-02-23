@@ -6,7 +6,7 @@ def unique_coordinate_combinations(coordinates):
         coordinates (list): A list of coordinate pairs, where each pair is a tuple (x, y)
 
     Returns:
-        list: A sorted list of unique x and y values with duplicates preserved
+        list: A sorted list of unique x and y values
 
     Raises:
         TypeError: If input is not a list or contains invalid coordinate pairs
@@ -23,11 +23,11 @@ def unique_coordinate_combinations(coordinates):
         if not all(isinstance(val, (int, float)) for val in coord):
             raise ValueError("Coordinates must be numeric values")
 
-    # Extract x and y values with duplicates
-    x_values = [coord[0] for coord in coordinates]
-    y_values = [coord[1] for coord in coordinates]
+    # Extract unique x and y values 
+    x_values = list(set(coord[0] for coord in coordinates))
+    y_values = list(set(coord[1] for coord in coordinates))
 
-    # Combine values and sort 
+    # Combine and sort unique values
     unique_coords = sorted(x_values + y_values)
 
     return unique_coords
