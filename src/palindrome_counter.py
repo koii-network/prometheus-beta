@@ -42,7 +42,8 @@ def count_palindromic_substrings(s: str) -> int:
     for i in range(len(s)):
         for j in range(i, len(s)):
             substr = s[i:j+1]
-            if is_palindrome(substr):
+            # Only count if substring has alphanumeric characters
+            if any(char.isalnum() for char in substr) and is_palindrome(substr):
                 palindrome_count += 1
     
     return palindrome_count
