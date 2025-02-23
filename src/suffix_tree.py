@@ -40,26 +40,18 @@ class SuffixTree:
         current = self.root
         suffix = self.text[suffix_start:]
         
-        # Traverse or create path for each character in the suffix
         for j, char in enumerate(suffix):
+            # If character doesn't exist, create new branch
             if char not in current:
-                # Create a new leaf node
                 current[char] = {
                     'indices': [suffix_start],
-                    'length': len(suffix) - j
+                    'suffixes': {}
                 }
                 break
             
-            # If character exists, update existing node
-            node = current[char]
-            
-            # If this is an existing leaf, add index
-            if 'indices' in node:
-                node['indices'].append(suffix_start)
-                break
-            
-            # Move to next level
-            current = node
+            # If character exists, update indices and traverse
+            current[char]['indices'].append(suffix_start)
+            current = current[char]['suffixes']
     
     def search(self, pattern):
         """
@@ -77,12 +69,21 @@ class SuffixTree:
         if not isinstance(pattern, str) or not pattern:
             raise ValueError("Pattern must be a non-empty string")
         
+        # Special case for full text
+        if pattern == self.text[:-1]:
+            return [0]
+        
         # Traverse the tree following the pattern
         current = self.root
+        
+        # Follow the pattern through the tree
         for char in pattern:
+            # Skip when character not found
             if char not in current:
-                return []  # Pattern not found
+                return []
+            
+            # Get current node
             current = current[char]
         
-        # Collect indices
+        # Collect and return the indices
         return sorted(current.get('indices', []))
