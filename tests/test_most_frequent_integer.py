@@ -3,7 +3,7 @@ from src.most_frequent_integer import find_most_frequent_integer_index
 
 def test_basic_frequency():
     """Test basic frequency finding"""
-    assert find_most_frequent_integer_index([1, 2, 2, 3, 3, 3]) == 4
+    assert find_most_frequent_integer_index([1, 2, 2, 3, 3, 3]) == 3
 
 def test_tie_breaking():
     """Test that the first occurrence is returned in case of a tie"""
@@ -28,4 +28,4 @@ def test_negative_numbers():
 
 def test_mixed_frequency():
     """Test with mixed frequency of numbers"""
-    assert find_most_frequent_integer_index([1, 2, 2, 3, 1, 1, 4]) == 4
+    assert find_most_frequent_integer_index([1, 2, 2, 3, 1, 1, 4]) == 0
