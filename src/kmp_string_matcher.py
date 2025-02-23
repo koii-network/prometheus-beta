@@ -65,11 +65,7 @@ def kmp_search(text, pattern):
     if not text or not pattern:
         raise ValueError("Neither text nor pattern can be empty")
     
-    # Make search case-insensitive
-    text = text.lower()
-    pattern = pattern.lower()
-    
-    # Compute the LPS array for the pattern
+    # Compute the LPS array for the pattern (case-sensitive)
     lps = compute_lps_array(pattern)
     
     # List to store matching indices
@@ -78,6 +74,10 @@ def kmp_search(text, pattern):
     # Indices for text and pattern
     text_idx = 0
     pattern_idx = 0
+    
+    # Perform case-insensitive search
+    text = text.lower()
+    pattern = pattern.lower()
     
     # Traverse through the text
     while text_idx < len(text):
@@ -101,6 +101,4 @@ def kmp_search(text, pattern):
             else:
                 text_idx += 1
     
-    # Filter out any matches at the beginning of the string that match 
-    # the case-insensitive comparison rules
-    return [m for m in matches if m > 0]
+    return matches
