@@ -1,0 +1,1 @@
+# Package initialization for mountain range module
