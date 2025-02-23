@@ -31,14 +31,14 @@ def find_longest_word(sentence):
     # Split the sentence into words 
     words = sentence.split()
     
-    # Track the longest word and its length
-    max_len = 0
+    # Find the max length while preserving first occurrence order
+    max_length = 0
     longest_word = None
     
-    # Iterate through words to find first longest word 
     for word in words:
-        if len(word) > max_len:
-            max_len = len(word)
+        word_length = len(word)
+        if word_length > max_length:
+            max_length = word_length
             longest_word = word
     
     return longest_word
