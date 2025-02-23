@@ -76,5 +76,9 @@ def kruskal_mst(graph):
         # If adding this edge doesn't create a cycle
         if disjoint_set.union(u, v):
             mst.append((weight, u, v))
+            
+            # Stop when we have num_vertices - 1 edges
+            if len(mst) == vertices - 1:
+                break
 
     return mst
