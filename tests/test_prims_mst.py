@@ -24,8 +24,21 @@ def test_simple_graph():
 def test_disconnected_graph():
     """Test that an error is raised for a disconnected graph"""
     graph = {
+        'A': {},
+        'B': {},
+        'C': {}
+    }
+    
+    with pytest.raises(ValueError, match="Graph is not fully connected"):
+        prims_mst(graph)
+
+def test_disconnected_graph_with_components():
+    """Test that an error is raised for a graph with unconnected components"""
+    graph = {
         'A': {'B': 1},
-        'C': {'D': 2}
+        'B': {'A': 1},
+        'C': {'D': 2},
+        'D': {'C': 2}
     }
     
     with pytest.raises(ValueError, match="Graph is not fully connected"):
