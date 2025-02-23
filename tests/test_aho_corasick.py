@@ -7,9 +7,15 @@ def test_basic_matching():
     text = "she sells seashells by the seashore"
     matches = ac.find_matches(text)
     
-    assert len(matches) == 2
-    assert (1, "she") in matches
-    assert (19, "he") in matches
+    # Verify matching patterns
+    expected_matches = [
+        (0, "she"),   # Initial "she"
+        (1, "he"),    # Partial "he" match
+        (13, "she"),  # "she" in "seashells"
+        (14, "he"),   # "he" in "seashells"
+        (24, "he")    # "he" in "seashore"
+    ]
+    assert matches == expected_matches
 
 def test_overlapping_matches():
     """Test matching overlapping patterns"""
@@ -17,10 +23,12 @@ def test_overlapping_matches():
     text = "abcdef"
     matches = ac.find_matches(text)
     
-    assert len(matches) == 3
-    assert (0, "ab") in matches
-    assert (0, "abc") in matches
-    assert (1, "bc") in matches
+    expected_matches = [
+        (0, "ab"),
+        (0, "abc"),
+        (1, "bc")
+    ]
+    assert matches == expected_matches
 
 def test_multiple_occurrences():
     """Test multiple occurrences of patterns"""
@@ -28,14 +36,14 @@ def test_multiple_occurrences():
     text = "ababa"
     matches = ac.find_matches(text)
     
-    assert len(matches) == 5
-    # Check for single character 'a' matches
-    assert (0, "a") in matches
-    assert (2, "a") in matches
-    assert (4, "a") in matches
-    # Check for 'ab' matches
-    assert (0, "ab") in matches
-    assert (2, "ab") in matches
+    expected_matches = [
+        (0, "a"),
+        (0, "ab"),
+        (2, "a"),
+        (2, "ab"),
+        (4, "a")
+    ]
+    assert matches == expected_matches
 
 def test_no_matches():
     """Test scenario with no matches"""
@@ -74,10 +82,15 @@ def test_pattern_as_substring():
     text = "aaaa"
     matches = ac.find_matches(text)
     
-    assert len(matches) == 7  # All possible matches
     expected_matches = [
-        (0, "a"), (1, "a"), (2, "a"), (3, "a"),
-        (0, "aa"), (1, "aa"), (0, "aaa")
+        (0, "a"),
+        (0, "aa"),
+        (0, "aaa"),
+        (1, "a"),
+        (1, "aa"),
+        (1, "aaa"),
+        (2, "a"),
+        (2, "aa"),
+        (3, "a")
     ]
-    for match in expected_matches:
-        assert match in matches
+    assert matches == expected_matches
