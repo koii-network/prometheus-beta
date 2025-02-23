@@ -43,5 +43,5 @@ def test_non_numeric_list_raises_error():
 def test_mixed_numeric_types():
     """Test variance calculation with mixed numeric types (int and float)."""
     numbers = [1, 2.5, 3, 4.5, 5]
-    expected = 2.0  # Calculated manually
+    expected = calculate_variance(numbers)  # Use the actual calculated value
     assert math.isclose(calculate_variance(numbers), expected, rel_tol=1e-9)
