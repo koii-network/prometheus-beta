@@ -21,7 +21,7 @@ def test_compute_lps_invalid_input():
 
 def test_kmp_search_basic():
     """Test basic string matching"""
-    assert kmp_search("ABABDABACDABABCABAB", "ABABCABAB") == [9]
+    assert kmp_search("ABABDABACDABABCABAB", "ABABCABAB") == [10]
     assert kmp_search("AABAACAADAABAABA", "AABA") == [0, 9, 12]
     assert kmp_search("hello world", "world") == [6]
 
