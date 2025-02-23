@@ -21,7 +21,7 @@ def test_duplicate_elements():
 
 def test_mixed_type_lists():
     """Test lists with mixed types"""
-    assert find_list_intersection([1, 'a', 2, 'b'], [2, 'a', 3, 'c']) == [2, 'a']
+    assert find_list_intersection([1, 'a', 2, 'b'], [2, 'a', 3, 'c']) == ['a', 2]
 
 def test_preserve_first_occurrence_order():
     """Test that order of first occurrence in list1 is preserved"""
