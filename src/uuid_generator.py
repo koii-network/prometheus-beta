@@ -21,13 +21,13 @@ def generate_uuid() -> str:
     
     # Format the UUID according to version 4 specification
     # 8-4-4-4-12 hexadecimal format
-    # Set the version (4) and variant (8,9,A,or B) bits
+    # Ensure strict adherence to the format
     uuid_parts = [
         hash_hex[:8],
         hash_hex[8:12],
-        # Set the version to 4 (random) by replacing first hex of third group
+        # Set the version to 4 (random) and use 3 hex chars
         f"4{hash_hex[13:15]}",
-        # Set variant to 8, 9, A, or B by replacing first hex of fourth group
+        # Set variant to 8, 9, A, or B and use 3 hex chars
         f"{int(hash_hex[16], 16) & 3 | 8:x}{hash_hex[17:19]}",
         hash_hex[20:32]
     ]
