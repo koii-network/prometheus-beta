@@ -26,23 +26,19 @@ def min_sequence_reconstruction(original, current):
     if not current:
         return len(original)
     
-    # Use Longest Common Subsequence (LCS) concept
-    m, n = len(original), len(current)
+    # Count element frequencies
+    from collections import Counter
+    original_freq = Counter(original)
+    current_freq = Counter(current)
     
-    # Dynamic programming to find the longest common subsequence
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    # Track total changes
+    total_changes = 0
     
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if original[i-1] == current[j-1]:
-                dp[i][j] = dp[i-1][j-1] + 1
-            else:
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    # Check for each unique element
+    for elem in set(list(original_freq.keys()) + list(current_freq.keys())):
+        orig_count = original_freq[elem]
+        curr_count = current_freq[elem]
+        total_changes += abs(orig_count - curr_count)
     
-    # Maximum number of common elements
-    lcs_length = dp[m][n]
-    
-    # Total changes is the total length of both sequences minus twice the LCS
-    total_changes = (m + n) - 2 * lcs_length
-    
-    return total_changes
+    # Always require at least total_changes / 2 (rounding up)
+    return (total_changes + 1) // 2
