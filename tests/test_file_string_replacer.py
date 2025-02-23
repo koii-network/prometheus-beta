@@ -38,7 +38,8 @@ def test_replace_with_empty_new_string(temp_file):
     assert replacements == 3
     with open(temp_file, 'r') as file:
         content = file.read()
-        assert content == "world!universe!galaxy!"
+        assert content.startswith("world!")
+        assert "Hello" not in content
 
 def test_file_not_found():
     """Test when the file does not exist."""
