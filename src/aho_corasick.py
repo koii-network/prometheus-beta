@@ -24,7 +24,8 @@ class AhoCorasick:
         if not patterns:
             raise ValueError("At least one pattern must be provided")
         
-        self.patterns = patterns
+        # Remove duplicates while preserving order
+        self.patterns = list(dict.fromkeys(patterns))
         self.goto = {}  # Goto transitions
         self.fail = {}  # Failure links
         self.output = {}  # Output matches
@@ -56,7 +57,8 @@ class AhoCorasick:
             # Mark end of pattern
             if current not in self.output:
                 self.output[current] = []
-            self.output[current].append(pattern)
+            if pattern not in self.output[current]:
+                self.output[current].append(pattern)
         
         # Build failure links using BFS
         self.fail[0] = 0
@@ -89,7 +91,10 @@ class AhoCorasick:
                 if self.fail[next_state] in self.output:
                     if next_state not in self.output:
                         self.output[next_state] = []
-                    self.output[next_state].extend(self.output[self.fail[next_state]])
+                    # Only add unique patterns
+                    for pattern in self.output[self.fail[next_state]]:
+                        if pattern not in self.output[next_state]:
+                            self.output[next_state].append(pattern)
     
     def find_matches(self, text: str) -> List[Tuple[int, str]]:
         """
@@ -110,6 +115,9 @@ class AhoCorasick:
         matches = []
         current = 0
         
+        # Track unique matches to prevent duplicates
+        unique_matches = set()
+        
         for i, char in enumerate(text):
             # Follow goto and failure transitions
             while current > 0 and char not in self.goto[current]:
@@ -122,6 +130,12 @@ class AhoCorasick:
             # Check for matches at current state
             if current in self.output:
                 for pattern in self.output[current]:
-                    matches.append((i - len(pattern) + 1, pattern))
+                    match_index = i - len(pattern) + 1
+                    # Use unique tuple to prevent duplicates
+                    match_key = (match_index, pattern)
+                    if match_key not in unique_matches:
+                        matches.append(match_key)
+                        unique_matches.add(match_key)
         
-        return matches
+        # Sort matches by index to maintain order
+        return sorted(matches, key=lambda x: x[0])
