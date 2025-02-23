@@ -34,7 +34,7 @@ def replace_string_in_file(file_path, old_string, new_string):
     except FileNotFoundError:
         raise FileNotFoundError(f"File not found: {file_path}")
     
-    # Count the number of replacements
+    # Split the contents using the old string to count occurrences
     replacements_count = file_contents.count(old_string)
     
     # Replace the string
