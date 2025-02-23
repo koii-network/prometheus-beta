@@ -35,28 +35,35 @@ def max_non_overlapping_subarray_sum(arr):
     if not all(isinstance(x, int) for x in arr):
         raise ValueError("All elements must be integers")
     
-    # If array has less than 2 elements, return max value or 0
+    # If array has less than 2 elements, return 0 or the first positive element
     if len(arr) < 2:
-        return max(sum(arr), 0)
+        return max(0, arr[0]) if arr[0] > 0 else 0
     
-    # Dynamic programming approach to find max non-overlapping subarray sum
+    # Kadane's algorithm variant for non-overlapping subarrays
     n = len(arr)
     
-    # dp[i] represents the maximum sum of non-overlapping subarrays up to index i
-    dp = [0] * n
+    # Two dynamic programming arrays to track max sums
+    include = [0] * n  # Max sum including current element
+    exclude = [0] * n  # Max sum excluding current element
     
     # Initialize first two values
-    dp[0] = max(arr[0], 0)
-    dp[1] = max(dp[0], arr[1], 0)
+    include[0] = max(0, arr[0])
+    exclude[0] = 0
     
-    # Fill dp array
+    # First special case
+    if len(arr) > 1:
+        include[1] = max(include[0], arr[1], 0)
+        exclude[1] = include[0]
+    
+    # Fill arrays
     for i in range(2, n):
-        # Two choices at each step:
-        # 1. Include current element with a non-overlapping previous subarray 
-        # 2. Skip current element and take previous max sum
-        dp[i] = max(
-            dp[i-2] + max(arr[i], 0),  # Include current (or skip if negative)
-            dp[i-1]  # Skip current element
-        )
+        # Decision for including current element 
+        # Can only include if we skipped the previous element
+        include[i] = max(exclude[i-2] + max(arr[i], 0), 0)
+        
+        # Decision for excluding current element
+        # Take max of previous results
+        exclude[i] = max(include[i-1], exclude[i-1])
     
-    return dp[-1]
+    # Return maximum sum considering all scenarios
+    return max(include[-1], include[-2], exclude[-1], 0)
