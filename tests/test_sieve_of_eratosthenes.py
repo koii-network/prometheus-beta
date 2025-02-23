@@ -20,15 +20,10 @@ def test_sieve_of_eratosthenes_invalid_input():
     # Test non-integer input
     with pytest.raises(TypeError):
         sieve_of_eratosthenes(10.5)
-    
-    # Test input less than 2
-    with pytest.raises(ValueError):
-        sieve_of_eratosthenes(1)
-    
-    # Test negative input
-    with pytest.raises(ValueError):
-        sieve_of_eratosthenes(-5)
 
 def test_sieve_of_eratosthenes_empty_result():
-    """Test case where no primes exist in the range."""
+    """Test cases where no primes exist in the range."""
+    # Should return empty list for inputs < 2
     assert sieve_of_eratosthenes(1) == []
+    assert sieve_of_eratosthenes(0) == []
+    assert sieve_of_eratosthenes(-1) == []
