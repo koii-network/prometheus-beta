@@ -29,14 +29,15 @@ def create_zip_archive(files: List[str], output_path: str) -> bool:
     # Ensure output directory exists
     os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
 
+    # Check if all files exist before creating the zip
+    for file_path in files:
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"File not found: {file_path}")
+
     try:
         # Create zip archive
         with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for file_path in files:
-                # Check if file exists
-                if not os.path.exists(file_path):
-                    raise FileNotFoundError(f"File not found: {file_path}")
-                
                 # Add file to zip, preserving directory structure
                 zipf.write(file_path, os.path.basename(file_path))
         
