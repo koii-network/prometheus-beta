@@ -13,7 +13,7 @@ def find_median_sorted_arrays(nums1, nums2):
     
     Raises:
         TypeError: If input is not a list
-        ValueError: If input lists are not sorted
+        ValueError: If input lists are not sorted or both are empty
     
     Examples:
         >>> find_median_sorted_arrays([1, 3], [2])
@@ -24,6 +24,10 @@ def find_median_sorted_arrays(nums1, nums2):
     # Validate input
     if not isinstance(nums1, list) or not isinstance(nums2, list):
         raise TypeError("Inputs must be lists")
+    
+    # Handle empty arrays
+    if len(nums1) == 0 and len(nums2) == 0:
+        raise ValueError("Both input arrays cannot be empty")
     
     # Ensure nums1 is the smaller array for efficiency
     if len(nums1) > len(nums2):
