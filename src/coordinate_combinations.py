@@ -23,15 +23,24 @@ def unique_coordinate_combinations(coordinates):
         if not all(isinstance(val, (int, float)) for val in coord):
             raise ValueError("Coordinates must be numeric values")
 
-    # Collect x and y values while preserving some context
+    # Collect unique x and y values with specific deduplication
+    if not coordinates:
+        return []
+
+    # Use a list to track unique values with a custom approach
+    unique_coords = []
+    seen_values = set()
+
+    # Collect all x and y values first
     all_values = [coord[0] for coord in coordinates] + [coord[1] for coord in coordinates]
     
-    # Use a list comprehension to handle uniqueness with a specific preservation rule
-    unique_coords = []
-    seen = set()
-    for val in sorted(all_values):
-        if val not in seen or len([x for x in unique_coords if x == val]) < 2:
+    # Sort the values
+    sorted_values = sorted(all_values)
+
+    # Uniqueness logic
+    for val in sorted_values:
+        if val not in seen_values:
             unique_coords.append(val)
-        seen.add(val)
+            seen_values.add(val)
 
     return unique_coords
