@@ -27,7 +27,7 @@ def fibonacci_sequence_sum(n):
     total_sum = 0
     
     # Calculate sum of first n Fibonacci numbers
-    for _ in range(n):
+    for i in range(n - 1):
         total_sum += fib_prev
         fib_prev, fib_curr = fib_curr, fib_prev + fib_curr
     
