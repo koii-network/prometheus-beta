@@ -27,18 +27,26 @@ def to_constant_case(input_string: str) -> str:
     if not input_string:
         return ""
     
-    # Convert string to constant case
+    # Prepare a list to hold our constant case characters
     converted_chars = []
+    
+    # Iterate through characters in the input string
     for i, char in enumerate(input_string):
-        # Add underscore before capital letters (except the first character)
-        if i > 0 and char.isupper():
-            converted_chars.append('_')
-        
-        # Replace non-alphanumeric characters with underscores
+        # Replace non-alphanumeric characters with underscore
         if not char.isalnum():
             converted_chars.append('_')
-        else:
-            converted_chars.append(char.upper())
+            continue
+        
+        # Handle camel case by inserting underscore before capital letters
+        # (except for the first character)
+        if i > 0 and char.isupper() and not input_string[i-1].isupper():
+            converted_chars.append('_')
+        
+        # Always convert to uppercase
+        converted_chars.append(char.upper())
     
-    # Remove consecutive underscores and strip leading/trailing underscores
-    return '_'.join(filter(bool, ''.join(converted_chars).split('_')))
+    # Join the characters, remove consecutive underscores, 
+    # and strip leading/trailing underscores
+    result = '_'.join(filter(bool, ''.join(converted_chars).split('_')))
+    
+    return result
