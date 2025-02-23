@@ -62,7 +62,7 @@ def validate_and_log_input(input_value, validation_rules=None):
         if 'regex' in validation_rules:
             pattern = validation_rules['regex']
             if not re.match(pattern, input_value):
-                message = f"Input does not match required pattern: {pattern}"
+                message = "Input does not match required pattern"
                 logger.warning(message)
                 validation_messages.append(message)
                 is_valid = False
