@@ -1,6 +1,6 @@
 import time
 import logging
-from typing import Callable, Optional, Any
+from typing import Callable, Optional, Any, Iterable
 
 class ProcessProgressLogger:
     """
@@ -62,7 +62,7 @@ class ProcessProgressLogger:
     def track_process(self, 
                       process: Callable, 
                       total: int, 
-                      prefix: str = "Progress") -> Any:
+                      prefix: str = "Progress") -> Callable:
         """
         Wrap a process to automatically log its progress.
         
@@ -72,14 +72,18 @@ class ProcessProgressLogger:
             prefix (str, optional): Custom prefix for log message
         
         Returns:
-            Result of the process
+            Wrapped function with progress tracking
         """
-        def wrapper(*args, **kwargs):
+        def wrapper(items: Iterable):
+            items_list = list(items)
+            assert len(items_list) == total, f"Input must have exactly {total} items"
+            
             results = []
-            for i in range(total):
-                result = process(*args, **kwargs)
+            for i, item in enumerate(items_list, 1):
+                result = process(item)
                 results.append(result)
-                self.log_progress(i + 1, total, prefix)
+                self.log_progress(i, total, prefix)
+            
             return results
         
         return wrapper
