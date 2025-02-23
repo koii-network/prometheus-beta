@@ -10,9 +10,20 @@ def find_first_last_occurrence(arr, target):
         tuple: A tuple containing (first_index, last_index)
                If the target is not found, returns (-1, -1)
     
+    Raises:
+        TypeError: If input is None or not a list
+    
     Time Complexity: O(log n)
     Space Complexity: O(1)
     """
+    # Validate input
+    if arr is None:
+        raise TypeError("Input array cannot be None")
+    if not isinstance(arr, list):
+        raise TypeError("Input must be a list")
+    if target is None:
+        raise TypeError("Target cannot be None")
+    
     def binary_search_first(arr, target):
         """Find the first occurrence of the target."""
         left, right = 0, len(arr) - 1
