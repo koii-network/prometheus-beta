@@ -48,9 +48,17 @@ def solve_knapsack(capacity, weights, values):
     selected_items = []
     w = capacity
     for i in range(n, 0, -1):
-        if dp[i][w] != dp[i-1][w]:
+        # Check for equal weight and equal value items to maximize selection
+        weight = weights[i-1]
+        value = values[i-1]
+        
+        # Try selecting the current item if it maximizes value
+        if weight <= w and (
+            dp[i][w] != dp[i-1][w] or  # Item adds value
+            (i > 1 and dp[i][w] == dp[i-1][w])  # No penalty for selection
+        ):
             selected_items.append(i-1)
-            w -= weights[i-1]
+            w -= weight
     
     # Return max value and selected items (in original order)
     return dp[n][capacity], list(reversed(selected_items))
