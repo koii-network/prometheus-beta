@@ -31,26 +31,10 @@ def min_sequence_reconstruction(original, current):
     original_freq = Counter(original)
     current_freq = Counter(current)
     
-    # Calculate removals (elements to remove from current)
-    removals = 0
-    current_copy = current_freq.copy()
-    for elem, count in original_freq.items():
-        if elem not in current_copy or current_copy[elem] < count:
-            # Need to either remove extra elements or add missing elements
-            if elem in current_copy:
-                removals += current_copy[elem] - count
-            else:
-                # If element is missing, we'll count it as removal
-                removals += current_copy.get(elem, 0)
+    # Calculate total changes needed
+    total_changes = 0
+    for elem in set(list(original_freq.keys()) + list(current_freq.keys())):
+        # Add the absolute difference in frequencies as the number of changes
+        total_changes += abs(original_freq[elem] - current_freq[elem])
     
-    # Calculate insertions (missing elements)
-    insertions = 0
-    current_copy = current_freq.copy()
-    for elem, count in original_freq.items():
-        if elem not in current_copy or current_copy[elem] < count:
-            if elem in current_copy:
-                insertions += count - current_copy[elem]
-            else:
-                insertions += count
-    
-    return removals + insertions
+    return total_changes
