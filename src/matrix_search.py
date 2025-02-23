@@ -22,12 +22,16 @@ def search_sorted_matrix(matrix, target):
     if not isinstance(target, int):
         raise TypeError("Target must be an integer")
     
-    # Handle empty matrix
-    if not matrix or not matrix[0]:
+    # Handle empty matrix or matrix with only empty rows
+    if not matrix or all(len(row) == 0 for row in matrix):
         return False
     
     # Search each row using binary search
     for row in matrix:
+        # Skip empty rows
+        if not row:
+            continue
+        
         # Ensure row is sorted in ascending order
         if not all(row[i] <= row[i+1] for i in range(len(row)-1)):
             raise ValueError("Inner lists must be sorted in ascending order")
