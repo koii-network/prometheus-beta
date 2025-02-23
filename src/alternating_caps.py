@@ -27,8 +27,19 @@ def to_alternating_caps(input_string):
     if not input_string:
         return ""
     
-    # Convert to alternating caps
-    return ''.join(
-        char.upper() if idx % 2 == 0 else char.lower() 
-        for idx, char in enumerate(input_string)
-    )
+    # Convert to alternating caps, but only for alphabetic characters
+    result = []
+    is_upper = True
+    for char in input_string:
+        if char.isalpha():
+            # Toggle case for alphabetic characters
+            if is_upper:
+                result.append(char.upper())
+            else:
+                result.append(char.lower())
+            is_upper = not is_upper
+        else:
+            # Non-alphabetic characters stay the same
+            result.append(char)
+    
+    return ''.join(result)
