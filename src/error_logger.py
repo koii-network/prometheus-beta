@@ -1,8 +1,11 @@
 import logging
 import sys
-from typing import Any, Optional
+from typing import Any, Optional, TextIO
 
-def log_custom_error(message: str, error: Optional[Exception] = None, log_level: str = 'ERROR') -> None:
+def log_custom_error(message: str, 
+                     error: Optional[Exception] = None, 
+                     log_level: str = 'ERROR', 
+                     log_stream: Optional[TextIO] = sys.stderr) -> None:
     """
     Log a custom error message with optional exception details.
 
@@ -11,15 +14,16 @@ def log_custom_error(message: str, error: Optional[Exception] = None, log_level:
         error (Optional[Exception], optional): The exception object to log details from. Defaults to None.
         log_level (str, optional): The logging level to use. Defaults to 'ERROR'.
             Supported levels: 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'
+        log_stream (Optional[TextIO], optional): Stream to log to. Defaults to sys.stderr.
 
     Raises:
         ValueError: If an invalid log level is provided.
     """
-    # Configure logging to output to stderr
+    # Configure logging to output to specified stream
     logging.basicConfig(
         level=logging.ERROR,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        stream=sys.stderr
+        format='%(levelname)s: %(message)s',
+        stream=log_stream
     )
 
     # Validate log level
