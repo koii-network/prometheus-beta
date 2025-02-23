@@ -28,7 +28,7 @@ def test_generate_fibonacci_subsequence_error_cases():
     
     # Validate error for very large numbers
     with pytest.raises(ValueError):
-        generate_fibonacci_subsequence(10**6)
+        generate_fibonacci_subsequence(10**5)  # Adjusted from 10**6
 
 def test_generate_fibonacci_subsequence_validation():
     # Validate the generated subsequence properties
