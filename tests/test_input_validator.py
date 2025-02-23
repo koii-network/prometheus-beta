@@ -30,7 +30,7 @@ def test_validate_and_log_input_min_length():
         'min_length': 3
     })
     assert not is_valid
-    assert "must be at least 3 characters long" in messages
+    assert "Input must be at least 3 characters long" in messages
 
 def test_validate_and_log_input_max_length():
     """Test maximum length validation"""
@@ -38,7 +38,7 @@ def test_validate_and_log_input_max_length():
         'max_length': 5
     })
     assert not is_valid
-    assert "must be no more than 5 characters long" in messages
+    assert "Input must be no more than 5 characters long" in messages
 
 def test_validate_and_log_input_regex():
     """Test regex pattern validation"""
@@ -47,13 +47,13 @@ def test_validate_and_log_input_regex():
         'regex': r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     })
     assert not is_valid
-    assert "does not match required pattern" in messages
+    assert "Input does not match required pattern" in messages
 
 def test_validate_and_log_input_multiple_rules():
     """Test validation with multiple rules"""
     is_valid, messages = validate_and_log_input("abc123", {
         'min_length': 2,
-        'max_length': 5,
+        'max_length': 10,  # Increased to allow 'abc123'
         'regex': r'^[a-z0-9]+$'
     })
     assert is_valid
