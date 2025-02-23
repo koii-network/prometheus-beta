@@ -20,68 +20,46 @@ class SuffixTree:
             raise ValueError("Input must be a non-empty string")
         
         self.text = text + '$'  # Append termination symbol
-        self.root = self._build_suffix_tree()
+        self.root = {}
+        self._build_suffix_tree()
     
     def _build_suffix_tree(self):
         """
-        Build the suffix tree using Ukkonen's algorithm.
-        
-        Returns:
-            dict: The root node of the suffix tree.
+        Build the suffix tree by adding all suffixes.
         """
-        root = {}
         for i in range(len(self.text)):
-            self._add_suffix(root, i)
-        return root
+            self._add_suffix(i)
     
-    def _add_suffix(self, node, suffix_start):
+    def _add_suffix(self, suffix_start):
         """
         Add a suffix to the tree.
         
         Args:
-            node (dict): Current node in the tree.
             suffix_start (int): Starting index of the suffix.
         """
-        current = node
-        for i in range(suffix_start, len(self.text)):
-            current_char = self.text[i]
-            
-            # If the character doesn't exist, create a new edge
-            if current_char not in current:
-                current[current_char] = {
-                    'end': len(self.text),
-                    'start': i
+        current = self.root
+        suffix = self.text[suffix_start:]
+        
+        # Traverse or create path for each character in the suffix
+        for j, char in enumerate(suffix):
+            if char not in current:
+                # Create a new leaf node
+                current[char] = {
+                    'indices': [suffix_start],
+                    'length': len(suffix) - j
                 }
                 break
             
-            # Traverse or split the existing edge
-            edge = current[current_char]
-            edge_length = edge['end'] - edge['start']
+            # If character exists, update existing node
+            node = current[char]
             
-            # Check characters along the edge
-            match_length = 0
-            for j in range(edge['start'], edge['end']):
-                if i + match_length >= len(self.text) or \
-                   self.text[i + match_length] != self.text[j]:
-                    break
-                match_length += 1
-            
-            # If we need to split the edge
-            if match_length < edge_length:
-                split_node = {
-                    self.text[j]: {
-                        'end': edge['end'],
-                        'start': j
-                    }
-                }
-                edge['end'] = edge['start'] + match_length
-                current[current_char] = split_node
-                current = split_node
-            
-            # Move to the next character
-            i += match_length
-            if i >= len(self.text):
+            # If this is an existing leaf, add index
+            if 'indices' in node:
+                node['indices'].append(suffix_start)
                 break
+            
+            # Move to next level
+            current = node
     
     def search(self, pattern):
         """
@@ -99,39 +77,12 @@ class SuffixTree:
         if not isinstance(pattern, str) or not pattern:
             raise ValueError("Pattern must be a non-empty string")
         
-        # Find the node corresponding to the pattern
+        # Traverse the tree following the pattern
         current = self.root
         for char in pattern:
             if char not in current:
                 return []  # Pattern not found
             current = current[char]
         
-        # Collect all indices where the pattern occurs
-        return self._collect_indices(current)
-    
-    def _collect_indices(self, node):
-        """
-        Collect all indices where a substring occurs.
-        
-        Args:
-            node (dict): The node to start collecting indices from.
-        
-        Returns:
-            list: Indices of substring occurrences.
-        """
-        indices = []
-        stack = [node]
-        
-        while stack:
-            current = stack.pop()
-            
-            # If the node represents a leaf (suffix)
-            if isinstance(current, dict) and 'start' in current:
-                indices.append(current['start'])
-            
-            # Explore child nodes
-            for child in current.values():
-                if isinstance(child, dict):
-                    stack.append(child)
-        
-        return sorted(indices)
+        # Collect indices
+        return sorted(current.get('indices', []))
