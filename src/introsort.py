@@ -11,6 +11,10 @@ def introsort(arr):
     Returns:
         list: A sorted version of the input list
     """
+    # If the list is empty or has a single element, return a copy
+    if len(arr) <= 1:
+        return arr.copy()
+
     # If the list is too small, use insertion sort
     def insertion_sort(arr, left, right):
         for i in range(left + 1, right + 1):
