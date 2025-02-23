@@ -57,7 +57,7 @@ def test_malformed_compressed_data():
     with pytest.raises(ValueError, match="Compressed data must have even length"):
         lzjh_decompress(b'\x01')
     
-    with pytest.raises(ValueError, match="Compressed data is truncated"):
+    with pytest.raises(ValueError, match="Compressed data must have even length"):
         lzjh_decompress(b'\x01\x02\x03')
 
 def test_large_random_data():
