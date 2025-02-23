@@ -22,26 +22,39 @@ def find_non_overlapping_palindromic_substrings(s: str) -> list[str]:
     if not s:
         return []
     
-    # Helper function to check if a substring is a palindrome
-    def is_palindrome(substr: str) -> bool:
-        return substr == substr[::-1]
+    # Precompute all palindromes in descending length order
+    def is_palindrome(substring: str) -> bool:
+        return substring == substring[::-1]
     
-    # Find all possible palindromic substrings
-    def find_all_palindromes(s: str) -> list[str]:
-        return [s[i:j] for i in range(len(s)) for j in range(i+1, len(s)+1) if is_palindrome(s[i:j])]
+    # Find all palindromic substrings, sorted by length (descending) and lexicographically
+    all_palindromes = sorted(
+        (substr for substr in set(s[i:j] for i in range(len(s)) for j in range(i+1, len(s)+1) if is_palindrome(s[i:j])),
+        key=lambda x: (-len(x), x)
+    )
     
-    # Sort all palindromic substrings
-    palindromes = sorted(set(find_all_palindromes(s)), key=len)
-    
-    # Non-overlapping algorithm
+    # Non-overlapping selection
     result = []
     used_indices = set()
     
-    for palindrome in palindromes:
-        # Check if this palindrome overlaps with already used indices
-        if not any(idx in used_indices for idx in range(s.index(palindrome), s.index(palindrome) + len(palindrome))):
-            result.append(palindrome)
-            # Mark the indices of this palindrome as used
-            used_indices.update(range(s.index(palindrome), s.index(palindrome) + len(palindrome)))
+    for palindrome in all_palindromes:
+        # Find all occurrences of the palindrome
+        start_idx = 0
+        while True:
+            # Find next occurrence of palindrome
+            idx = s.find(palindrome, start_idx)
+            
+            # Stop if no more occurrences or palindrome not found
+            if idx == -1:
+                break
+            
+            # Check if this occurrence overlaps with used indices
+            if not any(i in used_indices for i in range(idx, idx + len(palindrome))):
+                result.append(palindrome)
+                # Mark indices as used
+                used_indices.update(range(idx, idx + len(palindrome)))
+                break
+            
+            # Move start index to continue searching
+            start_idx = idx + 1
     
     return sorted(result)
