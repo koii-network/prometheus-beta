@@ -59,16 +59,23 @@ class HopcroftKarp:
         if left_vertices & right_vertices:
             raise ValueError("Left and right vertex sets must be disjoint")
         
+        # All vertices in graph must be in left or right partition
+        all_vertices = set(graph.keys()).union(
+            vertex for neighbors in graph.values() for vertex in neighbors
+        )
+        partitioned_vertices = left_vertices.union(right_vertices)
+        
+        if not all_vertices.issubset(partitioned_vertices):
+            raise ValueError("All graph vertices must be in either left or right partition")
+        
         # Verify all graph edges are between partitions
         for vertex, neighbors in graph.items():
-            if vertex not in left_vertices and vertex not in right_vertices:
-                raise ValueError(f"Vertex {vertex} not in any partition")
-            
-            for neighbor in neighbors:
-                if vertex in left_vertices and neighbor not in right_vertices:
-                    raise ValueError(f"Invalid edge: {vertex} -> {neighbor}")
-                if vertex in right_vertices and neighbor not in left_vertices:
-                    raise ValueError(f"Invalid edge: {vertex} -> {neighbor}")
+            if vertex in left_vertices:
+                if any(neighbor not in right_vertices for neighbor in neighbors):
+                    raise ValueError(f"Invalid edge: {vertex} can only connect to right vertices")
+            elif vertex in right_vertices:
+                if any(neighbor not in left_vertices for neighbor in neighbors):
+                    raise ValueError(f"Invalid edge: {vertex} can only connect to left vertices")
     
     def _bfs(self) -> bool:
         """
