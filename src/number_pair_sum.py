@@ -23,15 +23,17 @@ def sum_pairs_with_nine_diff(file_path):
 
     # Find pairs with difference of 9 and sum them
     pair_sum = 0
-    used_numbers = set()
+    used_pairs = set()
     for i in range(len(numbers)):
         for j in range(i+1, len(numbers)):
             # Check the difference exactly 9 in either direction
             if abs(numbers[i] - numbers[j]) == 9:
-                # Check if both numbers are unique
-                if numbers[i] not in used_numbers and numbers[j] not in used_numbers:
+                # Create a sorted pair to avoid duplicates
+                pair = tuple(sorted((numbers[i], numbers[j])))
+                
+                # Only add if this exact pair hasn't been used before
+                if pair not in used_pairs:
                     pair_sum += numbers[i] + numbers[j]
-                    used_numbers.add(numbers[i])
-                    used_numbers.add(numbers[j])
+                    used_pairs.add(pair)
 
     return pair_sum
