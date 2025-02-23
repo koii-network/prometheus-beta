@@ -1,5 +1,6 @@
 import json
 import pprint
+import inspect
 
 def log_object(obj, indent=2, sort_keys=False, compact=False):
     """
@@ -18,13 +19,18 @@ def log_object(obj, indent=2, sort_keys=False, compact=False):
         TypeError: If the object cannot be serialized to JSON
     """
     try:
-        # If compact is True, use minimal JSON formatting
+        # First, try JSON serialization for standard types
         if compact:
             return json.dumps(obj, separators=(',', ':'))
         
-        # If sort_keys is True, sort dictionary keys for consistent output
         return json.dumps(obj, indent=indent, sort_keys=sort_keys)
-    except TypeError:
-        # For objects that can't be directly JSON serialized, use pprint
-        pp = pprint.PrettyPrinter(indent=indent)
-        return pp.pformat(obj)
+    except (TypeError, ValueError):
+        # For objects that can't be directly JSON serialized
+        # Try different approaches to get a readable representation
+        
+        # Check if object has a __dict__ attribute
+        if hasattr(obj, '__dict__'):
+            return pprint.pformat(obj.__dict__, indent=indent)
+        
+        # If no __dict__, use repr or str
+        return pprint.pformat(repr(obj), indent=indent)
