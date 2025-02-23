@@ -1,4 +1,5 @@
 from typing import Set
+from collections import Counter
 
 def count_anagrams(s: str) -> int:
     """
@@ -26,15 +27,18 @@ def count_anagrams(s: str) -> int:
     if not s or not all(c.islower() for c in s):
         raise ValueError("Input must be a non-empty string with only lowercase letters")
     
-    # Set to store unique sorted anagram patterns
+    # Set to store unique anagram patterns
     unique_anagrams: Set[str] = set()
     
     # Generate all possible substrings and their sorted anagram patterns
     for i in range(len(s)):
-        for j in range(i + 1, len(s) + 1):
-            # Extract substring and create its sorted representation
-            substring = s[i:j]
-            sorted_substring = ''.join(sorted(substring))
-            unique_anagrams.add(sorted_substring)
+        current_counter = Counter()
+        for j in range(i, len(s)):
+            # Update current substring's character count
+            current_counter[s[j]] += 1
+            
+            # Convert character counts to a tuple to create hashable anagram pattern
+            anagram_pattern = tuple(sorted(current_counter.items()))
+            unique_anagrams.add(anagram_pattern)
     
     return len(unique_anagrams)
