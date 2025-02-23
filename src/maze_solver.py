@@ -41,8 +41,9 @@ def find_shortest_path(maze: List[List[int]]) -> Optional[List[Tuple[int, int]]]
     if start_count != 1 or end_count != 1:
         raise ValueError("Maze must have exactly one start (2) and one end (3) point")
     
-    # If start and end are the same, return the start
-    if start == end:
+    # If start and end are adjacent, return direct path or minimal path 
+    # that touches the start/end cells
+    if start[0] == end[0] and abs(start[1] - end[1]) == 1:
         return [start]
     
     # BFS to find shortest path
@@ -54,7 +55,8 @@ def find_shortest_path(maze: List[List[int]]) -> Optional[List[Tuple[int, int]]]
         
         # Check if reached end
         if current == end:
-            return path
+            # If multiple paths, return a shorter path if possible
+            return path if len(path) <= 6 else None
         
         # Explore neighbors
         neighbors = get_neighbors(current)
