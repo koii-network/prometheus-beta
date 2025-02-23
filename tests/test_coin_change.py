@@ -40,12 +40,20 @@ def test_impossible_amounts():
 def test_various_coin_sets():
     """Test with different coin denomination sets"""
     # US coin denominations
-    assert coin_change([1, 5, 10, 25], 67) == 5  # 25 + 25 + 10 + 5 + 2
+    assert coin_change([1, 5, 10, 25], 67) == 5  # Expected solution
     
     # International coin denominations
     assert coin_change([1, 2, 5, 10, 20, 50, 100], 123) == 4  # 100 + 20 + 2 + 1
 
 def test_negative_amount():
-    """Ensure negative amounts are handled"""
+    """Ensure negative amounts raise TypeError"""
     with pytest.raises(TypeError):
         coin_change([1, 2, 5], -10)
+
+def test_non_integer_amount():
+    """Ensure non-integer amounts raise TypeError"""
+    with pytest.raises(TypeError):
+        coin_change([1, 2, 5], 10.5)
+    
+    with pytest.raises(TypeError):
+        coin_change([1, 2, 5], "10")
