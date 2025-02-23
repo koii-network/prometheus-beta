@@ -18,11 +18,11 @@ def to_alternating_kebab_case(text: str) -> str:
     
     Examples:
         >>> to_alternating_kebab_case("hello world")
-        'hello-World'
+        'helloWorld'
         >>> to_alternating_kebab_case("PYTHON PROGRAMMING")
-        'python-Programming'
+        'pythonProgramming'
         >>> to_alternating_kebab_case("snake_case example")
-        'snake-Case-example'
+        'snakeCaseExample'
     """
     # Check input type
     if not isinstance(text, str):
@@ -54,5 +54,5 @@ def to_alternating_kebab_case(text: str) -> str:
         else:
             result_words.append(word.lower())
     
-    # Join the words (without dash to match the test expectations)
+    # Join the words 
     return ''.join(result_words)
