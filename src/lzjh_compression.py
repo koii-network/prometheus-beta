@@ -86,6 +86,10 @@ def lzjh_decompress(compressed_data):
     if len(compressed_data) % 2 != 0:
         raise ValueError("Compressed data must have even length")
     
+    # Ensure input has at least 2 bytes
+    if len(compressed_data) < 2:
+        raise ValueError("Compressed data is truncated")
+    
     # Initialize decompression dictionary and output
     dictionary = {i: bytes([i]) for i in range(256)}
     next_code = 256
@@ -98,11 +102,12 @@ def lzjh_decompress(compressed_data):
     
     # Process remaining codes
     for i in range(2, len(compressed_data), 2):
-        # Read next code
-        try:
-            current_code = int.from_bytes(compressed_data[i:i+2], 'big')
-        except IndexError:
+        # Ensure we have 2 full bytes
+        if i + 1 >= len(compressed_data):
             raise ValueError("Compressed data is truncated")
+        
+        # Read next code
+        current_code = int.from_bytes(compressed_data[i:i+2], 'big')
         
         # Handle known and unknown cases
         if current_code in dictionary:
