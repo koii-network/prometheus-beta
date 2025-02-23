@@ -10,11 +10,15 @@ def multiply(arr):
               corresponding elements from input arrays.
 
     Raises:
-        ValueError: If input is not a list of lists or lists are empty.
-        TypeError: If input contains non-numeric elements.
+        TypeError: If input is not a list of lists.
+        ValueError: If lists are empty or have mismatched lengths.
     """
-    # Check if input is a valid list of lists
-    if not arr or not isinstance(arr, list):
+    # Check if input is a list
+    if not isinstance(arr, list):
+        raise TypeError("Input must be a list of lists")
+    
+    # Check if input is empty
+    if not arr:
         raise ValueError("Input must be a non-empty list of lists")
     
     # Check if all elements are lists
