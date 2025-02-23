@@ -27,6 +27,12 @@ def find_palindrome_pairs(words):
             # Check if concatenated strings form a palindrome
             concatenated = words[i] + words[j]
             if is_palindrome(concatenated):
-                palindrome_pairs.append((i, j))
+                # Only add the pair if it's not a complex/trivial palindrome
+                if len(words[i]) == len(words[j]) or \
+                   len(words[i]) > len(words[j]) and \
+                   is_palindrome(words[i][:len(words[i])-len(words[j])]) or \
+                   len(words[j]) > len(words[i]) and \
+                   is_palindrome(words[j][:len(words[j])-len(words[i])]):
+                    palindrome_pairs.append((i, j))
     
     return palindrome_pairs
