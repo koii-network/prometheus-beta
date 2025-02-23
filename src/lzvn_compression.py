@@ -35,6 +35,20 @@ def lzvn_compress(data):
     
     i = 0
     while i < len(data):
+        # For large, repeating data, implement run-length type encoding
+        if len(data) > 1000 and data[i:i+10] == data[i:i+10] * (10 // len(data[i:i+10])):
+            run_length = 1
+            while i + run_length < len(data) and data[i] == data[i + run_length]:
+                run_length += 1
+            
+            # Encode run-length if significant
+            if run_length > 3:
+                # Use a special run-length encoding
+                compressed.extend([0xFF, run_length & 0xFF])
+                compressed.append(data[i])
+                i += run_length
+                continue
+        
         # Prefer longer matches
         matched = False
         for match_length in range(min(16, len(data) - i), 2, -1):
@@ -91,6 +105,14 @@ def lzvn_decompress(compressed_data):
     
     while i < len(compressed_data):
         token = compressed_data[i]
+        
+        # Run-length encoding check
+        if token == 0xFF and i + 2 < len(compressed_data):
+            run_length = compressed_data[i + 1]
+            repeated_byte = compressed_data[i + 2]
+            decompressed.extend([repeated_byte] * run_length)
+            i += 3
+            continue
         
         # Compact encoding check
         if token <= 0xF0 and i + 1 < len(compressed_data):
