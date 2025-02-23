@@ -20,6 +20,9 @@ def min_steps_to_target_sum(numbers: List[int], target: int) -> Optional[int]:
         return None
     
     # Check all possible subset sizes
+    min_steps = float('inf')
+    solution_found = False
+    
     for subset_size in range(1, len(numbers) + 1):
         for subset in combinations(numbers, subset_size):
             # Try all sign combinations for the subset
@@ -34,6 +37,7 @@ def min_steps_to_target_sum(numbers: List[int], target: int) -> Optional[int]:
                 
                 # Check if we've reached the target
                 if current_sum == target:
-                    return steps
+                    solution_found = True
+                    min_steps = min(min_steps, steps)
     
-    return None
+    return min_steps if solution_found else None
