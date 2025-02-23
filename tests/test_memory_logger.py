@@ -1,19 +1,37 @@
 import pytest
 import logging
-import io
 import sys
 import os
+import io
 
 # Add the src directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 from memory_logger import log_memory_usage
 
+class LogCapture:
+    def __init__(self):
+        self.captured = []
+    
+    def write(self, message):
+        self.captured.append(message)
+    
+    def flush(self):
+        pass
+    
+    def getvalue(self):
+        return '\n'.join(self.captured)
+
 def test_log_memory_usage_basic():
     """Test that the decorator logs memory usage correctly."""
-    # Capture log messages in a string buffer
-    log_stream = io.StringIO()
-    logging.basicConfig(stream=log_stream, level=logging.INFO)
+    log_capture = LogCapture()
+    
+    # Create a logger and add our custom handler
+    logger = logging.getLogger()
+    handler = logging.StreamHandler(log_capture)
+    handler.setFormatter(logging.Formatter('%(message)s'))
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
     
     @log_memory_usage
     def test_function():
@@ -23,9 +41,11 @@ def test_log_memory_usage_basic():
     
     result = test_function()
     
-    # Get log messages
-    log_content = log_stream.getvalue()
-    log_messages = log_content.strip().split('\n')
+    # Remove the handler
+    logger.removeHandler(handler)
+    
+    # Get captured log messages
+    log_messages = log_capture.getvalue().strip().split('\n')
     
     assert result == 10000
     assert len(log_messages) == 3
@@ -40,8 +60,14 @@ def test_log_memory_usage_error_handling():
 
 def test_log_memory_usage_function_with_args():
     """Test decorator with function taking arguments."""
-    log_stream = io.StringIO()
-    logging.basicConfig(stream=log_stream, level=logging.INFO)
+    log_capture = LogCapture()
+    
+    # Create a logger and add our custom handler
+    logger = logging.getLogger()
+    handler = logging.StreamHandler(log_capture)
+    handler.setFormatter(logging.Formatter('%(message)s'))
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
     
     @log_memory_usage
     def test_function_with_args(a, b):
@@ -49,9 +75,11 @@ def test_log_memory_usage_function_with_args():
     
     result = test_function_with_args(10, 20)
     
-    # Get log messages
-    log_content = log_stream.getvalue()
-    log_messages = log_content.strip().split('\n')
+    # Remove the handler
+    logger.removeHandler(handler)
+    
+    # Get captured log messages
+    log_messages = log_capture.getvalue().strip().split('\n')
     
     assert result == 30
     assert len(log_messages) == 3
@@ -59,8 +87,14 @@ def test_log_memory_usage_function_with_args():
 
 def test_log_memory_usage_exception_handling():
     """Test exception handling in decorated function."""
-    log_stream = io.StringIO()
-    logging.basicConfig(stream=log_stream, level=logging.ERROR)
+    log_capture = LogCapture()
+    
+    # Create a logger and add our custom handler
+    logger = logging.getLogger()
+    handler = logging.StreamHandler(log_capture)
+    handler.setFormatter(logging.Formatter('%(message)s'))
+    logger.addHandler(handler)
+    logger.setLevel(logging.ERROR)
     
     @log_memory_usage
     def function_that_raises():
@@ -69,8 +103,10 @@ def test_log_memory_usage_exception_handling():
     with pytest.raises(ValueError):
         function_that_raises()
     
-    # Get log messages
-    log_content = log_stream.getvalue()
-    log_messages = log_content.strip().split('\n')
+    # Remove the handler
+    logger.removeHandler(handler)
+    
+    # Get captured log messages
+    log_messages = log_capture.getvalue().strip().split('\n')
     
     assert "Error in function_that_raises" in log_messages[0]
