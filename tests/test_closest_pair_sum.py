@@ -20,14 +20,14 @@ def test_first_occurrence_of_equal_closeness():
     arr = [1, 5, 4, 3, 2]
     target = 7
     result = find_closest_pair_sum(arr, target)
-    assert result == (1, 6) or result == (2, 5)
+    assert result == (5, 2)  # Actual first pair with smallest distance
 
 def test_negative_numbers():
     """Test with negative numbers"""
     arr = [-1, -5, 3, 6, 4, 2]
     target = 1
     result = find_closest_pair_sum(arr, target)
-    assert result == (-5, 6)
+    assert result == (-1, 2)  # Actual first pair with smallest distance
 
 def test_floating_point_target():
     """Test with floating point target"""
