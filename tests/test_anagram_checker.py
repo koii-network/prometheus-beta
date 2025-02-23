@@ -41,5 +41,5 @@ def test_different_lengths():
     
 def test_repeated_characters():
     # Correct handling of repeated characters
-    assert anagram_checker("aaab", "baba") == True
+    assert anagram_checker("aaab", "baaa") == True  # Fixed expectation
     assert anagram_checker("aaab", "aabb") == False
