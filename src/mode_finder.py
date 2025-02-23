@@ -48,8 +48,12 @@ def find_mode(numbers: List[int]) -> Union[int, List[int]]:
     # Find max frequency
     max_freq = max(freq_dict.values())
     
+    # If max frequency is 1, return first element (all unique)
+    if max_freq == 1:
+        return numbers[0]
+    
     # Find all numbers with max frequency
     modes = [num for num, freq in freq_dict.items() if freq == max_freq]
     
-    # Return single mode or list of modes, or first element if all unique
+    # Return single mode or list of modes
     return modes[0] if len(modes) == 1 else modes
