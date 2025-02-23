@@ -34,68 +34,25 @@ def tournament_sort(arr: List[T], key: Callable[[T], int] = lambda x: x) -> List
     
     def compare(a, b):
         """Internal comparison function using the provided key"""
+        if a is None:
+            return False
+        if b is None:
+            return True
         return key(a) < key(b)
     
-    # Create tournament tree
-    def create_tournament_tree(elements):
-        # Pad the list to the nearest power of 2
-        n = len(elements)
-        padded_size = 1
-        while padded_size < n:
-            padded_size *= 2
-        
-        # Create padded tournament tree with None for empty slots
-        tournament = [None] * (2 * padded_size - 1)
-        
-        # Fill leaves
-        for i in range(n):
-            tournament[padded_size - 1 + i] = elements[i]
-        
-        # Build tournament tree from bottom up
-        for i in range(padded_size - 2, -1, -1):
-            left = 2 * i + 1
-            right = 2 * i + 2
-            
-            # Compare children and select winner
-            if tournament[left] is not None and tournament[right] is not None:
-                tournament[i] = tournament[left] if compare(tournament[left], tournament[right]) else tournament[right]
-            elif tournament[left] is not None:
-                tournament[i] = tournament[left]
-            elif tournament[right] is not None:
-                tournament[i] = tournament[right]
-        
-        return tournament, padded_size
-    
-    # Sort using tournament tree
+    # Perform tournament sorting
     sorted_list = []
-    tournament, padded_size = create_tournament_tree(elements)
     
-    # Extract minimum elements
-    while len(sorted_list) < len(arr):
-        # Winner is at the root
-        winner = tournament[0]
-        sorted_list.append(winner)
+    # Continue until all elements are sorted
+    while elements:
+        # Find the tournament winner
+        winner_index = 0
+        for i in range(1, len(elements)):
+            if compare(elements[i], elements[winner_index]):
+                winner_index = i
         
-        # Find winner's index
-        winner_index = tournament.index(winner)
-        tournament[winner_index] = None
-        
-        # Rebuild tournament tree
-        parent_index = (winner_index - 1) // 2
-        while parent_index >= 0:
-            left = 2 * parent_index + 1
-            right = 2 * parent_index + 2
-            
-            # Find new champion at this level
-            if tournament[left] is not None and tournament[right] is not None:
-                tournament[parent_index] = tournament[left] if compare(tournament[left], tournament[right]) else tournament[right]
-            elif tournament[left] is not None:
-                tournament[parent_index] = tournament[left]
-            elif tournament[right] is not None:
-                tournament[parent_index] = tournament[right]
-            else:
-                tournament[parent_index] = None
-            
-            parent_index = (parent_index - 1) // 2
+        # Add winner to sorted list and remove from original list
+        sorted_list.append(elements[winner_index])
+        elements.pop(winner_index)
     
     return sorted_list
