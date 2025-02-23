@@ -1,1 +1,2 @@
-pytest
+tabulate==0.8.9
+pytest==7.3.1
