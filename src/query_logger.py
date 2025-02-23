@@ -16,15 +16,15 @@ def log_query_time(func: Callable[..., Any]) -> Callable[..., Any]:
     Raises:
         TypeError: If the input is not a callable function.
     """
+    # Validate input is a callable before anything else
+    if not callable(func):
+        raise TypeError("Input must be a callable function")
+    
     # Get logger for the module where the decorated function is defined
     logger = logging.getLogger(func.__module__)
     
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        # Validate input is a callable
-        if not callable(func):
-            raise TypeError("Input must be a callable function")
-        
         # Start timing
         start_time = time.perf_counter()
         
