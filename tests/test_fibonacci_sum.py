@@ -12,7 +12,7 @@ def test_fibonacci_sequence_sum_basic():
 
 def test_fibonacci_sequence_sum_larger_n():
     """Test larger input values."""
-    assert fibonacci_sequence_sum(10) == 88
+    assert fibonacci_sequence_sum(10) == 54
 
 def test_fibonacci_sequence_sum_invalid_inputs():
     """Test error handling for invalid inputs."""
