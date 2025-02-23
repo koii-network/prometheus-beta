@@ -11,7 +11,7 @@ def test_rotation_full_array():
 
 def test_rotation_more_than_length():
     """Test rotation more than array length"""
-    assert rotate_array_left([1, 2, 3], 5) == [2, 3, 1]
+    assert rotate_array_left([1, 2, 3], 5) == [3, 1, 2]
 
 def test_empty_array():
     """Test rotation of an empty array"""
