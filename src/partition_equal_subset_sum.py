@@ -45,6 +45,13 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
+    # Optimization for very large numbers
+    if len(nums) > 200 or target > 10000:
+        # Perform a quicker check for large inputs
+        unique_nums = set(nums)
+        if target in unique_nums:
+            return True
+    
     # Dynamic programming - create boolean DP table
     dp = [False] * (target + 1)
     dp[0] = True
