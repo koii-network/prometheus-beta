@@ -35,9 +35,10 @@ def test_log_function_execution_basic():
     result = test_func(3, 4)
     
     assert result == 7
-    assert len(mock_logger.info_logs) == 2  # Start and end logs
+    assert len(mock_logger.info_logs) == 3  # Start, end, and time logs
     assert "Starting execution of test_func" in mock_logger.info_logs[0]
     assert "Completed execution of test_func" in mock_logger.info_logs[1]
+    assert "Execution time" in mock_logger.info_logs[2]
 
 def test_log_function_execution_with_args():
     """Test logging with different argument types"""
@@ -50,7 +51,7 @@ def test_log_function_execution_with_args():
     result = test_func_with_args(3, b=2)
     
     assert result == 6
-    assert len(mock_logger.info_logs) == 2
+    assert len(mock_logger.info_logs) == 3
     assert "Starting execution of test_func_with_args" in mock_logger.info_logs[0]
 
 def test_log_function_execution_exception():
