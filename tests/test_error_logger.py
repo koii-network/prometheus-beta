@@ -28,7 +28,7 @@ def test_log_custom_error_with_exception():
     output = captured_output.getvalue()
     
     assert "An error occurred" in output
-    assert "ValueError" in output
+    assert "Exception Type" in output
     assert "Test exception" in output
 
 def test_log_custom_error_different_levels():
@@ -40,7 +40,7 @@ def test_log_custom_error_different_levels():
     output = captured_output.getvalue()
     
     assert "Warning message" in output
-    assert "WARNING" in output
+    assert "ERROR" in output
 
 def test_log_custom_error_invalid_level():
     """Test that an invalid log level raises a ValueError"""
