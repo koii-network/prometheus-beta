@@ -25,13 +25,13 @@ def sum_pairs_with_nine_diff(file_path):
     pair_sum = 0
     used_numbers = set()
     for i in range(len(numbers)):
-        for j in range(len(numbers)):
-            # Avoid using the same number twice and check the difference
-            if i != j and abs(numbers[i] - numbers[j]) == 9:
-                # Ensure we only count each unique pair once
-                pair_key = tuple(sorted((numbers[i], numbers[j])))
-                if pair_key not in used_numbers:
+        for j in range(i+1, len(numbers)):
+            # Check the difference exactly 9 in either direction
+            if abs(numbers[i] - numbers[j]) == 9:
+                # Check if both numbers are unique
+                if numbers[i] not in used_numbers and numbers[j] not in used_numbers:
                     pair_sum += numbers[i] + numbers[j]
-                    used_numbers.add(pair_key)
+                    used_numbers.add(numbers[i])
+                    used_numbers.add(numbers[j])
 
     return pair_sum
