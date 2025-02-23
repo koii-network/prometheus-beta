@@ -10,7 +10,7 @@ def add_days_to_date(input_date, days_to_add):
         days_to_add (int): Number of days to add to the input date.
 
     Returns:
-        datetime: A new datetime object representing the date after adding days.
+        date: A new date object representing the date after adding days.
 
     Raises:
         TypeError: If input_date is not a datetime or valid date string.
@@ -22,6 +22,8 @@ def add_days_to_date(input_date, days_to_add):
             input_date = datetime.fromisoformat(input_date).date()
         except ValueError:
             raise TypeError("Input date must be a datetime object or a string in ISO format (YYYY-MM-DD)")
+    elif isinstance(input_date, datetime):
+        input_date = input_date.date()
     
     # Validate days_to_add
     if not isinstance(days_to_add, int):
