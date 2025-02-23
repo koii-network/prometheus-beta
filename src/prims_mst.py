@@ -37,7 +37,7 @@ def prims_mst(graph: Dict[str, Dict[str, float]]) -> List[Tuple[str, str, float]
     for neighbor, weight in graph[start_vertex].items():
         heapq.heappush(edge_heap, (weight, start_vertex, neighbor))
     
-    # Continue until all vertices are in the MST
+    # Continue until no more edges can be added
     while edge_heap:
         weight, from_vertex, to_vertex = heapq.heappop(edge_heap)
         
@@ -52,9 +52,10 @@ def prims_mst(graph: Dict[str, Dict[str, float]]) -> List[Tuple[str, str, float]
         mst_edges.append((from_vertex, to_vertex, weight))
         
         # Add new edges from the newly added vertex
-        for neighbor, edge_weight in graph[to_vertex].items():
-            if neighbor not in mst_vertices:
-                heapq.heappush(edge_heap, (edge_weight, to_vertex, neighbor))
+        if to_vertex in graph:  # Ensure the vertex is in the graph
+            for neighbor, edge_weight in graph[to_vertex].items():
+                if neighbor not in mst_vertices:
+                    heapq.heappush(edge_heap, (edge_weight, to_vertex, neighbor))
     
     # Check if all vertices are connected
     if len(mst_vertices) != len(graph):
