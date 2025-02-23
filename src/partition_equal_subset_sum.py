@@ -22,6 +22,10 @@ def can_partition(nums):
     if not all(isinstance(num, int) and num >= 0 for num in nums):
         raise ValueError("All elements must be non-negative integers")
     
+    # Empty list cannot be partitioned
+    if len(nums) == 0:
+        return False
+    
     # Calculate total sum
     total_sum = sum(nums)
     
