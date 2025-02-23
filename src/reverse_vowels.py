@@ -36,19 +36,15 @@ def reverse_vowels_in_substring(s: str, start: int, end: int) -> str:
     # Reverse the vowels
     substring_vowels = substring_vowels[::-1]
 
-    # Create a new list to store the result
+    # Prepare the result
     result_chars = chars.copy()
 
-    # Create a mapping of original vowel positions to their reversed values
-    vowel_mapping = {}
-    vowel_index = 0
-    for i in range(start, end):
-        if chars[i] in vowels:
-            vowel_mapping[i] = substring_vowels[vowel_index]
-            vowel_index += 1
+    # Create a new iterator for the reversed vowels
+    reversed_vowels_iter = iter(substring_vowels)
 
     # Replace vowels with their reversed counterparts
-    for pos, replacement in vowel_mapping.items():
-        result_chars[pos] = replacement
+    for i in range(start, end):
+        if chars[i] in vowels:
+            result_chars[i] = next(reversed_vowels_iter)
 
     return ''.join(result_chars)
