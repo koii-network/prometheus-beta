@@ -1,6 +1,7 @@
 """
 Module for replacing strings in files.
 """
+import re
 
 def replace_string_in_file(file_path, old_string, new_string):
     """
@@ -34,11 +35,14 @@ def replace_string_in_file(file_path, old_string, new_string):
     except FileNotFoundError:
         raise FileNotFoundError(f"File not found: {file_path}")
     
-    # Split the contents using the old string to count occurrences
-    replacements_count = file_contents.count(old_string)
+    # Escape special regex characters in old_string 
+    escaped_old_string = re.escape(old_string)
+    
+    # Count replacements
+    replacements_count = len(re.findall(escaped_old_string, file_contents))
     
     # Replace the string
-    modified_contents = file_contents.replace(old_string, new_string)
+    modified_contents = re.sub(escaped_old_string, new_string, file_contents)
     
     # Write the modified contents back to the file
     with open(file_path, 'w') as file:
