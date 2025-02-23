@@ -33,6 +33,11 @@ def dynamic_progress_bar(iterable, desc='Progress', bar_length=50):
         sys.stdout.write('\n')
         return
     
+    # Handle empty iterable
+    if total == 0:
+        sys.stdout.write(f'\r{desc}: |{"-" * bar_length}| 100% (0/0)\n')
+        return
+    
     # Main progress bar logic
     for i, item in enumerate(iterable, 1):
         # Calculate percentage and progress
