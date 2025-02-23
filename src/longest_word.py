@@ -28,10 +28,17 @@ def find_longest_word(sentence):
     if not sentence:
         raise ValueError("Input sentence cannot be empty")
     
-    # Split the sentence into words and find the longest
+    # Split the sentence into words 
     words = sentence.split()
-    longest = max(words, key=len)
     
-    # From the words with the max length, find the one that appears first
-    max_len = len(longest)
-    return [word for word in words if len(word) == max_len][0]
+    # Track the longest word and its length
+    max_len = 0
+    longest_word = None
+    
+    # Iterate through words to find first longest word 
+    for word in words:
+        if len(word) > max_len:
+            max_len = len(word)
+            longest_word = word
+    
+    return longest_word
