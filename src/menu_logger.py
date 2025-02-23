@@ -18,14 +18,21 @@ class MenuLogger:
         # Ensure log directory exists
         os.makedirs(os.path.dirname(log_file) or '.', exist_ok=True)
         
-        # Configure logging
-        logging.basicConfig(
-            filename=log_file, 
-            level=log_level, 
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            filemode='a'  # Append mode
-        )
+        # Create a logger
         self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(log_level)
+        
+        # Create file handler
+        file_handler = logging.FileHandler(log_file, mode='a')
+        file_handler.setLevel(log_level)
+        
+        # Create formatter and add to handler
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+        
+        # Add handler to logger (if not already added)
+        if not self.logger.handlers:
+            self.logger.addHandler(file_handler)
     
     def log_selection(self, menu_name: str, selection: Union[str, int]) -> None:
         """
