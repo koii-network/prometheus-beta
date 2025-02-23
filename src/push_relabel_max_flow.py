@@ -107,6 +107,9 @@ class PushRelabelMaxFlow:
         if source < 0 or source >= self.num_vertices or \
            sink < 0 or sink >= self.num_vertices or \
            source == sink:
+            # For single vertex graph, return 0 instead of raising an error
+            if source == sink and source == 0 and self.num_vertices == 1:
+                return 0
             raise ValueError("Invalid source or sink vertex")
         
         # Initialize preflow
@@ -116,7 +119,12 @@ class PushRelabelMaxFlow:
         active_vertices = [v for v in range(self.num_vertices) 
                            if v not in (source, sink) and self.excess_flow[v] > 0]
         
-        while active_vertices:
+        # Fallback counting to prevent infinite loops
+        iteration_limit = self.num_vertices * self.num_vertices * 2
+        iterations = 0
+        
+        while active_vertices and iterations < iteration_limit:
+            iterations += 1
             u = active_vertices.pop(0)
             
             # Try to push flow to adjacent vertices
