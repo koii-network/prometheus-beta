@@ -70,7 +70,7 @@ def test_invalid_graph_same_partition():
     left_vertices = {1, 2}
     right_vertices = {3, 4}
     
-    with pytest.raises(ValueError, match="Left and right vertex sets must be disjoint"):
+    with pytest.raises(ValueError, match="Invalid edge: 1 can only connect to right vertices"):
         HopcroftKarp(graph, left_vertices, right_vertices)
 
 
