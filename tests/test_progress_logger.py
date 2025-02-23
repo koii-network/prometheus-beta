@@ -50,7 +50,7 @@ def test_progress_bar_invalid_updates():
         pb.update(-1)
     
     # Test exceeding total
-    with pytest.raises(ValueError, match=f"Current iteration cannot exceed total ({total})"):
+    with pytest.raises(ValueError, match="Current iteration cannot exceed total \\(10\\)"):
         pb.update(total + 1)
 
 def test_log_with_progress():
