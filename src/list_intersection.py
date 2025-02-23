@@ -7,7 +7,8 @@ def find_list_intersection(list1, list2):
         list2 (list): The second input list
 
     Returns:
-        list: A list containing elements common to both input lists
+        list: A list containing unique elements common to both input lists,
+              preserving the order of first occurrence in list1
 
     Notes:
         - Returns an empty list if no common elements are found
@@ -15,6 +16,14 @@ def find_list_intersection(list1, list2):
         - Handles lists of different types
         - Handles duplicate elements correctly
     """
-    # Use a set for efficient lookup while preserving order
-    set2 = set(list2)
-    return [item for item in list1 if item in set2]
+    # Use a set for efficient lookup and to track unique common elements
+    common_elements = []
+    seen = set()
+    
+    for item in list1:
+        # Check if the item is in list2 and hasn't been added before
+        if item in set(list2) and item not in seen:
+            common_elements.append(item)
+            seen.add(item)
+    
+    return common_elements
