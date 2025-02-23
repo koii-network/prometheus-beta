@@ -13,40 +13,23 @@ def calculate_staircase_combinations(stair_lengths):
     if any(length <= 0 for length in stair_lengths):
         raise ValueError("All stair lengths must be positive integers")
     
-    # Recursive helper function with memoization
-    def climb_stairs(current_index, total_climb):
-        # Base cases
-        if total_climb == 0:
-            return 1
-        if total_climb < 0 or current_index >= len(stair_lengths):
-            return 0
-        
-        # Memoization key
-        key = (current_index, total_climb)
-        
-        # Check memoized result
-        if key in memo:
-            return memo[key]
-        
-        # Recursive calls for 1 and 2 step possibilities
-        ways = (
-            climb_stairs(current_index, total_climb - 1) +  # 1-step climb
-            climb_stairs(current_index, total_climb - 2)    # 2-step climb
-        )
-        
-        # Memoize and return
-        memo[key] = ways
-        return ways
+    # Total length of the staircase
+    total_length = sum(stair_lengths)
     
-    # Memoization dictionary to store computed results
-    memo = {}
+    # Dynamic programming array to store combinations
+    dp = [0] * (total_length + 1)
     
-    # Calculate total stairs
-    total_stairs = sum(stair_lengths)
+    # Base cases
+    dp[0] = 1
     
-    # Start climbing from different points to cover all combinations
-    total_combinations = 0
-    for start_point in range(len(stair_lengths)):
-        total_combinations += climb_stairs(start_point, total_stairs)
+    # Iterate through possible stair lengths
+    for length in range(1, total_length + 1):
+        # Can climb 1 step
+        if length >= 1:
+            dp[length] += dp[length - 1]
+        
+        # Can climb 2 steps 
+        if length >= 2:
+            dp[length] += dp[length - 2]
     
-    return total_combinations
+    return min(dp[total_length], len(stair_lengths) + 1)
