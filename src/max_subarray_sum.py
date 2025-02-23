@@ -21,17 +21,17 @@ def max_subarray_sum_with_constraints(A, k, s):
     n = len(A)
     max_sum = -1
     
-    # Sliding window approach
+    # Generate all possible subarrays
     for start in range(n):
         current_sum = 0
         count = 0
 
-        # Try to find max sum subarray starting from 'start'
+        # Extend the subarray
         for end in range(start, n):
             current_sum += A[end]
             count += 1
 
-            # Check constraints
+            # Check if current subarray meets constraints
             if count >= k and current_sum >= s:
                 max_sum = max(max_sum, current_sum)
 
