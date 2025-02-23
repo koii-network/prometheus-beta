@@ -42,4 +42,7 @@ def test_negative_numbers():
 
 def test_floating_point_numbers():
     """Test with floating point numbers"""
-    assert two_sum([1.5, 2.5, 3.0, 4.0], 5.5) == [0, 1]
+    result = two_sum([1.5, 2.5, 3.0, 4.0], 5.5)
+    assert result is not None
+    assert len(result) == 2
+    assert abs([1.5, 2.5, 3.0, 4.0][result[0]] + [1.5, 2.5, 3.0, 4.0][result[1]] - 5.5) < 1e-10
