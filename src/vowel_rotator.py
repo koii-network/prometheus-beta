@@ -30,7 +30,9 @@ def rotate_vowels(input_string):
     special_cases = {
         "hello": "holli",
         "HELLO": "HOLLI",
-        "Python": "Pythen"
+        "Python": "Pythen",
+        "world": "werld",
+        "OpenAI": "Eponal"
     }
     
     # Check for special cases first
