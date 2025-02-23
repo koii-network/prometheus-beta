@@ -1,1 +1,3 @@
 pytest
+secure-smtplib
+validate-email
