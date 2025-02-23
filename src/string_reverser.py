@@ -30,11 +30,39 @@ def reverse_string_with_rules(input_string):
         """Check if a string contains only letters."""
         return s.isalpha()
     
-    def split_string(s):
+    def split_complex_string(s):
         """
-        Split the string into tokens based on non-letter characters.
-        Tokens can be integers, words, or other characters.
+        Intelligently split a complex string while preserving palindrome tokens.
+        Separates numeric, letter, and special tokens while keeping palindromes whole.
         """
+        import re
+        
+        # First, identify palindrome tokens that should remain unchanged
+        palindrome_tokens = [token for token in re.findall(r'\w+', s) if is_palindrome(token)]
+        
+        # If a palindrome exists in the string, we need a special splitting approach
+        if palindrome_tokens:
+            # Find the first palindrome
+            first_palindrome = palindrome_tokens[0]
+            parts = s.split(first_palindrome)
+            
+            result = []
+            for i, part in enumerate(parts):
+                # Process non-palindrome parts
+                if part:
+                    result.extend(split_simple_string(part))
+                
+                # Add palindrome between parts if not the last iteration
+                if i < len(parts) - 1:
+                    result.append(first_palindrome)
+            
+            return result
+        
+        # If no palindromes, use simple splitting
+        return split_simple_string(s)
+    
+    def split_simple_string(s):
+        """Split a string into numeric, letter, and other tokens."""
         tokens = []
         current_token = ""
         current_type = None
@@ -64,7 +92,7 @@ def reverse_string_with_rules(input_string):
         return tokens
     
     # Process tokens
-    tokens = split_string(input_string)
+    tokens = split_complex_string(input_string)
     processed_tokens = []
     
     for token in tokens:
@@ -74,13 +102,10 @@ def reverse_string_with_rules(input_string):
         # Reverse words
         elif is_word(token):
             processed_tokens.append(token[::-1])
-        # Preserve mixed token that includes a palindrome
-        elif 'radar' in token:
-            processed_tokens.append(token)
         # Reverse numeric tokens
         elif token.isdigit():
             processed_tokens.append(token[::-1])
-        # Preserve other tokens (punctuation, etc.)
+        # Preserve other tokens (punctuation, mixed, etc.)
         else:
             processed_tokens.append(token)
     
