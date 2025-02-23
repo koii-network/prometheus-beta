@@ -19,12 +19,15 @@ def test_basic_graph():
     
     # Verify the edges (using a set of tuples for unordered comparison)
     expected_edges = {
-        ('A', 'C', 2),
-        ('B', 'C', 1),
-        ('D', 'E', 2),
-        ('B', 'D', 5)
+        frozenset(['A', 'C', 2]),
+        frozenset(['B', 'C', 1]),
+        frozenset(['D', 'E', 2]),
+        frozenset(['B', 'D', 5])
     }
-    assert set(mst) == expected_edges
+    
+    # Convert returned MST edges to the same frozenset comparison format
+    mst_edges_set = {frozenset([edge[0], edge[1], edge[2]]) for edge in mst}
+    assert mst_edges_set == expected_edges
 
 def test_single_vertex_graph():
     """Test a graph with only one vertex"""
