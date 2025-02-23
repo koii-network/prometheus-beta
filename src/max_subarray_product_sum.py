@@ -25,13 +25,16 @@ def find_max_subarray_product_sum(arr, target_product):
 
     # Check all possible subarrays
     for start in range(n):
-        current_product = 1
-        current_sum = 0
-
         for end in range(start, n):
-            # Update current product and sum
-            current_product *= arr[end]
-            current_sum += arr[end]
+            # Extract subarray
+            subarray = arr[start:end+1]
+            
+            # Calculate product and sum
+            current_product = 1
+            current_sum = 0
+            for num in subarray:
+                current_product *= num
+                current_sum += num
 
             # Check if current subarray meets the product condition
             if current_product == target_product:
