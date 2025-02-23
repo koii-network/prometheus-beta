@@ -23,21 +23,26 @@ def validate_email(email: str) -> bool:
     if not email or len(email) < 3 or len(email) > 254:
         return False
 
-    # Regular expression for email validation
-    email_regex = r'^[a-zA-Z0-9._%+-]+[a-zA-Z0-9]@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    
-    # Additional checks to handle edge cases not covered by regex
-    if not re.match(email_regex, email):
-        return False
-    
     # Split email into username and domain
     try:
         username, domain = email.split('@')
     except ValueError:
         return False
     
-    # Additional domain validation
+    # Validate username
     if '..' in username or username.startswith('.') or username.endswith('.'):
+        return False
+    
+    # Validate domain
+    if not domain or '..' in domain or domain.startswith('.') or domain.startswith('-') or domain.endswith('-'):
+        return False
+    
+    # Regular expression for email validation
+    # Stricter regex to prevent hyphens/dots at start/end of domain parts
+    email_regex = r'^[a-zA-Z0-9._%+-]+[a-zA-Z0-9]@[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$'
+    
+    # Additional checks to handle edge cases
+    if not re.match(email_regex, email):
         return False
     
     # Ensure domain has at least one dot and valid TLD
