@@ -1,3 +1,5 @@
+import re
+
 def to_alternating_kebab_case(text: str) -> str:
     """
     Convert a string to alternating kebab case.
@@ -26,8 +28,11 @@ def to_alternating_kebab_case(text: str) -> str:
     if not isinstance(text, str):
         raise TypeError("Input must be a string")
     
-    # Remove any existing dashes and split into words
-    words = text.replace('-', ' ').split()
+    # Remove special characters and replace underscores with spaces
+    cleaned_text = re.sub(r'[^a-zA-Z\s]', '', text).replace('_', ' ')
+    
+    # Split into words
+    words = cleaned_text.split()
     
     # Convert words with alternating case
     alternating_words = []
