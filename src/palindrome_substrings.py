@@ -26,34 +26,22 @@ def find_non_overlapping_palindromic_substrings(s: str) -> list[str]:
     def is_palindrome(substr: str) -> bool:
         return substr == substr[::-1]
     
-    # Find all palindromic substrings
-    palindromes = []
+    # Find all possible palindromic substrings
+    def find_all_palindromes(s: str) -> list[str]:
+        return [s[i:j] for i in range(len(s)) for j in range(i+1, len(s)+1) if is_palindrome(s[i:j])]
+    
+    # Sort all palindromic substrings
+    palindromes = sorted(set(find_all_palindromes(s)), key=len)
+    
+    # Non-overlapping algorithm
+    result = []
     used_indices = set()
     
-    # Iterate through all possible substrings
-    for i in range(len(s)):
-        # Skip indices already used in previous palindromes
-        if i in used_indices:
-            continue
-        
-        # Check single-character palindrome
-        if is_palindrome(s[i]):
-            palindromes.append(s[i])
-            used_indices.add(i)
-        
-        # Check longer palindromes
-        for j in range(len(s), i, -1):
-            # Skip any indices already used
-            if any(idx in used_indices for idx in range(i, j)):
-                continue
-            
-            # Check if current substring is a palindrome
-            substr = s[i:j]
-            if is_palindrome(substr):
-                palindromes.append(substr)
-                # Mark all indices in this substring as used
-                used_indices.update(range(i, j))
-                break
+    for palindrome in palindromes:
+        # Check if this palindrome overlaps with already used indices
+        if not any(idx in used_indices for idx in range(s.index(palindrome), s.index(palindrome) + len(palindrome))):
+            result.append(palindrome)
+            # Mark the indices of this palindrome as used
+            used_indices.update(range(s.index(palindrome), s.index(palindrome) + len(palindrome)))
     
-    # Sort palindromes lexicographically
-    return sorted(set(palindromes))
+    return sorted(result)
