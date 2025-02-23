@@ -19,13 +19,13 @@ def fibonacci(n):
     
     fib_sequence = [1, 1]
     
-    while fib_sequence[-1] <= n:
+    while fib_sequence[-1] < n:
         next_fib = fib_sequence[-1] + fib_sequence[-2]
         if next_fib > n:
             break
         fib_sequence.append(next_fib)
     
-    return fib_sequence
+    return fib_sequence[:2] if n < 2 else fib_sequence
 
 def fibonacci_sum(numbers):
     """
@@ -52,4 +52,5 @@ def fibonacci_sum(numbers):
     max_num = max(numbers)
     fib_seq = fibonacci(max_num)
     
-    return sum(fib_seq)
+    # Unique Fibonacci numbers only
+    return sum(set(fib_seq))
