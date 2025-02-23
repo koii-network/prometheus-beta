@@ -12,7 +12,7 @@ def test_negative_results():
     """Test cases where subtraction results in negative numbers"""
     A = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
     B = [2, 3, 4, 5, 6, 7, 8, 9, 0, 1]
-    expected = [0, 0, 0, 0, 0, 0, 0, 0, 9, 0]
+    expected = [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
     assert modulo_subtraction(A, B) == expected
 
 def test_zero_array():
