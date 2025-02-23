@@ -1,4 +1,4 @@
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
 import os
 
 def decrypt_file(encrypted_file_path, output_file_path, encryption_key):
@@ -13,6 +13,7 @@ def decrypt_file(encrypted_file_path, output_file_path, encryption_key):
     Raises:
         FileNotFoundError: If encrypted file does not exist
         ValueError: If encryption key is invalid
+        InvalidToken: If decryption fails due to incorrect key
         PermissionError: If cannot write to output path
     """
     # Validate inputs
@@ -35,6 +36,8 @@ def decrypt_file(encrypted_file_path, output_file_path, encryption_key):
     
     except PermissionError:
         raise PermissionError(f"Cannot write to output path: {output_file_path}")
+    except InvalidToken:
+        raise ValueError("Decryption failed: Invalid encryption key")
     except Exception as e:
         raise RuntimeError(f"Decryption failed: {e}")
     
