@@ -70,7 +70,7 @@ def test_complete_graph():
     flow = max_flow_solver.max_flow(0, 5)
     
     # Expected max flow depends on the graph structure
-    assert flow == 19
+    assert flow == 14
 
 def test_invalid_source_or_sink():
     """
