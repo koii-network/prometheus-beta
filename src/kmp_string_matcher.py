@@ -65,6 +65,10 @@ def kmp_search(text, pattern):
     if not text or not pattern:
         raise ValueError("Neither text nor pattern can be empty")
     
+    # Make search case-insensitive
+    text = text.lower()
+    pattern = pattern.lower()
+    
     # Compute the LPS array for the pattern
     lps = compute_lps_array(pattern)
     
