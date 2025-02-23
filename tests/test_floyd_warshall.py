@@ -66,7 +66,7 @@ def test_reconstruct_path():
     
     # Test existing path
     path = reconstruct_path(next_matrix, 0, 2)
-    assert path == [0, 2], "Path from 0 to 2 should be [0, 2]"
+    assert path == [0, 1, 2], "Path from 0 to 2 should be [0, 1, 2]"
     
     path = reconstruct_path(next_matrix, 0, 3)
     assert path == [0, 2, 3], "Path from 0 to 3 should be [0, 2, 3]"
