@@ -32,17 +32,17 @@ def max_subarray_sum(arr, k):
         return []
     
     # Sliding window approach to find maximum sum
-    max_sum = float('-inf')
-    current_sum = sum(arr[:k])
+    max_sum = sum(arr[:k])
     max_subarray = arr[:k]
     
     # Slide the window through the array
     for i in range(1, len(arr) - k + 1):
-        # Remove first element of previous window and add next element
-        current_sum = current_sum - arr[i-1] + arr[i+k-1]
+        # Calculate current window sum
+        current_sum = sum(arr[i:i+k])
         
-        # Update max sum and subarray if current sum is larger or equal
-        if current_sum >= max_sum:
+        # Update max sum and subarray if current sum is larger
+        # Use strict inequality to prioritize earlier subarrays
+        if current_sum > max_sum:
             max_sum = current_sum
             max_subarray = arr[i:i+k]
     
