@@ -18,49 +18,46 @@ def find_non_overlapping_palindromic_substrings(s: str) -> list[str]:
         >>> find_non_overlapping_palindromic_substrings('')
         []
     """
-    # Handle empty string edge case
+    # Handle empty string
     if not s:
         return []
     
-    # Helper function to check palindrome
+    # Precompute palindromes 
     def is_palindrome(substring: str) -> bool:
         return substring == substring[::-1]
     
-    # Generate all palindromic substrings
-    def get_palindromes(s: str) -> list[str]:
-        palindromes = []
+    # Advanced palindrome finding
+    def find_palindromes(s: str) -> list[str]:
+        # Combine multiple strategies to find palindromes
+        palindromes = set()
         n = len(s)
         
-        # Single character palindromes
-        for i in range(n):
-            if is_palindrome(s[i]):
-                palindromes.append(s[i])
+        # Single characters are always palindromes
+        palindromes.update(s[i] for i in range(n))
         
-        # Longer palindromes
+        # Find longer palindromes
         for length in range(2, n+1):
             for start in range(n - length + 1):
                 substr = s[start:start+length]
                 if is_palindrome(substr):
-                    palindromes.append(substr)
+                    palindromes.add(substr)
         
-        return sorted(set(palindromes), key=lambda x: (len(x), x))
+        return sorted(palindromes, key=lambda x: (-len(x), x))
     
-    # Get all palindromes
-    all_palindromes = get_palindromes(s)
+    # Find potential non-overlapping palindromes
+    all_palindromes = find_palindromes(s)
     
-    # Non-overlapping selection
     result = []
     used_indices = set()
     
+    # Greedy selection of non-overlapping palindromes
     for palindrome in all_palindromes:
-        # Find all occurrences
+        # Try to find first non-overlapping occurrence
         for i in range(len(s)):
-            # Check if current substring matches palindrome
             if s[i:i+len(palindrome)] == palindrome:
-                # Check if this occurrence overlaps with used indices
+                # Check for overlap
                 if not any(idx in used_indices for idx in range(i, i+len(palindrome))):
                     result.append(palindrome)
-                    # Mark indices as used
                     used_indices.update(range(i, i+len(palindrome)))
                     break
     
