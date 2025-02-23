@@ -26,15 +26,28 @@ def edmonds_karp(graph: Dict[int, Dict[int, int]], source: int, sink: int) -> in
     if source not in graph or sink not in graph:
         raise ValueError("Source or sink node not found in graph")
     
+    # Initialize residual graph with complete node coverage
+    # Find all unique nodes 
+    all_nodes = set(graph.keys())
+    for node_edges in graph.values():
+        all_nodes.update(node_edges.keys())
+    
     # Initialize residual graph
     residual_graph = {}
-    for node in graph:
-        residual_graph[node] = graph[node].copy()
-        for adjacent_node in graph[node]:
-            if adjacent_node not in residual_graph:
-                residual_graph[adjacent_node] = {}
-            if node not in residual_graph[adjacent_node]:
-                residual_graph[adjacent_node][node] = 0
+    for node in all_nodes:
+        residual_graph[node] = {}
+    
+    # Populate graph with direct edges and zero-capacity reverse edges
+    for node, edges in graph.items():
+        for dest, capacity in edges.items():
+            # Forward edge
+            residual_graph[node][dest] = capacity
+            
+            # Ensure reverse edge exists
+            if dest not in residual_graph:
+                residual_graph[dest] = {}
+            if node not in residual_graph[dest]:
+                residual_graph[dest][node] = 0
     
     # Maximum flow
     max_flow = 0
@@ -82,7 +95,9 @@ def edmonds_karp(graph: Dict[int, Dict[int, int]], source: int, sink: int) -> in
         current = sink
         while current != source:
             prev = parent[current]
+            # Forward edge
             residual_graph[prev][current] -= path_flow
+            # Reverse edge
             residual_graph[current][prev] += path_flow
             current = prev
         
