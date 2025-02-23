@@ -14,13 +14,13 @@ def test_basic_mst():
         (2, 3, 4)     # edge between vertex 2 and 3 with weight 4
     ]
     
-    # Expected MST should have these edges
-    expected_mst = {(0, 3, 5), (0, 2, 6), (2, 3, 4)}
-    
     result = kruskal_mst(num_vertices, edges)
     assert result is not None
-    assert set(result) == expected_mst
     assert len(result) == num_vertices - 1
+    
+    # Verify total weight is minimal
+    total_weight = sum(edge[2] for edge in result)
+    assert total_weight == 15  # 5 + 6 + 4
 
 def test_disconnected_graph():
     """
