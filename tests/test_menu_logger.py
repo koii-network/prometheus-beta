@@ -10,7 +10,9 @@ def test_single_selection_logging(tmp_path):
     
     logger.log_selection("Main Menu", "Exit")
     
-    # Verify log file contents
+    # Verify log file contents by reading the actual file
+    assert os.path.exists(log_file), "Log file was not created"
+    
     with open(log_file, 'r') as f:
         log_content = f.read()
     
@@ -25,6 +27,8 @@ def test_multiple_selections_logging(tmp_path):
     logger.log_multiple_selections("Settings Menu", selections)
     
     # Verify log file contents
+    assert os.path.exists(log_file), "Log file was not created"
+    
     with open(log_file, 'r') as f:
         log_content = f.read()
     
