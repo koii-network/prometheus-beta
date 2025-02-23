@@ -52,13 +52,13 @@ def test_empty_graph():
         prims_mst(graph)
 
 def test_single_vertex_graph():
-    """Test a graph with only a single vertex"""
+    """Test a graph with only a single vertex with no edges"""
     graph = {
         'A': {}
     }
     
-    mst = prims_mst(graph)
-    assert len(mst) == 0
+    with pytest.raises(ValueError, match="Graph is not fully connected"):
+        prims_mst(graph)
     
 def test_single_vertex_with_self_loop():
     """Test a graph with a single vertex and a self-loop"""
