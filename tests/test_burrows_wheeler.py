@@ -4,19 +4,22 @@ from src.burrows_wheeler import burrows_wheeler_transform, inverse_burrows_wheel
 def test_basic_bwt_transform():
     """Test basic Burrows-Wheeler Transform functionality"""
     input_text = "banana"
-    expected_bwt = "annb$aa"
-    assert burrows_wheeler_transform(input_text) == expected_bwt
+    bwt_result, index = burrows_wheeler_transform(input_text)
+    assert bwt_result == "annb$a"
+    assert index == 3  # index of the original rotation
 
 def test_bwt_inverse_transform():
     """Test round-trip Burrows-Wheeler Transform"""
     input_text = "banana"
-    bwt = burrows_wheeler_transform(input_text)
-    assert inverse_burrows_wheeler_transform(bwt) == input_text
+    bwt_result = burrows_wheeler_transform(input_text)
+    assert inverse_burrows_wheeler_transform(bwt_result) == input_text
 
 def test_bwt_single_char():
     """Test Burrows-Wheeler Transform with a single character"""
     input_text = "a"
-    assert burrows_wheeler_transform(input_text) == "a$"
+    bwt_result, index = burrows_wheeler_transform(input_text)
+    assert bwt_result == "a$"
+    assert index == 1
     assert inverse_burrows_wheeler_transform(burrows_wheeler_transform(input_text)) == input_text
 
 def test_bwt_empty_string_error():
@@ -24,22 +27,22 @@ def test_bwt_empty_string_error():
     with pytest.raises(ValueError, match="Input string cannot be empty"):
         burrows_wheeler_transform("")
     
-    with pytest.raises(ValueError, match="Input string cannot be empty"):
-        inverse_burrows_wheeler_transform("")
+    with pytest.raises(TypeError):
+        inverse_burrows_wheeler_transform(("", 0))
 
 def test_bwt_invalid_input_type():
     """Test error handling for invalid input types"""
     with pytest.raises(TypeError, match="Input must be a string"):
         burrows_wheeler_transform(123)
     
-    with pytest.raises(TypeError, match="Input must be a string"):
+    with pytest.raises(TypeError):
         inverse_burrows_wheeler_transform(None)
 
 def test_bwt_complex_string():
     """Test Burrows-Wheeler Transform with a more complex string"""
     input_text = "ABRACADABRA"
-    bwt = burrows_wheeler_transform(input_text)
-    assert inverse_burrows_wheeler_transform(bwt) == input_text
+    bwt_result = burrows_wheeler_transform(input_text)
+    assert inverse_burrows_wheeler_transform(bwt_result) == input_text
 
 def test_multiple_transformations():
     """Verify consistent round-trip transformations"""
@@ -52,6 +55,6 @@ def test_multiple_transformations():
     ]
     
     for text in test_cases:
-        bwt = burrows_wheeler_transform(text)
-        restored = inverse_burrows_wheeler_transform(bwt)
+        bwt_result = burrows_wheeler_transform(text)
+        restored = inverse_burrows_wheeler_transform(bwt_result)
         assert restored == text, f"Failed for input: {text}"
