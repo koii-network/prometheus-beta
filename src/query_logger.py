@@ -3,11 +3,6 @@ import functools
 import logging
 from typing import Callable, Any
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, 
-                    format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
 def log_query_time(func: Callable[..., Any]) -> Callable[..., Any]:
     """
     A decorator to log the execution time of database query functions.
@@ -21,6 +16,9 @@ def log_query_time(func: Callable[..., Any]) -> Callable[..., Any]:
     Raises:
         TypeError: If the input is not a callable function.
     """
+    # Get logger for the module where the decorated function is defined
+    logger = logging.getLogger(func.__module__)
+    
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # Validate input is a callable
