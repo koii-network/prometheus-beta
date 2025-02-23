@@ -13,7 +13,7 @@ def test_empty_lists():
 
 def test_negative_numbers():
     """Test scenarios with negative numbers"""
-    assert find_smallest_sum([-1, -2], [1, 2]) == 0
+    assert find_smallest_sum([-1, -2], [1, 2]) == -1
     assert find_smallest_sum([-5, -3], [-2, -1]) == -7
 
 def test_single_element_lists():
