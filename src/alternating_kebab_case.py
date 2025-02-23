@@ -31,7 +31,7 @@ def to_alternating_kebab_case(text: str) -> str:
     # Replace underscores and existing dashes with space
     processed_text = text.replace('_', ' ').replace('-', ' ')
     
-    # Split words and remove special characters
+    # Split words and remove/filter special characters
     words = []
     for word in processed_text.split():
         # Remove special characters, but preserve word structure
@@ -39,10 +39,10 @@ def to_alternating_kebab_case(text: str) -> str:
         if clean_word:
             words.append(clean_word)
     
-    # Convert words with alternating case
+    # Convert words with alternating case, ensuring each word is properly cased
     alternating_words = []
     for i, word in enumerate(words):
-        # First word is lowercase, then alternate
+        # First word is lowercase, then alternate, and fully capitalize even words
         if i % 2 == 0:
             alternating_words.append(word.lower())
         else:
