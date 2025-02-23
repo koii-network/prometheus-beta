@@ -42,28 +42,28 @@ def lz78_compress(input_string: str) -> List[Tuple[int, str]]:
     # Compress the input string
     for char in input_string:
         # Try to find the longest match in the dictionary
-        current_sequence += char
+        test_sequence = current_sequence + char
         
-        # If the current sequence is not in the dictionary
-        if current_sequence not in dictionary:
-            # Find the index of the longest prefix in the dictionary
-            prefix = current_sequence[:-1]
-            prefix_index = dictionary.get(prefix, 0)
-            
-            # Add the current sequence to the dictionary
-            dictionary[current_sequence] = next_index
-            next_index += 1
-            
-            # Output the token (prefix index, new character)
+        # If the sequence is not in the dictionary
+        if test_sequence not in dictionary:
+            # Output the token (index of previous match, new character)
+            prefix_index = dictionary.get(current_sequence, 0)
             output.append((prefix_index, char))
+            
+            # Add the new sequence to the dictionary
+            dictionary[test_sequence] = next_index
+            next_index += 1
             
             # Reset current sequence
             current_sequence = ''
+        else:
+            # If the sequence is in the dictionary, continue building it
+            current_sequence = test_sequence
     
     # Handle any remaining sequence
     if current_sequence:
-        prefix_index = dictionary.get(current_sequence, 0)
-        output.append((prefix_index, ''))
+        prefix_index = dictionary.get(current_sequence[:-1], 0)
+        output.append((prefix_index, current_sequence[-1]))
     
     return output
 
