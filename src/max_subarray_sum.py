@@ -41,8 +41,8 @@ def max_subarray_sum(arr, k):
         # Remove first element of previous window and add next element
         current_sum = current_sum - arr[i-1] + arr[i+k-1]
         
-        # Update max sum and subarray if current sum is larger
-        if current_sum > max_sum:
+        # Update max sum and subarray if current sum is larger or equal
+        if current_sum >= max_sum:
             max_sum = current_sum
             max_subarray = arr[i:i+k]
     
