@@ -28,7 +28,7 @@ def floyd_warshall(graph: List[List[float]]) -> Tuple[List[List[float]], List[Li
     
     # Initialize distance and next matrices
     dist = [row.copy() for row in graph]
-    next_matrix = [[None if graph[i][j] == float('inf') else j 
+    next_matrix = [[j if i == j or graph[i][j] != float('inf') else None 
                     for j in range(n)] for i in range(n)]
     
     # Floyd-Warshall algorithm
