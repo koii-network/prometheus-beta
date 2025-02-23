@@ -29,7 +29,7 @@ def test_unicode_characters():
     assert find_longest_substring("こんにちは") == "こんにちは"
 
 def test_mixed_unicode_and_ascii():
-    assert find_longest_substring("hello世界") == "hello世界"
+    assert find_longest_substring("hello世界") == "lo世界"
 
 def test_long_string_with_repeats():
     long_string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" * 2
