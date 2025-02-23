@@ -32,7 +32,7 @@ def test_invalid_input_type():
 
 def test_invalid_coordinate_type():
     """Test raising ValueError for invalid coordinate types"""
-    with pytest.raises(ValueError, match="Each coordinate must be a tuple of (x, y)"):
+    with pytest.raises(ValueError, match="Each coordinate must be a tuple of \(x, y\)"):
         unique_coordinate_combinations([(1, 2), "invalid"])
 
 def test_non_numeric_coordinates():
