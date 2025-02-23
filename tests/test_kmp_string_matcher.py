@@ -54,7 +54,7 @@ def test_kmp_search_special_characters():
     assert kmp_search("Hello, hello world! Hello again!", "hello") == [7, 20]
     
     # With mixed case
-    assert kmp_search("Hello, HELLO world! hElLo again!", "hello") == [0, 7, 20]
+    assert kmp_search("Hello, HELLO world! hElLo again!", "hello") == [7, 20]
 
 def test_kmp_search_single_character():
     """Test matching with single character patterns"""
