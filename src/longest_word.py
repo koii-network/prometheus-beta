@@ -30,4 +30,8 @@ def find_longest_word(sentence):
     
     # Split the sentence into words and find the longest
     words = sentence.split()
-    return max(words, key=len)
+    longest = max(words, key=len)
+    
+    # From the words with the max length, find the one that appears first
+    max_len = len(longest)
+    return [word for word in words if len(word) == max_len][0]
