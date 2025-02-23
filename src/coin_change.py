@@ -12,8 +12,15 @@ def coin_change(coins, amount):
     
     Raises:
         ValueError: If coins list is empty or contains non-positive values
+        TypeError: If amount is not a non-negative integer
     """
     # Validate input
+    if not isinstance(amount, int):
+        raise TypeError("Amount must be an integer")
+    
+    if amount < 0:
+        raise ValueError("Amount cannot be negative")
+    
     if not coins:
         raise ValueError("Coin denominations list cannot be empty")
     
