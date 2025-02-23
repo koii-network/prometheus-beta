@@ -24,9 +24,9 @@ def prims_mst(graph: Dict[str, Dict[str, float]]) -> List[Tuple[str, str, float]
     # Filter out vertices with no true external connections
     valid_vertices = {v for v, edges in graph.items() if any(n != v for n in edges)}
     
-    # Handle single vertex case
+    # Handle single vertex case with only self-loops
     if len(graph) == 1 and not valid_vertices:
-        return []
+        raise ValueError("Graph is not fully connected")
     
     # Check if graph is fully connected
     if not valid_vertices:
