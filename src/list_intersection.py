@@ -15,6 +15,6 @@ def find_list_intersection(list1, list2):
         - Handles lists of different types
         - Handles duplicate elements correctly
     """
-    # Convert lists to sets for efficient intersection
-    # Then convert back to list while preserving order of first occurrence
-    return list(dict.fromkeys(item for item in list1 if item in list2))
+    # Use a set for efficient lookup while preserving order
+    set2 = set(list2)
+    return [item for item in list1 if item in set2]
