@@ -30,7 +30,7 @@ def coin_change(coins, amount):
     if amount == 0:
         return 0
     
-    # Sort coins in descending order for greedy approach
+    # Sort coins in descending order for optimal selection
     coins = sorted(coins, reverse=True)
     
     # Initialize dynamic programming array
@@ -46,7 +46,57 @@ def coin_change(coins, amount):
         for coin in coins:
             if coin <= i:
                 # Update minimum coins needed
-                dp[i] = min(dp[i], dp[i - coin] + 1)
+                curr_coins = dp[i - coin] + 1
+                dp[i] = min(dp[i], curr_coins)
     
     # Return result, -1 if amount cannot be made
     return dp[amount] if dp[amount] != float('inf') else -1
+
+def min_coins_combination(coins, amount):
+    """
+    Return the actual coins used to make up the given amount.
+    
+    Args:
+        coins (list): A list of coin denominations available
+        amount (int): The target amount to make change for
+    
+    Returns:
+        list: List of coins used to make up the amount, 
+              or empty list if amount cannot be made
+    """
+    # Validate input
+    if not isinstance(amount, int):
+        raise TypeError("Amount must be an integer")
+    
+    if amount < 0:
+        raise TypeError("Amount cannot be negative")
+    
+    if not coins:
+        raise ValueError("Coin denominations list cannot be empty")
+    
+    if any(coin <= 0 for coin in coins):
+        raise ValueError("All coin denominations must be positive")
+    
+    # Special case: if amount is 0, no coins needed
+    if amount == 0:
+        return []
+    
+    # Sort coins in descending order 
+    coins = sorted(coins, reverse=True)
+    
+    # First, use dynamic programming to verify solution exists
+    if coin_change(coins, amount) == -1:
+        return []
+    
+    # Greedy selection of coins
+    result = []
+    remaining = amount
+    
+    while remaining > 0:
+        for coin in coins:
+            if coin <= remaining:
+                result.append(coin)
+                remaining -= coin
+                break
+    
+    return result
