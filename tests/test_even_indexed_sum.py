@@ -7,7 +7,7 @@ def test_normal_list():
 
 def test_list_with_negative_numbers():
     """Test sum works correctly with negative numbers."""
-    assert sum_even_indexed_integers([-1, 2, -3, 4, -5]) == -4
+    assert sum_even_indexed_integers([-1, 2, -3, 4, -5]) == -9
 
 def test_empty_list():
     """Test that an empty list returns 0."""
