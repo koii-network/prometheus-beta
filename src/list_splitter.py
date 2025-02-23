@@ -12,8 +12,8 @@ def can_split_list_with_equal_sum(nums):
         TypeError: If input is not a list.
         ValueError: If list contains non-integer elements.
     
-    Time Complexity: O(2^n), where n is the length of the list
-    Space Complexity: O(n) due to recursive call stack
+    Time Complexity: O(n * sum), where n is the length of the list
+    Space Complexity: O(sum)
     """
     # Validate input
     if not isinstance(nums, list):
@@ -34,28 +34,23 @@ def can_split_list_with_equal_sum(nums):
     
     target_sum = total_sum // 2
     
-    def can_partition(index, current_sum, total_remaining):
-        """
-        Recursive helper function to check subset partition with strict requirements.
-        
-        Args:
-            index (int): Current index in the list
-            current_sum (int): Current sum of selected elements
-            total_remaining (int): Remaining sum to check
-        
-        Returns:
-            bool: True if target sum can be achieved, False otherwise
-        """
-        # Base cases
-        if current_sum == target_sum and total_remaining == target_sum:
-            return True
-        
-        if index >= len(nums):
-            return False
-        
-        # Create two scenarios: include current element or exclude current element
-        # Adjust the remaining total accordingly
-        return (can_partition(index + 1, current_sum + nums[index], total_remaining - nums[index]) or 
-                can_partition(index + 1, current_sum, total_remaining))
+    # Dynamic programming approach
+    # Create a set to track possible subset sums
+    possible_sums = {0}
     
-    return can_partition(0, 0, total_sum)
+    for num in nums:
+        # Create a copy to avoid modifying set during iteration
+        current_sums = possible_sums.copy()
+        
+        for existing_sum in current_sums:
+            new_sum = existing_sum + num
+            
+            # If we've found the target sum, return True
+            if new_sum == target_sum:
+                return True
+            
+            # If new sum is less than total target, add to possible sums
+            if new_sum < total_sum:
+                possible_sums.add(new_sum)
+    
+    return False
