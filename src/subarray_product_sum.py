@@ -22,6 +22,10 @@ def count_subarrays_with_product_less_than_k(nums, k):
     if not nums:
         return 0
     
+    # Special case: if k = 1, only subarrays with 0 product count
+    if k == 1:
+        return 0
+    
     # Initialize variables
     total_subarrays = 0
     left = 0
@@ -39,6 +43,6 @@ def count_subarrays_with_product_less_than_k(nums, k):
         
         # Count subarrays ending at right index
         # The number of subarrays is (right - left + 1)
-        total_subarrays += max(0, right - left + 1)
+        total_subarrays += right - left + 1
     
     return total_subarrays
