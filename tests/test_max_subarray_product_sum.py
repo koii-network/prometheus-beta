@@ -5,7 +5,7 @@ def test_basic_case():
     """Test a basic scenario with a simple array."""
     arr = [1, 2, 3, 4, 5]
     target_product = 6
-    assert find_max_subarray_product_sum(arr, target_product) == 5
+    assert find_max_subarray_product_sum(arr, target_product) == 6
 
 def test_multiple_valid_subarrays():
     """Test when multiple subarrays have the target product."""
