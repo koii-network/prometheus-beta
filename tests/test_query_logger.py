@@ -3,6 +3,10 @@ import logging
 import time
 from src.query_logger import log_query_time
 
+# Set up a specific logger for testing
+test_logger = logging.getLogger('test_query_logger')
+test_logger.setLevel(logging.INFO)
+
 # Capture log messages for testing
 class LogCapture:
     def __init__(self):
@@ -15,11 +19,13 @@ class LogCapture:
         self.log_messages.append(msg)
 
 def test_log_query_time_decorator():
-    # Mock logging
-    original_logger = logging.getLogger(__name__)
+    # Mock logging for this specific logger
+    original_handlers = test_logger.handlers.copy()
+    test_logger.handlers.clear()
+    
     log_capture = LogCapture()
-    logging.getLogger(__name__).info = log_capture.info
-    logging.getLogger(__name__).error = log_capture.error
+    test_logger.info = log_capture.info
+    test_logger.error = log_capture.error
 
     # Test function with different scenarios
     @log_query_time
@@ -56,5 +62,4 @@ def test_log_query_time_decorator():
         log_query_time("not a function")
 
     # Restore original logger
-    logging.getLogger(__name__).info = original_logger.info
-    logging.getLogger(__name__).error = original_logger.error
+    test_logger.handlers = original_handlers
