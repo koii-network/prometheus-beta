@@ -51,8 +51,8 @@ def test_error_both_empty_arrays():
         find_median_sorted_arrays(nums1, nums2)
 
 def test_unsorted_arrays():
-    # Test error for unsorted arrays (though this is hard to definitively test)
+    # Test error for unsorted arrays
     nums1 = [3, 1, 4]
     nums2 = [1, 2, 5]
-    with pytest.raises(ValueError, match="Input arrays are not sorted"):
+    with pytest.raises(ValueError, match="Input arrays must be sorted"):
         find_median_sorted_arrays(nums1, nums2)
