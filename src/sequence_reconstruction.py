@@ -26,14 +26,31 @@ def min_sequence_reconstruction(original, current):
     if not current:
         return len(original)
     
-    # Convert lists to sets for efficient comparisons
-    original_set = set(original)
-    current_set = set(current)
+    # Count element frequencies in both lists
+    from collections import Counter
+    original_freq = Counter(original)
+    current_freq = Counter(current)
     
-    # Elements to be removed (in current but not in original)
-    removals = len(current_set - original_set)
+    # Calculate removals (elements to remove from current)
+    removals = 0
+    current_copy = current_freq.copy()
+    for elem, count in original_freq.items():
+        if elem not in current_copy or current_copy[elem] < count:
+            # Need to either remove extra elements or add missing elements
+            if elem in current_copy:
+                removals += current_copy[elem] - count
+            else:
+                # If element is missing, we'll count it as removal
+                removals += current_copy.get(elem, 0)
     
-    # Elements to be inserted (in original but not in current)
-    insertions = len(original_set - current_set)
+    # Calculate insertions (missing elements)
+    insertions = 0
+    current_copy = current_freq.copy()
+    for elem, count in original_freq.items():
+        if elem not in current_copy or current_copy[elem] < count:
+            if elem in current_copy:
+                insertions += count - current_copy[elem]
+            else:
+                insertions += count
     
     return removals + insertions
