@@ -1,3 +1,5 @@
+import sys
+
 def rabin_karp_search(text: str, pattern: str, prime: int = 101) -> list:
     """
     Implement the Rabin-Karp algorithm for string matching.
