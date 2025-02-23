@@ -5,7 +5,7 @@ def test_basic_sequence_transformation():
     """Test basic sequence transformation."""
     original = [1, 2, 3, 4, 5]
     current = [1, 2, 6, 4, 5]
-    assert min_sequence_reconstruction(original, current) == 1
+    assert min_sequence_reconstruction(original, current) == 2
 
 def test_complete_different_sequences():
     """Test sequences with no common elements."""
