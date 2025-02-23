@@ -44,20 +44,11 @@ def create_password_protected_zip(source_files, output_zip_path, password):
         with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             pwd_bytes = password.encode()
             for file_path in source_files:
-                # Add each file to the zip with encryption
-                zipf.writestr(
-                    os.path.basename(file_path), 
-                    open(file_path, 'rb').read(), 
-                    zipfile.ZIP_DEFLATED
+                # Add each file to the zip
+                zipf.write(
+                    file_path, 
+                    arcname=os.path.basename(file_path)
                 )
-        
-        # Modify the file for encryption 
-        with open(output_zip_path, 'r+b') as f:
-            # This is a hacky way to add a weak encryption marker
-            f.seek(0, os.SEEK_SET)
-            content = f.read()
-            f.seek(0, os.SEEK_SET)
-            f.write(content)
         
         return output_zip_path
     except Exception as e:
