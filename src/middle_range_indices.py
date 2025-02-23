@@ -25,11 +25,17 @@ def find_middle_range_indices(sorted_list, range_radius=1):
         raise TypeError("Range radius must be a non-negative integer")
     
     # Determine the middle index
-    mid_index = len(sorted_list) // 2
+    list_length = len(sorted_list)
+    mid_index = list_length // 2
+    
+    # Adjust for even and odd number of elements
+    if list_length % 2 == 0:
+        # For even length, choose the lower middle index
+        mid_index -= 1
     
     # Calculate the range of indices to return
     start_index = max(0, mid_index - range_radius)
-    end_index = min(len(sorted_list) - 1, mid_index + range_radius)
+    end_index = min(list_length - 1, mid_index + range_radius)
     
     # Return the indices within the specified range
     return list(range(start_index, end_index + 1))
