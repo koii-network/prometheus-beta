@@ -26,8 +26,7 @@ def deflate_compress(data):
     if not isinstance(data, bytes):
         raise TypeError("Input must be bytes or str")
     
-    # Compress using zlib (which implements Deflate)
-    # wbits=-15 specifies raw Deflate encoding without zlib or gzip headers
+    # Compress using zlib 
     try:
         compressed_data = zlib.compress(data, level=zlib.Z_DEFAULT_COMPRESSION)
         return compressed_data
@@ -56,10 +55,9 @@ def deflate_decompress(compressed_data):
     if not isinstance(compressed_data, bytes):
         raise TypeError("Compressed data must be bytes")
     
-    # Decompress using zlib (which implements Deflate)
-    # wbits=-15 specifies raw Deflate decoding without zlib or gzip headers
+    # Decompress using zlib 
     try:
-        decompressed_data = zlib.decompress(compressed_data, wbits=-15)
+        decompressed_data = zlib.decompress(compressed_data)
         return decompressed_data
     except Exception as e:
         raise RuntimeError(f"Decompression failed: {str(e)}")
