@@ -21,29 +21,53 @@ def count_palindromic_substrings(s: str) -> int:
     if not s:
         return 0
     
-    def is_proper_palindrome(substr: str) -> bool:
+    # Expand around center approach
+    def count_palindromes_around_center(left: int, right: int) -> int:
         """
-        Check if a substring is a palindrome, ignoring non-alphanumeric characters.
+        Count palindromes by expanding from a center.
         
         Args:
-            substr (str): Substring to check
+            left (int): Left index to start expanding
+            right (int): Right index to start expanding
         
         Returns:
-            bool: True if the substring is a palindrome, False otherwise
+            int: Number of palindromes around this center
         """
-        # Remove non-alphanumeric characters and convert to lowercase
-        cleaned = ''.join(char.lower() for char in substr if char.isalnum())
-        return len(cleaned) > 0 and cleaned == cleaned[::-1]
+        count = 0
+        # Continue expanding while indices are valid and chars match
+        while left >= 0 and right < len(s):
+            # Skip non-alphanumeric characters
+            while left >= 0 and not s[left].isalnum():
+                left -= 1
+            while right < len(s) and not s[right].isalnum():
+                right += 1
+            
+            # Check if indices are still valid
+            if left < 0 or right >= len(s):
+                break
+            
+            # Compare characters case-insensitively
+            if s[left].lower() != s[right].lower():
+                break
+            
+            # If we've found a palindrome
+            count += 1
+            
+            # Move indices to expand
+            left -= 1
+            right += 1
+        
+        return count
     
-    # Count palindromic substrings
-    palindrome_count = 0
-    n = len(s)
+    # Total palindrome count
+    total_palindromes = 0
     
-    # Check all possible substrings
-    for i in range(n):
-        for j in range(i, n):
-            substring = s[i:j+1]
-            if is_proper_palindrome(substring):
-                palindrome_count += 1
+    # Check palindromes for each possible center
+    for i in range(len(s)):
+        # Odd length palindromes (single center)
+        total_palindromes += count_palindromes_around_center(i, i)
+        
+        # Even length palindromes (between two centers)
+        total_palindromes += count_palindromes_around_center(i, i+1)
     
-    return palindrome_count
+    return total_palindromes
