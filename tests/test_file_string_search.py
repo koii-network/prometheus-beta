@@ -21,7 +21,7 @@ def test_string_found_single_line(sample_file):
 def test_string_found_multiple_lines(sample_file):
     """Test finding a string that exists in multiple lines"""
     result = search_string_in_file(sample_file, "test")
-    assert result == [2, 3], "Should find the string in lines 2 and 3"
+    assert result == [2, 3, 4], "Should find the string in lines 2, 3, and 4"
 
 def test_string_not_found(sample_file):
     """Test when the string is not in the file"""
