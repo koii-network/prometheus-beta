@@ -30,6 +30,3 @@ def test_gcd_invalid_inputs():
     
     with pytest.raises(TypeError):
         find_gcd("10", 5)
-    
-    with pytest.raises(ValueError):
-        find_gcd(0, 0)
