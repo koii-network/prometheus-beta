@@ -18,13 +18,12 @@ def generate_uuid() -> str:
     hash_obj = hashlib.md5(hash_input.encode())
     hash_hex = hash_obj.hexdigest()
     
-    # Format the UUID according to version 4 specification
-    # 8-4-4-4-12 hexadecimal format
+    # Format the UUID with precise mapping
     uuid_parts = [
         hash_hex[:8],  # 8 chars
         hash_hex[8:12],  # 4 chars
         f"4{hash_hex[12:15]}",  # version 4 + 3 chars
-        f"{int(hash_hex[16], 16) & 3 | 8:x}{hash_hex[17:19]}",  # variant + 3 chars
+        f"{int('8', 16)}{''.join(map(str, random.sample(range(0, 10), 3)))}",  # variant fixed 8 + random 3 chars
         hash_hex[20:32]  # 12 chars
     ]
     
