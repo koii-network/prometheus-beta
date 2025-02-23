@@ -74,7 +74,7 @@ def test_track_process():
     logger = ProcessProgressLogger(logger=mock_logger, update_interval=0)
     
     tracked_process = logger.track_process(mock_process, total=5, prefix="Test")
-    results = tracked_process(range(5))
+    results = tracked_process([0, 1, 2, 3, 4])
     
     assert results == [0, 2, 4, 6, 8]
     assert len(mock_logger.messages) == 5
