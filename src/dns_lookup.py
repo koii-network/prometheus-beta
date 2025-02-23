@@ -22,6 +22,10 @@ def perform_dns_lookup(hostname):
     # Remove any whitespace
     hostname = hostname.strip()
 
+    # Check if hostname is empty after stripping
+    if not hostname:
+        raise ValueError("Hostname cannot be empty or contain only whitespace")
+
     try:
         # Perform DNS lookup
         ip_address = socket.gethostbyname(hostname)
