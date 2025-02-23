@@ -17,4 +17,4 @@ def modulo_subtraction(A, B):
         raise ValueError("Both input arrays must be of length 10")
     
     # Create result array using list comprehension for O(n) time complexity
-    return [max(0, (a - b) % 10) for a, b in zip(A, B)]
+    return [max(0, (a - b + 10) % 10) for a, b in zip(A, B)]
