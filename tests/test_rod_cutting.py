@@ -19,7 +19,7 @@ def test_zero_length_rod():
 def test_longer_rod_than_prices():
     """Test when rod length exceeds available prices"""
     prices = [1, 5, 8]
-    assert rod_cutting(prices, 5) == 10
+    assert rod_cutting(prices, 5) == 13  # Updated to match expected behavior
 
 def test_invalid_input_empty_prices():
     """Test error handling for empty prices list"""
