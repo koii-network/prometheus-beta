@@ -39,11 +39,10 @@ def log_formatted_currency(amount: Union[int, float],
         'AUD': 'A$',
         'CHF': 'CHF',
         'CNY': '¥',
-        'default': ''
     }
     
-    # Get the appropriate currency symbol
-    symbol = currency_symbols.get(currency.upper(), currency_symbols['default'])
+    # Get the appropriate currency symbol, use currency as symbol if not in predefined list
+    symbol = currency_symbols.get(currency.upper(), currency)
     
     # Format the number with two decimal places
     formatted_amount = f"{symbol}{amount:.2f}"
