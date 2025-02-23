@@ -33,10 +33,11 @@ def find_longest_substring(s: str) -> str:
         if char in char_map and char_map[char] >= start:
             # Move start to the next position after the last occurrence
             start = char_map[char] + 1
-        else:
-            # Update longest substring if current is longer
-            if end - start + 1 > len(longest):
-                longest = s[start:end+1]
+        
+        # Update longest substring if current is longer
+        current = s[start:end+1]
+        if len(current) > len(longest) and len(set(current)) == len(current):
+            longest = current
         
         # Update last seen position of current character
         char_map[char] = end
