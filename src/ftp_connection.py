@@ -26,16 +26,18 @@ def establish_ftp_connection(host, username, password, port=21, timeout=30):
 
     try:
         # Establish FTP connection with timeout
-        ftp = ftplib.FTP(timeout=timeout)
-        ftp.connect(host=host, port=port)
+        ftp = ftplib.FTP()
+        # Set timeout before connecting
+        ftp.connect(host=host, port=port, timeout=timeout)
         
         # Attempt login
         ftp.login(user=username, passwd=password)
         
         return ftp
+    except socket.timeout:
+        # Explicitly raise socket.timeout as requested in the test
+        raise socket.timeout(f"Connection to {host} timed out after {timeout} seconds")
     except (socket.gaierror, socket.error) as e:
         raise ConnectionRefusedError(f"Could not connect to FTP server: {e}")
     except ftplib.error_perm as e:
         raise ConnectionRefusedError(f"Authentication failed: {e}")
-    except socket.timeout:
-        raise socket.timeout(f"Connection to {host} timed out after {timeout} seconds")
