@@ -19,10 +19,10 @@ def is_prime(number: int) -> bool:
         raise ValueError("Input must be between 2 and 1000")
     
     # Handle small prime cases quickly
-    if number in (2, 3):
+    if number in (2, 3, 5, 7):
         return True
     
-    # Quick even number check
+    # Quick even number check (except 2)
     if number % 2 == 0:
         return False
     
