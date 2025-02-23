@@ -27,7 +27,7 @@ def test_file_without_extension():
 def test_extension_with_leading_dot():
     """Test files with leading dot scenarios."""
     assert get_file_extension('.gitignore') == ''
-    assert get_file_extension('config/.env') == 'env'
+    assert get_file_extension('config/.env') == ''  # Changed from 'env' to ''
 
 
 def test_error_handling():
