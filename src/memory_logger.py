@@ -24,15 +24,7 @@ def log_memory_usage(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # Set up logging
-        logger = logging.getLogger(func.__module__)
-        logger.setLevel(logging.INFO)
-        
-        # Capture log messages
-        log_stream = io.StringIO()
-        handler = logging.StreamHandler(log_stream)
-        formatter = logging.Formatter('%(message)s')
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
+        logger = logging.getLogger()
         
         try:
             # Get memory before function call
@@ -58,10 +50,5 @@ def log_memory_usage(func):
         except Exception as e:
             logger.error(f"Error in {func.__name__}: {str(e)}")
             raise
-        finally:
-            # Remove the handler to prevent duplicate logging
-            logger.removeHandler(handler)
-            
-        return result
     
     return wrapper
