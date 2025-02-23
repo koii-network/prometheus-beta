@@ -21,13 +21,17 @@ def test_all_unique_characters():
     """Test a string with all unique characters."""
     assert first_non_repeating_character("abcde") == 'a'
 
-def test_invalid_input():
-    """Test that invalid input raises a ValueError."""
-    with pytest.raises(ValueError):
+def test_empty_input():
+    """Test that empty string raises a ValueError."""
+    with pytest.raises(ValueError, match="Input string cannot be empty"):
         first_non_repeating_character("")
-    
-    with pytest.raises(ValueError):
+
+def test_uppercase_input():
+    """Test that uppercase letters raise a ValueError."""
+    with pytest.raises(ValueError, match="Input must contain only lowercase letters"):
         first_non_repeating_character("ABC")
-    
-    with pytest.raises(ValueError):
-        first_non_repeating_character("hello123")
+
+def test_mixed_case_input():
+    """Test that mixed case letters raise a ValueError."""
+    with pytest.raises(ValueError, match="Input must contain only lowercase letters"):
+        first_non_repeating_character("helloWORLD")
