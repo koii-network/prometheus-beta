@@ -45,4 +45,7 @@ def to_snake_case(input_string: str) -> str:
     # Convert to lowercase and replace remaining spaces with underscores
     snake_case = re.sub(r'\s+', '_', step1).lower()
     
+    # Remove trailing underscore if present
+    snake_case = snake_case.rstrip('_')
+    
     return snake_case
