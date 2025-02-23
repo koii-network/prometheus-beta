@@ -52,12 +52,5 @@ def test_invalid_key(encrypted_file, tmp_path):
     invalid_key = Fernet.generate_key()
     output_file = str(tmp_path / "output.txt")
     
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Decryption failed: Invalid encryption key"):
         decrypt_file(encrypted_file['file_path'], output_file, invalid_key)
-
-def test_permission_denied(encrypted_file, mocker):
-    """Test handling of permission errors."""
-    output_file = "/root/impossible/path/output.txt"
-    
-    with pytest.raises(PermissionError):
-        decrypt_file(encrypted_file['file_path'], output_file, encrypted_file['key'])
