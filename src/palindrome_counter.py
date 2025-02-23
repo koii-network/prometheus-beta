@@ -21,7 +21,7 @@ def count_palindromic_substrings(s: str) -> int:
     if not s:
         return 0
     
-    def is_palindrome(substr: str) -> bool:
+    def is_proper_palindrome(substr: str) -> bool:
         """
         Check if a substring is a palindrome, ignoring non-alphanumeric characters.
         
@@ -33,7 +33,7 @@ def count_palindromic_substrings(s: str) -> int:
         """
         # Remove non-alphanumeric characters and convert to lowercase
         cleaned = ''.join(char.lower() for char in substr if char.isalnum())
-        return cleaned == cleaned[::-1]
+        return len(cleaned) > 0 and cleaned == cleaned[::-1]
     
     # Count palindromic substrings
     palindrome_count = 0
@@ -43,7 +43,7 @@ def count_palindromic_substrings(s: str) -> int:
     for i in range(n):
         for j in range(i, n):
             substring = s[i:j+1]
-            if is_palindrome(substring):
+            if is_proper_palindrome(substring):
                 palindrome_count += 1
     
     return palindrome_count
