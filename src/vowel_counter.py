@@ -1,3 +1,5 @@
+import unicodedata
+
 def count_vowels(text: str) -> int:
     """
     Count the number of vowels in the given text (case-insensitive).
@@ -15,9 +17,14 @@ def count_vowels(text: str) -> int:
         1
         >>> count_vowels("aEiOu")
         5
+        >>> count_vowels("áéíóú")
+        5
     """
     # Define vowels (lowercase for case-insensitive comparison)
-    vowels = set('aeiou')
+    vowels = set('aeiouáéíóú')
     
-    # Convert input to lowercase and count vowels
-    return sum(1 for char in text.lower() if char in vowels)
+    # Normalize unicode characters and convert to lowercase
+    normalized_text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8').lower()
+    
+    # Count vowels
+    return sum(1 for char in normalized_text if char in vowels)
