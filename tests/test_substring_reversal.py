@@ -3,7 +3,7 @@ from src.substring_reversal import reverse_substring
 
 def test_basic_substring_reversal():
     """Test basic substring reversal in the middle of a string."""
-    assert reverse_substring("hello world", 1, 4) == "hlelo world"
+    assert reverse_substring("hello world", 1, 4) == "hlleo world"
 
 def test_full_string_reversal():
     """Test reversing the entire string."""
@@ -45,8 +45,8 @@ def test_type_errors():
 
 def test_substring_at_start():
     """Test reversing a substring at the start of the string."""
-    assert reverse_substring("python", 0, 3) == "yhton"
+    assert reverse_substring("python", 0, 3) == "typhon"
 
 def test_substring_at_end():
     """Test reversing a substring at the end of the string."""
-    assert reverse_substring("python", 3, 6) == "pytohn"
+    assert reverse_substring("python", 3, 6) == "pytnoh"
