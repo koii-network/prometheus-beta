@@ -96,26 +96,37 @@ def lzvn_decompress(compressed_data):
         # Check if it's a compressed token or literal
         token = compressed_data[i]
         
+        # Literal byte or unrecognized token
+        if token > 0xF0 or i + 1 >= len(compressed_data):
+            decompressed.append(token)
+            i += 1
+            continue
+        
+        # Standard or extended encoding
         if token == 0xF0 and i + 3 < len(compressed_data):
             # Extended encoding
             length = compressed_data[i + 1]
             offset = (compressed_data[i + 2] << 8) | compressed_data[i + 3]
             i += 4
-        elif token <= 0xF0:
+        else:
             # Standard encoding
             length = token >> 4
+            if i + 1 >= len(compressed_data):
+                decompressed.append(token)
+                break
+            
             offset = ((token & 0x0F) << 8) | compressed_data[i + 1]
             i += 2
-        else:
-            # Literal byte
+        
+        # Safety checks for offset and length
+        if offset <= 0 or length <= 0 or offset > len(decompressed):
             decompressed.append(token)
-            i += 1
             continue
         
         # Copy matched sequence
-        if length > 0 and offset > 0:
-            start = len(decompressed) - offset
-            for j in range(length):
-                decompressed.append(decompressed[start + j])
+        match_start = len(decompressed) - offset
+        for j in range(length):
+            # Prevent index out of range by wrapping within current decompressed data
+            decompressed.append(decompressed[match_start + (j % offset)])
     
     return bytes(decompressed)
