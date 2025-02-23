@@ -11,7 +11,7 @@ def test_find_primes_single_prime():
 
 def test_find_primes_no_primes():
     """Test range with no primes"""
-    assert find_primes(4, 6) == []
+    assert find_primes(4, 4) == []
 
 def test_find_primes_large_range():
     """Test finding primes in a larger range"""
