@@ -72,8 +72,8 @@ def boyer_moore_search(text, pattern):
         # If pattern is matched
         if j < 0:
             matches.append(i)
-            # Shift based on good suffix or bad character
-            i += m - good_suffix[0] if m > 1 else 1
+            # For overlapping matches, shift by 1
+            i += 1
         else:
             # Calculate shifts
             bad_char_shift = j - bad_char.get(text[i + j], -1)
