@@ -3,7 +3,8 @@ def convert_to_title_case(input_string: str) -> str:
     Convert a given string to title case.
     
     Title case converts the first letter of each word to uppercase,
-    while making the rest of the letters lowercase.
+    while making the rest of the letters lowercase. Preserves hyphenated
+    words' individual capitalization.
     
     Args:
         input_string (str): The input string to be converted to title case.
@@ -30,5 +31,19 @@ def convert_to_title_case(input_string: str) -> str:
     if not input_string:
         return ""
     
-    # Split the string and capitalize each word
-    return ' '.join(word.capitalize() for word in input_string.split())
+    # Split the string by spaces
+    words = input_string.split()
+    
+    # Capitalize each word, preserving hyphenated parts
+    title_case_words = []
+    for word in words:
+        # If word contains a hyphen, capitalize each part
+        if '-' in word:
+            hyphen_parts = word.split('-')
+            hyphen_title = '-'.join(part.capitalize() for part in hyphen_parts)
+            title_case_words.append(hyphen_title)
+        else:
+            # Regular word capitalization
+            title_case_words.append(word.capitalize())
+    
+    return ' '.join(title_case_words)
