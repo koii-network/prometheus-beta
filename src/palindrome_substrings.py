@@ -28,7 +28,7 @@ def find_non_overlapping_palindromic_substrings(s: str) -> list[str]:
     
     # Find all palindromic substrings, sorted by length (descending) and lexicographically
     all_palindromes = sorted(
-        (substr for substr in set(s[i:j] for i in range(len(s)) for j in range(i+1, len(s)+1) if is_palindrome(s[i:j])),
+        [substr for substr in set(s[i:j] for i in range(len(s)) for j in range(i+1, len(s)+1) if is_palindrome(s[i:j]))],
         key=lambda x: (-len(x), x)
     )
     
