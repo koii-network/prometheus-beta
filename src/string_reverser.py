@@ -30,39 +30,34 @@ def reverse_string_with_rules(input_string):
         """Check if a string contains only letters."""
         return s.isalpha()
     
-    def split_string_around_palindrome(s):
-        """
-        Intelligently split string when a specific palindrome (like 'radar') is present.
-        Returns a list of tokens to be processed.
-        """
-        if 'radar' in s:
-            parts = s.split('radar')
-            # Process parts around 'radar'
-            tokens = []
-            for i, part in enumerate(parts):
-                # Process numeric parts, keeping palindrome intact
-                if part:
-                    # If part starts with digits, reverse them
-                    digit_match = part.lstrip('0123456789')
-                    digits = part[:len(part) - len(digit_match)]
-                    if digits:
-                        tokens.append(digits[::-1])
-                    
-                    # Process remaining part if any
-                    if digit_match:
-                        tokens.append(digit_match)
-                
-                # Add palindrome between parts if not last iteration
-                if i < len(parts) - 1:
-                    tokens.append('radar')
-            
-            return tokens
+    # Split string into tokens preserving all elements
+    tokens = []
+    current_token = ""
+    current_type = None
+    
+    for char in input_string:
+        # Determine current character type
+        if char.isdigit():
+            char_type = 'digit'
+        elif char.isalpha():
+            char_type = 'letter'
+        else:
+            char_type = 'other'
         
-        # Fallback to standard processing if no 'radar'
-        return list(s)
+        # If type changes, save previous token and start new one
+        if current_type is not None and current_type != char_type:
+            tokens.append(current_token)
+            current_token = char
+            current_type = char_type
+        else:
+            current_token += char
+            current_type = char_type
+    
+    # Add last token
+    if current_token:
+        tokens.append(current_token)
     
     # Process tokens
-    tokens = split_string_around_palindrome(input_string)
     processed_tokens = []
     
     for token in tokens:
@@ -75,7 +70,7 @@ def reverse_string_with_rules(input_string):
         # Reverse numeric tokens
         elif token.isdigit():
             processed_tokens.append(token[::-1])
-        # Preserve other tokens
+        # Preserve other tokens (punctuation, etc.)
         else:
             processed_tokens.append(token)
     
