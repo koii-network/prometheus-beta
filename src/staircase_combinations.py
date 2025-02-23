@@ -28,7 +28,7 @@ def calculate_staircase_combinations(stair_lengths):
         if length >= 1:
             dp[length] += dp[length - 1]
         
-        # Can climb 2 steps
+        # Can climb 2 steps 
         if length >= 2:
             dp[length] += dp[length - 2]
     
