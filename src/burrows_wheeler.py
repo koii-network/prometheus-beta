@@ -34,51 +34,58 @@ def burrows_wheeler_transform(input_text):
     # Extract the last character of each sorted rotation
     bwt_result = ''.join(rotation[-1] for rotation in sorted_rotations)
     
-    return bwt_result
+    # Find the index of the original input in the sorted rotations
+    original_index = sorted_rotations.index(text)
+    
+    # Return a tuple of the BWT string and the original index
+    return (bwt_result, original_index)
 
-def inverse_burrows_wheeler_transform(bwt_text):
+def inverse_burrows_wheeler_transform(bwt_input):
     """
     Perform the inverse Burrows-Wheeler Transform to recover the original text.
     
     Args:
-        bwt_text (str): The Burrows-Wheeler transformed string
+        bwt_input (tuple): A tuple containing the Burrows-Wheeler transformed 
+                           string and the original index
     
     Returns:
         str: The original text before transformation
     
     Raises:
-        TypeError: If input is not a string
-        ValueError: If input is an empty string
+        TypeError: If input is not a tuple or invalid type
+        ValueError: If input is invalid
     """
     # Validate input
-    if not isinstance(bwt_text, str):
-        raise TypeError("Input must be a string")
+    if not isinstance(bwt_input, tuple) or len(bwt_input) != 2:
+        raise TypeError("Input must be a tuple of (bwt_string, original_index)")
     
-    if not bwt_text:
-        raise ValueError("Input string cannot be empty")
+    bwt_text, original_index = bwt_input
     
-    # Create first and last column
-    sorted_chars = sorted(bwt_text)
+    if not isinstance(bwt_text, str) or not bwt_text:
+        raise ValueError("Burrows-Wheeler text must be a non-empty string")
     
-    # Create mapping to track original rotations
+    # First column of the matrix (sorted characters)
+    first_column = sorted(bwt_text)
+    
+    # Create the inverse BWT reconstruction table
     n = len(bwt_text)
-    mapping = [0] * n
+    next_char = [0] * n
     
-    # Build the mapping
+    # Compute the 'next' array
     for i in range(n):
-        char = bwt_text[i]
-        mapping[i] = sorted_chars.index(char)
-        sorted_chars[mapping[i]] = chr(ord(sorted_chars[mapping[i]]) + 1)
+        next_char[i] = first_column.index(bwt_text[i])
+        # Advance the index in first column
+        first_column[next_char[i]] = chr(ord(first_column[next_char[i]]) + 1)
     
     # Reconstruct the original text
-    current = mapping[0]
-    result = [bwt_text[current]]
+    result = []
+    current = original_index
     
-    for _ in range(n - 1):
-        current = mapping[current]
+    for _ in range(n):
         result.append(bwt_text[current])
+        current = next_char[current]
     
-    # Reverse and convert to string, removing the terminator
+    # Reverse and convert to string, remove terminator
     original = ''.join(reversed(result))[:-1]
     
     return original
