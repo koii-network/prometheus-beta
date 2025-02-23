@@ -59,6 +59,15 @@ def test_single_vertex_graph():
     
     mst = prims_mst(graph)
     assert len(mst) == 0
+    
+def test_single_vertex_with_self_loop():
+    """Test a graph with a single vertex and a self-loop"""
+    graph = {
+        'A': {'A': 1}
+    }
+    
+    with pytest.raises(ValueError, match="Graph is not fully connected"):
+        prims_mst(graph)
 
 def test_graph_with_multiple_mst_options():
     """Test a graph where multiple minimum spanning trees are possible"""
