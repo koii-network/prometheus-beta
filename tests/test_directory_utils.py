@@ -39,11 +39,19 @@ def test_delete_file_instead_of_directory():
             os.unlink(temp_file_path)
 
 def test_delete_readonly_directory():
-    """Test handling of a directory with read-only permissions."""
+    """Test that directory can still be deleted even with read-only permissions."""
     with tempfile.TemporaryDirectory() as temp_dir:
-        # Make the directory read-only
-        os.chmod(temp_dir, 0o555)
+        # Create some files in the directory
+        os.makedirs(os.path.join(temp_dir, 'subdir'))
+        open(os.path.join(temp_dir, 'file.txt'), 'w').close()
         
-        # Attempt to delete should raise PermissionError
-        with pytest.raises(PermissionError):
-            delete_directory(temp_dir)
+        # Make the directory and its contents read-only
+        os.chmod(temp_dir, 0o555)
+        os.chmod(os.path.join(temp_dir, 'subdir'), 0o555)
+        os.chmod(os.path.join(temp_dir, 'file.txt'), 0o444)
+        
+        # Attempt to delete the directory (should succeed by changing permissions)
+        delete_directory(temp_dir)
+        
+        # Verify the directory is gone
+        assert not os.path.exists(temp_dir)
