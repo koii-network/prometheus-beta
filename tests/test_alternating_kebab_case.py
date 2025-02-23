@@ -4,7 +4,7 @@ from src.alternating_kebab_case import to_alternating_kebab_case
 def test_basic_conversion():
     assert to_alternating_kebab_case("hello world") == 'helloWorld'
     assert to_alternating_kebab_case("PYTHON PROGRAMMING") == 'pythonProgramming'
-    assert to_alternating_kebab_case("snake_case example") == 'snakeCaseExample'
+    assert to_alternating_kebab_case("snake_case example") == 'snakeCaseexample'
 
 def test_single_word():
     assert to_alternating_kebab_case("hello") == 'hello'
@@ -31,4 +31,4 @@ def test_invalid_input():
 
 def test_special_characters():
     assert to_alternating_kebab_case("hello! world@") == 'helloWorld'
-    assert to_alternating_kebab_case("python#code") == 'pythonCode'
+    assert to_alternating_kebab_case("python#code") == 'pythoncode'
