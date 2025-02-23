@@ -1,5 +1,6 @@
 import os
 import shutil
+import time
 from typing import Union, Optional
 
 def backup_file(file_path: str, backup_dir: Optional[str] = None) -> str:
@@ -36,7 +37,7 @@ def backup_file(file_path: str, backup_dir: Optional[str] = None) -> str:
     
     # Generate backup filename
     original_filename = os.path.basename(file_path)
-    timestamp = os.getpid()  # Using PID as a simple unique identifier
+    timestamp = int(time.time() * 1000)  # Use millisecond timestamp for uniqueness
     backup_filename = f"{original_filename}.backup.{timestamp}"
     backup_path = os.path.join(backup_dir, backup_filename)
     
