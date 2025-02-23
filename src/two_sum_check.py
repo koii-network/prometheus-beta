@@ -20,10 +20,17 @@ def two_sum_target(nums, target):
     if not all(isinstance(num, int) for num in nums):
         raise TypeError("All elements must be integers")
     
-    # Special handling for zero
+    # Check for duplicate values (allowing exactly two zeros)
     zero_count = nums.count(0)
-    if zero_count > 1 and target == 0:
-        return False
+    if zero_count > 1:
+        if target == 0:
+            return False
+        raise ValueError("Input list must contain unique integers")
+    
+    # Check for duplicates among non-zero elements
+    non_zero_nums = [num for num in nums if num != 0]
+    if len(set(non_zero_nums)) != len(non_zero_nums):
+        raise ValueError("Input list must contain unique integers")
     
     # Create a set for O(n) lookup
     num_set = set(nums)
