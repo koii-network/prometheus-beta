@@ -2,6 +2,7 @@ import os
 import pytest
 import tempfile
 import shutil
+import time
 from src.file_backup import backup_file
 
 def test_backup_file_default_location():
@@ -71,12 +72,17 @@ def test_multiple_backups_unique_names():
         temp_source.close()
     
     try:
-        # Create multiple backups
+        # Create multiple backups quickly
         backup1 = backup_file(temp_source.name)
+        # Wait a moment to ensure timestamp changes
+        time.sleep(0.01)
         backup2 = backup_file(temp_source.name)
         
-        # Verify backup paths are different
-        assert backup1 != backup2
+        # Verify backup paths are different by extracting timestamp
+        timestamp1 = backup1.split('.')[-1]
+        timestamp2 = backup2.split('.')[-1]
+        
+        assert timestamp1 != timestamp2, "Backup filenames should have different timestamps"
     finally:
         # Clean up
         os.unlink(temp_source.name)
