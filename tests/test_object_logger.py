@@ -50,8 +50,8 @@ def test_log_object_complex_object():
     
     obj = ComplexObject()
     logged = log_object(obj)
-    assert "ComplexObject" in logged
     assert "data" in logged
+    assert "'sample'" in logged
 
 def test_log_object_none():
     """Test logging None."""
