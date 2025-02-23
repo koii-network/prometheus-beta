@@ -19,7 +19,7 @@ def max_subarray_sum_with_constraints(A, k, s):
         return -1
 
     n = len(A)
-    max_sum = float('-inf')
+    max_sum = -1
     current_sum = 0
     start = 0
 
@@ -27,7 +27,7 @@ def max_subarray_sum_with_constraints(A, k, s):
         # Add current element to sum
         current_sum += A[end]
 
-        # Shrink window from start if we have enough elements
+        # Shrink window from start if necessary
         while end - start + 1 >= k:
             # Check if current subarray meets sum constraint
             if current_sum >= s:
@@ -37,4 +37,9 @@ def max_subarray_sum_with_constraints(A, k, s):
             current_sum -= A[start]
             start += 1
 
-    return max_sum if max_sum != float('-inf') else -1
+        # Reset if window becomes too small or invalid
+        if end - start + 1 < k:
+            current_sum = 0
+            start = end + 1
+
+    return max_sum
