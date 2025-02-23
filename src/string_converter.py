@@ -37,9 +37,12 @@ def to_constant_case(input_string: str) -> str:
             converted_chars.append('_')
             continue
         
-        # Handle camel case by inserting underscore before capital letters
-        # (except for the first character)
-        if i > 0 and char.isupper() and not input_string[i-1].isupper():
+        # Handle camel case by inserting underscore 
+        # when transitioning from lower to upper case
+        # or between consecutive non-uppercase characters
+        if (i > 0 and 
+            ((char.isupper() and input_string[i-1].islower()) or 
+             (i > 1 and not input_string[i-1].isupper() and not char.isupper()))):
             converted_chars.append('_')
         
         # Always convert to uppercase
