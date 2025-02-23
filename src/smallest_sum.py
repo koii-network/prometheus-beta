@@ -32,13 +32,13 @@ def find_smallest_sum(list1, list2):
         raise ValueError("Lists must contain only integer values")
     
     # Find the smallest possible sum
-    smallest_sum = sum(min(list1) + min(list2), 0)
+    smallest_sum = float('inf')
     
-    # Try all pairings of elements to find the minimum
+    # Try all pairings of elements
     for x in list1:
         for y in list2:
             current_sum = x + y
-            if current_sum >= 0:
-                smallest_sum = min(smallest_sum, current_sum)
+            if current_sum < smallest_sum:
+                smallest_sum = current_sum
     
     return smallest_sum
