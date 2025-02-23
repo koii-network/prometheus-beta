@@ -9,15 +9,15 @@ def sieve_of_eratosthenes(n):
         list: A list of prime numbers less than or equal to n.
     
     Raises:
-        ValueError: If n is less than 2.
         TypeError: If n is not an integer.
     """
     # Validate input
     if not isinstance(n, int):
         raise TypeError("Input must be an integer")
     
+    # Return empty list for inputs less than 2
     if n < 2:
-        raise ValueError("Input must be greater than or equal to 2")
+        return []
     
     # Create a boolean array "is_prime[0..n]" and initialize 
     # all entries it as true. A value in is_prime[i] will
