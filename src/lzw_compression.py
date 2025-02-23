@@ -92,25 +92,20 @@ def lzw_decompress(compressed):
     
     # Decompression process
     for code in compressed[1:]:
-        # Check if code is valid
-        if code < 0 or code >= next_code:
-            raise ValueError(f"Invalid compressed code: {code}")
-        
-        # Check if code exists in dictionary
+        # If code is a known code in the dictionary
         if code in dictionary:
-            # Get string for current code
             current_string = dictionary[code]
+        # If code is the next possible code (special case in LZW algorithm)
         elif code == next_code:
-            # Special case: code not yet in dictionary
             current_string = dictionary[current_code] + dictionary[current_code][0]
         else:
-            # Invalid code
             raise ValueError(f"Invalid compressed code: {code}")
         
         # Add to result
         result.append(current_string)
         
-        # Add new dictionary entry
+        # Add new dictionary entry 
+        # Use the first character of the current string to extend previous code's string
         if current_code in dictionary:
             dictionary[next_code] = dictionary[current_code] + current_string[0]
             next_code += 1
