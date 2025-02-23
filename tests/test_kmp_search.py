@@ -9,7 +9,7 @@ def test_lps_array_basic():
 
 def test_kmp_search_basic():
     """Test basic string matching scenarios"""
-    assert kmp_search("ABABDABACDABABCABAB", "ABABCABAB") == [9]
+    assert kmp_search("ABABDABACDABABCABAB", "ABABCABAB") == [10]
     assert kmp_search("hello world", "world") == [6]
     assert kmp_search("mississippi", "issip") == [4]
 
