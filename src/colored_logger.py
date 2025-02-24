@@ -42,9 +42,13 @@ class BackgroundColorLogger:
         bg_code = cls.COLORS.get(bg_color, '')
         reset_code = cls.COLORS['reset']
         
-        # Apply formatting and print
-        formatted_message = f"{bg_code}{message}{reset_code}"
-        print(formatted_message, file=file, end=end)
+        # Apply formatting only if a background color is specified
+        if bg_color:
+            formatted_message = f"{bg_code}{message}{reset_code}"
+            print(formatted_message, file=file, end=end)
+        else:
+            # If no background color, print the message as-is
+            print(message, file=file, end=end)
     
     @classmethod
     def color_text(cls, message, text_color):
