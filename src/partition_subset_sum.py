@@ -32,12 +32,17 @@ def can_partition(nums):
     target = total_sum // 2
     
     # Dynamic Programming solution with optimized space
-    dp = [False] * (target + 1)
-    dp[0] = True
+    dp = set([0])
     
     for num in nums:
-        # Go in reverse to avoid using the same element multiple times
-        for j in range(target, num - 1, -1):
-            dp[j] |= dp[j - num]
+        # Create a new set to avoid modifying during iteration
+        new_sums = set(dp)
+        for cur_sum in dp:
+            new_sum = cur_sum + num
+            if new_sum == target:
+                return True
+            if new_sum < target:
+                new_sums.add(new_sum)
+        dp = new_sums
     
-    return dp[target]
+    return False
