@@ -35,17 +35,19 @@ def min_coins(coins, amount):
     if amount == 0:
         return 0
     
-    # Initialize dynamic programming array
-    # dp[i] will store the minimum coins needed to make amount i
-    dp = [float('inf')] * (amount + 1)
-    dp[0] = 0
+    # Sort coins in descending order for greedy approach
+    coins = sorted(coins, reverse=True)
     
-    # Compute minimum coins for each amount from 1 to target amount
-    for i in range(1, amount + 1):
-        for coin in coins:
-            if coin <= i:
-                # Update minimum coins if using current coin leads to fewer total coins
-                dp[i] = min(dp[i], dp[i - coin] + 1)
+    # Initialize coin count and remaining amount
+    total_coins = 0
+    remaining = amount
     
-    # Return result, or -1 if amount cannot be made
-    return dp[amount] if dp[amount] != float('inf') else -1
+    # Greedy coin selection
+    for coin in coins:
+        # Use as many of the current coin as possible
+        num_coins = remaining // coin
+        total_coins += num_coins
+        remaining -= num_coins * coin
+    
+    # Check if exact change was made
+    return total_coins if remaining == 0 else -1
