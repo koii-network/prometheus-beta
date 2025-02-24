@@ -24,13 +24,10 @@ def max_two_number_product(numbers):
     if len(numbers) < 2:
         raise ValueError("List must contain at least two numbers")
     
-    # Find the two largest positive numbers or two smallest negative numbers
-    # that could produce the maximum product
-    largest_nums = sorted(numbers, reverse=True)[:2]
-    smallest_nums = sorted(numbers)[:2]
+    # Find the maximum product by checking all pairs
+    max_prod = float('-inf')
+    for i in range(len(numbers)):
+        for j in range(i+1, len(numbers)):
+            max_prod = max(max_prod, numbers[i] * numbers[j])
     
-    # Return the maximum of the two potential maximum products
-    return max(
-        largest_nums[0] * largest_nums[1],  # Two largest positive numbers
-        smallest_nums[0] * smallest_nums[1]  # Two smallest negative numbers
-    )
+    return max_prod
