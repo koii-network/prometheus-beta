@@ -4,7 +4,7 @@ from typing import Union, BinaryIO
 
 def compress_lzma2(data: Union[str, bytes], compression_level: int = 6) -> bytes:
     """
-    Compress input data using LZMA2 compression algorithm.
+    Compress input data using LZMA compression algorithm.
 
     Args:
         data (Union[str, bytes]): Input data to compress. 
@@ -13,7 +13,7 @@ def compress_lzma2(data: Union[str, bytes], compression_level: int = 6) -> bytes
                                            Defaults to 6 (medium compression).
 
     Returns:
-        bytes: Compressed data in LZMA2 format.
+        bytes: Compressed data in LZMA format.
 
     Raises:
         ValueError: If compression level is not between 0 and 9.
@@ -31,18 +31,18 @@ def compress_lzma2(data: Union[str, bytes], compression_level: int = 6) -> bytes
 
     # Compress using LZMA
     try:
-        # Use LZMA2 preset with specified compression level
-        compressed = lzma.compress(data, preset=compression_level | lzma.PRESET_LZMA2)
+        # Use standard LZMA compression with specified filter
+        compressed = lzma.compress(data, preset=compression_level)
         return compressed
     except Exception as e:
         raise RuntimeError(f"Compression failed: {str(e)}")
 
 def decompress_lzma2(compressed_data: bytes) -> bytes:
     """
-    Decompress LZMA2 compressed data.
+    Decompress LZMA compressed data.
 
     Args:
-        compressed_data (bytes): LZMA2 compressed data to decompress.
+        compressed_data (bytes): LZMA compressed data to decompress.
 
     Returns:
         bytes: Decompressed data.
