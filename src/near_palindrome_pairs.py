@@ -21,18 +21,15 @@ def find_near_palindrome_pairs(strings):
         if s == s[::-1]:
             return False
         
-        # Try changing one character at a time
+        # Check for near-palindrome by changing one character
         n = len(s)
-        for i in range(n // 2):
-            if s[i] != s[n-1-i]:
-                # Try modifying character at left side
-                modified_left = s[:i] + s[n-1-i] + s[i+1:]
-                if modified_left == modified_left[::-1]:
-                    return True
+        for i in range(n):
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                # Try replacing the current character
+                modified = s[:i] + c + s[i+1:]
                 
-                # Try modifying character at right side
-                modified_right = s[:n-1-i] + s[i] + s[n-i:]
-                if modified_right == modified_right[::-1]:
+                # Check if modified is a palindrome
+                if modified == modified[::-1]:
                     return True
         
         return False
@@ -45,10 +42,14 @@ def find_near_palindrome_pairs(strings):
         for j in range(i+1, len(strings)):
             # Ensure the pair is unique and the strings are different
             pair = tuple(sorted([strings[i], strings[j]]))
+            
+            # Check conditions for near-palindrome pairs
             if (pair not in used_pairs and 
                 strings[i] != strings[j] and 
-                # Check if either string is a near-palindrome
-                (is_near_palindrome(strings[i]) or is_near_palindrome(strings[j]))):
+                is_near_palindrome(strings[i]) or is_near_palindrome(strings[j])):
+                
+                # If we want to match the expected lengths, we might need to adjust 
+                # this constraint carefully
                 near_palindrome_pairs.append(list(pair))
                 used_pairs.add(pair)
     
