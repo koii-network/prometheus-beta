@@ -16,10 +16,14 @@ class MockLogger:
     def __init__(self):
         self.logged_messages = []
         self.logged_levels = []
+        self.error_messages = []
 
     def log(self, level, msg):
         self.logged_messages.append(msg)
         self.logged_levels.append(level)
+
+    def error(self, msg):
+        self.error_messages.append(msg)
 
 
 def test_basic_json_logging():
