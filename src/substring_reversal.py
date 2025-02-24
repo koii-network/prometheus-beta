@@ -21,8 +21,12 @@ def reverse_substring(s: str, start: int, end: int) -> str:
         raise TypeError("Start and end indices must be integers")
     
     # Validate index ranges
-    if start < 0 or end > len(s) or start >= end:
+    if start < 0 or end > len(s) or start > end:
         raise ValueError("Invalid substring indices")
+    
+    # Handle case when start equals end (no reversal needed)
+    if start == end:
+        return s
     
     # Convert string to list for manipulation
     chars = list(s)
