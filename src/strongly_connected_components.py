@@ -41,9 +41,20 @@ def kosaraju_scc(graph: Dict[int, List[int]]) -> List[List[int]]:
     # Step 2: Transpose the graph (reverse all edges)
     def transpose_graph(graph: Dict[int, List[int]]) -> Dict[int, List[int]]:
         transposed = {node: [] for node in graph}
+        
+        # Add all nodes as keys to ensure complete graph representation
+        all_nodes = set(graph.keys())
+        for neighbors in graph.values():
+            all_nodes.update(neighbors)
+        
+        for node in all_nodes:
+            if node not in transposed:
+                transposed[node] = []
+        
         for node, neighbors in graph.items():
             for neighbor in neighbors:
                 transposed[neighbor].append(node)
+        
         return transposed
     
     # Step 3: Second DFS to find SCCs
