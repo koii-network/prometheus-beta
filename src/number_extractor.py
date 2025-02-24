@@ -13,12 +13,19 @@ def extract_numbers(input_string: str) -> List[Union[int, float]]:
         If a number is a whole number, it will be returned as an int.
         If a number has a decimal point, it will be returned as a float.
 
+    Raises:
+        TypeError: If input is not a string.
+
     Examples:
         >>> extract_numbers("I have 42 apples and 3.14 pies")
         [42, 3.14]
         >>> extract_numbers("No numbers here")
         []
     """
+    # Input validation
+    if not isinstance(input_string, str):
+        raise TypeError("Input must be a string")
+    
     # Regular expression to match integers and floating-point numbers
     number_pattern = r'-?\d+(?:\.\d+)?'
     
