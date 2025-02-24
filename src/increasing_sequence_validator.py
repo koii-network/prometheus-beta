@@ -20,11 +20,15 @@ def is_valid_increasing_sequence(arr):
     if len(arr) <= 1:
         return True
     
-    # Convert to list of integers and validate
-    try:
-        int_arr = [int(x) for x in arr]
-    except (ValueError, TypeError):
-        raise ValueError("List must contain only integer-convertible elements")
+    # Validate integer conversion
+    int_arr = []
+    for x in arr:
+        # Validate each element can be converted to an integer
+        try:
+            converted = int(x)
+            int_arr.append(converted)
+        except (ValueError, TypeError):
+            raise ValueError("List must contain only integer-convertible elements")
     
     # Check for distinct elements and strictly increasing order
     seen = set()
