@@ -43,6 +43,7 @@ def log_json(data, log_level=logging.INFO, indent=2, logger=None):
         
         return formatted_json
     except TypeError as e:
-        # Handle non-JSON serializable objects
-        logger.error(f"Unable to serialize JSON: {e}")
+        # Log the error if logger has error method, then re-raise
+        if hasattr(logger, 'error'):
+            logger.error(f"Unable to serialize JSON: {e}")
         raise
