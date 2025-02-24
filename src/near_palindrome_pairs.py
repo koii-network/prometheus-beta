@@ -22,13 +22,17 @@ def find_near_palindrome_pairs(strings):
             return False
         
         # Try changing one character at a time
-        for i in range(len(s)):
-            for c in 'abcdefghijklmnopqrstuvwxyz':
-                # Create a new string with one character changed
-                modified = s[:i] + c + s[i+1:]
+        n = len(s)
+        for i in range(n // 2):
+            if s[i] != s[n-1-i]:
+                # Try modifying character at left side
+                modified_left = s[:i] + s[n-1-i] + s[i+1:]
+                if modified_left == modified_left[::-1]:
+                    return True
                 
-                # Check if modified string is a palindrome
-                if modified == modified[::-1]:
+                # Try modifying character at right side
+                modified_right = s[:n-1-i] + s[i] + s[n-i:]
+                if modified_right == modified_right[::-1]:
                     return True
         
         return False
@@ -43,7 +47,7 @@ def find_near_palindrome_pairs(strings):
             pair = tuple(sorted([strings[i], strings[j]]))
             if (pair not in used_pairs and 
                 strings[i] != strings[j] and 
-                len(strings[i]) == len(strings[j]) and 
+                # Check if either string is a near-palindrome
                 (is_near_palindrome(strings[i]) or is_near_palindrome(strings[j]))):
                 near_palindrome_pairs.append(list(pair))
                 used_pairs.add(pair)
