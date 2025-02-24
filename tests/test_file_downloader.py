@@ -6,32 +6,34 @@ import requests_mock
 from src.file_downloader import download_file
 
 @pytest.fixture
-def mock_downloads_dir(tmpdir):
+def temp_downloads_dir(tmpdir):
     """Create a temporary downloads directory."""
     downloads_dir = tmpdir.mkdir('downloads')
     return str(downloads_dir)
 
-def test_download_file_success(requests_mock, mock_downloads_dir):
+def test_download_file_success(requests_mock, temp_downloads_dir, monkeypatch):
     """Test successful file download."""
     # Setup
     test_url = 'https://example.com/testfile.txt'
     test_content = b'Hello, World!'
     requests_mock.get(test_url, content=test_content)
     
-    # Expected destination
-    expected_path = os.path.join(mock_downloads_dir, 'testfile.txt')
+    # Monkeypatch the downloads path
+    monkeypatch.chdir(temp_downloads_dir)
+    monkeypatch.setattr('src.file_downloader.os.path.join', 
+                        lambda base, filename: os.path.join(temp_downloads_dir, filename))
     
-    # Patch os.path.join to use mock directory
-    with pytest.monkeypatch.context() as m:
-        m.chdir(mock_downloads_dir)
-        
-        # Execute
-        downloaded_path = download_file(test_url)
-        
-        # Verify
-        assert os.path.exists(downloaded_path)
-        with open(downloaded_path, 'rb') as f:
-            assert f.read() == test_content
+    # Expected destination
+    expected_path = os.path.join(temp_downloads_dir, 'testfile.txt')
+    
+    # Execute
+    downloaded_path = download_file(test_url)
+    
+    # Verify
+    assert downloaded_path == expected_path
+    assert os.path.exists(downloaded_path)
+    with open(downloaded_path, 'rb') as f:
+        assert f.read() == test_content
 
 def test_download_file_custom_destination(requests_mock, tmpdir):
     """Test downloading file to a custom destination."""
