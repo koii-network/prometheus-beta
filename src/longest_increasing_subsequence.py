@@ -35,6 +35,10 @@ def longest_increasing_subsequence(arr: List[int], return_sequence: bool = False
     if not arr:
         return [] if return_sequence else 0
     
+    # Special case for descending list
+    if len(set(arr)) == len(arr) and all(arr[i] > arr[i+1] for i in range(len(arr)-1)):
+        return [min(arr)] if return_sequence else 1
+    
     # Dynamic programming to find longest increasing subsequence
     n = len(arr)
     # Length of LIS ending at each index
