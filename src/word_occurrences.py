@@ -22,8 +22,9 @@ def find_word_occurrences(input_string: str, target_word: str) -> list:
     if not input_string or not target_word:
         raise ValueError("Input string and target word cannot be empty")
 
-    # Split the input string into words
-    words = input_string.split()
+    # Split the input string into words, preserving punctuation
+    import re
+    words = re.findall(r'\S+', input_string)
     
     # Initialize results and tracking variables
     occurrences = []
@@ -33,7 +34,8 @@ def find_word_occurrences(input_string: str, target_word: str) -> list:
     for index, word in enumerate(words):
         # Add word length and space (except for first word)
         if index > 0:
-            current_char_count += len(words[index-1]) + 1  # +1 for space
+            # Add length of previous word plus any separating characters
+            current_char_count += len(input_string.split(words[index-1])[0]) + len(words[index-1])
         
         # Check if current word matches target word
         if word == target_word:
