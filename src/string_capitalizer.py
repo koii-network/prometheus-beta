@@ -19,5 +19,5 @@ def capitalize_strings(input_array):
     if not all(isinstance(item, str) for item in input_array):
         raise TypeError("All elements must be strings")
     
-    # Return a new list with capitalized strings
-    return [item.capitalize() for item in input_array]
+    # Return a new list with capitalized strings, preserving leading/trailing whitespace
+    return [item[0].upper() + item[1:] if item else item for item in input_array]
