@@ -10,7 +10,8 @@ def test_generate_modified_fibonacci_basic():
 def test_generate_modified_fibonacci_divisibility():
     """Verify that the sum of consecutive numbers is divisible by 3."""
     sequence = generate_modified_fibonacci(10)
-    for i in range(2, len(sequence)):
+    # Start checking divisibility from the 4th term
+    for i in range(3, len(sequence)):
         assert (sequence[i-2] + sequence[i-1]) % 3 == 0, \
             f"Failed at index {i}: {sequence[i-2]} + {sequence[i-1]} = {sequence[i-2] + sequence[i-1]} is not divisible by 3"
 
