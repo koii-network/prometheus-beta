@@ -25,37 +25,25 @@ def find_word_occurrences(input_string: str, target_word: str) -> list:
     # Initialize results
     occurrences = []
     
-    # Track character count and last searched index
+    # Split the input string into words
+    words = input_string.split()
+    
+    # Track character count
     current_char_count = 0
-    start_index = 0
-
-    # Continue searching while there are possible matches
-    while start_index < len(input_string):
-        # Find the next occurrence of the target word
-        found_index = input_string.find(target_word, start_index)
+    
+    # Iterate through words with indexes
+    for index, word in enumerate(words):
+        # Check if current word is the target word
+        if word == target_word:
+            # Add occurrence with current character count and index
+            occurrences.append((current_char_count, index))
         
-        # If no more occurrences, break the loop
-        if found_index == -1:
-            break
-        
-        # Make sure the word is a complete word (not part of another word)
-        is_valid_word = (
-            # Check start of string or character before is not alphanumeric
-            (found_index == 0 or not input_string[found_index-1].isalnum()) and
-            # Check end of string or character after is not alphanumeric
-            (found_index + len(target_word) == len(input_string) or 
-             not input_string[found_index + len(target_word)].isalnum())
-        )
-        
-        # If it's a valid word occurrence
-        if is_valid_word:
-            # Find the index in the split string
-            words = input_string[:found_index].split()
-            
-            # Add the occurrence
-            occurrences.append((found_index, len(words)))
-        
-        # Move the start index to continue searching
-        start_index = found_index + 1
+        # Update character count 
+        # Add length of current word and a space 
+        # (except for the last word which doesn't have a trailing space)
+        if index < len(words) - 1:
+            current_char_count += len(word) + 1
+        else:
+            current_char_count += len(word)
 
     return occurrences
