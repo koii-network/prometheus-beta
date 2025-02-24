@@ -15,7 +15,7 @@ def test_known_conversions():
 def test_float_conversions():
     """Test conversion with float values."""
     assert abs(celsius_to_fahrenheit(37.5) - 99.5) < 0.001
-    assert abs(celsius_to_fahrenheit(-17.8) - 0.04) < 0.01
+    assert abs(celsius_to_fahrenheit(-17.8) - (-0.04)) < 0.01
 
 def test_invalid_input():
     """Test error handling for invalid inputs."""
