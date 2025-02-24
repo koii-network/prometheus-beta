@@ -27,8 +27,8 @@ def reverse_string_with_rules(input_string):
     def is_word(s):
         return s.isalpha()
 
-    # Split the string into tokens 
-    tokens = re.findall(r'\b\d+\b|\b[a-zA-Z]+\b|[^\w\s]+|\s+|.', input_string)
+    # Tokenize the input, giving priority to words and numbers
+    tokens = re.findall(r'\b\d+\b|\b[a-zA-Z]+\b|[^\w\s]|\s+|.', input_string)
     
     # Process each token
     processed_tokens = []
