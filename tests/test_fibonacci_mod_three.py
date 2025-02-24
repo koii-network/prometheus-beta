@@ -9,9 +9,10 @@ def test_generate_modified_fibonacci_basic():
 
 def test_generate_modified_fibonacci_divisibility():
     """Verify that the sum of consecutive numbers is divisible by 3."""
-    sequence = generate_modified_fibonacci(6)
+    sequence = generate_modified_fibonacci(10)
     for i in range(2, len(sequence)):
-        assert (sequence[i-2] + sequence[i-1]) % 3 == 0
+        assert (sequence[i-2] + sequence[i-1]) % 3 == 0, \
+            f"Failed at index {i}: {sequence[i-2]} + {sequence[i-1]} = {sequence[i-2] + sequence[i-1]} is not divisible by 3"
 
 def test_generate_modified_fibonacci_zero():
     """Test generating sequence with zero elements."""
@@ -34,7 +35,3 @@ def test_generate_modified_fibonacci_large():
     """Test generating a larger sequence."""
     sequence = generate_modified_fibonacci(10)
     assert len(sequence) == 10
-    
-    # Verify divisibility for each consecutive triplet
-    for i in range(2, len(sequence)):
-        assert (sequence[i-2] + sequence[i-1]) % 3 == 0
