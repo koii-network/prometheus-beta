@@ -15,7 +15,7 @@ def test_single_element_list():
 
 def test_negative_numbers():
     """Test calculation with negative numbers."""
-    assert sorted(calculate_pair_products([-1, 2, -3])) == [-6, -3, 2]
+    assert sorted(calculate_pair_products([-1, 2, -3])) == [-6, -2, 3]
 
 def test_zero_in_list():
     """Test calculation with zero in the list."""
