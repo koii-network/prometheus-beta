@@ -9,7 +9,8 @@ def test_sum_constraint():
     """Test that consecutive numbers sum is >= k"""
     result = generate_fibonacci_sequence(10, 5)
     for i in range(1, len(result)):
-        assert result[i] + result[i-1] >= 5
+        if len(result) > 1:
+            assert result[i] + result[i-1] >= 5, f"Failed at index {i}"
 
 def test_max_length_constraint():
     """Test that sequence length does not exceed n"""
@@ -24,7 +25,7 @@ def test_small_k():
 def test_large_k():
     """Test sequence with large k that limits growth"""
     result = generate_fibonacci_sequence(5, 100)
-    assert result == [1]
+    assert len(result) == 1 and result[0] == 1
 
 def test_zero_length():
     """Test zero-length sequence"""
