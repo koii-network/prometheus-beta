@@ -15,15 +15,22 @@ def log_object(obj, log_level=logging.INFO, logger=None):
         str: A formatted string representation of the object
 
     Raises:
-        TypeError: If the object cannot be JSON serialized
+        TypeError: If the object cannot be serialized or logged
     """
     # If no logger is provided, use the root logger
     if logger is None:
         logger = logging.getLogger()
 
     try:
-        # Try to create a formatted, indented representation of the object
-        formatted_obj = pprint.pformat(obj, indent=2, width=100, compact=False)
+        # Use pprint with custom formatting to handle recursive objects
+        formatted_obj = pprint.pformat(
+            obj, 
+            indent=2, 
+            width=100, 
+            compact=False, 
+            depth=10,  # Limit recursion depth
+            sort_dicts=True  # Sort dictionary keys for consistent output
+        )
         
         # Log the object
         logger.log(log_level, formatted_obj)
@@ -31,6 +38,13 @@ def log_object(obj, log_level=logging.INFO, logger=None):
         return formatted_obj
     except Exception as e:
         # Handle serialization or formatting errors
-        error_msg = f"Error logging object: {str(e)}"
-        logger.error(error_msg)
-        raise TypeError(error_msg) from e
+        try:
+            # Fallback to string representation if pprint fails
+            str_repr = str(obj)
+            logger.log(log_level, str_repr)
+            return str_repr
+        except Exception as fallback_error:
+            # Final error handling
+            error_msg = f"Error logging object: {str(fallback_error)}"
+            logger.error(error_msg)
+            raise TypeError(error_msg) from fallback_error
