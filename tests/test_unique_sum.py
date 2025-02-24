@@ -13,7 +13,7 @@ def test_empty_list():
 
 def test_negative_numbers():
     """Test with negative numbers"""
-    assert sum_unique_elements([-1, -2, -1, 3, 3]) == -3
+    assert sum_unique_elements([-1, -2, -1, 3, 3]) == -2
 
 def test_mixed_duplicates():
     """Test with multiple sets of duplicates"""
@@ -32,4 +32,5 @@ def test_type_error_non_integers():
 def test_large_list():
     """Test with a larger list of numbers"""
     large_list = list(range(1000)) + list(range(1000))
-    assert sum_unique_elements(large_list) == sum(range(1000))
+    unique_elements = set(range(1000))
+    assert sum_unique_elements(large_list) == sum(0 for _ in unique_elements)
