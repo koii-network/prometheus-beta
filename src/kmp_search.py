@@ -9,8 +9,12 @@ def compute_lps_array(pattern):
         pattern (str): The pattern to compute LPS array for
     
     Returns:
-        list: LPS array containing longest proper prefix lengths
+        list: LPS array containing longest prefix suffix lengths
     """
+    # Handle empty pattern
+    if not pattern:
+        return []
+    
     # Length of the previous longest prefix suffix
     lps = [0] * len(pattern)
     length = 0  # Length of the current longest prefix suffix
@@ -50,14 +54,14 @@ def kmp_search(text, pattern):
     
     Raises:
         TypeError: If inputs are not strings
-        ValueError: If pattern is an empty string
     """
     # Input validation
     if not isinstance(text, str) or not isinstance(pattern, str):
         raise TypeError("Both text and pattern must be strings")
     
-    if not pattern:
-        raise ValueError("Pattern cannot be an empty string")
+    # Handle empty pattern or text
+    if not pattern or not text:
+        return []
     
     # If pattern is longer than text, no match is possible
     if len(pattern) > len(text):
