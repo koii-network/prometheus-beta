@@ -8,14 +8,9 @@ def test_simple_palindrome():
 
 def test_case_sensitive_palindrome():
     """Test case-sensitive palindrome checking."""
-    print("Testing 'RaceCar':", is_palindrome("RaceCar"))
-    print("Testing 'rAcEcAr':", is_palindrome("rAcEcAr"))
-    print("Checking 'rAcEcAr' chars:", 
-          [c for c in "rAcEcAr"], 
-          [c for c in "rAcEcAr"][::-1])
     assert is_palindrome("RaceCar") == False
-    assert is_palindrome("rAcEcAr") == False
     assert is_palindrome("racecar") == True
+    assert is_palindrome("rAcEcAr") == False
     assert is_palindrome("RACECAR") == True
 
 def test_empty_and_single_char():
