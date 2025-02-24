@@ -24,7 +24,7 @@ def test_mixed_case():
 def test_complex_text():
     """Test a more complex text with multiple unique words"""
     text = "The quick brown fox jumps over the lazy dog. The quick brown fox again."
-    assert count_unique_words(text) == 8
+    assert count_unique_words(text) == 9
 
 def test_none_input():
     """Test handling of None input"""
