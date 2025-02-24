@@ -14,6 +14,7 @@ def is_perfect_square(number: int) -> bool:
 
     Raises:
         ValueError: If the input is a negative number.
+        TypeError: If the input is not an integer.
 
     Examples:
         >>> is_perfect_square(16)
@@ -25,6 +26,10 @@ def is_perfect_square(number: int) -> bool:
         >>> is_perfect_square(0)
         True
     """
+    # Check for non-integer inputs
+    if not isinstance(number, int):
+        raise TypeError("Input must be an integer")
+    
     # Check for negative numbers
     if number < 0:
         raise ValueError("Input must be a non-negative integer")
