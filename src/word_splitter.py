@@ -33,8 +33,12 @@ def count_words(input_string: str, separator: str = ' ') -> int:
         raise ValueError("Separator cannot be an empty string")
     
     # Handle empty input string
-    if not input_string:
+    if not input_string.strip():
         return 0
     
-    # Split the string and count words
+    # Split the string with whitespace stripped, handling multiple whitespaces
+    if separator == ' ':
+        return len(input_string.strip().split())
+    
+    # Regular splitting for non-space separators
     return len(input_string.split(separator))
