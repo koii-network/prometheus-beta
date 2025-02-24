@@ -1,5 +1,6 @@
 import logging
 import emoji
+import sys
 
 def log_with_emoji(message, emoji_symbol=None, log_level='info'):
     """
@@ -22,17 +23,6 @@ def log_with_emoji(message, emoji_symbol=None, log_level='info'):
     if not isinstance(message, str):
         raise TypeError("Message must be a string")
 
-    # Configure logger
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
-
-    # Create console handler if not already exists
-    if not logger.handlers:
-        console_handler = logging.StreamHandler()
-        formatter = logging.Formatter('%(message)s')
-        console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
-
     # Prepare the log message
     if emoji_symbol:
         # Ensure the emoji is valid
@@ -46,15 +36,24 @@ def log_with_emoji(message, emoji_symbol=None, log_level='info'):
 
     # Log based on level
     log_levels = {
-        'debug': logger.debug,
-        'info': logger.info,
-        'warning': logger.warning,
-        'error': logger.error,
-        'critical': logger.critical
+        'debug': logging.DEBUG,
+        'info': logging.INFO,
+        'warning': logging.WARNING,
+        'error': logging.ERROR,
+        'critical': logging.CRITICAL
     }
 
-    # Validate and call the appropriate logging method
+    # Validate log level
     if log_level.lower() not in log_levels:
         raise ValueError(f"Invalid log level: {log_level}. Must be one of {list(log_levels.keys())}")
 
-    log_levels[log_level.lower()](full_message)
+    # Configure the logging to write to stdout
+    logging.basicConfig(
+        level=logging.DEBUG,  # Capture all log levels
+        format='%(message)s',
+        stream=sys.stdout  # Output to stdout instead of stderr
+    )
+
+    # Get the logger and log with the appropriate level
+    logger = logging.getLogger(__name__)
+    logger.log(log_levels[log_level.lower()], full_message)
