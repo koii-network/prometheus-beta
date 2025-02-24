@@ -14,6 +14,9 @@ def matrix_search(matrix, target):
         ValueError: If matrix is empty or contains non-uniform rows
     """
     # Validate input matrix
+    if matrix is None:
+        raise TypeError("Matrix cannot be None")
+
     if not matrix or not matrix[0]:
         return None
 
