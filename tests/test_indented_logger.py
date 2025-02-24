@@ -30,7 +30,7 @@ def test_log_with_indentation():
     assert logger.log("World") == "    World"
     
     logger.indent(2)
-    assert logger.log("Nested") == "        Nested"
+    assert logger.log("Nested") == "            Nested"
 
 def test_indent_and_dedent():
     """Test indentation and de-indentation."""
