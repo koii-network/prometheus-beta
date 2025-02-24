@@ -1,6 +1,6 @@
 import logging
 
-def log_variable_type(variable):
+def log_variable_type(variable, logger=None):
     """
     Log the type of a given variable.
 
@@ -10,6 +10,8 @@ def log_variable_type(variable):
 
     Args:
         variable (Any): The variable whose type needs to be logged.
+        logger (logging.Logger, optional): A specific logger to use. 
+                If not provided, uses the root logger.
 
     Returns:
         type: The type of the input variable.
@@ -19,14 +21,18 @@ def log_variable_type(variable):
         >>> log_variable_type(x)
         # This would log: INFO:root:Variable type is: <class 'int'>
     """
-    # Configure basic logging if not already configured
-    logging.basicConfig(level=logging.INFO, 
-                        format='%(levelname)s:%(name)s:Variable type is: %(message)s')
+    # Use provided logger or root logger
+    if logger is None:
+        logger = logging.getLogger()
+        # Ensure some basic configuration if not already set
+        if not logger.handlers:
+            logging.basicConfig(level=logging.INFO, 
+                                format='%(levelname)s:%(name)s:Variable type is: %(message)s')
     
     # Get the type of the variable
     var_type = type(variable)
     
     # Log the type
-    logging.info(str(var_type))
+    logger.info(str(var_type))
     
     return var_type
