@@ -16,6 +16,8 @@ def validate_email(email):
     - Username can contain letters, digits, and some special characters (., _, -)
     - Domain must have at least one dot
     - Total length constraints
+    - No consecutive dots in domain
+    - Strict length limits for username, domain, and top-level domain
     """
     # Check if email is a string
     if not isinstance(email, str):
@@ -25,15 +27,35 @@ def validate_email(email):
     if len(email) < 3 or len(email) > 254:
         return False
     
-    # Regular expression for email validation
-    # Breakdown of regex:
-    # ^             : Start of string
-    # [a-zA-Z0-9._%+-]+ : Username can have letters, digits, and some special chars
-    # @             : Mandatory @ symbol
-    # [a-zA-Z0-9.-]+  : Domain name 
-    # \.            : Mandatory dot in domain
-    # [a-zA-Z]{2,}  : Top-level domain (at least 2 letters)
-    # $             : End of string
-    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    # Check for multiple @ symbols
+    if email.count('@') != 1:
+        return False
     
-    return bool(re.match(email_regex, email))
+    # Split into username and domain
+    username, domain = email.split('@')
+    
+    # Check username length
+    if len(username) > 64 or len(username) == 0:
+        return False
+    
+    # Check for double dots and other invalid characters
+    if '..' in domain or '.' not in domain:
+        return False
+    
+    # Validate domain name
+    domain_parts = domain.split('.')
+    if len(domain_parts[-1]) < 2:  # Top-level domain must be at least 2 chars
+        return False
+    
+    # Regular expression for detailed validation
+    username_regex = r'^[a-zA-Z0-9._%+-]+$'
+    domain_regex = r'^[a-zA-Z0-9.-]+$'
+    
+    # Additional checks
+    if not re.match(username_regex, username):
+        return False
+    
+    if not re.match(domain_regex, domain):
+        return False
+    
+    return True
