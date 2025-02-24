@@ -13,7 +13,7 @@ def generate_fibonacci_sequence(n, k):
         ValueError: If n or k is not a positive integer
     """
     # Validate input parameters
-    if not isinstance(n, int) or n < 0:  # Changed from n <= 0 to n < 0
+    if not isinstance(n, int) or n < 0:
         raise ValueError("n must be a non-negative integer")
     if not isinstance(k, int) or k <= 0:
         raise ValueError("k must be a positive integer")
@@ -34,13 +34,12 @@ def generate_fibonacci_sequence(n, k):
     
     # Generate the sequence
     while len(sequence) < n:
+        # Check if the sum of last two numbers meets the constraint before adding
+        if sequence[-1] + sequence[-2] < k:
+            break
+        
         # Calculate the next number in the sequence
         next_num = sequence[-1] + sequence[-2]
-        
-        # Check if the sum of last two numbers meets the constraint
-        if sequence[-1] + sequence[-2] >= k:
-            sequence.append(next_num)
-        else:
-            break
+        sequence.append(next_num)
 
     return sequence
