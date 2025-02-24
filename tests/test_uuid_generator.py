@@ -29,17 +29,9 @@ def test_uuid_version():
     """Verify that generated UUIDs have correct version and variant bits."""
     uuid = generate_uuid()
     
-    # Remove hyphens
-    hex_uuid = uuid.replace('-', '')
-    
-    # Check version: 4th bit of 7th byte should be 4
-    # 13th hex character (index 12) represents this
-    version_char = hex_uuid[14]
-    assert version_char in '4', f"Incorrect version bit in UUID: {uuid}"
-    
-    # Check variant: first two bits of 9th byte should be 10
-    variant_char = hex_uuid[16]
-    assert variant_char in '89ab', f"Incorrect variant bits in UUID: {uuid}"
+    # Verify using regex for version and variant
+    version_variant_pattern = r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+    assert re.match(version_variant_pattern, uuid, re.IGNORECASE), f"Invalid UUID version/variant: {uuid}"
 
 def test_uuid_length():
     """Ensure UUID is exactly 36 characters long."""
