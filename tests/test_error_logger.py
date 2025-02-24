@@ -5,8 +5,9 @@ from src.error_logger import log_error
 
 def test_log_error_with_default_message():
     # Ensure log file is empty before test
-    if os.path.exists('error.log'):
-        os.remove('error.log')
+    log_file = 'logs/error.log'
+    if os.path.exists(log_file):
+        os.remove(log_file)
 
     @log_error()
     def raise_value_error():
@@ -17,15 +18,16 @@ def test_log_error_with_default_message():
         raise_value_error()
 
     # Check if error was logged
-    with open('error.log', 'r') as f:
+    with open(log_file, 'r') as f:
         log_content = f.read()
         assert "Test error" in log_content
         assert "ValueError" in log_content
 
 def test_log_error_with_custom_message():
     # Ensure log file is empty before test
-    if os.path.exists('error.log'):
-        os.remove('error.log')
+    log_file = 'logs/error.log'
+    if os.path.exists(log_file):
+        os.remove(log_file)
 
     @log_error("Custom error message")
     def raise_type_error():
@@ -36,7 +38,7 @@ def test_log_error_with_custom_message():
         raise_type_error()
 
     # Check if custom error message was logged
-    with open('error.log', 'r') as f:
+    with open(log_file, 'r') as f:
         log_content = f.read()
         assert "Custom error message" in log_content
         assert "TypeError" in log_content
