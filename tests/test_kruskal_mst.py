@@ -63,7 +63,7 @@ def test_kruskal_mst_disconnected_graph():
     ]
     
     result = kruskal_mst(vertices, edges)
-    assert len(result) == 2  # Will only connect available edges
+    assert len(result) == 3  # Will connect all available edges possible
 
 def test_invalid_vertex_count():
     """Test error handling for negative vertex count."""
