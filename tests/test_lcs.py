@@ -16,6 +16,7 @@ def test_empty_string_cases():
 def test_no_common_subsequence():
     """Test cases with no common subsequence"""
     assert longest_common_subsequence("abc", "xyz") == ""
+    assert longest_common_subsequence("Abc", "abc") == ""
 
 def test_different_length_strings():
     """Test LCS with strings of different lengths"""
@@ -26,7 +27,7 @@ def test_different_length_strings():
 
 def test_case_sensitivity():
     """Test LCS is case-sensitive"""
-    assert len(longest_common_subsequence("Abc", "abc")) == 0
+    assert longest_common_subsequence("Abc", "abc") == ""
 
 def test_invalid_input_types():
     """Test error handling for invalid input types"""
