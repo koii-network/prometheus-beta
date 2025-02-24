@@ -25,13 +25,5 @@ def is_palindrome(s: str) -> bool:
     if len(s) <= 1:
         return True
     
-    # Compare characters from start and end, moving inwards
-    left, right = 0, len(s) - 1
-    while left < right:
-        # Check if characters match exactly (case-sensitive)
-        if s[left] != s[right]:
-            return False
-        left += 1
-        right -= 1
-    
-    return True
+    # Compare the string with its reverse, considering case
+    return s == s[::-1]
