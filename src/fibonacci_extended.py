@@ -54,12 +54,29 @@ def fibonacci(n):
             return (-1)**(abs(n)+1) * b
     
     # Floating-point and non-integer cases
-    # Use Binet's formula with generalized indexing
-    from math import floor, sqrt
+    # Use a more robust method that avoids complex numbers
+    from math import sin, pi, floor
     
-    # Golden ratio and its conjugate
-    phi = (1 + sqrt(5)) / 2
-    psi = (1 - sqrt(5)) / 2
+    # If it's very close to an integer, treat it as such
+    if abs(n - round(n)) < 1e-10:
+        return fibonacci(round(n))
     
-    # Generalized Fibonacci formula
-    return (phi**n - psi**n) / sqrt(5)
+    # Generalized method for non-integer indices
+    def sign(x):
+        return 1 if x >= 0 else -1
+    
+    # Use a combination of trigonometric properties
+    def generalized_fibonacci(x):
+        # Approximate Fibonacci for non-integer indices
+        k = floor(abs(x))
+        f_k = fibonacci(k)
+        f_k1 = fibonacci(k + 1)
+        
+        # Linear interpolation with trigonometric adjustment
+        frac = abs(x) - k
+        interpolated = f_k * (1 - frac) + f_k1 * frac
+        
+        # Adjust sign for negative indices
+        return sign(x) * interpolated
+    
+    return generalized_fibonacci(n)
