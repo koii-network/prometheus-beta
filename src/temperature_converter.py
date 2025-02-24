@@ -15,5 +15,5 @@ def celsius_to_fahrenheit(celsius: float) -> float:
     if not isinstance(celsius, (int, float)):
         raise TypeError("Input must be a number (int or float)")
     
-    # Conversion formula: F = (C * 9/5) + 32
-    return (celsius * 9/5) + 32
+    # Conversion formula: F = (C * 9/5) + 32, rounded to 2 decimal places
+    return round((celsius * 9/5) + 32, 2)
