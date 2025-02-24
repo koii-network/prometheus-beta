@@ -9,7 +9,7 @@ def counting_sort(arr):
         list: A new sorted list.
     
     Raises:
-        TypeError: If input is not a list.
+        TypeError: If input is not a list or contains non-integer elements.
         ValueError: If list contains negative numbers.
     """
     # Check input type
@@ -20,12 +20,14 @@ def counting_sort(arr):
     if not arr:
         return []
     
+    # Validate all elements are integers before finding range
+    for num in arr:
+        if not isinstance(num, int):
+            raise TypeError("All elements must be integers")
+    
     # Find the range of the input
-    try:
-        max_val = max(arr)
-        min_val = min(arr)
-    except TypeError:
-        raise TypeError("List must contain comparable elements")
+    max_val = max(arr)
+    min_val = min(arr)
     
     # Check for negative numbers
     if min_val < 0:
@@ -36,8 +38,6 @@ def counting_sort(arr):
     
     # Count occurrences of each unique object
     for num in arr:
-        if not isinstance(num, int):
-            raise TypeError("All elements must be integers")
         count[num] += 1
     
     # Modify count array to store actual position of each object
