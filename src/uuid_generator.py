@@ -21,12 +21,12 @@ def generate_uuid():
         random.seed(time.time_ns())
         random_bytes = [random.randint(0, 255) for _ in range(16)]
     
-    # Explicitly set version 4 at 7th byte (13th hex character)
-    # Clear the top 4 bits and set to 0100 (version 4)
-    random_bytes[6] = (random_bytes[6] & 0x0F) | 0x40
+    # Ensure version 4 at 7th byte (13th hex character)
+    # Explicitly set to 0100 for version 4
+    random_bytes[6] = 0x40 | (random_bytes[6] & 0x0F)
     
     # Set variant (RFC 4122): set top two bits to 10
-    random_bytes[8] = (random_bytes[8] & 0x3F) | 0x80
+    random_bytes[8] = 0x80 | (random_bytes[8] & 0x3F)
     
     # Convert to hex and format in standard UUID representation
     hex_bytes = [f'{b:02x}' for b in random_bytes]
