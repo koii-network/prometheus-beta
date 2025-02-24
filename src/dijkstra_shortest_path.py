@@ -26,6 +26,10 @@ def dijkstra_shortest_path(graph: Dict[str, Dict[str, int]], start: str, end: st
     if end not in graph:
         raise ValueError(f"End node '{end}' not found in the graph")
 
+    # If start and end are the same, return trivial path
+    if start == end:
+        return [start], 0
+
     # Initialize distances and previous nodes
     distances = {node: float('inf') for node in graph}
     distances[start] = 0
