@@ -15,4 +15,5 @@ def log_error(message: str) -> None:
         raise TypeError("Error message must be a string")
     
     # Log the error message to stderr
-    print(f"ERROR: {message}", file=sys.stderr)
+    # Use string formatting to ensure consistent formatting 
+    print(f"ERROR:{' ' if message else ''}{message}", file=sys.stderr)
