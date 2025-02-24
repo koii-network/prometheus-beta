@@ -1,60 +1,60 @@
 import logging
+import io
+import sys
 import pytest
 from src.multi_line_logger import log_multiline
 
-# Configure logging to ensure messages are captured
-logging.basicConfig(level=logging.DEBUG)
-
-# Setup logging to capture log messages
-class LogCapture:
-    def __init__(self):
-        self.log_records = []
-        self.handler = logging.Handler()
-        self.handler.emit = self._custom_emit
-
-    def _custom_emit(self, record):
-        self.log_records.append(record)
-
 def test_log_multiline_default():
     """Test default logging behavior"""
-    # Set up capture
-    log_capture = LogCapture()
-    logger = logging.getLogger(__name__)
-    logger.addHandler(log_capture.handler)
-    
+    # Capture stdout
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+
+    # Configure logging to write to stdout
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
+                        format='%(message)s')
+
     message = "Test multi-line logging"
     sep_line = log_multiline(message)
-    
-    # Clean up
-    logger.removeHandler(log_capture.handler)
-    
-    assert len(log_capture.log_records) == 3
-    assert log_capture.log_records[0].msg == '*' * 40
-    assert log_capture.log_records[1].msg == message
-    assert log_capture.log_records[2].msg == '*' * 40
+
+    # Restore stdout
+    sys.stdout = sys.__stdout__
+
+    # Get the captured output and split into lines
+    output_lines = captured_output.getvalue().strip().split('\n')
+
+    assert len(output_lines) == 3
+    assert output_lines[0] == '*' * 40
+    assert output_lines[1] == message
+    assert output_lines[2] == '*' * 40
     assert sep_line == '*' * 40
 
 def test_log_multiline_custom_params():
     """Test logging with custom separator and length"""
-    # Set up capture
-    log_capture = LogCapture()
-    logger = logging.getLogger(__name__)
-    logger.addHandler(log_capture.handler)
-    
+    # Capture stdout
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+
+    # Configure logging to write to stdout
+    logging.basicConfig(stream=sys.stdout, level=logging.WARNING, 
+                        format='%(message)s')
+
     message = "Custom logging test"
     sep_line = log_multiline(message, 
                               level=logging.WARNING, 
                               separator='-', 
                               separator_length=20)
-    
-    # Clean up
-    logger.removeHandler(log_capture.handler)
-    
-    assert len(log_capture.log_records) == 3
-    assert log_capture.log_records[0].msg == '-' * 20
-    assert log_capture.log_records[1].msg == message
-    assert log_capture.log_records[2].msg == '-' * 20
-    assert log_capture.log_records[0].levelno == logging.WARNING
+
+    # Restore stdout
+    sys.stdout = sys.__stdout__
+
+    # Get the captured output and split into lines
+    output_lines = captured_output.getvalue().strip().split('\n')
+
+    assert len(output_lines) == 3
+    assert output_lines[0] == '-' * 20
+    assert output_lines[1] == message
+    assert output_lines[2] == '-' * 20
     assert sep_line == '-' * 20
 
 def test_log_multiline_error_cases():
