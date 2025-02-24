@@ -45,9 +45,15 @@ def fibonacci_sequence(n: int) -> List[int]:
         """
         def fib_impl(a: int = 0, b: int = 1) -> Generator[int, None, None]:
             yield a
+            if a == 0:
+                yield b
             yield from fib_impl(b, a + b)
         
         return fib_impl()
     
     # Generate and collect the first n Fibonacci numbers
-    return list(next(fib_gen()) for _ in range(n))
+    result = []
+    generator = fib_gen()
+    for _ in range(n):
+        result.append(next(generator))
+    return result
