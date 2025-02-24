@@ -23,12 +23,8 @@ def reverse_string_with_rules(input_string):
     def is_palindrome(s):
         return s == s[::-1]
     
-    # Helper function to check if a string is a word (only letters)
-    def is_word(s):
-        return s.isalpha()
-
-    # Tokenize the input, giving priority to words and numbers
-    tokens = re.findall(r'\b\d+\b|\b[a-zA-Z]+\b|[^\w\s]|\s+|.', input_string)
+    # Split the string into tokens, including whole words and numbers
+    tokens = re.findall(r'\b[a-zA-Z]+\b|\b\d+\b|[^\w\s]|\s+|.', input_string)
     
     # Process each token
     processed_tokens = []
@@ -36,7 +32,7 @@ def reverse_string_with_rules(input_string):
         if token.isdigit():
             # Reverse integers
             processed_tokens.append(token[::-1])
-        elif is_word(token):
+        elif token.isalpha():
             # Reverse words
             processed_tokens.append(token[::-1])
         elif is_palindrome(token):
