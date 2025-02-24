@@ -1,10 +1,10 @@
-from typing import List, Generator
+from typing import List
 
 def fibonacci_sequence(n: int) -> List[int]:
     """
     Generate the first n numbers of the Fibonacci sequence.
     
-    This function uses a recursive generator approach to create the Fibonacci sequence
+    This function uses a recursive approach to create the Fibonacci sequence
     with O(n) time complexity and without using explicit loops.
     
     Args:
@@ -36,24 +36,26 @@ def fibonacci_sequence(n: int) -> List[int]:
     if n == 0:
         return []
     
-    def fib_gen() -> Generator[int, None, None]:
+    def fib_helper(count: int) -> List[int]:
         """
-        Recursive generator for Fibonacci sequence.
+        Recursive helper function to generate Fibonacci sequence.
         
-        Yields:
-            int: Next Fibonacci number in the sequence.
+        Args:
+            count (int): Number of Fibonacci numbers to generate.
+        
+        Returns:
+            List[int]: List of Fibonacci numbers.
         """
-        def fib_impl(a: int = 0, b: int = 1) -> Generator[int, None, None]:
-            yield a
-            if a == 0:
-                yield b
-            yield from fib_impl(b, a + b)
+        if count <= 0:
+            return []
+        if count == 1:
+            return [0]
+        if count == 2:
+            return [0, 1]
         
-        return fib_impl()
+        # Recursively generate the sequence
+        prev_seq = fib_helper(count - 1)
+        next_num = prev_seq[-1] + prev_seq[-2]
+        return prev_seq + [next_num]
     
-    # Generate and collect the first n Fibonacci numbers
-    result = []
-    generator = fib_gen()
-    for _ in range(n):
-        result.append(next(generator))
-    return result
+    return fib_helper(n)
