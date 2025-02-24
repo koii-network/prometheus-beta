@@ -28,24 +28,46 @@ def validate_email(email: str) -> bool:
         return False
 
     # Regular expression for email validation
-    # Breakdown of regex:
-    # ^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+  : Username part with allowed special characters
-    # @                                   : Literal @ symbol
-    # [a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?  : Domain name rules
-    # (?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$  : Multiple subdomains allowed
-    email_regex = r'^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$'
+    # More comprehensive regex that allows more valid email formats
+    email_regex = r'''^
+    # Username part: allow many special characters, but with some restrictions
+    [a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+
+    # Require @ symbol 
+    @
+    # Domain part - allow nested subdomains, internationalized domains
+    (
+        # Standard domain
+        [a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?
+        # Allow multiple nested subdomains
+        (?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*
+        # Punycode for international domains
+        |(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}
+    )
+    $'''
     
-    # Check if email matches the regex pattern
-    if not re.match(email_regex, email):
+    # Enable verbose mode with re.VERBOSE to allow comments and whitespace
+    if not re.match(email_regex, email, re.VERBOSE):
         return False
 
-    # Additional checks
-    # Ensure no consecutive dots
-    if '..' in email:
-        return False
-
-    # Ensure no spaces
-    if ' ' in email:
+    # Additional checks 
+    try:
+        # Split email into username and domain
+        username, domain = email.rsplit('@', 1)
+        
+        # Check for consecutive dots in username or domain
+        if '..' in username or '..' in domain:
+            return False
+        
+        # Ensure no spaces anywhere
+        if ' ' in username or ' ' in domain:
+            return False
+        
+        # Additional domain validation
+        domain_parts = domain.split('.')
+        if len(domain_parts[-1]) < 2:  # Top-level domain must be at least 2 chars
+            return False
+        
+    except ValueError:  # If '@' not found
         return False
 
     return True
