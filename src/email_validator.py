@@ -26,16 +26,6 @@ def validate_email(email):
     if len(email) > 254:
         return False
     
-    # Split email into local part and domain
-    try:
-        local_part, domain = email.split('@')
-    except ValueError:
-        return False
-    
-    # Check local part and domain lengths
-    if len(local_part) > 64 or len(domain) > 190:
-        return False
-    
     # Regular expression for email validation
     # This regex provides a comprehensive email format check
     email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$'
@@ -46,6 +36,14 @@ def validate_email(email):
     
     # Basic pattern match
     if not re.match(email_regex, email):
+        return False
+    
+    # Custom length check for domain and local part
+    try:
+        local_part, domain = email.split('@')
+        if len(local_part) > 64 or len(domain) > 190:
+            return False
+    except ValueError:
         return False
     
     return True
