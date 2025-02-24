@@ -19,13 +19,13 @@ def filter_even_numbers(sorted_list):
     if not isinstance(sorted_list, list):
         raise TypeError("Input must be a list")
     
-    # Check if list is sorted and contains unique elements
-    if len(sorted_list) > 1:
-        if any(sorted_list[i] >= sorted_list[i+1] for i in range(len(sorted_list)-1)):
-            raise ValueError("Input list must be sorted in ascending order")
-        
-        if len(set(sorted_list)) != len(sorted_list):
-            raise ValueError("Input list must contain unique elements")
+    # Check for duplicates first
+    if len(sorted_list) != len(set(sorted_list)):
+        raise ValueError("Input list must contain unique elements")
+    
+    # Check if list is sorted 
+    if len(sorted_list) > 1 and any(sorted_list[i] >= sorted_list[i+1] for i in range(len(sorted_list)-1)):
+        raise ValueError("Input list must be sorted in ascending order")
     
     # Filter even numbers in O(n) time complexity
     return [num for num in sorted_list if num % 2 == 0]
