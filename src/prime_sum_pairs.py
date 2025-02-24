@@ -39,8 +39,8 @@ def generate_prime_sum_pairs(n):
     for i in range(1, n):
         for j in range(i, n + 1):
             pair_sum = i + j
-            if is_prime(pair_sum):
+            if is_prime(pair_sum) and pair_sum != n:
                 prime_sums.add(pair_sum)
     
-    # Return sorted list of unique prime sums, excluding the input itself
-    return sorted(list(filter(lambda x: x != n, prime_sums)))
+    # Return sorted list of unique prime sums
+    return sorted(list(prime_sums))
