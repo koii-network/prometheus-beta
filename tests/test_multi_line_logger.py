@@ -14,14 +14,15 @@ def test_default_logging():
     lines = result.split('\n')
     
     # Check total number of lines including separators
-    assert len(lines) == 3
+    assert len(lines) == 4
     
     # Check separator lines
     assert lines[0] == '==' * 25
-    assert lines[2] == '==' * 25
+    assert lines[3] == '==' * 25
     
     # Check message content
-    assert lines[1] == message
+    assert lines[1] == "Hello"
+    assert lines[2] == "World"
 
 def test_custom_separator():
     """Test logging with a custom separator."""
@@ -66,5 +67,7 @@ def test_multiline_message():
     
     lines = result.split('\n')
     
-    assert len(lines) == 3
-    assert lines[1] == message
+    assert len(lines) == 5
+    assert lines[1] == "Line 1"
+    assert lines[2] == "Line 2"
+    assert lines[3] == "Line 3"
