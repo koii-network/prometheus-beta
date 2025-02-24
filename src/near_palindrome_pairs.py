@@ -35,14 +35,16 @@ def find_near_palindrome_pairs(strings):
     
     # Find pairs of near-palindromes
     near_palindrome_pairs = []
+    used_pairs = set()  # To prevent duplicate pairs
+    
     for i in range(len(strings)):
         for j in range(i+1, len(strings)):
-            # Check if either string is a near-palindrome 
-            # and they are different strings
-            if strings[i] != strings[j] and (
-                is_near_palindrome(strings[i]) or 
-                is_near_palindrome(strings[j])
-            ):
-                near_palindrome_pairs.append([strings[i], strings[j]])
+            # Ensure the pair is unique and the strings are different
+            pair = tuple(sorted([strings[i], strings[j]]))
+            if pair not in used_pairs and strings[i] != strings[j]:
+                # Check if either string is a near-palindrome
+                if is_near_palindrome(strings[i]) or is_near_palindrome(strings[j]):
+                    near_palindrome_pairs.append(list(pair))
+                    used_pairs.add(pair)
     
     return near_palindrome_pairs
