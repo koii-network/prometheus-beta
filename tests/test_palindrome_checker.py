@@ -10,6 +10,8 @@ def test_case_sensitive_palindrome():
     """Test case-sensitive palindrome checking."""
     assert is_palindrome("RaceCar") == False
     assert is_palindrome("rAcEcAr") == False
+    assert is_palindrome("racecar") == True
+    assert is_palindrome("RACECAR") == True
 
 def test_empty_and_single_char():
     """Test empty and single character strings."""
