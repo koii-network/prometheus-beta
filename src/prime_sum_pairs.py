@@ -42,5 +42,5 @@ def generate_prime_sum_pairs(n):
             if is_prime(pair_sum):
                 prime_sums.add(pair_sum)
     
-    # Return sorted list of unique prime sums
-    return sorted(list(prime_sums))
+    # Return sorted list of unique prime sums, excluding the input itself
+    return sorted(list(filter(lambda x: x != n, prime_sums)))
