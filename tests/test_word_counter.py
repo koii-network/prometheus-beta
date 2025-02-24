@@ -9,7 +9,7 @@ def test_basic_word_counting():
 
 def test_multiple_spaces():
     """Test handling of multiple spaces between words."""
-    assert count_words("  Multiple   spaces   between words  ") == 3
+    assert count_words("  Multiple   spaces   between words  ") == 4
     assert count_words("   Leading and trailing spaces   ") == 4
 
 def test_error_handling():
