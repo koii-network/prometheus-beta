@@ -5,9 +5,9 @@ def find_local_maxima(arr: List[int]) -> List[int]:
     Find local maximum values in an input array.
     
     A local maximum is defined as an element that is strictly greater than 
-    its immediate neighbors. For the first and last elements, they are 
-    considered local maxima if they are strictly greater than their 
-    single adjacent neighbor.
+    or equal to its immediate neighbors. For the first and last elements, 
+    they are considered local maxima if they are greater than or equal to 
+    their single adjacent neighbor.
     
     Args:
         arr (List[int]): Input array of integers
@@ -42,16 +42,16 @@ def find_local_maxima(arr: List[int]) -> List[int]:
     local_maxima = []
     
     # Check first element
-    if arr[0] > arr[1]:
+    if arr[0] >= arr[1]:
         local_maxima.append(0)
     
     # Check middle elements
     for i in range(1, len(arr) - 1):
-        if arr[i] > arr[i-1] and arr[i] > arr[i+1]:
+        if arr[i] >= arr[i-1] and arr[i] >= arr[i+1]:
             local_maxima.append(i)
     
     # Check last element
-    if arr[-1] > arr[-2]:
+    if arr[-1] >= arr[-2]:
         local_maxima.append(len(arr) - 1)
     
     return local_maxima
