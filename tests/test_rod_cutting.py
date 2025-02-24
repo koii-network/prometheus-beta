@@ -16,7 +16,7 @@ def test_rod_cutting_edge_cases():
 def test_rod_cutting_different_lengths():
     # Test with different pricing and rod lengths
     assert rod_cutting([3, 5, 8, 9, 10, 17, 17, 20], 5) == 15
-    assert rod_cutting([1, 2, 3, 4, 5], 5) == 10
+    assert rod_cutting([1, 2, 3, 4, 5], 5) == 5  # Updated expected value
 
 def test_rod_cutting_invalid_input():
     # Test invalid input scenarios
@@ -34,4 +34,4 @@ def test_rod_cutting_single_length():
 def test_rod_cutting_complex_scenario():
     # More complex pricing scenario
     prices = [2, 5, 7, 8, 10, 12, 15, 18, 20, 22]
-    assert rod_cutting(prices, 6) == 15  # Updated expected value
+    assert rod_cutting(prices, 6) == 15
