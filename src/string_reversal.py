@@ -43,7 +43,7 @@ def reverse_string(input_str, method='all'):
 
     # Split/Reverse/Join method
     def split_reverse_join(s):
-        return ''.join(list(s)[::-1])
+        return ''.join(reversed(list(s)))
 
     # Recursive method
     def recursive_method(s):
