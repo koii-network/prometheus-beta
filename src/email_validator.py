@@ -22,13 +22,23 @@ def validate_email(email):
     if not isinstance(email, str) or not email:
         return False
     
-    # Regular expression for email validation
-    # This regex provides a comprehensive email format check with additional constraints
-    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$'
-    
     # Check total email length (RFC 5322 standard max length)
     if len(email) > 254:
         return False
+    
+    # Split email into local part and domain
+    try:
+        local_part, domain = email.split('@')
+    except ValueError:
+        return False
+    
+    # Check local part and domain lengths
+    if len(local_part) > 64 or len(domain) > 190:
+        return False
+    
+    # Regular expression for email validation
+    # This regex provides a comprehensive email format check
+    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$'
     
     # Check for consecutive dots in domain
     if '..' in email:
