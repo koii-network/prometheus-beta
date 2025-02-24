@@ -41,14 +41,28 @@ def scrape_web_page(url: str, selector: Optional[str] = None) -> List[Dict[str, 
         # Select elements based on the provided selector or use default
         elements = soup.select(selector) if selector else soup.find_all()
 
-        # Extract data from elements
+        # Extract unique data from elements
         scraped_data = []
+        seen = set()  # To track unique entries
         for element in elements:
-            item = {
-                'text': element.get_text(strip=True),
-                'href': element.get('href', '')
-            }
-            scraped_data.append(item)
+            # Skip elements that have already been processed
+            if element in seen:
+                continue
+
+            # Extract text and href, using empty string if no href
+            href = element.get('href', '') or ''
+            text = element.get_text(strip=True)
+
+            # Create a unique key to prevent duplicates
+            key = (text, href)
+            
+            if key not in seen:
+                item = {
+                    'text': text,
+                    'href': href
+                }
+                scraped_data.append(item)
+                seen.add(key)
 
         return scraped_data
 
