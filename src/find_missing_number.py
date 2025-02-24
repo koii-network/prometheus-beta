@@ -19,8 +19,16 @@ def find_missing_number(nums):
         >>> find_missing_number([2, 3, 4, 5, 6])
         1
     """
-    # Validate input
-    if not nums or not isinstance(nums, list):
+    # Validate input is a list
+    if not isinstance(nums, list):
+        raise ValueError("Input must be a non-empty list of integers")
+    
+    # Validate list is not empty
+    if not nums:
+        raise ValueError("Input must be a non-empty list of integers")
+    
+    # Validate all elements are integers
+    if not all(isinstance(x, int) for x in nums):
         raise ValueError("Input must be a non-empty list of integers")
     
     # Convert to a set for O(1) lookup
