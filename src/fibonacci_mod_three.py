@@ -28,12 +28,11 @@ def generate_modified_fibonacci(n):
     sequence = [1, 1]
 
     while len(sequence) < n:
-        # Calculate the next number to ensure sum of last two is divisible by 3
-        next_num = sequence[-1] + sequence[-2]
-        
-        # Adjust the next number until the condition is met
-        while (sequence[-1] + next_num) % 3 != 0:
-            next_num += 1
+        # Start adjusting from the third element
+        if len(sequence) >= 2:
+            next_num = 3 - (sequence[-1] % 3)  # Ensure divisibility by 3
+        else:
+            next_num = sequence[-1] + sequence[-2]
         
         sequence.append(next_num)
 
