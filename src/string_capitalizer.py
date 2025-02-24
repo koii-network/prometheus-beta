@@ -19,5 +19,9 @@ def capitalize_strings(input_array):
     if not all(isinstance(item, str) for item in input_array):
         raise TypeError("All elements must be strings")
     
-    # Return a new list with fully capitalized strings, preserving whitespace
-    return [item.capitalize() for item in input_array]
+    # Custom implementation to preserve leading whitespace if needed
+    def custom_capitalize(s):
+        stripped = s.lstrip()
+        return s[0:len(s)-len(stripped)] + stripped.capitalize()
+    
+    return [custom_capitalize(item) for item in input_array]
