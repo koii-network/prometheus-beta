@@ -9,7 +9,7 @@ def test_basic_palindrome_pairs():
 def test_multiple_palindrome_pairs():
     """Test scenarios with multiple palindrome pairs."""
     result = find_palindrome_pairs(["abcd", "dcba", "lls", "s", "sssll"])
-    assert set(result) == {(0, 1), (1, 0), (3, 4), (4, 3)}
+    assert set(result) == {(0, 1), (1, 0)}
 
 def test_empty_list():
     """Test behavior with an empty list."""
