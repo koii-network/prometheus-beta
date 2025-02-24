@@ -31,7 +31,15 @@ def find_palindrome_pairs(words):
                 continue
             
             # Check if concatenated string is a palindrome
-            if is_palindrome(words[i] + words[j]) and i != j:
+            if is_palindrome(words[i] + words[j]):
                 palindrome_pairs.append((i, j))
     
-    return palindrome_pairs
+    # Remove duplicates while preserving order
+    unique_pairs = []
+    seen = set()
+    for pair in palindrome_pairs:
+        if pair not in seen:
+            unique_pairs.append(pair)
+            seen.add(pair)
+    
+    return unique_pairs
