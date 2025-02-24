@@ -12,7 +12,7 @@ def test_xor_array_single_element():
 
 def test_xor_array_large_numbers():
     """Test XOR with larger numbers"""
-    assert xor_array_elements([1000, 2000, 3000]) == 1000
+    assert xor_array_elements([1000, 2000, 3000]) == 3968  # actual bitwise XOR result
 
 def test_xor_array_edge_cases():
     """Test various edge cases"""
@@ -21,7 +21,7 @@ def test_xor_array_edge_cases():
 
 def test_xor_array_negative_numbers():
     """Test XOR with negative numbers"""
-    assert xor_array_elements([-1, -2, -3]) == 0
+    assert xor_array_elements([-1, -2, -3]) == -4  # actual bitwise XOR result
 
 def test_xor_array_invalid_input_type():
     """Test error handling for non-list input"""
