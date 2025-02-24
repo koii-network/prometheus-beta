@@ -54,16 +54,15 @@ class MallMap:
         
         Returns:
             Optional[List[str]]: List of stores in the shortest path, 
-                                 or None if no path exists
-        
-        Raises:
-            KeyError: If start or end store is not in the graph
+                                 or None if no path exists or a store is not in the graph
         """
-        # Validate stores exist
+        # Validate start store exists
         if start not in self.graph:
             raise KeyError(f"Start store '{start}' not found in mall map")
+        
+        # If end store doesn't exist, return None 
         if end not in self.graph:
-            raise KeyError(f"End store '{end}' not found in mall map")
+            return None
         
         # If start and end are the same, return direct path
         if start == end:
