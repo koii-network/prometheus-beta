@@ -21,14 +21,5 @@ def is_palindrome(s: str) -> bool:
         >>> is_palindrome("")
         True
     """
-    # Handle empty string or single character cases
-    if len(s) <= 1:
-        return True
-    
-    # Explicitly compare each character from start and end
-    for i in range(len(s) // 2):
-        # Unlike previous attempts, this ensures strict character-by-character match
-        if s[i] != s[len(s) - 1 - i]:
-            return False
-    
-    return True
+    # This implementation ensures EXACT case-sensitive matching
+    return s == s[::-1]
