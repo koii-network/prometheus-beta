@@ -31,10 +31,12 @@ def find_max_subarray_product_sum(arr, k):
             current_product *= arr[j]
             current_sum += arr[j]
 
-            # Update max_sum if product is within constraint and sum is better
+            # If product exceeds k, break inner loop
+            if current_product > k:
+                break
+
+            # Update max_sum precisely when product is less than or equal to k
             if current_product <= k:
                 max_sum = max(max_sum, current_sum)
-            else:
-                break  # Exit inner loop once product exceeds k
 
     return max_sum
