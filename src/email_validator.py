@@ -38,18 +38,21 @@ def validate_email(email):
     if len(username) > 64 or len(username) == 0:
         return False
     
-    # Check for double dots and other invalid characters
-    if '..' in domain or '.' not in domain:
+    # Check for invalid domain scenarios
+    domain_parts = domain.split('.')
+    if (len(domain_parts) < 2 or  # Must have at least one dot
+        domain_parts[-1] == '' or  # Top-level domain cannot be empty
+        domain_parts[-1] == domain or  # Domain must have a top-level domain
+        '..' in domain):  # No consecutive dots
         return False
     
-    # Validate domain name
-    domain_parts = domain.split('.')
+    # Validate top-level domain length
     if len(domain_parts[-1]) < 2:  # Top-level domain must be at least 2 chars
         return False
     
     # Regular expression for detailed validation
     username_regex = r'^[a-zA-Z0-9._%+-]+$'
-    domain_regex = r'^[a-zA-Z0-9.-]+$'
+    domain_regex = r'^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$'
     
     # Additional checks
     if not re.match(username_regex, username):
