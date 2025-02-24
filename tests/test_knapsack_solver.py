@@ -64,4 +64,4 @@ def test_floating_point_weights():
     """Test with floating-point weights and values"""
     items = [(2.5, 3.5), (3.5, 4.5), (4.5, 5.5)]
     capacity = 10
-    assert solve_knapsack(items, capacity) == 9.0  # Correct result based on knapsack constraint
+    assert solve_knapsack(items, capacity) == 10.0  # Correct result based on knapsack constraint
