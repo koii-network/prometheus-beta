@@ -24,16 +24,21 @@ def conditional_debug_log(condition=True, logger=None):
             # Use provided logger or get the root logger
             log = logger or logging.getLogger()
             
+            # Ensure debug is enabled
+            log.setLevel(logging.DEBUG)
+            
             # Log debug message if condition is True
             if condition:
-                log.debug(f"Calling {func.__name__} with args: {args}, kwargs: {kwargs}")
+                debug_msg_args = f"Calling {func.__name__} with args: {args}, kwargs: {kwargs}"
+                log.debug(debug_msg_args)
             
             # Execute the original function
             result = func(*args, **kwargs)
             
             # Log debug message about return value if condition is True
             if condition:
-                log.debug(f"{func.__name__} returned: {result}")
+                debug_msg_result = f"{func.__name__} returned: {result}"
+                log.debug(debug_msg_result)
             
             return result
         return wrapper
