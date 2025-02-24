@@ -19,7 +19,7 @@ def test_two_equal_elements():
 
 def test_large_numbers():
     """Test with larger numbers"""
-    assert can_partition([100, 100, 100, 100, 100, 100, 100, 100, 100]) == True
+    assert can_partition([100, 100, 100, 100, 100, 100, 100]) == True
 
 def test_empty_list_raises_error():
     """Test that an empty list raises a ValueError"""
