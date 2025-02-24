@@ -5,7 +5,7 @@ from typing import Optional, Union, Callable, Any
 
 def log_stack_trace(
     exception: Optional[Union[Exception, BaseException]] = None, 
-    logger: Optional[logging.Logger] = None, 
+    logger: Optional[Union[logging.Logger, Any]] = None, 
     log_level: int = logging.ERROR
 ) -> str:
     """
@@ -13,18 +13,28 @@ def log_stack_trace(
 
     Args:
         exception (Optional[Exception]): The exception to log. If None, logs current exception.
-        logger (Optional[logging.Logger]): Custom logger. If None, uses root logger.
+        logger (Optional[Logger]): Custom logger. If None, uses root logger.
         log_level (int): Logging level (default is logging.ERROR)
 
     Returns:
         str: The formatted stack trace as a string
 
     Raises:
-        TypeError: If an invalid logger or log level is provided
+        TypeError: If an invalid log level is provided
     """
-    # Validate inputs
-    if logger is not None and not isinstance(logger, logging.Logger):
-        raise TypeError("Logger must be a logging.Logger instance")
+    # Determine logging function
+    def default_log_func(level, message):
+        print(message)
+
+    # Select appropriate logging function
+    if logger is None:
+        log_func = default_log_func
+    elif hasattr(logger, 'log'):
+        log_func = logger.log
+    elif callable(logger):
+        log_func = logger
+    else:
+        log_func = default_log_func
 
     try:
         # Determine the stack trace
@@ -37,14 +47,13 @@ def log_stack_trace(
             # If no exception provided, get the current exception
             exc_type, exc_value, exc_traceback = sys.exc_info()
             if exc_type is None:
-                return "No active exception found."
+                stack_trace = "No active exception found."
+                log_func(log_level, stack_trace)
+                return stack_trace
             
             stack_trace = ''.join(traceback.format_exception(
                 exc_type, exc_value, exc_traceback
             ))
-
-        # Use provided logger or root logger
-        log_func = (logger or logging).log
 
         # Log the stack trace
         log_func(log_level, f"Stack Trace:\n{stack_trace}")
