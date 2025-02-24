@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 def max_non_overlapping_intervals(intervals: List[Tuple[int, int]]) -> int:
     """
-    Find the maximum number of non-overlapping intervals.
+    Find the maximum number of non-overlapping intervals using the interval scheduling algorithm.
     
     Args:
         intervals (List[Tuple[int, int]]): List of intervals, where each interval 
@@ -26,11 +26,13 @@ def max_non_overlapping_intervals(intervals: List[Tuple[int, int]]) -> int:
     # Sort intervals by end time
     sorted_intervals = sorted(intervals, key=lambda x: x[1])
     
-    selected_intervals = []
+    result = 0
+    last_end_time = float('-inf')
     
-    for interval in sorted_intervals:
-        # If the list is empty or current interval doesn't overlap with the last selected interval
-        if not selected_intervals or interval[0] >= selected_intervals[-1][1]:
-            selected_intervals.append(interval)
+    for start, end in sorted_intervals:
+        # Select an interval if it starts after or at the end of the previous interval
+        if start >= last_end_time:
+            result += 1
+            last_end_time = end
     
-    return len(selected_intervals)
+    return result
