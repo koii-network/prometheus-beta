@@ -32,13 +32,13 @@ def test_invalid_inputs():
         count_staircase_combinations(10)
     
     # List with non-integer values
-    with pytest.raises(ValueError, match="All stair lengths must be positive integers"):
+    with pytest.raises(ValueError, match="All stair lengths must be non-negative integers"):
         count_staircase_combinations([1, 2, 'a'])
     
     # List with non-positive integers
-    with pytest.raises(ValueError, match="All stair lengths must be positive integers"):
+    with pytest.raises(ValueError, match="All stair lengths must be non-negative integers"):
         count_staircase_combinations([1, 2, -3])
     
     # List with non-integer types
-    with pytest.raises(ValueError, match="All stair lengths must be positive integers"):
+    with pytest.raises(ValueError, match="All stair lengths must be non-negative integers"):
         count_staircase_combinations([1, 2, 3.5])
