@@ -18,18 +18,14 @@ def test_download_file_success(requests_mock, temp_downloads_dir, monkeypatch):
     test_content = b'Hello, World!'
     requests_mock.get(test_url, content=test_content)
     
-    # Monkeypatch the downloads path
+    # Monkeypatch the base downloads directory
     monkeypatch.chdir(temp_downloads_dir)
-    monkeypatch.setattr('src.file_downloader.os.path.join', 
-                        lambda base, filename: os.path.join(temp_downloads_dir, filename))
-    
-    # Expected destination
-    expected_path = os.path.join(temp_downloads_dir, 'testfile.txt')
     
     # Execute
     downloaded_path = download_file(test_url)
     
     # Verify
+    expected_path = os.path.join(temp_downloads_dir, 'downloads', 'testfile.txt')
     assert downloaded_path == expected_path
     assert os.path.exists(downloaded_path)
     with open(downloaded_path, 'rb') as f:
