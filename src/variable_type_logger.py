@@ -32,7 +32,7 @@ def log_variable_type(variable, logger=None):
     # Get the type of the variable
     var_type = type(variable)
     
-    # Log the type
-    logger.info(str(var_type))
+    # Log the type with the specific format
+    logger.info(f"Variable type is: {var_type}")
     
     return var_type
