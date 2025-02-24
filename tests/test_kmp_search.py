@@ -6,6 +6,7 @@ def test_compute_lps_array():
     assert compute_lps_array('AAAA') == [0, 1, 2, 3]
     assert compute_lps_array('ABCDE') == [0, 0, 0, 0, 0]
     assert compute_lps_array('AABAACAABAA') == [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
+    assert compute_lps_array('') == []
 
 def test_kmp_search_basic():
     # Basic pattern matching tests
@@ -22,6 +23,7 @@ def test_kmp_search_edge_cases():
     # Edge case tests
     assert kmp_search('', '') == []
     assert kmp_search('abc', '') == []
+    assert kmp_search('', 'abc') == []
     assert kmp_search('abc', 'abcd') == []
 
 def test_kmp_search_single_character():
@@ -35,8 +37,6 @@ def test_kmp_search_error_handling():
         kmp_search(123, 'pattern')
     with pytest.raises(TypeError):
         kmp_search('text', 123)
-    with pytest.raises(ValueError):
-        kmp_search('text', '')
 
 def test_kmp_search_overlap():
     # Test overlapping matches
