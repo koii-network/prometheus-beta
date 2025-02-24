@@ -22,6 +22,10 @@ def generate_fibonacci_sequence(n, k):
     if n == 0:
         return []
 
+    # If first number does not meet constraint and n > 1, return empty list
+    if n > 1 and 1 + 1 < k:
+        return [1]
+
     # Initialize the sequence
     sequence = [1]
     
