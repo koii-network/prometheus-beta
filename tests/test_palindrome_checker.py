@@ -28,5 +28,5 @@ def test_numbers_and_mixed_characters():
 
 def test_special_characters():
     assert is_palindrome("!@#$%^&*()") == True
-    assert is_palindrome("a!b@c") == False  # Changed to match actual behavior
-    assert is_palindrome("abc") == True
+    assert is_palindrome("a!b@c") == False
+    assert is_palindrome("abc") == False
