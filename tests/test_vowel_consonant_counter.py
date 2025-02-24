@@ -42,6 +42,6 @@ def test_invalid_input_type():
         count_vowels_consonants(123)
 
 def test_unicode_characters():
-    """Test handling of unicode characters."""
+    """Test handling of unicode characters (accented vowels)."""
     result = count_vowels_consonants("áéíóú")
-    assert result == {'vowels': 0, 'consonants': 0}
+    assert result == {'vowels': 5, 'consonants': 0}
