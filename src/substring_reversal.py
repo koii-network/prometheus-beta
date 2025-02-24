@@ -20,23 +20,21 @@ def reverse_substring(s: str, start: int, end: int) -> str:
     if not isinstance(start, int) or not isinstance(end, int):
         raise TypeError("Start and end indices must be integers")
     
-    # Validate index ranges
-    if start < 0 or end > len(s) or start > end:
+    # Validate index ranges and empty string
+    if len(s) == 0 or start < 0 or end > len(s) or start > end:
         raise ValueError("Invalid substring indices")
     
     # Handle case when start equals end (no reversal needed)
     if start == end:
         return s
     
-    # Convert string to list for manipulation
-    chars = list(s)
+    # Split the string into parts
+    prefix = s[:start]
+    substring = s[start:end]
+    suffix = s[end:]
     
-    # Reverse the substring in-place
-    left, right = start, end - 1
-    while left < right:
-        chars[left], chars[right] = chars[right], chars[left]
-        left += 1
-        right -= 1
+    # Reverse the substring 
+    reversed_substring = ''.join(reversed(list(substring)))
     
-    # Convert back to string
-    return ''.join(chars)
+    # Combine the parts
+    return prefix + reversed_substring + suffix
