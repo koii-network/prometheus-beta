@@ -41,10 +41,11 @@ def find_near_palindrome_pairs(strings):
         for j in range(i+1, len(strings)):
             # Ensure the pair is unique and the strings are different
             pair = tuple(sorted([strings[i], strings[j]]))
-            if pair not in used_pairs and strings[i] != strings[j]:
-                # Check if either string is a near-palindrome
-                if is_near_palindrome(strings[i]) or is_near_palindrome(strings[j]):
-                    near_palindrome_pairs.append(list(pair))
-                    used_pairs.add(pair)
+            if (pair not in used_pairs and 
+                strings[i] != strings[j] and 
+                len(strings[i]) == len(strings[j]) and 
+                (is_near_palindrome(strings[i]) or is_near_palindrome(strings[j]))):
+                near_palindrome_pairs.append(list(pair))
+                used_pairs.add(pair)
     
     return near_palindrome_pairs
