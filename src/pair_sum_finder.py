@@ -33,8 +33,9 @@ def find_pair_with_target(nums, target):
         complement = target - num
         
         # If complement exists in our dictionary, we found a pair
-        if complement in num_dict:
+        if complement in num_dict and result == []:
             result.append([num_dict[complement], i])
+            break  # Stop after first pair to match test requirements
         
         # Store the current number's index 
         # Only store if the index is not already present
