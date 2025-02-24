@@ -36,7 +36,10 @@ def test_insufficient_list_length():
 def test_large_list():
     """Test with a larger list"""
     large_list = list(range(1000))
-    assert find_two_sum(large_list, 1999) == (999, 1000)
+    result = find_two_sum(large_list, 1999)
+    assert result is not None
+    a, b = result
+    assert large_list[a] + large_list[b] == 1999
 
 def test_negative_numbers():
     """Test with negative numbers"""
