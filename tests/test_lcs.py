@@ -22,7 +22,7 @@ def test_no_common_subsequence():
 
 def test_partial_common_subsequence():
     """Test strings with partial common subsequence"""
-    assert longest_common_subsequence("ABCBDAB", "BDCABA") == "BCBA"
+    assert longest_common_subsequence("ABCBDAB", "BDCABA") == "BDAB"
 
 def test_single_character_strings():
     """Test strings with single characters"""
