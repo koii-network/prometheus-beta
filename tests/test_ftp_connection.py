@@ -44,16 +44,21 @@ def test_establish_ftp_connection_incomplete_credentials():
         establish_ftp_connection('example.com', password='pass')
 
 def test_establish_ftp_connection_host_resolution_error():
-    with patch('socket.socket.connect', side_effect=socket.gaierror):
+    with patch('socket.create_connection', side_effect=socket.gaierror):
         with pytest.raises(ConnectionError, match="Could not resolve host"):
             establish_ftp_connection('nonexistent.host')
 
 def test_establish_ftp_connection_timeout():
-    with patch('socket.socket.connect', side_effect=socket.timeout):
+    with patch('socket.create_connection', side_effect=socket.timeout):
         with pytest.raises(ConnectionError, match="Connection to"):
             establish_ftp_connection('slow.host')
 
 def test_establish_ftp_connection_ftp_error():
-    with patch('ftplib.FTP.connect', side_effect=ftplib.all_errors("Authentication failed")):
+    with patch('ftplib.FTP') as mock_ftp:
+        mock_ftp_instance = MagicMock()
+        mock_ftp.return_value = mock_ftp_instance
+        
+        mock_ftp_instance.connect.side_effect = ftplib.error_perm("Authentication failed")
+        
         with pytest.raises(ConnectionError, match="FTP connection error"):
             establish_ftp_connection('example.com', 'user', 'wrongpass')
