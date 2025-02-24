@@ -36,8 +36,13 @@ def log_object(obj: Any, indent: int = 2) -> str:
         
         # For custom objects, try to convert to a dictionary of attributes
         if hasattr(obj, '__dict__'):
+            # Check if the __dict__ is empty to differentiate from pure custom objects
+            obj_dict = obj.__dict__
+            if not obj_dict:
+                raise ValueError("No attributes to log")
+            
             return json.dumps(
-                {k: v for k, v in obj.__dict__.items() if not k.startswith('_')}, 
+                {k: v for k, v in obj_dict.items() if not k.startswith('_')}, 
                 indent=indent, 
                 default=str
             )
@@ -46,8 +51,8 @@ def log_object(obj: Any, indent: int = 2) -> str:
         if isinstance(obj, (int, float, str, bool)):
             return str(obj)
         
-        # Fallback to string representation
-        return repr(obj)
+        # Fallback to raise a TypeError for truly unsupported types
+        raise TypeError(f"Cannot log object of type {type(obj)}")
     
     except Exception as e:
         # If all else fails, provide a meaningful error
