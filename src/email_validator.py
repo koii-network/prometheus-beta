@@ -18,6 +18,7 @@ def validate_email(email: str) -> bool:
     - Total length between 3 and 254 characters
     - No consecutive dots in username or domain
     - No spaces allowed
+    - Requires valid top-level domain
     """
     # Check if email is a string and not empty
     if not isinstance(email, str) or not email:
@@ -27,47 +28,52 @@ def validate_email(email: str) -> bool:
     if len(email) < 3 or len(email) > 254:
         return False
 
-    # Regular expression for email validation
-    # More comprehensive regex that allows more valid email formats
-    email_regex = r'''^
-    # Username part: allow many special characters, but with some restrictions
-    [a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+
-    # Require @ symbol 
-    @
-    # Domain part - allow nested subdomains, internationalized domains
-    (
-        # Standard domain
-        [a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?
-        # Allow multiple nested subdomains
-        (?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*
-        # Punycode for international domains
-        |(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}
-    )
-    $'''
-    
-    # Enable verbose mode with re.VERBOSE to allow comments and whitespace
-    if not re.match(email_regex, email, re.VERBOSE):
-        return False
-
-    # Additional checks 
+    # Check basic email format
     try:
-        # Split email into username and domain
+        # Split into username and domain
         username, domain = email.rsplit('@', 1)
         
-        # Check for consecutive dots in username or domain
+        # Validate username
+        if not username or len(username) > 64:
+            return False
+        
+        # Validate domain
+        if not domain or domain.startswith('.') or domain.endswith('.'):
+            return False
+        
+        # Check for single dot and valid TLD
+        domain_parts = domain.split('.')
+        if len(domain_parts) < 2 or len(domain_parts[-1]) < 2:
+            return False
+        
+        # Additional checks for username and domain
         if '..' in username or '..' in domain:
             return False
         
-        # Ensure no spaces anywhere
+        # No spaces
         if ' ' in username or ' ' in domain:
             return False
         
-        # Additional domain validation
-        domain_parts = domain.split('.')
-        if len(domain_parts[-1]) < 2:  # Top-level domain must be at least 2 chars
-            return False
-        
-    except ValueError:  # If '@' not found
+    except ValueError:
         return False
 
-    return True
+    # Regex for more nuanced validation
+    # Allow a wide range of valid characters while preventing most invalid formats
+    email_regex = r'''
+    ^
+    # Username allows many characters, but with some restrictions
+    [a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+
+    # Require @ symbol
+    @
+    # Domain allows standard domain names and punycode
+    (
+        # Standard domain with nested subdomains
+        [a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?
+        (?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*
+        |
+        # Internationalized domain names (Punycode)
+        (?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}
+    )
+    $'''
+    
+    return bool(re.match(email_regex, email, re.VERBOSE))
