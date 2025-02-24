@@ -31,18 +31,17 @@ def can_partition(nums):
     # Target is half of total sum
     target = total_sum // 2
     
-    # Dynamic Programming solution with optimized space
+    # Dynamic Programming solution with memoization
     dp = set([0])
     
     for num in nums:
-        # Create a new set to avoid modifying during iteration
-        new_sums = set(dp)
-        for cur_sum in dp:
+        # Create a copy of current sums to avoid modifying during iteration
+        current_sums = dp.copy()
+        for cur_sum in current_sums:
             new_sum = cur_sum + num
             if new_sum == target:
                 return True
             if new_sum < target:
-                new_sums.add(new_sum)
-        dp = new_sums
+                dp.add(new_sum)
     
     return False
