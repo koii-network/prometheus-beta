@@ -8,6 +8,9 @@ def deleteDuplicates(arr):
     Returns:
         list: A new list with duplicates removed, maintaining the original order of first occurrences
     
+    Raises:
+        TypeError: If input is not a list
+    
     Examples:
         >>> deleteDuplicates([1, 2, 3, 2, 1, 5, 6, 5])
         [1, 2, 3, 5, 6]
@@ -16,6 +19,10 @@ def deleteDuplicates(arr):
         >>> deleteDuplicates([1, 1, 1, 1])
         [1]
     """
+    # Check if input is a list
+    if not isinstance(arr, list):
+        raise TypeError("Input must be a list")
+    
     # Use a set to track seen elements while preserving order
     seen = set()
     result = []
