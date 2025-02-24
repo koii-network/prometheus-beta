@@ -31,4 +31,4 @@ def test_get_day_name_edge_cases():
     assert get_day_name('1900-01-01') == 'Monday'
     
     # Future date
-    assert get_day_name('2050-12-25') == 'Monday'
+    assert get_day_name('2050-12-25') == 'Sunday'
