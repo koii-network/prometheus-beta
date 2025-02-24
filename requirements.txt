@@ -1,1 +1,4 @@
-pytest
+requests==2.28.2
+beautifulsoup4==4.12.2
+pytest==7.3.1
+requests-mock==1.10.0
