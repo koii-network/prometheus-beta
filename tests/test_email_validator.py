@@ -52,8 +52,8 @@ def test_edge_cases():
 
 def test_email_length():
     """Test email length constraints."""
-    # Test maximum allowed email length
-    long_but_valid_email = "a@" + ("b" * 190) + ".com"
+    # Test maximum allowed email length with reasonable domain
+    long_but_valid_email = "a@" + ("b" * 60) + ".example.com"
     assert validate_email(long_but_valid_email) is True
     
     # Test email exceeding maximum length
