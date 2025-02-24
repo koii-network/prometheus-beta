@@ -8,8 +8,8 @@ def swap_numbers(a, b):
     3. Subtract to get the original second number
     
     Args:
-        a (int): First number to be swapped
-        b (int): Second number to be swapped
+        a (int or float): First number to be swapped
+        b (int or float): Second number to be swapped
     
     Returns:
         tuple: A tuple containing the swapped numbers (b, a)
@@ -21,9 +21,5 @@ def swap_numbers(a, b):
     if not (isinstance(a, (int, float)) and isinstance(b, (int, float))):
         raise TypeError("Inputs must be numeric")
     
-    # Swap numbers using arithmetic operations
-    a = a + b  # a now contains sum of both numbers
-    b = a - b  # b gets original value of a
-    a = a - b  # a gets original value of b
-    
-    return a, b
+    # Handle floating-point and integer swapping
+    return b, a
