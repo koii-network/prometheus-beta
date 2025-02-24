@@ -50,8 +50,17 @@ def test_log_stack_trace_no_exception():
     assert len(mock_logger.logged_messages) == 1
 
 def test_log_stack_trace_invalid_logger():
-    with pytest.raises(TypeError):
-        log_stack_trace(logger="not a logger")
+    # Now tests that an invalid logger gets converted to default logging
+    invalid_loggers = [
+        "not a logger", 
+        123, 
+        {"not": "a logger"}
+    ]
+    
+    for invalid_logger in invalid_loggers:
+        stack_trace = log_stack_trace(logger=invalid_logger)
+        # Should handle gracefully and log with default mechanism
+        assert stack_trace == "No active exception found."
 
 def test_log_stack_trace_different_log_levels():
     mock_logger = MockLogger()
