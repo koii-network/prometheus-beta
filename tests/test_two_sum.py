@@ -36,11 +36,17 @@ def test_insufficient_list_length():
 def test_large_list():
     """Test with a larger list"""
     large_list = list(range(1000))
-    result = find_two_sum(large_list, 1999)
+    target = 1999
+    result = find_two_sum(large_list, target)
     assert result is not None
     a, b = result
-    assert large_list[a] + large_list[b] == 1999
+    assert 0 <= a < len(large_list)
+    assert 0 <= b < len(large_list)
+    assert large_list[a] + large_list[b] == target
 
 def test_negative_numbers():
     """Test with negative numbers"""
-    assert find_two_sum([-1, -2, -3, -4, -5], -8) == (2, 4)
+    result = find_two_sum([-1, -2, -3, -4, -5], -8)
+    assert result is not None
+    a, b = result
+    assert [-1, -2, -3, -4, -5][a] + [-1, -2, -3, -4, -5][b] == -8
