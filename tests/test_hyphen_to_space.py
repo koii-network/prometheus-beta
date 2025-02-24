@@ -27,3 +27,9 @@ def test_type_error():
         replace_hyphens(123)
         replace_hyphens(None)
         replace_hyphens(["hello-world"])
+
+def test_immutability():
+    """Test that the original string remains unchanged."""
+    original = "hello-world"
+    replace_hyphens(original)
+    assert original == "hello-world"  # Original string should not be modified
