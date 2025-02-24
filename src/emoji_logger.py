@@ -1,6 +1,4 @@
-import logging
 import emoji
-import sys
 
 def log_with_emoji(message, emoji_symbol=None, log_level='info'):
     """
@@ -35,25 +33,11 @@ def log_with_emoji(message, emoji_symbol=None, log_level='info'):
         full_message = message
 
     # Log based on level
-    log_levels = {
-        'debug': logging.DEBUG,
-        'info': logging.INFO,
-        'warning': logging.WARNING,
-        'error': logging.ERROR,
-        'critical': logging.CRITICAL
-    }
+    log_levels = ['debug', 'info', 'warning', 'error', 'critical']
 
     # Validate log level
     if log_level.lower() not in log_levels:
-        raise ValueError(f"Invalid log level: {log_level}. Must be one of {list(log_levels.keys())}")
+        raise ValueError(f"Invalid log level: {log_level}. Must be one of {log_levels}")
 
-    # Configure the logging to write to stdout
-    logging.basicConfig(
-        level=logging.DEBUG,  # Capture all log levels
-        format='%(message)s',
-        stream=sys.stdout  # Output to stdout instead of stderr
-    )
-
-    # Get the logger and log with the appropriate level
-    logger = logging.getLogger(__name__)
-    logger.log(log_levels[log_level.lower()], full_message)
+    # Print the message (default to print without decoration for simplicity)
+    print(full_message)
