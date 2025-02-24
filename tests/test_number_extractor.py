@@ -27,8 +27,8 @@ def test_extract_numbers_with_text():
 
 def test_input_types():
     """Test that the function handles different input types."""
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         extract_numbers(None)
     
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         extract_numbers(123)  # int input
