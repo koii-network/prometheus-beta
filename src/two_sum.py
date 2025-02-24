@@ -36,8 +36,10 @@ def find_two_sum(numbers, target):
         if complement in num_dict:
             return (num_dict[complement], i)
         
-        # Store the current number and its index
-        num_dict[num] = i
+        # Store the current number and its index 
+        # Ensure we're including numbers that can contribute to a solution
+        if num <= target:
+            num_dict[num] = i
     
     # If no solution is found
     return None
