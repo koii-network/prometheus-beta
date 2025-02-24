@@ -22,23 +22,40 @@ def find_word_occurrences(input_string: str, target_word: str) -> list:
     if not input_string or not target_word:
         raise ValueError("Input string and target word cannot be empty")
 
-    # Initialize results and tracking variables
+    # Initialize results
     occurrences = []
+    
+    # Track character count and last searched index
     current_char_count = 0
-    words = input_string.split()
+    start_index = 0
 
-    # Iterate through words to find occurrences
-    for index, word in enumerate(words):
-        # Check if current word matches target word
-        if word == target_word:
-            occurrences.append((current_char_count, index))
+    # Continue searching while there are possible matches
+    while start_index < len(input_string):
+        # Find the next occurrence of the target word
+        found_index = input_string.find(target_word, start_index)
         
-        # Update character count 
-        # Add space after previous word (except for first word)
-        # Use input_string to accurately track spaces and punctuation
-        if index > 0:
-            # Find where previous word ends in the input string
-            prev_word_end_index = input_string.index(words[index-1]) + len(words[index-1])
-            current_char_count = prev_word_end_index
+        # If no more occurrences, break the loop
+        if found_index == -1:
+            break
+        
+        # Make sure the word is a complete word (not part of another word)
+        is_valid_word = (
+            # Check start of string or character before is not alphanumeric
+            (found_index == 0 or not input_string[found_index-1].isalnum()) and
+            # Check end of string or character after is not alphanumeric
+            (found_index + len(target_word) == len(input_string) or 
+             not input_string[found_index + len(target_word)].isalnum())
+        )
+        
+        # If it's a valid word occurrence
+        if is_valid_word:
+            # Find the index in the split string
+            words = input_string[:found_index].split()
+            
+            # Add the occurrence
+            occurrences.append((found_index, len(words)))
+        
+        # Move the start index to continue searching
+        start_index = found_index + 1
 
     return occurrences
