@@ -34,7 +34,7 @@ def test_invalid_inputs():
 def test_negative_numbers():
     """Test sequences with negative numbers."""
     assert find_lis_length([-7, -6, -5, -4]) == 4
-    assert find_lis_length([-5, 2, -1, 3, 4]) == 3
+    assert find_lis_length([-5, 2, -1, 3, 4]) == 4  # Corrected expected length
 
 def test_mixed_order():
     """Test sequences with mixed order and multiple possible subsequences."""
