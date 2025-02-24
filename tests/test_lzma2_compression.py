@@ -9,7 +9,9 @@ def test_compress_decompress_string():
     original = "Hello, world! This is a test of LZMA2 compression."
     compressed = compress_lzma2(original)
     assert compressed  # Ensure compression produces output
-    assert len(compressed) < len(original.encode('utf-8'))  # Compression reduces size
+    
+    # For short strings, compressed size might be larger due to headers
+    # We'll only check that decompression works
     
     decompressed = decompress_lzma2(compressed)
     assert decompressed.decode('utf-8') == original
