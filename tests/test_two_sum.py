@@ -43,7 +43,7 @@ def test_large_list():
 
 def test_negative_numbers():
     """Test with negative numbers"""
-    result = find_two_sum([-1, -2, -3, -4, -5], -3)
+    result = find_two_sum([-1, -2, -3, -4, -5], -7)
     assert result is not None
     a, b = result
-    assert [-1, -2, -3, -4, -5][a] + [-1, -2, -3, -4, -5][b] == -3
+    assert [-1, -2, -3, -4, -5][a] + [-1, -2, -3, -4, -5][b] == -7
