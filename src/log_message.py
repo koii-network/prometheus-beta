@@ -44,6 +44,10 @@ def log_message(
     Raises:
         ValueError: If an invalid color or style is provided
     """
+    # If message is empty, return empty string
+    if not message:
+        return ""
+
     # Initialize colorama
     colorama.init(autoreset=True)
 
