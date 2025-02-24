@@ -4,7 +4,7 @@ from src.filter_multiples import filter_exclusive_multiples
 def test_basic_filtering():
     """Test basic filtering of exclusive multiples."""
     input_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    expected = [5, 6, 7, 9, 10]
+    expected = [3, 5, 6, 9, 10]
     assert filter_exclusive_multiples(input_list) == expected
 
 def test_empty_list():
