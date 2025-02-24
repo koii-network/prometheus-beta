@@ -21,9 +21,17 @@ def log_multiple_values(log_level: int, *values: typing.Any, logger: logging.Log
     # Use root logger if no custom logger is provided
     target_logger = logger or logging.getLogger()
 
+    # Skip logging if no values are provided
+    if not values:
+        return
+
     # Separate positional and keyword arguments
-    str_values = [str(v) for v in values[:-1]] if isinstance(values[-1], dict) else [str(v) for v in values]
-    kwargs = values[-1] if isinstance(values[-1], dict) else {}
+    if values and isinstance(values[-1], dict):
+        str_values = [str(v) for v in values[:-1]]
+        kwargs = values[-1]
+    else:
+        str_values = [str(v) for v in values]
+        kwargs = {}
 
     # Prepare the log message
     message = " ".join(str_values)
