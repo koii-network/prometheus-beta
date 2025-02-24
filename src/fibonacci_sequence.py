@@ -29,13 +29,15 @@ def generate_fibonacci_sequence(n, k):
     if n == 1:
         return sequence
     
-    # Add second number
-    sequence.append(1)
+    # Add second number only if needed for length or sum constraint
+    if n > 1:
+        sequence.append(1)
     
     # Generate the sequence
     while len(sequence) < n:
-        # Check if the sum of last two numbers meets the constraint before adding
+        # Check if the sum of last two numbers meets the constraint
         if sequence[-1] + sequence[-2] < k:
+            # Break if the constraint cannot be met
             break
         
         # Calculate the next number in the sequence
