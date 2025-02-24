@@ -13,7 +13,7 @@ def test_default_logging():
     # Split the result into lines
     lines = result.split('\n')
     
-    # Check that we have 3 lines (top separator, message lines, bottom separator)
+    # Check total number of lines including separators
     assert len(lines) == 3
     
     # Check separator lines
