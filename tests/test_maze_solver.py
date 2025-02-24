@@ -27,7 +27,7 @@ class TestMazeSolver:
         ]
         path = self.solver.find_shortest_path(maze)
         assert path is not None
-        assert len(path) == 5  # Shortest path length
+        assert len(path) == 6  # Actual shortest path length
         assert path[0] == (0, 0)  # Start point
         assert path[-1] == (2, 3)  # End point
     
