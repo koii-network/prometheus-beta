@@ -14,9 +14,8 @@ def log_multiple(level: str = 'info', *values: Any, separator: str = ' ') -> Non
     Raises:
         ValueError: If an invalid logging level is provided.
     """
-    # Configure logging if not already configured
-    logging.basicConfig(level=logging.INFO, format='%(message)s')
-    logger = logging.getLogger(__name__)
+    # Use root logger
+    logger = logging.getLogger()
 
     # Validate logging level
     level = level.lower()
@@ -30,6 +29,10 @@ def log_multiple(level: str = 'info', *values: Any, separator: str = ' ') -> Non
 
     if level not in log_levels:
         raise ValueError(f"Invalid logging level: {level}. Choose from {', '.join(log_levels.keys())}")
+
+    # If no values, just return (instead of logging an empty string)
+    if not values:
+        return
 
     # Convert values to strings and join
     log_message = separator.join(str(value) for value in values)
