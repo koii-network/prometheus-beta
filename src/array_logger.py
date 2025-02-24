@@ -43,10 +43,12 @@ def log_array_table(arr: List[Union[Any, List[Any]]],
         raise ValueError("Headers must match the number of columns in the array")
     
     # Calculate column widths
-    col_widths = [
-        max(len(str(str(row[i]) if i < len(row) else '')), len(headers[i]))
-        for i in range(len(headers))
-    ]
+    col_widths = []
+    for i in range(len(headers)):
+        # Find max width comparing header and all column values
+        col_values = [row[i] if i < len(row) else '' for row in arr]
+        col_values.append(headers[i])
+        col_widths.append(max(len(str(val)) for val in col_values))
     
     # Build table
     lines = []
