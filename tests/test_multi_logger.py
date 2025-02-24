@@ -8,8 +8,19 @@ class TestMultiLogger:
     def setup_method(self):
         # Redirect logging to a string buffer for testing
         self.log_capture = StringIO()
-        logging.basicConfig(stream=self.log_capture, level=logging.DEBUG, 
-                            format='%(levelname)s:%(message)s')
+        root_logger = logging.getLogger()
+        root_logger.setLevel(logging.DEBUG)
+        
+        # Remove existing handlers
+        for handler in root_logger.handlers[:]:
+            root_logger.removeHandler(handler)
+        
+        # Create a StreamHandler using the StringIO
+        handler = logging.StreamHandler(self.log_capture)
+        handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(levelname)s:%(message)s')
+        handler.setFormatter(formatter)
+        root_logger.addHandler(handler)
 
     def test_default_info_logging(self):
         log_multiple('info', 'Hello', 'World', 42)
@@ -45,8 +56,11 @@ class TestMultiLogger:
     def test_no_values(self):
         log_multiple('info')
         log_output = self.log_capture.getvalue().strip()
-        assert log_output.endswith('')
+        assert log_output == ''
 
     def teardown_method(self):
-        # Close the log capture
+        # Close the log capture and remove handlers
+        root_logger = logging.getLogger()
+        for handler in root_logger.handlers[:]:
+            root_logger.removeHandler(handler)
         self.log_capture.close()
