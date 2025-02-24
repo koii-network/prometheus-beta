@@ -19,20 +19,34 @@ def sort_array_with_even_squares(arr):
     if not arr:
         return []
     
-    # Sort the original array
+    # Sort a copy of the array in ascending order
     sorted_arr = sorted(arr)
     
-    # Create a copy of the sorted array to manipulate
-    result = sorted_arr.copy()
+    # Track even and odd numbers with their original indices
+    even_positions = []
+    odd_positions = []
+    for i, num in enumerate(sorted_arr):
+        if num % 2 == 0:
+            even_positions.append((i, num))
+        else:
+            odd_positions.append((i, num))
     
-    # Find indices of even numbers
-    even_indices = [i for i, num in enumerate(sorted_arr) if num % 2 == 0]
+    # Sort even squares in descending order, keeping their original indices from sorted array
+    even_squares = sorted(
+        [(pos[0], pos[1] ** 2) for pos in even_positions], 
+        key=lambda x: x[1], 
+        reverse=True
+    )
     
-    # Generate even squares in descending order
-    even_squares = sorted([num ** 2 for num in sorted_arr if num % 2 == 0], reverse=True)
+    # Create the result array, preserving positions
+    result = [0] * len(sorted_arr)
     
-    # Replace even numbers with their squares
-    for i, square in zip(even_indices, even_squares):
-        result[i] = square
+    # First place odd numbers
+    for pos, val in odd_positions:
+        result[pos] = val
+    
+    # Then place even squares
+    for (orig_pos, square) in even_squares:
+        result[orig_pos] = square
     
     return result
