@@ -28,9 +28,9 @@ def sum_subarrays(arr, k):
     
     # Generate all possible subarrays with length <= k
     for start in range(n):
-        current_sum = 0
+        current_subarray_sum = 0
         for length in range(1, min(k + 1, n - start + 1)):
-            current_sum += arr[start + length - 1]
-            total_sum += current_sum
+            current_subarray_sum += arr[start + length - 1]
+            total_sum += current_subarray_sum
     
     return total_sum
