@@ -21,11 +21,18 @@ def compute_weighted_sum(numbers, weights):
         raise ValueError("Numbers and weights lists must have the same length")
     
     # Validate all inputs are numeric
-    try:
-        numbers = [float(num) for num in numbers]
-        weights = [float(weight) for weight in weights]
-    except (TypeError, ValueError):
+    def is_numeric(x):
+        try:
+            float(x)
+            return True
+        except (TypeError, ValueError):
+            return False
+    
+    if not all(is_numeric(num) for num in numbers) or not all(is_numeric(weight) for weight in weights):
         raise ValueError("All numbers and weights must be numeric")
     
-    # Compute weighted sum
+    # Convert to floats and compute weighted sum
+    numbers = [float(num) for num in numbers]
+    weights = [float(weight) for weight in weights]
+    
     return sum(num * weight for num, weight in zip(numbers, weights))
