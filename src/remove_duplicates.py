@@ -20,6 +20,8 @@ def remove_duplicate_chars(input_string):
     result = []
     
     for char in input_string:
+        # For this implementation, we'll only count a character as a duplicate 
+        # if it's exactly the same (including case and special characters)
         if char not in seen:
             seen.add(char)
             result.append(char)
