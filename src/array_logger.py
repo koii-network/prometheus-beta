@@ -74,10 +74,11 @@ def log_array_table(arr: List[Union[Any, List[Any]]],
     # Rows
     for row in processed_rows:
         # Pad row if shorter than headers
-        row_str = indent_str + ' | '.join(
+        formatted_row = [
             str(row[i] if i < len(row) else '').ljust(col_widths[i]) 
             for i in range(len(headers))
-        )
+        ]
+        row_str = indent_str + ' | '.join(formatted_row)
         lines.append(row_str)
     
     return '\n'.join(lines)
