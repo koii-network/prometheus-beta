@@ -1,60 +1,35 @@
 import logging
-import io
-import sys
 import pytest
 from src.multi_line_logger import log_multiline
 
-def test_log_multiline_default():
+def test_log_multiline_default(caplog):
     """Test default logging behavior"""
-    # Capture stdout
-    captured_output = io.StringIO()
-    sys.stdout = captured_output
-
-    # Configure logging to write to stdout
-    logging.basicConfig(stream=sys.stdout, level=logging.INFO, 
-                        format='%(message)s')
-
+    caplog.set_level(logging.INFO)
     message = "Test multi-line logging"
     sep_line = log_multiline(message)
-
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-
-    # Get the captured output and split into lines
-    output_lines = captured_output.getvalue().strip().split('\n')
-
-    assert len(output_lines) == 3
-    assert output_lines[0] == '*' * 40
-    assert output_lines[1] == message
-    assert output_lines[2] == '*' * 40
+    
+    log_records = caplog.records
+    assert len(log_records) == 3
+    assert log_records[0].msg == '*' * 40
+    assert log_records[1].msg == message
+    assert log_records[2].msg == '*' * 40
     assert sep_line == '*' * 40
 
-def test_log_multiline_custom_params():
+def test_log_multiline_custom_params(caplog):
     """Test logging with custom separator and length"""
-    # Capture stdout
-    captured_output = io.StringIO()
-    sys.stdout = captured_output
-
-    # Configure logging to write to stdout
-    logging.basicConfig(stream=sys.stdout, level=logging.WARNING, 
-                        format='%(message)s')
-
+    caplog.set_level(logging.WARNING)
     message = "Custom logging test"
     sep_line = log_multiline(message, 
                               level=logging.WARNING, 
                               separator='-', 
                               separator_length=20)
-
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-
-    # Get the captured output and split into lines
-    output_lines = captured_output.getvalue().strip().split('\n')
-
-    assert len(output_lines) == 3
-    assert output_lines[0] == '-' * 20
-    assert output_lines[1] == message
-    assert output_lines[2] == '-' * 20
+    
+    log_records = caplog.records
+    assert len(log_records) == 3
+    assert log_records[0].msg == '-' * 20
+    assert log_records[1].msg == message
+    assert log_records[2].msg == '-' * 20
+    assert log_records[0].levelno == logging.WARNING
     assert sep_line == '-' * 20
 
 def test_log_multiline_error_cases():
