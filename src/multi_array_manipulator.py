@@ -23,6 +23,11 @@ def multiArrayManipulator(arr: List[List[int]], manipulations: Dict[str, Union[s
     if not arr or not all(isinstance(row, list) for row in arr):
         raise ValueError("Input must be a non-empty 2D list")
 
+    # Ensure all rows have the same length
+    row_length = len(arr[0])
+    if not all(len(row) == row_length for row in arr):
+        raise ValueError("All rows must have the same length")
+
     # Create a copy to avoid modifying the original array
     result = [row.copy() for row in arr]
 
@@ -55,7 +60,11 @@ def _multiply(arr: List[List[int]], value: Union[int, List[List[int]]]) -> List[
         return [[elem * value for elem in row] for row in arr]
     
     # Array multiplication
-    if not isinstance(value, list) or len(value) != len(arr):
+    if not isinstance(value, list):
+        raise ValueError("Multiplication value must be an integer or a 2D list")
+    
+    # Check dimensions match
+    if (len(value) != len(arr)) or any(len(row) != len(arr[0]) for row in value):
         raise ValueError("Multiplication array must match input array dimensions")
     
     return [
@@ -79,7 +88,11 @@ def _add(arr: List[List[int]], value: Union[int, List[List[int]]]) -> List[List[
         return [[elem + value for elem in row] for row in arr]
     
     # Array addition
-    if not isinstance(value, list) or len(value) != len(arr):
+    if not isinstance(value, list):
+        raise ValueError("Addition value must be an integer or a 2D list")
+    
+    # Check dimensions match
+    if (len(value) != len(arr)) or any(len(row) != len(arr[0]) for row in value):
         raise ValueError("Addition array must match input array dimensions")
     
     return [
