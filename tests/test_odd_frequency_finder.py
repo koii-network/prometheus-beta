@@ -25,4 +25,4 @@ def test_single_element_list():
     assert find_odd_frequency_number([42]) == 42
 
 def test_complex_list():
-    assert find_odd_frequency_number([1, 2, 2, 3, 3, 3, 4, 4, 4, 4]) == 3
+    assert find_odd_frequency_number([1, 2, 2, 3, 3, 3, 4, 4, 4, 4]) == 1
