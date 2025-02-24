@@ -8,6 +8,8 @@ The implementation follows the generalized Fibonacci recurrence
 that works for both positive and negative indices.
 """
 
+import math
+
 def fibonacci(n):
     """
     Generate the nth number in an extended Fibonacci sequence.
@@ -54,29 +56,33 @@ def fibonacci(n):
             return (-1)**(abs(n)+1) * b
     
     # Floating-point and non-integer cases
-    # Use a more robust method that avoids complex numbers
-    from math import sin, pi, floor
+    # Binet's formula with careful handling
+    phi = (1 + math.sqrt(5)) / 2
+    psi = (1 - math.sqrt(5)) / 2
     
-    # If it's very close to an integer, treat it as such
-    if abs(n - round(n)) < 1e-10:
-        return fibonacci(round(n))
-    
-    # Generalized method for non-integer indices
-    def sign(x):
-        return 1 if x >= 0 else -1
-    
-    # Use a combination of trigonometric properties
-    def generalized_fibonacci(x):
-        # Approximate Fibonacci for non-integer indices
-        k = floor(abs(x))
-        f_k = fibonacci(k)
-        f_k1 = fibonacci(k + 1)
+    # Generalized Fibonacci formula with sign correction
+    def safe_power(base, exp):
+        """Safely handle power operations to avoid complex numbers."""
+        # Handle sign separately
+        sign = 1 if exp >= 0 else -1
+        abs_exp = abs(exp)
         
-        # Linear interpolation with trigonometric adjustment
-        frac = abs(x) - k
-        interpolated = f_k * (1 - frac) + f_k1 * frac
+        # Compute the base raised to the absolute value of the exponent
+        try:
+            result = abs(base) ** abs_exp
+        except Exception:
+            # Fallback to math.pow if ** fails
+            result = math.pow(abs(base), abs_exp)
         
-        # Adjust sign for negative indices
-        return sign(x) * interpolated
+        # Apply sign correction if exponent is negative
+        return sign * result
     
-    return generalized_fibonacci(n)
+    # Careful computation avoiding complex numbers
+    # Breaking down the Binet formula to handle edge cases
+    def generalized_fib(x):
+        # Adjust for potential floating-point precision issues
+        term1 = safe_power(phi, x)
+        term2 = safe_power(psi, x)
+        return (term1 - term2) / math.sqrt(5)
+    
+    return generalized_fib(n)
