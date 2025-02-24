@@ -1,5 +1,5 @@
 import calendar
-from datetime import date, timedelta
+from datetime import date
 
 def count_weekends_in_month(year: int, month: int) -> int:
     """
@@ -23,16 +23,12 @@ def count_weekends_in_month(year: int, month: int) -> int:
         raise ValueError("Year must be a positive integer")
 
     # Get the first and last day of the month
-    first_day = date(year, month, 1)
     _, last_day_num = calendar.monthrange(year, month)
-    last_day = date(year, month, last_day_num)
 
-    # Count weekend days
-    weekend_count = 0
-    current_day = first_day
-    while current_day <= last_day:
-        if current_day.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
-            weekend_count += 1
-        current_day += timedelta(days=1)
+    # Count weekend days by iterating through each day
+    weekend_count = sum(
+        1 for day in range(1, last_day_num + 1)
+        if date(year, month, day).weekday() >= 5  # 5 = Saturday, 6 = Sunday
+    )
     
     return weekend_count
