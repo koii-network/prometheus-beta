@@ -31,10 +31,13 @@ def log_multiline(message, separator='=', line_length=50):
     # Create separation line
     sep_line = separator * line_length
 
+    # Join all lines of the message with a simple newline
+    full_message = message
+
     # Construct the full log message
     log_output = [
         sep_line,
-        message,
+        full_message,
         sep_line
     ]
 
