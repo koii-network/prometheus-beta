@@ -15,6 +15,8 @@ def count_unique_characters(input_string: str) -> int:
         4
         >>> count_unique_characters('aAaA')
         2
+        >>> count_unique_characters('AbA')
+        3
         >>> count_unique_characters('')
         0
         >>> count_unique_characters('   ')
@@ -25,4 +27,4 @@ def count_unique_characters(input_string: str) -> int:
         return 0
     
     # Use a set to count unique characters, preserving case sensitivity
-    return len(set(input_string))
+    return len(set(char for char in input_string))
