@@ -26,9 +26,18 @@ def is_valid_increasing_sequence(arr):
         # Validate each element is an integer or can be converted to an integer
         try:
             # Convert to int, but ensure it's an exact integer value
-            converted = int(x)
-            if converted != x and not isinstance(x, int):
+            if isinstance(x, float):
+                if x.is_integer():
+                    converted = int(x)
+                else:
+                    raise ValueError
+            elif isinstance(x, str):
+                converted = int(x)
+            elif isinstance(x, int):
+                converted = x
+            else:
                 raise ValueError
+            
             int_arr.append(converted)
         except (ValueError, TypeError):
             raise ValueError("List must contain only integer-convertible elements")
