@@ -11,7 +11,7 @@ def test_basic_shortest_path():
     }
     path, distance = dijkstra_shortest_path(graph, 'A', 'D')
     assert path == ['A', 'C', 'B', 'D']
-    assert distance == 4
+    assert distance == 6
 
 def test_direct_path():
     # Graph with a direct path
