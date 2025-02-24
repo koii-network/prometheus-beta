@@ -24,25 +24,15 @@ def max_consecutive_char_sum(input_string):
         return ord(input_string[0])
     
     max_sum = 0
-    current_sum = 0
-    consecutive_start = False
     
-    for i in range(1, len(input_string)):
-        # Check if characters are consecutive
-        if ord(input_string[i]) == ord(input_string[i-1]) + 1:
-            # First time seeing consecutive characters
-            if not consecutive_start:
-                current_sum = ord(input_string[i-1]) + ord(input_string[i])
-                consecutive_start = True
-            # Continuing consecutive sequence
+    # We'll check every possible starting character
+    for start in range(len(input_string)):
+        current_sum = ord(input_string[start])
+        for j in range(start + 1, len(input_string)):
+            if ord(input_string[j]) == ord(input_string[j-1]) + 1:
+                current_sum += ord(input_string[j])
             else:
-                current_sum += ord(input_string[i])
-        else:
-            # Not consecutive, reset
-            consecutive_start = False
-            current_sum = 0
-        
-        # Update max sum
+                break
         max_sum = max(max_sum, current_sum)
     
     return max_sum
