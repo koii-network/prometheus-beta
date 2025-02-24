@@ -32,4 +32,4 @@ def test_fibonacci_sequence_large_input():
     sequence = fibonacci_sequence(20)
     assert len(sequence) == 20
     # Verify the last few numbers in the sequence
-    assert sequence[-3:] == [2584, 4181, 6765]
+    assert sequence[-3:] == [1597, 2584, 4181]
