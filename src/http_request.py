@@ -41,11 +41,17 @@ def send_get_request(url: str,
         # Raise an exception for HTTP errors
         response.raise_for_status()
 
+        # Try to get JSON, default to None if fails
+        try:
+            json_data = response.json()
+        except (ValueError, AttributeError):
+            json_data = None
+
         return {
             'status_code': response.status_code,
             'headers': dict(response.headers),
             'text': response.text,
-            'json': response.json() if response.content else None
+            'json': json_data
         }
 
     except requests.RequestException as e:
