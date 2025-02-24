@@ -26,7 +26,7 @@ def bitwise_and_range(start, end):
     if start == end:
         return start
     
-    # Find the number of bits to shift
+    # Find the common prefix by shifting
     shift = 0
     while start != end:
         start >>= 1
