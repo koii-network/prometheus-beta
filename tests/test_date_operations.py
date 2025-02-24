@@ -36,4 +36,4 @@ def test_large_day_subtraction():
     """Test subtracting a large number of days"""
     original_date = datetime(2023, 5, 15)
     result = subtract_days(original_date, 1000)
-    assert result == datetime(2020, 8, 20)
+    assert result == datetime(2020, 8, 18)  # Corrected to match actual computation
