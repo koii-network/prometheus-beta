@@ -21,6 +21,8 @@ def find_most_frequent_char(input_string: str) -> str:
         'a'
         >>> find_most_frequent_char("")
         ''
+        >>> find_most_frequent_char("hello!!")
+        '!'
     """
     # Check if input is a string
     if not isinstance(input_string, str):
@@ -35,5 +37,10 @@ def find_most_frequent_char(input_string: str) -> str:
     for char in input_string:
         char_counts[char] = char_counts.get(char, 0) + 1
     
-    # Find the most frequent character
-    return max(char_counts, key=char_counts.get)
+    # Find the maximum frequency
+    max_freq = max(char_counts.values())
+    
+    # Find the first character with the maximum frequency
+    for char, count in char_counts.items():
+        if count == max_freq:
+            return char
