@@ -7,7 +7,7 @@ def test_sum_of_multiples_basic():
 
 def test_sum_of_multiples_same_number():
     """Test when a and b are the same number"""
-    assert sum_of_multiples(7, 7) == ara(7, 7) == 595  # Sum of multiples of 7 up to 100
+    assert sum_of_multiples(7, 7) == 595  # Sum of multiples of 7 up to 100
 
 def test_sum_of_multiples_one_overlap():
     """Test case with some overlapping multiples"""
