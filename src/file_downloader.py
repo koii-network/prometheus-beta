@@ -37,8 +37,12 @@ def download_file(url, destination=None):
         else:
             filename = url.split('/')[-1]
         
+        # Create downloads directory if it doesn't exist
+        downloads_dir = os.path.join(os.getcwd(), 'downloads')
+        os.makedirs(downloads_dir, exist_ok=True)
+        
         # Use downloads directory if no destination specified
-        destination = os.path.join('downloads', filename)
+        destination = os.path.join(downloads_dir, filename)
 
     # Ensure the directory exists
     os.makedirs(os.path.dirname(destination), exist_ok=True)
