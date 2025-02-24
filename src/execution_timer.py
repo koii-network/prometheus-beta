@@ -15,6 +15,10 @@ def measure_execution_time(func: Callable[..., Any]) -> Callable[..., Any]:
     Raises:
         TypeError: If the input is not a callable object.
     """
+    # Validate input before decorating
+    if not callable(func):
+        raise TypeError("Input must be a callable object")
+
     @functools.wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> tuple:
         """
@@ -27,10 +31,6 @@ def measure_execution_time(func: Callable[..., Any]) -> Callable[..., Any]:
         Returns:
             tuple: A tuple containing (original_return_value, execution_time_in_seconds)
         """
-        # Validate input
-        if not callable(func):
-            raise TypeError("Input must be a callable object")
-
         # Measure start time
         start_time = time.perf_counter()
 
