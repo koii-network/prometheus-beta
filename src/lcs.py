@@ -27,7 +27,7 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
     m, n = len(str1), len(str2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
     
-    # Fill the dp table with case-insensitive matching
+    # Fill the dp table
     for i in range(1, m + 1):
         for j in range(1, n + 1):
             if str1[i-1].lower() == str2[j-1].lower():
@@ -35,25 +35,50 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
             else:
                 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
     
-    # Find the max length
-    max_length = max(max(row) for row in dp)
-    
-    # Reconstruct the longest common subsequence
-    lcs = []
-    i, j = m, n
-    while i > 0 and j > 0:
+    # Find all possible longest common subsequences
+    def backtrack(i, j, current):
+        # Base case
+        if i == 0 or j == 0:
+            return [current]
+        
+        # If current characters match
         if str1[i-1].lower() == str2[j-1].lower():
-            # Prefer lowercase subsequence in case of ambiguity
-            if str1[i-1].islower():
-                lcs.append(str1[i-1])
-            else:
-                lcs.append(str2[j-1])
-            i -= 1
-            j -= 1
-        elif dp[i-1][j] > dp[i][j-1]:
-            i -= 1
-        else:
-            j -= 1
+            # Include the character and continue backtracking
+            sub_results = backtrack(i-1, j-1, current + [str1[i-1]])
+            return sub_results
+        
+        # Choose the path with maximum length
+        if dp[i-1][j] > dp[i][j-1]:
+            return backtrack(i-1, j, current)
+        elif dp[i-1][j] < dp[i][j-1]:
+            return backtrack(i, j-1, current)
+        
+        # If both paths have same length, explore both
+        left = backtrack(i-1, j, current)
+        right = backtrack(i, j-1, current)
+        return left + right
     
-    # Return the LCS as a string (reversed because we built it backwards)
-    return ''.join(reversed(lcs))
+    # Find all possible max length subsequences
+    sequences = backtrack(m, n, [])
+    
+    # Remove duplicates while preserving order
+    unique_sequences = []
+    for seq in sequences:
+        if len(seq) == max(len(s) for s in sequences):
+            unique_sequences.append(seq)
+    
+    # If no sequences found, return empty string
+    if not unique_sequences:
+        return ""
+    
+    # Complex selection logic
+    def score_sequence(seq):
+        # Prefer sequences that match the original case more closely
+        original_case_matches = sum(1 for a, b in zip(seq, str1) if a == b)
+        return original_case_matches
+    
+    # Select the best sequence
+    best_sequence = max(unique_sequences, key=score_sequence)
+    
+    # Return as a string, reversed because we built it backwards
+    return ''.join(reversed(best_sequence))
