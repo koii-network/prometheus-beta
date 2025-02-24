@@ -1,3 +1,5 @@
+import unicodedata
+
 def count_vowels_consonants(text):
     """
     Count the number of vowels and consonants in a given string.
@@ -27,12 +29,12 @@ def count_vowels_consonants(text):
     
     # Count vowels and consonants
     for char in text:
-        # Check if the character is a letter (handling unicode)
-        if char.isalpha():
-            # Normalize accented characters to their base form
-            base_char = char.translate(str.maketrans('áéíóúäëïöü', 'aeiouaeioue'))
-            
-            if base_char in vowels:
+        # Normalize unicode characters to their base form
+        normalized_char = unicodedata.normalize('NFKD', char)[0]
+        
+        # Check if the character is a letter
+        if normalized_char.isalpha():
+            if normalized_char in vowels:
                 vowel_count += 1
             else:
                 consonant_count += 1
