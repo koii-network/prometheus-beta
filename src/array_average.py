@@ -23,4 +23,4 @@ def calculate_mixed_avg(numbers):
     largest_three = sorted_numbers[3:]
     
     # Calculate and return the average
-    return (sum(smallest_three) + sum(largest_three)) / 6
+    return round((sum(smallest_three) + sum(largest_three)) / 6, 1)
