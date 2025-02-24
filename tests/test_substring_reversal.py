@@ -8,7 +8,7 @@ def test_reverse_substring_basic():
 
 def test_reverse_substring_partial():
     """Test reversing part of a string"""
-    assert reverse_substring("python programming", 7, 17) == "python gnimmargorp"
+    assert reverse_substring("python programming", 7, 17) == "python nimmargorpg"
 
 def test_reverse_substring_no_change():
     """Test when start and end indices are the same"""
@@ -43,4 +43,4 @@ def test_empty_string():
 
 def test_unicode_support():
     """Test support for Unicode characters"""
-    assert reverse_substring("こんにちは", 0, 3) == "はちにこ"
+    assert reverse_substring("こんにちは", 0, 3) == "にんこちは"
