@@ -16,8 +16,12 @@ def solve_knapsack(items, capacity):
     if not isinstance(items, list):
         raise ValueError("Items must be a list of (weight, value) tuples")
     
-    if not isinstance(capacity, (int, float)) or capacity < 0:
-        raise ValueError("Capacity must be a non-negative number")
+    # Ensure capacity is a non-negative number
+    if not isinstance(capacity, (int, float)):
+        raise ValueError("Capacity must be a non-negative integer")
+    
+    if capacity < 0:
+        raise ValueError("Capacity must be a non-negative integer")
     
     # Convert capacity to integer, multiplying by 100 to preserve precision
     int_capacity = int(float(capacity) * 100)
