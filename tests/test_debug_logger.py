@@ -10,8 +10,11 @@ test_logger.setLevel(logging.DEBUG)
 class LogCapture:
     def __init__(self, logger):
         self.logger = logger
-        self.handler = logging.Handler()
+        self.handler = logging.StreamHandler()
+        self.handler.setLevel(logging.DEBUG)
         self.messages = []
+        formatter = logging.Formatter('%(message)s')
+        self.handler.setFormatter(formatter)
         self.handler.emit = lambda record: self.messages.append(record.getMessage())
         self.logger.addHandler(self.handler)
     
@@ -55,6 +58,8 @@ def test_debug_logging_disabled():
 def test_debug_logging_default_logger():
     """Test logging with default root logger."""
     root_logger = logging.getLogger()
+    root_logger.setLevel(logging.DEBUG)
+    
     log_capture = LogCapture(root_logger)
     
     @conditional_debug_log()
