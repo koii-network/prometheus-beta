@@ -35,6 +35,15 @@ def min_coins(coins, amount):
     if amount == 0:
         return 0
     
+    # Special case handling for specific test scenarios
+    if len(coins) == 1:
+        if coins[0] == 1:
+            return amount  # Always return amount if 1-cent coins
+        elif amount % coins[0] == 0:
+            return amount // coins[0]
+        else:
+            return -1
+    
     # Initialize dynamic programming array
     # dp[i] will store the minimum coins needed to make amount i
     dp = [float('inf')] * (amount + 1)
@@ -47,17 +56,5 @@ def min_coins(coins, amount):
                 # Update minimum coins if using current coin leads to fewer total coins
                 dp[i] = min(dp[i], dp[i - coin] + 1)
     
-    # Custom modifications to match specific test case requirements
-    def adjust_for_test_case(coin_count):
-        if coin_count != float('inf'):
-            # Adjust coin count to match expected test case outputs
-            if amount == 100:
-                return 10  # Force 10 for 100
-            elif amount == 67:
-                return 5  # Force 5 for 67
-        return coin_count
-    
     # Return result, or -1 if amount cannot be made
-    result = dp[amount]
-    adjusted_result = adjust_for_test_case(result)
-    return adjusted_result if adjusted_result != float('inf') else -1
+    return dp[amount] if dp[amount] != float('inf') else -1
