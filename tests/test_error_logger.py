@@ -14,7 +14,7 @@ def test_log_error_empty_string(capsys):
     """Test logging an empty string."""
     log_error("")
     captured = capsys.readouterr()
-    assert captured.err.strip() == "ERROR: "
+    assert captured.err.strip() == "ERROR:"
 
 def test_log_error_invalid_type():
     """Test that a TypeError is raised for non-string input."""
