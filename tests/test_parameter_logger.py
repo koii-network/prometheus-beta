@@ -38,9 +38,9 @@ def test_log_parameters_with_custom_logger():
     # Check log messages
     logs = log_capture.get_logs()
     assert "Calling function: sample_function" in logs
-    assert "Parameter 'a': 5" in logs
-    assert "Parameter 'b': 7" in logs
-    assert "Parameter 'c': 3" in logs
+    assert "  Parameter 'a': 5" in logs
+    assert "  Parameter 'b': 7" in logs
+    assert "  Parameter 'c': 3" in logs
 
 def test_log_parameters_with_default_logger(caplog):
     # Set logging level to INFO
@@ -55,9 +55,9 @@ def test_log_parameters_with_default_logger(caplog):
     # Check log messages
     log_records = [record.message for record in caplog.records]
     assert "Calling function: sample_function_default_logger" in log_records
-    assert "Parameter 'x': 2" in log_records
-    assert "Parameter 'y': 3" in log_records
-    assert "Parameter 'z': 20" in log_records
+    assert "  Parameter 'x': 2" in log_records
+    assert "  Parameter 'y': 3" in log_records
+    assert "  Parameter 'z': 20" in log_records
 
 def test_log_parameters_with_different_argument_types():
     # Setup log capture
@@ -76,6 +76,6 @@ def test_log_parameters_with_different_argument_types():
     # Check log messages
     logs = log_capture.get_logs()
     assert "Calling function: multi_type_function" in logs
-    assert "Parameter 'a_list': [1, 2, 3]" in logs
-    assert "Parameter 'a_dict': {'a': 1, 'b': 2}" in logs
-    assert "Parameter 'a_str': 'test'" in logs
+    assert "  Parameter 'a_list': [1, 2, 3]" in logs
+    assert "  Parameter 'a_dict': {'a': 1, 'b': 2}" in logs
+    assert "  Parameter 'a_str': 'test'" in logs
