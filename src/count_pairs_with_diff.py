@@ -23,6 +23,7 @@ def count_pairs_with_difference_of_five(numbers):
     # Count pairs with difference of 5
     pair_count = 0
     for i in range(len(numbers) - 1):
+        # Check absolute difference, regardless of order
         if abs(numbers[i] - numbers[i+1]) == 5:
             pair_count += 1
 
