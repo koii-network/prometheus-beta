@@ -25,7 +25,7 @@ def test_error_handling():
         find_smallest_int_to_multiple_of_five([1, 2, 3.5])
 
 def test_negative_numbers():
-    assert find_smallest_int_to_multiple_of_five([-1, -2, -3]) == 4
+    assert find_smallest_int_to_multiple_of_five([-1, -2, -3]) == 1
     assert find_smallest_int_to_multiple_of_five([-5, -10]) == 5
 
 def test_large_numbers():
