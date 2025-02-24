@@ -2,6 +2,9 @@ import logging
 import pytest
 from src.multi_line_logger import log_multiline
 
+# Configure logging to ensure messages are captured
+logging.basicConfig(level=logging.DEBUG)
+
 # Setup logging to capture log messages
 class LogCapture:
     def __init__(self):
@@ -14,12 +17,16 @@ class LogCapture:
 
 def test_log_multiline_default():
     """Test default logging behavior"""
+    # Set up capture
     log_capture = LogCapture()
-    logger = logging.getLogger()
+    logger = logging.getLogger(__name__)
     logger.addHandler(log_capture.handler)
     
     message = "Test multi-line logging"
     sep_line = log_multiline(message)
+    
+    # Clean up
+    logger.removeHandler(log_capture.handler)
     
     assert len(log_capture.log_records) == 3
     assert log_capture.log_records[0].msg == '*' * 40
@@ -29,8 +36,9 @@ def test_log_multiline_default():
 
 def test_log_multiline_custom_params():
     """Test logging with custom separator and length"""
+    # Set up capture
     log_capture = LogCapture()
-    logger = logging.getLogger()
+    logger = logging.getLogger(__name__)
     logger.addHandler(log_capture.handler)
     
     message = "Custom logging test"
@@ -38,6 +46,9 @@ def test_log_multiline_custom_params():
                               level=logging.WARNING, 
                               separator='-', 
                               separator_length=20)
+    
+    # Clean up
+    logger.removeHandler(log_capture.handler)
     
     assert len(log_capture.log_records) == 3
     assert log_capture.log_records[0].msg == '-' * 20
