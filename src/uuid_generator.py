@@ -21,8 +21,8 @@ def generate_uuid():
         random.seed(time.time_ns())
         random_bytes = [random.randint(0, 255) for _ in range(16)]
     
-    # Set version (4) and variant bits as per RFC 4122
-    # Version 4 UUID: set 4 in 13th character hex position (index 6)
+    # Set version (4) bit explicitly
+    # Clear the existing nibble and set version 4
     random_bytes[6] = (random_bytes[6] & 0x0F) | 0x40
     
     # Set variant (RFC 4122): set top two bits to 10
