@@ -29,7 +29,7 @@ def calculate_pair_products(numbers: List[int]) -> List[int]:
         raise TypeError("All elements must be integers")
     
     # Handle empty list case
-    if not numbers:
+    if len(numbers) < 2:
         return []
     
     # Calculate pair products
