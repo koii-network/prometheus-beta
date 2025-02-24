@@ -19,7 +19,7 @@ def test_all_negative_numbers():
 
 def test_mixed_numbers():
     """Test with mixed positive and negative numbers."""
-    assert max_two_number_product([-10, 3, -5, 6, 2]) == 60
+    assert max_two_number_product([-10, 3, -5, 6, 2]) == 50  # Actual max is 6 * (-10) = 50
 
 def test_raises_error_on_single_element():
     """Test that ValueError is raised for single-element list."""
