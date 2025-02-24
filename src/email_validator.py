@@ -19,6 +19,7 @@ def validate_email(email: str) -> bool:
     - No consecutive dots in username or domain
     - No spaces allowed
     - Requires valid top-level domain
+    - Domain parts cannot start or end with hyphen
     """
     # Check if email is a string and not empty
     if not isinstance(email, str) or not email:
@@ -41,8 +42,12 @@ def validate_email(email: str) -> bool:
         if not domain or domain.startswith('.') or domain.endswith('.'):
             return False
         
-        # Check for single dot and valid TLD
+        # Domain parts cannot start or end with hyphen
         domain_parts = domain.split('.')
+        if any(part.startswith('-') or part.endswith('-') for part in domain_parts):
+            return False
+        
+        # Check for single dot and valid TLD
         if len(domain_parts) < 2 or len(domain_parts[-1]) < 2:
             return False
         
