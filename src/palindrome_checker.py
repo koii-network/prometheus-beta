@@ -25,9 +25,10 @@ def is_palindrome(s: str) -> bool:
     if len(s) <= 1:
         return True
     
-    # Check each character from start and end ensuring exact match
+    # Explicitly compare each character from start and end
     for i in range(len(s) // 2):
-        if s[i] != s[-(i+1)]:
+        # Unlike previous attempts, this ensures strict character-by-character match
+        if s[i] != s[len(s) - 1 - i]:
             return False
     
     return True
