@@ -22,7 +22,8 @@ def test_send_email_successful_send(mock_smtp):
         'password', 
         'recipient@example.com', 
         'Test Subject', 
-        'Test Body'
+        'Test Body',
+        validate_deliverability=False
     )
     
     assert result is True
@@ -40,7 +41,8 @@ def test_send_email_smtp_exception(mock_smtp):
         'password', 
         'recipient@example.com', 
         'Test Subject', 
-        'Test Body'
+        'Test Body',
+        validate_deliverability=False
     )
     
     assert result is False
@@ -52,6 +54,8 @@ def test_email_validation():
         'password', 
         'valid_recipient@example.com', 
         'Subject', 
-        'Body'
+        'Body',
+        validate_deliverability=False
     )
-    assert result is False  # Due to mocking
+    # Will return False due to mocking, which is expected
+    assert result is False
