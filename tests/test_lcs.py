@@ -22,11 +22,11 @@ def test_no_common_subsequence():
 
 def test_partial_match():
     """Test LCS with partial matches"""
-    assert longest_common_subsequence("ABCBDAB", "BDCABA") == "BCBA"
+    assert longest_common_subsequence("ABCBDAB", "BDCABA") == "BDAB"
 
 def test_case_sensitivity():
     """Test LCS is case-sensitive"""
-    assert longest_common_subsequence("Hello", "hello") == ""
+    assert longest_common_subsequence("Hello", "hello") == "ello"
 
 def test_repeated_characters():
     """Test LCS with repeated characters"""
