@@ -29,10 +29,9 @@ def rod_cutting(prices, length):
     
     # Build solution bottom-up
     for i in range(1, length + 1):
-        max_val = float('-inf')
         for j in range(1, i + 1):
-            # Either don't cut or cut into pieces
-            max_val = max(max_val, prices[j-1] + dp[i-j])
-        dp[i] = max_val
+            # Choose the maximum between current max and current combination
+            # Correct access of prices by j-1 to handle 0-indexing
+            dp[i] = max(dp[i], prices[j-1] + dp[i-j])
     
     return dp[length]
