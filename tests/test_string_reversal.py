@@ -28,7 +28,7 @@ def test_slicing_method():
 
 def test_splitjoin_method():
     """Test split/reverse/join method."""
-    assert reverse_string("algorithm", method='splitjoin') == "mhtirogli"
+    assert reverse_string("algorithm", method='splitjoin') == "mhtirogla"
     assert reverse_string("", method='splitjoin') == ""
     assert reverse_string("data", method='splitjoin') == "atad"
 
