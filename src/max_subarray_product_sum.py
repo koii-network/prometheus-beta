@@ -22,20 +22,17 @@ def find_max_subarray_product_sum(arr, k):
     n = len(arr)
     max_sum = 0
 
-    # Sliding window approach
+    # Use sliding window with stricter conditions
     for i in range(n):
-        current_product = 1
-        current_sum = 0
-
         for j in range(i, n):
-            current_product *= arr[j]
-            current_sum += arr[j]
+            # Calculate subarray product and sum
+            current_product = 1
+            current_sum = 0
+            for x in range(i, j+1):
+                current_product *= arr[x]
+                current_sum += arr[x]
 
-            # If product exceeds k, break inner loop
-            if current_product > k:
-                break
-
-            # Update max_sum precisely when product is less than or equal to k
+            # Check product constraint specifically
             if current_product <= k:
                 max_sum = max(max_sum, current_sum)
 
