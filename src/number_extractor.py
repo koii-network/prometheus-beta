@@ -11,6 +11,9 @@ def extract_numbers(input_string: str) -> List[int]:
     Returns:
         List[int]: A list of integers found in the string.
 
+    Raises:
+        AttributeError: If input is not a string.
+
     Examples:
         >>> extract_numbers("I have 42 apples and 7 oranges")
         [42, 7]
@@ -19,6 +22,10 @@ def extract_numbers(input_string: str) -> List[int]:
         >>> extract_numbers("Negative numbers like -15 and 20")
         [-15, 20]
     """
+    # Check input type
+    if not isinstance(input_string, str):
+        raise AttributeError("Input must be a string")
+    
     # Use regex to find all integers, including negative numbers
     numbers = re.findall(r'-?\d+', input_string)
     
