@@ -25,8 +25,7 @@ def count_words(text: str) -> int:
     if not isinstance(text, str):
         raise TypeError("Input must be a string")
     
-    # Strip leading and trailing whitespace
-    # Split on whitespace, filtering out empty strings
-    words = text.strip().split()
+    # Use a single split to handle multiple spaces
+    words = [word for word in text.split() if word]
     
     return len(words)
