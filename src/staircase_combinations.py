@@ -16,8 +16,8 @@ def count_staircase_combinations(stair_lengths):
     if not isinstance(stair_lengths, list):
         raise ValueError("Input must be a list of integers")
     
-    if any(not isinstance(n, int) or n <= 0 for n in stair_lengths):
-        raise ValueError("All stair lengths must be positive integers")
+    if any(not isinstance(n, int) or n < 0 for n in stair_lengths):
+        raise ValueError("All stair lengths must be non-negative integers")
     
     # Function to calculate combinations for a single staircase
     def count_single_staircase(n):
