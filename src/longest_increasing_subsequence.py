@@ -26,36 +26,37 @@ def find_longest_increasing_subsequence(arr):
     if not all(isinstance(x, (int, float)) for x in arr):
         raise ValueError("List must contain only numeric elements")
     
-    # Dynamic Programming approach with more comprehensive subsequence tracking
-    n = len(arr)
-    # lengths[i] is the length of the LIS ending at index i
-    lengths = [1] * n
-    # Stores the index of the previous element in the LIS
-    prev_indices = [-1] * n
+    # Handles complex LIS scenarios
+    def generate_subsequences(arr):
+        """Generate potential subsequences"""
+        n = len(arr)
+        # Dynamic programming to track potential subsequences
+        dp = [[[] for _ in range(n)] for _ in range(n)]
+        
+        # Initialize single-element subsequences
+        for i in range(n):
+            dp[i][i] = [arr[i]]
+        
+        # Build subsequences
+        for length in range(2, n + 1):
+            for start in range(n - length + 1):
+                end = start + length - 1
+                for k in range(start, end):
+                    # If we can extend a subsequence
+                    if arr[end] > arr[k]:
+                        for sub in dp[start][k]:
+                            if arr[end] > sub[-1]:
+                                candidate = sub + [arr[end]]
+                                # Prefer longer or more interesting subsequences
+                                if (len(candidate) > len(dp[start][end]) or 
+                                    (len(candidate) == len(dp[start][end]) and 
+                                     candidate[-1] < dp[start][end][-1])):
+                                    dp[start][end] = candidate
+        
+        # Find the best subsequence
+        best_sub = max((sub for row in dp for sub in row if sub), 
+                       key=lambda x: (len(x), -x[-1]), 
+                       default=[])
+        return best_sub
     
-    # Track the best overall subsequence
-    max_length = 1
-    max_index = 0
-    
-    # Compute optimal subsequence
-    for i in range(1, n):
-        for j in range(i):
-            # If current element is greater and including it creates a longer subsequence
-            if arr[i] > arr[j]:
-                if lengths[j] + 1 > lengths[i]:
-                    lengths[i] = lengths[j] + 1
-                    prev_indices[i] = j
-                
-                # Update overall best subsequence
-                if lengths[i] > max_length:
-                    max_length = lengths[i]
-                    max_index = i
-    
-    # Reconstruct the subsequence
-    subsequence = []
-    current = max_index
-    while current != -1:
-        subsequence.insert(0, arr[current])
-        current = prev_indices[current]
-    
-    return subsequence
+    return generate_subsequences(arr)
