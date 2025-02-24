@@ -26,27 +26,42 @@ def find_longest_increasing_subsequence(arr):
     if not all(isinstance(x, (int, float)) for x in arr):
         raise ValueError("List must contain only numeric elements")
     
-    # Dynamic Programming approach
-    n = len(arr)
-    # Lengths of increasing subsequences
-    lengths = [1] * n
-    # Previous indices to track the subsequence
-    prev_indices = [-1] * n
+    def find_lis(arr):
+        """
+        More sophisticated LIS algorithm to handle complex scenarios
+        """
+        n = len(arr)
+        # Track potential subsequences
+        dp = [[] for _ in range(n)]
+        
+        # First candidate is always the first element
+        dp[0] = [arr[0]]
+        
+        # Best subsequence tracking
+        best_sub = dp[0]
+        
+        for i in range(1, n):
+            # Initialize current index subsequence with self
+            dp[i] = [arr[i]]
+            
+            # Try to extend previous subsequences
+            for j in range(i):
+                # If current element can be appended to previous subsequence
+                if arr[i] > arr[j] and len(dp[j]) + 1 > len(dp[i]):
+                    # Create a new candidate subsequence
+                    candidate = dp[j] + [arr[i]]
+                    
+                    # Update if longer or lexicographically smaller
+                    if (len(candidate) > len(dp[i]) or 
+                        (len(candidate) == len(dp[i]) and 
+                         candidate < dp[i])):
+                        dp[i] = candidate
+            
+            # Update best subsequence if needed
+            if len(dp[i]) > len(best_sub) or \
+               (len(dp[i]) == len(best_sub) and dp[i] < best_sub):
+                best_sub = dp[i]
+        
+        return best_sub
     
-    # Compute the longest increasing subsequence
-    for i in range(1, n):
-        for j in range(i):
-            if arr[i] > arr[j] and lengths[i] < lengths[j] + 1:
-                lengths[i] = lengths[j] + 1
-                prev_indices[i] = j
-    
-    # Find the index of the end of the longest subsequence
-    max_length_index = lengths.index(max(lengths))
-    
-    # Reconstruct the subsequence
-    subsequence = []
-    while max_length_index != -1:
-        subsequence.insert(0, arr[max_length_index])
-        max_length_index = prev_indices[max_length_index]
-    
-    return subsequence
+    return find_lis(arr)
