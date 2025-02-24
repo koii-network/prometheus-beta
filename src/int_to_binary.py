@@ -9,11 +9,11 @@ def int_to_binary(number):
         str: A string representation of the binary number.
 
     Raises:
-        TypeError: If the input is not an integer.
+        TypeError: If the input is not an exact integer type.
         ValueError: If the input is a negative number.
     """
-    # Check if input is an integer
-    if not isinstance(number, int):
+    # Strict type checking that excludes bool and float
+    if type(number) is not int:
         raise TypeError("Input must be an integer")
     
     # Check if input is non-negative
