@@ -22,12 +22,12 @@ def sort_array_with_even_squares(arr):
     # Create a copy of the input list to avoid modifying the original
     sorted_arr = sorted(arr)
     
-    # Separate even and odd numbers
+    # Separate even and odd numbers while maintaining order
     even_nums = [num for num in sorted_arr if num % 2 == 0]
     odd_nums = [num for num in sorted_arr if num % 2 != 0]
     
     # Square the even numbers and sort in descending order
     squared_even_nums = sorted([num**2 for num in even_nums], reverse=True)
     
-    # Combine odd numbers and squared even numbers
+    # Combine lists: odd numbers first (sorted), then squared even numbers sorted in descending order
     return odd_nums + squared_even_nums
