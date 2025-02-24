@@ -18,9 +18,12 @@ def log_parameters(logger=None):
         def example_func(a, b, c=None):
             pass
     """
-    # If no logger is provided, use root logger
+    # If no logger is provided, use root logger and ensure it's set to at least INFO level
     if logger is None:
         logger = logging.getLogger()
+        # Ensure at least INFO level is set
+        if logger.level > logging.INFO:
+            logger.setLevel(logging.INFO)
     
     def decorator(func):
         @functools.wraps(func)
