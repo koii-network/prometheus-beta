@@ -17,45 +17,26 @@ def fibonacci_sequence(n: int) -> List[int]:
     Space Complexity: O(n)
     """
     # Validate input
+    if not isinstance(n, int):
+        raise TypeError("n must be an integer")
     if n < 0:
         raise ValueError("n must be a non-negative integer")
     
-    # Define a generator function to create Fibonacci sequence
-    def fib_generator() -> Generator[int, None, None]:
-        """
-        Recursive generator for Fibonacci sequence.
-        Uses memoization to achieve O(n) time complexity.
-        """
-        # Memoization cache to store previously computed Fibonacci numbers
-        memo = {}
-        
-        def fib(k: int) -> int:
-            """
-            Recursive Fibonacci number generator with memoization.
-            
-            Args:
-                k (int): Index of Fibonacci number to compute.
-            
-            Returns:
-                int: Fibonacci number at index k.
-            """
-            # Base cases
-            if k == 0:
-                return 0
-            if k == 1:
-                return 1
-            
-            # Check memoized results first
-            if k in memo:
-                return memo[k]
-            
-            # Compute and memoize the result
-            memo[k] = fib(k-1) + fib(k-2)
-            return memo[k]
-        
-        # Generate Fibonacci numbers
-        for i in range(n):
-            yield fib(i)
+    # Handle special cases
+    if n == 0:
+        return []
+    if n == 1:
+        return [0]
+    if n == 2:
+        return [0, 1]
     
-    # Convert generator to list
-    return list(fib_generator())
+    # Preallocate the list for efficiency
+    fib_seq = [0] * n
+    fib_seq[0] = 0
+    fib_seq[1] = 1
+    
+    # Compute subsequent Fibonacci numbers
+    for i in range(2, n):
+        fib_seq[i] = fib_seq[i-1] + fib_seq[i-2]
+    
+    return fib_seq
