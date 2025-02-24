@@ -20,12 +20,16 @@ def count_words(text: str) -> int:
         >>> count_words("")
         0
     """
-    # Handle None or non-string input
+    # Handle None input
     if text is None:
         return 0
     
-    # Convert to string and strip leading/trailing whitespace
-    text = str(text).strip()
+    # Convert to string and remove lists or other non-string objects
+    if not isinstance(text, str):
+        text = str(text)
+    
+    # Strip leading/trailing whitespace
+    text = text.strip()
     
     # If string is empty after stripping, return 0
     if not text:
