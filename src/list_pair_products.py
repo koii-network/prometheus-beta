@@ -10,15 +10,15 @@ def calculate_pair_products(numbers):
 
     Raises:
         TypeError: If the input is not a list or contains non-integer elements.
-        ValueError: If the input list is empty.
+        ValueError: If the input list is empty or has fewer than 2 elements.
     """
     # Validate input
     if not isinstance(numbers, list):
         raise TypeError("Input must be a list")
     
-    # Check if list is empty
-    if len(numbers) == 0:
-        raise ValueError("Input list cannot be empty")
+    # Check if list has fewer than 2 elements
+    if len(numbers) < 2:
+        raise ValueError("Input list must have at least 2 elements")
     
     # Validate all elements are integers
     if not all(isinstance(x, int) for x in numbers):
@@ -30,4 +30,4 @@ def calculate_pair_products(numbers):
         for j in range(i+1, len(numbers)):
             pair_products.append(numbers[i] * numbers[j])
     
-    return pair_products
+    return sorted(pair_products)
