@@ -30,20 +30,21 @@ def find_largest_file(directory: str) -> Optional[str]:
         for filename in files:
             filepath = os.path.join(root, filename)
             
-            # Skip if not a file or cannot be read
+            # Skip if not a file
             if not os.path.isfile(filepath):
                 continue
 
             try:
-                # Get file size
-                file_size = os.path.getsize(filepath)
-                
-                # Update largest file if current file is larger
-                if file_size > max_size:
-                    max_size = file_size
-                    largest_file = filepath
+                # Get file size ensuring file is readable
+                if os.access(filepath, os.R_OK):
+                    file_size = os.path.getsize(filepath)
+                    
+                    # Update largest file if current file is larger
+                    if file_size > max_size:
+                        max_size = file_size
+                        largest_file = filepath
             except (OSError, IOError):
-                # Skip files that can't be accessed
+                # Skip files that can't be read
                 continue
 
     return largest_file
