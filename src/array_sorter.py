@@ -27,7 +27,7 @@ def sort_array_with_even_squares(arr):
     odd_positions = [(i, num) for i, num in enumerate(sorted_arr) if num % 2 != 0]
     
     # Create sorted even squares
-    even_squares = sorted([(pos[0], num ** 2) for pos in even_positions], key=lambda x: x[1], reverse=True)
+    even_squares = sorted([(pos[0], pos[1] ** 2) for pos in even_positions], key=lambda x: x[1], reverse=True)
     
     # Combine odd and sorted squares back into the original array
     result = [0] * len(sorted_arr)
