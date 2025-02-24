@@ -5,7 +5,7 @@ def test_basic_functionality():
     """Test basic functionality with a simple array."""
     arr = [1, 2, 3]
     k = 2
-    assert sum_subarrays(arr, k) == 17  # (1), (2), (3), (1,2), (2,3)
+    assert sum_subarrays(arr, k) == 14  # (1), (2), (3), (1,2), (2,3)
 
 def test_empty_array():
     """Test with an empty array."""
