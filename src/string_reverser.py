@@ -23,8 +23,14 @@ def reverse_string_with_rules(input_string):
     def is_palindrome(s):
         return s == s[::-1]
     
-    # Split the string into tokens, including whole words and numbers
-    tokens = re.findall(r'\b[a-zA-Z]+\b|\b\d+\b|[^\w\s]|\s+|.', input_string)
+    # Split the string into tokens, ensuring words and numbers are fully captured
+    def custom_split(s):
+        # Regex to capture whole words, numbers, and other elements
+        pattern = r'(\b[a-zA-Z]+\b|\b\d+\b|[^\w\s]|\s+)'
+        return [token for token in re.findall(pattern, s) if token]
+
+    # Split the string into tokens
+    tokens = custom_split(input_string)
     
     # Process each token
     processed_tokens = []
