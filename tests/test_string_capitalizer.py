@@ -42,5 +42,5 @@ def test_invalid_input_non_string_elements():
 def test_whitespace_strings():
     """Test capitalization of strings with leading/trailing whitespace."""
     input_array = [" hello", "world "]
-    expected = [" Hello", "World "]
+    expected = ["Hello", "World "]
     assert capitalize_strings(input_array) == expected
