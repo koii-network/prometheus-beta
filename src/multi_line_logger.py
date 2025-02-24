@@ -1,4 +1,5 @@
 import logging
+import sys
 
 def log_multiline(message, level=logging.INFO, separator='*', separator_length=40):
     """
