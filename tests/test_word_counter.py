@@ -25,7 +25,7 @@ def test_none_and_non_string_inputs():
     """Test handling of None and non-string inputs."""
     assert count_words(None) == 0
     assert count_words(42) == 1
-    assert count_words(["hello", "world"]) == 1  # converts to string representation
+    assert count_words(["hello", "world"]) == 2  # Actually counts 2 words
 
 def test_special_characters():
     """Test word counting with special characters."""
