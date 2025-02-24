@@ -10,7 +10,7 @@ def find_kth_smallest(arr, k):
         The kth smallest element in the array
     
     Raises:
-        ValueError: If k is less than 1 or greater than the array length
+        ValueError: If k is less than 1, greater than the array length, or array is empty
         TypeError: If input is not a list or k is not an integer
     """
     # Input validation
@@ -20,12 +20,12 @@ def find_kth_smallest(arr, k):
     if not isinstance(k, int):
         raise TypeError("k must be an integer")
     
-    if k < 1 or k > len(arr):
-        raise ValueError(f"k must be between 1 and {len(arr)}")
-    
-    # Empty array check
+    # Empty array check first
     if not arr:
         raise ValueError("Array cannot be empty")
+    
+    if k < 1 or k > len(arr):
+        raise ValueError(f"k must be between 1 and {len(arr)}")
     
     def partition(left, right, pivot_index):
         """Partition the array and return the pivot's final position."""
