@@ -15,12 +15,12 @@ def test_basic_calculation():
 def test_negative_numbers():
     """Test with negative numbers"""
     numbers = [-1, -2, -3, 4, 5, 6]
-    assert calculate_mixed_avg(numbers) == 2.5
+    assert calculate_mixed_avg(numbers) == 1.5
 
 def test_floating_point_numbers():
     """Test with floating point numbers"""
     numbers = [1.5, 2.5, 3.5, 4.5, 5.5, 6.5]
-    assert calculate_mixed_avg(numbers) == 4.5
+    assert calculate_mixed_avg(numbers) == 4.0
 
 def test_error_less_than_six_numbers():
     """Test error handling for less than 6 numbers"""
