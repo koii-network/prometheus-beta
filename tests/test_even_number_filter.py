@@ -35,7 +35,7 @@ def test_filter_even_numbers_invalid_input_type():
 def test_filter_even_numbers_invalid_element_type():
     """Test that a TypeError is raised for non-integer elements."""
     with pytest.raises(TypeError, match="All elements must be integers"):
-        filter_even_number_filter([1, 2, "3", 4])
+        filter_even_numbers([1, 2, "3", 4])
 
 def test_filter_even_numbers_large_list():
     """Test filtering a large list to ensure linear time complexity."""
