@@ -48,3 +48,9 @@ def test_non_numeric_inputs_raise_error():
     
     with pytest.raises(ValueError):
         compute_weighted_sum([1, 2], [1, '2'])
+    
+    with pytest.raises(ValueError):
+        compute_weighted_sum([1, 2], [1, None])
+    
+    with pytest.raises(ValueError):
+        compute_weighted_sum([1, 2], [1, []])
