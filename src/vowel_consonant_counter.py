@@ -27,9 +27,12 @@ def count_vowels_consonants(text):
     
     # Count vowels and consonants
     for char in text:
-        # Only count alphabetic characters
+        # Check if the character is a letter (handling unicode)
         if char.isalpha():
-            if char in vowels:
+            # Normalize accented characters to their base form
+            base_char = char.translate(str.maketrans('áéíóúäëïöü', 'aeiouaeioue'))
+            
+            if base_char in vowels:
                 vowel_count += 1
             else:
                 consonant_count += 1
