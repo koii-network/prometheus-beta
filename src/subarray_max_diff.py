@@ -26,20 +26,18 @@ def longest_subarray_with_max_diff(A, k):
     # Initialize tracking variables
     max_length = 1
     current_length = 1
-    last_valid_index = 0
     
-    # Iterate through the array to find longest valid subarray
+    # Iterate through the array to find the longest valid subarray
     for i in range(1, len(A)):
         # Check if absolute difference meets the condition
         if abs(A[i] - A[i-1]) >= k:
             current_length += 1
         else:
-            # Check if the previous subarray is better than the current max
+            # Update max_length and reset current_length
             max_length = max(max_length, current_length)
-            # Reset current length
             current_length = 1
     
-    # Final check for the last potential subarray
+    # Final check to update max_length
     max_length = max(max_length, current_length)
     
     return max_length
