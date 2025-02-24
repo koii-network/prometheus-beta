@@ -9,7 +9,7 @@ def test_unique_characters_basic():
 def test_case_sensitivity():
     """Verify that the function is case-sensitive."""
     assert count_unique_characters('aAaA') == 2
-    assert count_unique_characters('AbA') == 3
+    assert count_unique_characters('AbA') == 2
 
 def test_edge_cases():
     """Test edge cases like empty string and whitespace."""
