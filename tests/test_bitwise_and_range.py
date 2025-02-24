@@ -30,6 +30,6 @@ def test_bitwise_and_range_invalid_range():
     with pytest.raises(ValueError, match="Start must be less than or equal to end"):
         bitwise_and_range(10, 5)
 
-def test_bitwise_and_range_large_numbers():
-    """Test with a larger range of numbers"""
-    assert bitwise_and_range(100, 200) == 64
+def test_bitwise_and_range_consecutive_numbers():
+    """Test with consecutive numbers"""
+    assert bitwise_and_range(128, 135) == 128
