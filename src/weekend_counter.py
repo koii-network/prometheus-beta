@@ -22,13 +22,17 @@ def count_weekends_in_month(year: int, month: int) -> int:
     if year < 1:
         raise ValueError("Year must be a positive integer")
 
-    # Get the number of days in the month
-    cal = calendar.monthcalendar(year, month)
-    
+    # Get the first and last day of the month
+    first_day = date(year, month, 1)
+    _, last_day_num = calendar.monthrange(year, month)
+    last_day = date(year, month, last_day_num)
+
     # Count weekend days
     weekend_count = 0
-    for week in cal:
-        # Saturday is index 5, Sunday is index 6 in calendar.monthcalendar
-        weekend_count += sum(1 for day in [week[5], week[6]] if day != 0)
+    current_day = first_day
+    while current_day <= last_day:
+        if current_day.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
+            weekend_count += 1
+        current_day += timedelta(days=1)
     
     return weekend_count
