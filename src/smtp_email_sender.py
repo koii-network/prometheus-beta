@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email_validator import validate_email, EmailNotValidError
 
 def send_email(sender_email, sender_password, recipient_email, subject, body, 
-               smtp_server='smtp.gmail.com', smtp_port=587):
+               smtp_server='smtp.gmail.com', smtp_port=587, validate_deliverability=False):
     """
     Send an email using SMTP with optional TLS encryption.
 
@@ -16,6 +16,8 @@ def send_email(sender_email, sender_password, recipient_email, subject, body,
         body (str): Body text of the email
         smtp_server (str, optional): SMTP server address. Defaults to Gmail.
         smtp_port (int, optional): SMTP server port. Defaults to 587 (TLS).
+        validate_deliverability (bool, optional): Whether to validate email deliverability. 
+            Defaults to False for testing purposes.
 
     Returns:
         bool: True if email sent successfully, False otherwise
@@ -29,8 +31,8 @@ def send_email(sender_email, sender_password, recipient_email, subject, body,
 
     try:
         # Validate sender and recipient email addresses
-        validate_email(sender_email)
-        validate_email(recipient_email)
+        validate_email(sender_email, check_deliverability=validate_deliverability)
+        validate_email(recipient_email, check_deliverability=validate_deliverability)
     except EmailNotValidError as e:
         raise ValueError(f"Invalid email address: {str(e)}")
 
