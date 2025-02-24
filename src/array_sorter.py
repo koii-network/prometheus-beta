@@ -19,34 +19,26 @@ def sort_array_with_even_squares(arr):
     if not arr:
         return []
     
-    # Sort a copy of the array in ascending order
-    sorted_arr = sorted(arr)
+    # Create new lists to store odd and even numbers
+    odd_nums = sorted([num for num in arr if num % 2 != 0])
+    even_nums = sorted([num for num in arr if num % 2 == 0])
     
-    # Track even and odd numbers with their original indices
-    even_positions = []
-    odd_positions = []
-    for i, num in enumerate(sorted_arr):
-        if num % 2 == 0:
-            even_positions.append((i, num))
+    # Calculate squares of even numbers in descending order
+    even_squares = sorted([num ** 2 for num in even_nums], reverse=True)
+    
+    # Reconstruct the result using manual mapping
+    result = []
+    odd_cursor = 0
+    even_square_cursor = 0
+    
+    for num in sorted(arr):
+        if num % 2 != 0:
+            # Place odd numbers first
+            result.append(odd_nums[odd_cursor])
+            odd_cursor += 1
         else:
-            odd_positions.append((i, num))
-    
-    # Sort even squares in descending order, keeping their original indices from sorted array
-    even_squares = sorted(
-        [(pos[0], pos[1] ** 2) for pos in even_positions], 
-        key=lambda x: x[1], 
-        reverse=True
-    )
-    
-    # Create the result array, preserving positions
-    result = [0] * len(sorted_arr)
-    
-    # First place odd numbers
-    for pos, val in odd_positions:
-        result[pos] = val
-    
-    # Then place even squares
-    for (orig_pos, square) in even_squares:
-        result[orig_pos] = square
+            # Place even squares in descending order
+            result.append(even_squares[even_square_cursor])
+            even_square_cursor += 1
     
     return result
