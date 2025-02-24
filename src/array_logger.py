@@ -26,29 +26,32 @@ def log_array_table(arr: List[Union[Any, List[Any]]],
     if not arr:
         return ""
     
-    # Determine if the array contains nested arrays
-    is_nested = any(isinstance(item, list) for item in arr)
+    # Prepare rows: convert non-list items to single-item lists
+    processed_rows = []
+    for item in arr:
+        if isinstance(item, list):
+            processed_rows.append(item)
+        else:
+            processed_rows.append([item])
     
-    # If not nested, convert to list of lists for consistent processing
-    if not is_nested:
-        arr = [[item] for item in arr]
+    # Determine max column count
+    max_cols = max(len(row) for row in processed_rows)
     
     # Auto-generate headers if not provided
     if headers is None:
-        max_depth = max(len(row) if isinstance(row, list) else 1 for row in arr)
-        headers = [f"Column {i+1}" for i in range(max_depth)]
+        headers = [f"Column {i+1}" for i in range(max_cols)]
     
     # Validate headers match row length
-    if any(len(row) != len(headers) for row in arr if isinstance(row, list)):
+    if len(headers) != max_cols:
         raise ValueError("Headers must match the number of columns in the array")
     
     # Calculate column widths
     col_widths = []
-    for i in range(len(headers)):
-        # Find max width comparing header and all column values
-        col_values = [row[i] if i < len(row) else '' for row in arr]
+    for i in range(max_cols):
+        # Collect values for this column, padding with empty string if needed
+        col_values = [str(row[i] if i < len(row) else '') for row in processed_rows]
         col_values.append(headers[i])
-        col_widths.append(max(len(str(val)) for val in col_values))
+        col_widths.append(max(len(val) for val in col_values))
     
     # Build table
     lines = []
@@ -69,11 +72,7 @@ def log_array_table(arr: List[Union[Any, List[Any]]],
     lines.append(separator)
     
     # Rows
-    for row in arr:
-        # Handle both nested and non-nested rows
-        if not isinstance(row, list):
-            row = [row]
-        
+    for row in processed_rows:
         # Pad row if shorter than headers
         row_str = indent_str + ' | '.join(
             str(row[i] if i < len(row) else '').ljust(col_widths[i]) 
