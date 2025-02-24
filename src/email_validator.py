@@ -10,7 +10,7 @@ def validate_email(email):
     Returns:
         bool: True if the email is valid, False otherwise.
     
-    Validates email format based on RFC 5322 standards with some practical constraints:
+    Validates email format based on RFC 5322 standards with practical constraints:
     - Must have a local part (before @)
     - Must have a domain part (after @)
     - Allows uppercase and lowercase letters
@@ -22,22 +22,20 @@ def validate_email(email):
     if not isinstance(email, str) or not email:
         return False
     
+    # Regular expression for email validation
+    # This regex provides a comprehensive email format check with additional constraints
+    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$'
+    
     # Check total email length (RFC 5322 standard max length)
     if len(email) > 254:
         return False
     
-    # Regular expression for email validation
-    # This regex provides a comprehensive email format check
-    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    
-    # Additional checks can be added as needed
-    # 1. Check if the email matches the basic pattern
-    if not re.match(email_regex, email):
+    # Check for consecutive dots in domain
+    if '..' in email:
         return False
     
-    # 2. Ensure domain has at least one dot and a valid TLD
-    domain = email.split('@')[1]
-    if '.' not in domain or len(domain.split('.')[-1]) < 2:
+    # Basic pattern match
+    if not re.match(email_regex, email):
         return False
     
     return True
