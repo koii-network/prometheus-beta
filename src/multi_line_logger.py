@@ -32,4 +32,4 @@ def log_multiline(message, separator='=', line_length=50):
     sep_line = separator * line_length
 
     # Construct the full log message
-    return f"{sep_line}\n{message}\n{sep_line}"
+    return sep_line + '\n' + message + '\n' + sep_line
