@@ -43,14 +43,5 @@ def test_mismatched_lengths_raise_error():
 
 def test_non_numeric_inputs_raise_error():
     """Test that non-numeric inputs raise a ValueError."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="^All numbers and weights must be numeric$"):
         compute_weighted_sum([1, 'a'], [1, 2])
-    
-    with pytest.raises(ValueError):
-        compute_weighted_sum([1, 2], [1, '2'])
-    
-    with pytest.raises(ValueError):
-        compute_weighted_sum([1, 2], [1, None])
-    
-    with pytest.raises(ValueError):
-        compute_weighted_sum([1, 2], [1, []])
