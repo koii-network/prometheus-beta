@@ -23,22 +23,17 @@ def sum_unique_elements(arr):
     if not all(isinstance(x, int) for x in arr):
         raise TypeError("All elements must be integers")
     
-    # Use a set to track unique elements
-    unique_elements = set()
-    
-    # Sum of unique elements
+    # Use a dictionary to track element frequency
+    element_count = {}
     unique_sum = 0
     
-    # Iterate through the array once - O(n) time complexity
+    # First pass: Count frequencies
     for num in arr:
-        # If this is the first occurrence of the number
-        if num not in unique_elements:
-            unique_elements.add(num)
+        element_count[num] = element_count.get(num, 0) + 1
+    
+    # Second pass: Sum unique elements
+    for num, count in element_count.items():
+        if count == 1:
             unique_sum += num
-        # If number is already in unique_elements, it's a duplicate, 
-        # so we remove it to ensure it's not counted again
-        else:
-            unique_elements.discard(num)
-            unique_sum -= num
     
     return unique_sum
