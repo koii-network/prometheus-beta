@@ -35,18 +35,39 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
             else:
                 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
     
-    # Reconstruct the longest common subsequence
-    lcs = []
-    i, j = m, n
-    while i > 0 and j > 0:
-        if str1[i-1].lower() == str2[j-1].lower():
-            lcs.append(str1[i-1])
-            i -= 1
-            j -= 1
-        elif dp[i-1][j] > dp[i][j-1]:
-            i -= 1
-        else:
-            j -= 1
+    # Find the max length to ensure we get the longest subsequence
+    max_length = max(max(row) for row in dp)
     
-    # Return the LCS as a string (reversed because we built it backwards)
-    return ''.join(reversed(lcs))
+    # Reconstruct the longest common subsequence
+    # We'll try to prefer maintaining original case and selecting the optimal subsequence
+    def backtrack(i, j, current_lcs):
+        if len(current_lcs) == max_length:
+            return current_lcs
+        
+        if i == 0 or j == 0:
+            return current_lcs
+        
+        # If characters match (case-insensitive)
+        if str1[i-1].lower() == str2[j-1].lower():
+            # Try including this character
+            included_lcs = backtrack(i-1, j-1, current_lcs + [str1[i-1]])
+            if len(included_lcs) == max_length:
+                return included_lcs
+        
+        # Try skipping character from either string
+        if dp[i-1][j] >= dp[i][j-1]:
+            skipped_i = backtrack(i-1, j, current_lcs)
+            if len(skipped_i) == max_length:
+                return skipped_i
+        
+        if dp[i][j-1] >= dp[i-1][j]:
+            skipped_j = backtrack(i, j-1, current_lcs)
+            if len(skipped_j) == max_length:
+                return skipped_j
+        
+        return current_lcs
+    
+    # Get the longest common subsequence
+    result = backtrack(m, n, [])
+    
+    return ''.join(reversed(result))
