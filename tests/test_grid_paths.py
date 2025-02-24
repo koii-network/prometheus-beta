@@ -15,7 +15,7 @@ def test_single_row_or_column():
 def test_large_grid():
     """Test larger grid sizes"""
     assert count_unique_paths(10, 10) == 48620, "10x10 grid path count incorrect"
-    assert count_unique_paths(15, 15) == 155117520, "15x15 grid path count incorrect"
+    assert count_unique_paths(15, 15) == 40116600, "15x15 grid path count corrected"
 
 def test_invalid_input():
     """Test error handling for invalid inputs"""
