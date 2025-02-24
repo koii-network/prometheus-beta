@@ -31,13 +31,12 @@ def can_partition(nums):
     # Target is half of total sum
     target = total_sum // 2
     
-    # Dynamic Programming solution
-    # dp[j] represents if a subset sum of j is possible
+    # Dynamic Programming solution with optimized space
     dp = [False] * (target + 1)
     dp[0] = True
     
     for num in nums:
-        # Iterate in reverse to avoid using same number multiple times
+        # Go in reverse to avoid using the same element multiple times
         for j in range(target, num - 1, -1):
             dp[j] |= dp[j - num]
     
