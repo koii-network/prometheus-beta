@@ -23,8 +23,8 @@ def solve_knapsack(items, capacity):
     if capacity < 0:
         raise ValueError("Capacity must be a non-negative integer")
     
-    # Convert capacity to integer, multiplying by 100 to preserve precision
-    int_capacity = int(float(capacity) * 100)
+    # Convert capacity to integer, multiplying by 1000 to preserve precision
+    int_capacity = int(float(capacity) * 1000)
     
     # Handle empty input cases
     if not items or int_capacity == 0:
@@ -38,8 +38,8 @@ def solve_knapsack(items, capacity):
                 item[0] >= 0 and item[1] >= 0):
             raise ValueError("Each item must be a tuple of (weight, value) with non-negative numbers")
         
-        # Convert weights and values to integers by multiplying by 100
-        processed_items.append((int(float(item[0]) * 100), float(item[1])))
+        # Convert weights and values to integers by multiplying by 1000
+        processed_items.append((int(float(item[0]) * 1000), float(item[1])))
     
     # Number of items
     n = len(processed_items)
