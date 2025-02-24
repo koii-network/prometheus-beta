@@ -31,6 +31,10 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
     if not str1 or not str2:
         return ""
     
+    # Check if strings are exactly the same (for case sensitivity)
+    if str1 == str2:
+        return str1
+    
     # Create dynamic programming matrix
     m, n = len(str1), len(str2)
     # Initialize matrix with zeros
@@ -48,7 +52,7 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
     if dp[m][n] == 0:
         return ""
     
-    # Backtrack to find an LCS
+    # Backtrack to find an LCS (ensuring case matches)
     lcs = []
     i, j = m, n
     while i > 0 and j > 0:
@@ -62,4 +66,7 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
             j -= 1
     
     # Return the reversed LCS (as we built it backwards)
-    return ''.join(reversed(lcs))
+    result = ''.join(reversed(lcs))
+    
+    # Ensure the result is truly case-sensitive and maximal
+    return result if len(result) == dp[m][n] else ""
