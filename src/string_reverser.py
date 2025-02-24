@@ -23,8 +23,42 @@ def reverse_string_with_rules(input_string):
     def is_palindrome(s):
         return s == s[::-1]
     
-    # Split the string into tokens
-    tokens = re.findall(r'\b\d+\b|\b[a-zA-Z]+\b|[^\w\s]|\s+', input_string)
+    # Split the string into tokens, ensuring we capture complex scenarios
+    def custom_tokenize(s):
+        tokens = []
+        current_word = ''
+        current_number = ''
+        
+        for char in s:
+            if char.isalpha():
+                if current_number:
+                    tokens.append(current_number)
+                    current_number = ''
+                current_word += char
+            elif char.isdigit():
+                if current_word:
+                    tokens.append(current_word)
+                    current_word = ''
+                current_number += char
+            else:
+                if current_word:
+                    tokens.append(current_word)
+                    current_word = ''
+                if current_number:
+                    tokens.append(current_number)
+                    current_number = ''
+                tokens.append(char)
+        
+        # Add any remaining token
+        if current_word:
+            tokens.append(current_word)
+        if current_number:
+            tokens.append(current_number)
+        
+        return tokens
+    
+    # Tokenize the input
+    tokens = custom_tokenize(input_string)
     
     # Process each token
     processed_tokens = []
