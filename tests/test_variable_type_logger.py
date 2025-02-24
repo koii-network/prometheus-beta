@@ -6,12 +6,15 @@ from src.variable_type_logger import log_variable_type
 
 def test_log_variable_type_int():
     """Test logging type for integer"""
-    # Redirect logging output to capture
+    # Create a logger and stream capture
+    logger = logging.getLogger('test_logger')
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.INFO)
+    handler = logging.StreamHandler(log_capture)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
     
     # Call function and check type
-    result_type = log_variable_type(42)
+    result_type = log_variable_type(42, logger)
     log_output = log_capture.getvalue().strip()
     
     assert result_type == int
@@ -19,12 +22,15 @@ def test_log_variable_type_int():
 
 def test_log_variable_type_string():
     """Test logging type for string"""
-    # Redirect logging output to capture
+    # Create a logger and stream capture
+    logger = logging.getLogger('test_logger')
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.INFO)
+    handler = logging.StreamHandler(log_capture)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
     
     # Call function and check type
-    result_type = log_variable_type("hello")
+    result_type = log_variable_type("hello", logger)
     log_output = log_capture.getvalue().strip()
     
     assert result_type == str
@@ -32,13 +38,16 @@ def test_log_variable_type_string():
 
 def test_log_variable_type_list():
     """Test logging type for list"""
-    # Redirect logging output to capture
+    # Create a logger and stream capture
+    logger = logging.getLogger('test_logger')
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.INFO)
+    handler = logging.StreamHandler(log_capture)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
     
     # Call function and check type
     test_list = [1, 2, 3]
-    result_type = log_variable_type(test_list)
+    result_type = log_variable_type(test_list, logger)
     log_output = log_capture.getvalue().strip()
     
     assert result_type == list
@@ -46,12 +55,15 @@ def test_log_variable_type_list():
 
 def test_log_variable_type_none():
     """Test logging type for None"""
-    # Redirect logging output to capture
+    # Create a logger and stream capture
+    logger = logging.getLogger('test_logger')
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.INFO)
+    handler = logging.StreamHandler(log_capture)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
     
     # Call function and check type
-    result_type = log_variable_type(None)
+    result_type = log_variable_type(None, logger)
     log_output = log_capture.getvalue().strip()
     
     assert result_type == type(None)
@@ -62,13 +74,16 @@ def test_log_variable_type_custom_class():
     class TestClass:
         pass
     
-    # Redirect logging output to capture
+    # Create a logger and stream capture
+    logger = logging.getLogger('test_logger')
     log_capture = io.StringIO()
-    logging.basicConfig(stream=log_capture, level=logging.INFO)
+    handler = logging.StreamHandler(log_capture)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
     
     # Call function and check type
     test_instance = TestClass()
-    result_type = log_variable_type(test_instance)
+    result_type = log_variable_type(test_instance, logger)
     log_output = log_capture.getvalue().strip()
     
     assert result_type == TestClass
