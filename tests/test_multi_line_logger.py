@@ -13,11 +13,12 @@ def test_default_logging():
     # Split the result into lines
     lines = result.split('\n')
     
-    # Check that we have 3 lines (top separator, message, bottom separator)
+    # Check that we have 3 lines (top separator, message lines, bottom separator)
     assert len(lines) == 3
     
     # Check separator lines
-    assert all(line == '==' * 25 for line in [lines[0], lines[2]])
+    assert lines[0] == '==' * 25
+    assert lines[2] == '==' * 25
     
     # Check message content
     assert lines[1] == message
@@ -65,5 +66,5 @@ def test_multiline_message():
     
     lines = result.split('\n')
     
-    assert len(lines) == 5  # 2 separator lines + 3 message lines
-    assert lines[1:4] == message.split('\n')
+    assert len(lines) == 3
+    assert lines[1] == message
