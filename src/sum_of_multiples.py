@@ -1,6 +1,6 @@
 def sum_of_multiples(a: int, b: int) -> int:
     """
-    Calculate the sum of all multiples of a and b in the range from 1 to 100 (inclusive).
+    Calculate the sum of all unique multiples of a and b in the range from 1 to 100 (inclusive).
     
     Args:
         a (int): First integer to find multiples of (between 1 and 100)
@@ -19,13 +19,10 @@ def sum_of_multiples(a: int, b: int) -> int:
     # Use a set to avoid counting duplicate multiples
     multiples = set()
     
-    # Find multiples of a
-    for i in range(a, 101, a):
-        multiples.add(i)
-    
-    # Find multiples of b
-    for i in range(b, 101, b):
-        multiples.add(i)
+    # Find and sum multiples of a and b
+    for num in range(1, 101):
+        if num % a == 0 or num % b == 0:
+            multiples.add(num)
     
     # Return the sum of unique multiples
     return sum(multiples)
