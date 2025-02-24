@@ -3,29 +3,10 @@ import logging
 import time
 from src.function_logger import log_execution_time
 
-# Capture log messages for testing
-class LogCapture:
-    def __init__(self):
-        self.captured_logs = []
-    
-    def capture(self, record):
-        self.captured_logs.append(record)
-
-@pytest.fixture
-def log_handler():
-    """Fixture to capture log messages"""
-    log_capture = LogCapture()
-    handler = logging.Handler()
-    handler.emit = log_capture.capture
-    logger = logging.getLogger()
-    logger.addHandler(handler)
-    
-    yield log_capture
-    
-    logger.removeHandler(handler)
-
-def test_log_execution_time_basic(log_handler):
+def test_log_execution_time_basic(caplog):
     """Test basic logging functionality"""
+    caplog.set_level(logging.INFO)
+    
     @log_execution_time
     def simple_function(x, y):
         return x + y
@@ -35,15 +16,19 @@ def test_log_execution_time_basic(log_handler):
     assert result == 7
     
     # Check log messages
-    log_messages = [record for record in log_handler.captured_logs if record.levelno == logging.INFO]
+    log_records = caplog.records
     
-    assert len(log_messages) >= 3
-    assert any("Starting execution of simple_function" in msg.getMessage() for msg in log_messages)
-    assert any("Finished execution of simple_function" in msg.getMessage() for msg in log_messages)
-    assert any("Execution time:" in msg.getMessage() for msg in log_messages)
+    assert len(log_records) >= 3
+    log_messages = [record.getMessage() for record in log_records]
+    
+    assert any("Starting execution of simple_function" in msg for msg in log_messages)
+    assert any("Finished execution of simple_function" in msg for msg in log_messages)
+    assert any("Execution time:" in msg for msg in log_messages)
 
-def test_log_execution_time_with_exception(log_handler):
+def test_log_execution_time_with_exception(caplog):
     """Test logging behavior with exceptions"""
+    caplog.set_level(logging.ERROR)
+    
     @log_execution_time
     def error_function():
         raise ValueError("Test error")
@@ -52,12 +37,14 @@ def test_log_execution_time_with_exception(log_handler):
         error_function()
     
     # Check log messages
-    log_messages = log_handler.captured_logs
+    log_messages = [record.getMessage() for record in caplog.records]
     
-    assert any("Exception in error_function" in msg.getMessage() for msg in log_messages)
+    assert any("Exception in error_function" in msg for msg in log_messages)
 
-def test_log_execution_time_performance(log_handler):
+def test_log_execution_time_performance(caplog):
     """Test logging performance and timing accuracy"""
+    caplog.set_level(logging.INFO)
+    
     @log_execution_time
     def sleep_function(duration):
         time.sleep(duration)
@@ -70,10 +57,10 @@ def test_log_execution_time_performance(log_handler):
     assert result == 0.1
     
     # Check log messages
-    log_messages = [record for record in log_handler.captured_logs if record.levelno == logging.INFO]
+    log_messages = [record.getMessage() for record in caplog.records]
     
     # Verify execution time log
-    time_log = [msg.getMessage() for msg in log_messages if "Execution time:" in msg.getMessage()][0]
+    time_log = [msg for msg in log_messages if "Execution time:" in msg][0]
     reported_time = float(time_log.split(":")[-1].strip().split()[0])
     
     # Allow small margin of error for timing
