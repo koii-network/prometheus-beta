@@ -26,13 +26,14 @@ def max_non_overlapping_intervals(intervals: List[Tuple[int, int]]) -> int:
     # Sort intervals by end time
     sorted_intervals = sorted(intervals, key=lambda x: x[1])
     
-    result = 0
-    last_end_time = float('-inf')
+    selected_intervals = []
     
-    for start, end in sorted_intervals:
-        # Select an interval if it starts after or at the end of the previous interval
-        if start >= last_end_time:
-            result += 1
-            last_end_time = end
+    for interval in sorted_intervals:
+        # If the current interval does not overlap with the last selected interval
+        if not selected_intervals or interval[0] >= selected_intervals[-1][1]:
+            selected_intervals.append(interval)
+        # If current interval is completely contained within another, skip it
+        elif selected_intervals and interval[0] >= selected_intervals[-1][0] and interval[1] <= selected_intervals[-1][1]:
+            continue
     
-    return result
+    return len(selected_intervals)
