@@ -18,27 +18,35 @@ def send_http_get_request(url, headers=None, params=None, timeout=10):
 
     Raises:
         ValueError: If the URL is empty or None.
+        RuntimeError: For network-related errors with a specific error message.
         requests.HTTPError: For HTTP error responses.
-        requests.RequestException: For other network-related errors.
     """
     # Validate input URL
     if not url:
         raise ValueError("URL cannot be empty or None")
 
-    # Send GET request with optional headers, params, and timeout
-    response = requests.get(
-        url, 
-        headers=headers, 
-        params=params, 
-        timeout=timeout
-    )
-    
-    # Raise an exception for bad HTTP responses
-    response.raise_for_status()
+    try:
+        # Send GET request with optional headers, params, and timeout
+        response = requests.get(
+            url, 
+            headers=headers, 
+            params=params, 
+            timeout=timeout
+        )
+        
+        # Raise an exception for bad HTTP responses
+        response.raise_for_status()
 
-    # Return a comprehensive response dictionary
-    return {
-        'status_code': response.status_code,
-        'content': response.text,
-        'headers': dict(response.headers)
-    }
+        # Return a comprehensive response dictionary
+        return {
+            'status_code': response.status_code,
+            'content': response.text,
+            'headers': dict(response.headers)
+        }
+
+    except requests.ConnectionError as e:
+        # Specifically handle network-related errors as the test expects
+        raise RuntimeError(f"HTTP GET request failed: {str(e)}")
+    except requests.RequestException as e:
+        # Re-raise other request exceptions
+        raise
