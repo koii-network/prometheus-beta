@@ -16,11 +16,11 @@ def test_remove_duplicates_no_duplicates():
 
 def test_remove_duplicates_mixed_case():
     """Test handling of mixed case characters."""
-    assert remove_duplicates("HeLLo") == "Helo"
+    assert remove_duplicates("HeLLo") == "HeLo"
 
 def test_remove_duplicates_special_characters():
     """Test handling of special characters and spaces."""
-    assert remove_duplicates("a!b!c d d") == "a!b c d"
+    assert remove_duplicates("a!b!c d d") == "a!bc d"
 
 def test_remove_duplicates_invalid_input():
     """Test handling of non-string input."""
