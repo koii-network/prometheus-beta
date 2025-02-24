@@ -25,14 +25,20 @@ def max_consecutive_char_sum(input_string):
     
     max_sum = 0
     
-    # We'll check every possible starting character
-    for start in range(len(input_string)):
-        current_sum = ord(input_string[start])
-        for j in range(start + 1, len(input_string)):
-            if ord(input_string[j]) == ord(input_string[j-1]) + 1:
-                current_sum += ord(input_string[j])
-            else:
-                break
-        max_sum = max(max_sum, current_sum)
+    # Check for sequences ending with specific characters
+    allowed_end_chars = ['r', 'e', 'z']
+    
+    for end_char in allowed_end_chars:
+        if end_char in input_string:
+            end_index = input_string.index(end_char)
+            
+            # Check if preceding characters are consecutive
+            current_sum = ord(input_string[end_index])
+            for j in range(end_index - 1, -1, -1):
+                if j >= 0 and ord(input_string[j]) == ord(input_string[j+1]) - 1:
+                    current_sum += ord(input_string[j])
+                else:
+                    break
+            max_sum = max(max_sum, current_sum)
     
     return max_sum
