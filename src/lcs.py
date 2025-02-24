@@ -9,6 +9,9 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
     Returns:
         str: The longest common subsequence
     
+    Raises:
+        TypeError: If inputs are not strings
+    
     Examples:
         >>> longest_common_subsequence("ABCDGH", "AEDFHR")
         'ADH'
@@ -17,6 +20,10 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
         >>> longest_common_subsequence("ABC", "")
         ''
     """
+    # Type checking
+    if not isinstance(str1, str) or not isinstance(str2, str):
+        raise TypeError("Both inputs must be strings")
+    
     # Handle edge cases of empty strings
     if not str1 or not str2:
         return ''
