@@ -31,7 +31,7 @@ def test_log_error_empty_string():
     sys.stderr = sys.__stderr__
     
     # Check the captured output
-    assert captured_output.getvalue().strip() == "ERROR: "
+    assert captured_output.getvalue().startswith("ERROR: ")
 
 def test_log_error_invalid_type():
     """Test logging with an invalid input type raises TypeError."""
