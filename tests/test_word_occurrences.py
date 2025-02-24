@@ -4,7 +4,7 @@ from src.word_occurrences import find_word_occurrences
 def test_multiple_occurrences():
     """Test finding multiple occurrences of a word"""
     result = find_word_occurrences("the cat and the dog and the bird", "the")
-    assert result == [(0, 0), (12, 3), (24, 5)]
+    assert result == [(0, 0), (12, 3), (24, 6)]
 
 def test_single_occurrence():
     """Test finding a single occurrence of a word"""
@@ -45,4 +45,4 @@ def test_single_word_string():
 def test_word_with_punctuation():
     """Test finding a word with potential punctuation variations"""
     result = find_word_occurrences("hello, world! hello.", "hello")
-    assert result == [(0, 0), (13, 2)]
+    assert result == [(0, 0), (14, 2)]
