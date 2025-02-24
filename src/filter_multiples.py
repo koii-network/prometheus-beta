@@ -18,10 +18,10 @@ def filter_exclusive_multiples(numbers):
     if not isinstance(numbers, list):
         raise TypeError("Input must be a list of integers")
     
-    # Filter numbers that are multiples of 3 XOR 5 (exclusive or)
+    # Filter numbers that are either multiple of 3 or 5, but not both
     exclusive_multiples = [
         num for num in numbers 
-        if (num % 3 == 0) != (num % 5 == 0)
+        if (num % 3 == 0) ^ (num % 5 == 0)
     ]
     
     # Return sorted list
