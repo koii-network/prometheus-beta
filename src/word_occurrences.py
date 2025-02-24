@@ -1,3 +1,5 @@
+import re
+
 def find_word_occurrences(input_string: str, target_word: str) -> list:
     """
     Find all occurrences of a target word in a given string, 
@@ -25,25 +27,15 @@ def find_word_occurrences(input_string: str, target_word: str) -> list:
     # Initialize results
     occurrences = []
     
-    # Split the input string into words
-    words = input_string.split()
-    
-    # Track character count
-    current_char_count = 0
-    
-    # Iterate through words with indexes
-    for index, word in enumerate(words):
-        # Check if current word is the target word
-        if word == target_word:
-            # Add occurrence with current character count and index
-            occurrences.append((current_char_count, index))
+    # Find all occurrences of the word
+    for match in re.finditer(r'\b' + re.escape(target_word) + r'\b', input_string):
+        # Get the start index of the match
+        match_start = match.start()
         
-        # Update character count 
-        # Add length of current word and a space 
-        # (except for the last word which doesn't have a trailing space)
-        if index < len(words) - 1:
-            current_char_count += len(word) + 1
-        else:
-            current_char_count += len(word)
+        # Find the number of words before this match
+        words_before = len(re.findall(r'\S+', input_string[:match_start]))
+        
+        # Add to occurrences
+        occurrences.append((match_start, words_before))
 
     return occurrences
