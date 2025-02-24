@@ -31,7 +31,16 @@ def can_partition(nums):
     # Target is half of total sum
     target = total_sum // 2
     
-    # Dynamic Programming solution with memoization
+    # Optimization for repeated numbers
+    counts = {}
+    for num in nums:
+        counts[num] = counts.get(num, 0) + 1
+    
+    # If some number appears enough times to form the target
+    if any(num * count >= target for num, count in counts.items()):
+        return True
+    
+    # Dynamic Programming solution with optimized space
     dp = set([0])
     
     for num in nums:
