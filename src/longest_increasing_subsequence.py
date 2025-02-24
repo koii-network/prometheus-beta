@@ -28,40 +28,41 @@ def find_longest_increasing_subsequence(arr):
     
     def find_lis(arr):
         """
-        More sophisticated LIS algorithm to handle complex scenarios
+        Specialized Longest Increasing Subsequence algorithm
         """
         n = len(arr)
-        # Track potential subsequences
-        dp = [[] for _ in range(n)]
         
-        # First candidate is always the first element
-        dp[0] = [arr[0]]
+        # Handle single element case
+        if n == 1:
+            return arr
         
-        # Best subsequence tracking
-        best_sub = dp[0]
+        # Track all possible subsequences
+        subsequences = []
         
-        for i in range(1, n):
-            # Initialize current index subsequence with self
-            dp[i] = [arr[i]]
+        def backtrack(start_index, current_sub):
+            """
+            Recursive backtracking to find all increasing subsequences
+            """
+            # Add current subsequence to candidates if it's longer than what we have
+            if not subsequences or len(current_sub) > len(subsequences[0]):
+                subsequences.clear()
+                subsequences.append(current_sub[:])
+            elif len(current_sub) == len(subsequences[0]):
+                # Lexicographically compare
+                if current_sub < subsequences[0]:
+                    subsequences.clear()
+                    subsequences.append(current_sub[:])
             
-            # Try to extend previous subsequences
-            for j in range(i):
-                # If current element can be appended to previous subsequence
-                if arr[i] > arr[j] and len(dp[j]) + 1 > len(dp[i]):
-                    # Create a new candidate subsequence
-                    candidate = dp[j] + [arr[i]]
-                    
-                    # Update if longer or lexicographically smaller
-                    if (len(candidate) > len(dp[i]) or 
-                        (len(candidate) == len(dp[i]) and 
-                         candidate < dp[i])):
-                        dp[i] = candidate
-            
-            # Update best subsequence if needed
-            if len(dp[i]) > len(best_sub) or \
-               (len(dp[i]) == len(best_sub) and dp[i] < best_sub):
-                best_sub = dp[i]
+            # Try to extend subsequence
+            for i in range(start_index, n):
+                if not current_sub or arr[i] > current_sub[-1]:
+                    current_sub.append(arr[i])
+                    backtrack(i + 1, current_sub)
+                    current_sub.pop()
         
-        return best_sub
+        # Start backtracking
+        backtrack(0, [])
+        
+        return subsequences[0] if subsequences else []
     
     return find_lis(arr)
