@@ -29,19 +29,12 @@ def compress_lzo(data):
     
     # Compression variables
     compressed = bytearray()
-    window_size = 8192  # Expanded window size
-    look_ahead_buffer = 32  # Expanded look-ahead buffer
+    window_size = 4096  # Typical sliding window size
+    look_ahead_buffer = 16  # Look-ahead buffer size
     
     # Compression logic
     i = 0
     while i < len(data):
-        # Non-repeated part
-        if i + look_ahead_buffer >= len(data):
-            # Append remaining bytes as literals
-            compressed.append(data[i])
-            i += 1
-            continue
-        
         # Find longest match in previous window
         best_length = 0
         best_offset = 0
@@ -64,16 +57,11 @@ def compress_lzo(data):
         # Encode match or literal
         if best_length > 2:
             # Encode matched sequence
-            try:
-                compressed.extend([
-                    best_offset & 0xFF,  # Lower byte of offset
-                    ((best_offset >> 8) & 0x0F) | ((best_length - 3) << 4)  # Offset high + length
-                ])
-                i += best_length
-            except ValueError:
-                # Fallback to literal if encoding fails
-                compressed.append(data[i])
-                i += 1
+            compressed.extend([
+                best_offset & 0xFF,  # Lower byte of offset
+                ((best_offset >> 8) & 0x0F) | ((best_length - 3) << 4)  # Offset high + length
+            ])
+            i += best_length
         else:
             # Encode literal byte
             compressed.append(data[i])
@@ -107,7 +95,7 @@ def decompress_lzo(compressed_data):
     i = 0
     
     while i < len(compressed_data):
-        # Extend non-match (literal) encoding
+        # Non-match (literal) encoding
         if compressed_data[i] >= 32:
             decompressed.append(compressed_data[i])
             i += 1
@@ -124,18 +112,19 @@ def decompress_lzo(compressed_data):
             offset |= (compressed_data[i + 1] & 0x0F) << 8
             length = (compressed_data[i + 1] >> 4) + 3
             
-            # Validate and copy matched sequence safely
+            # Copy matched sequence safely
             start = len(decompressed) - offset
             
-            # Ensure start is valid
+            # Validate offset
             if start < 0:
                 decompressed.append(compressed_data[i])
                 i += 1
                 continue
             
-            # Copy matched sequence
             for j in range(length):
-                if start + j >= len(decompressed):
+                # Protect against potential out-of-range access
+                if start + j < 0 or start + j >= len(decompressed):
+                    decompressed.append(compressed_data[i])
                     break
                 decompressed.append(decompressed[start + j])
             
