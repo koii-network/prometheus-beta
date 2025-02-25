@@ -27,10 +27,11 @@ def calculate_even_sum_odd_product(numbers):
     even_sum = sum(num for num in numbers if num % 2 == 0)
     
     # Calculate product of odd numbers
+    odd_numbers = [num for num in numbers if num % 2 != 0]
+    
     # Use product of 1 as the default for cases with no odd numbers
     odd_product = 1
-    for num in numbers:
-        if num % 2 != 0:
-            odd_product *= num
+    for num in odd_numbers:
+        odd_product *= num
     
     return even_sum, odd_product
