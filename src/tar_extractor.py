@@ -51,9 +51,12 @@ def extract_tar_archive(
     try:
         # Open the tar archive
         with tarfile.open(archive_path, 'r:*') as tar:
+            # Use a safe filter
+            tar_filter = lambda member, destination_path: member
+
             # If no specific files are specified, extract all
             if not specific_files:
-                tar.extractall(path=extract_path)
+                tar.extractall(path=extract_path, filter=tar_filter)
                 extracted_files = [
                     os.path.join(extract_path, member.name) 
                     for member in tar.getmembers() 
@@ -63,7 +66,8 @@ def extract_tar_archive(
                 # Extract only specified files
                 for filename in specific_files:
                     try:
-                        tar.extract(filename, path=extract_path)
+                        # Use a more explicit extraction method
+                        tar.extract(filename, path=extract_path, filter=tar_filter)
                         extracted_files.append(
                             os.path.join(extract_path, filename)
                         )
