@@ -9,7 +9,7 @@ def test_basic_positive_array():
 def test_array_with_negatives():
     """Test an array containing negative numbers."""
     arr = [-1, -2, -3, 4, 5, 6]
-    assert find_max_consecutive_product(arr) == 90
+    assert find_max_consecutive_product(arr) == 120  # Corrected expectation
 
 def test_array_with_zeros():
     """Test an array containing zeros."""
@@ -39,4 +39,4 @@ def test_error_on_too_small_array():
 def test_large_numbers():
     """Test with large numbers to ensure no integer overflow issues."""
     arr = [1000, 2000, 3000, 4000, 5000]
-    assert find_max_consecutive_product(arr) == 60000000
+    assert find_max_consecutive_product(arr) == 60000000000  # Corrected expectation
