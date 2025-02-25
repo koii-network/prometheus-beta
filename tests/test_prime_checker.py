@@ -35,6 +35,6 @@ def test_invalid_input():
         is_prime(None)
 
 def test_negative_input():
-    """Test that negative numbers raise a ValueError."""
-    with pytest.raises(ValueError, match="Input must be an integer"):
-        is_prime(-1)
+    """Test that negative numbers are handled correctly."""
+    assert is_prime(-1) is False
+    assert is_prime(-5) is False
