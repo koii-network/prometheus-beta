@@ -11,7 +11,7 @@ def test_multiple_occurrences():
     """Test finding multiple occurrences of a pattern"""
     text = "ABABDABACDABABCABAB"
     pattern = "ABAB"
-    assert rabin_karp_search(text, pattern) == [0, 2, 10, 15]
+    assert rabin_karp_search(text, pattern) == [0, 10, 15]
 
 def test_no_match():
     """Test when pattern is not in text"""
