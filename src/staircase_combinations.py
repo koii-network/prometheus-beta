@@ -34,10 +34,20 @@ def calculate_staircase_combinations(stair_lengths):
     # Base cases
     dp[0] = 1  # One way to climb 0 steps
     
+    # If total length is 1, there's 1 way
+    if total_length == 1:
+        return 1
+    
+    # If total length is 2, there are 2 ways
+    if total_length == 2:
+        return 2
+    
     # Climb up to the total length
-    for i in range(1, total_length + 1):
-        # Add ways from 1-step and 2-step climbs, if possible
-        dp[i] = dp[i - 1] if i >= 1 else 0
-        dp[i] += dp[i - 2] if i >= 2 else 0
+    dp[1] = 1
+    dp[2] = 2
+    
+    for i in range(3, total_length + 1):
+        # Add ways from 1-step and 2-step climbs
+        dp[i] = dp[i-1] + dp[i-2]
     
     return dp[total_length]
