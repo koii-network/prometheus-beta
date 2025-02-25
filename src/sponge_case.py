@@ -34,7 +34,10 @@ def to_sponge_case(text: str) -> str:
             result.append(char.lower() if letter_count % 2 == 0 else char.upper())
             letter_count += 1
         else:
-            # Preserve case for non-letter characters
+            # For non-letter characters, reset letter count and preserve original case
             result.append(char)
+            # Only reset if previous char was a non-letter to maintain alternating logic
+            if result and result[-1].isalpha():
+                letter_count = 0
     
     return ''.join(result)
