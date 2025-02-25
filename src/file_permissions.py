@@ -40,14 +40,16 @@ def get_file_permissions(file_path):
         
         # Create readable permission string
         readable_permissions = ''
-        for who, mask in [
+        permission_sets = [
             (stat.S_IRUSR, stat.S_IWUSR, stat.S_IXUSR),  # owner
             (stat.S_IRGRP, stat.S_IWGRP, stat.S_IXGRP),  # group
             (stat.S_IROTH, stat.S_IWOTH, stat.S_IXOTH)   # others
-        ]:
-            readable_permissions += 'r' if mode & who else '-'
-            readable_permissions += 'w' if mode & mask[1] else '-'
-            readable_permissions += 'x' if mode & mask[2] else '-'
+        ]
+        
+        for read_mask, write_mask, execute_mask in permission_sets:
+            readable_permissions += 'r' if mode & read_mask else '-'
+            readable_permissions += 'w' if mode & write_mask else '-'
+            readable_permissions += 'x' if mode & execute_mask else '-'
         
         return {
             'numeric': numeric_permissions,
