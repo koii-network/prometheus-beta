@@ -22,12 +22,16 @@ def count_anagrams(s: str) -> int:
         >>> count_anagrams('abcde')
         0
     """
+    # Check input
+    if not isinstance(s, str):
+        raise ValueError("Input must be a string")
+    
     # Empty string handling
     if not s:
         return 0
     
     # Validate input
-    if not s.islower():
+    if not all(c.islower() for c in s):
         raise ValueError("Input must contain only lowercase English letters")
     
     # If string has only one character, no anagrams possible
@@ -46,5 +50,5 @@ def count_anagrams(s: str) -> int:
             signature = ''.join(sorted(substring))
             unique_anagrams.add(signature)
     
-    # Subtract original substrings to get truly unique anagrams
+    # Subtract individual characters to get count of true anagrams
     return len(unique_anagrams) - len(set(s))
