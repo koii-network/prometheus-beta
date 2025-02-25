@@ -27,7 +27,7 @@ def test_alternating_numbers():
 
 def test_large_numbers():
     """Test with larger numbers"""
-    assert max_subarray_sum([1000000, -1, 1000000]) == 2000000
+    assert max_subarray_sum([1000000, -1, 1000000]) == 1999999
 
 def test_invalid_input_type():
     """Test with invalid input type"""
