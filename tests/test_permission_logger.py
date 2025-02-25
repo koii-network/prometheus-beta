@@ -9,13 +9,12 @@ class TestPermissionLogger:
     def captured_output(self):
         """Fixture to capture console output."""
         output = io.StringIO()
-        sys.stdout = output
-        yield output
-        sys.stdout = sys.__stdout__
+        return output
     
     def test_default_logging(self, captured_output):
         """Test default logging behavior for a regular user."""
-        logger = PermissionLogger()
+        # Create logger with captured output
+        logger = PermissionLogger(output_stream=captured_output)
         
         # Log info message (default permission level)
         result = logger.log("Test info message")
@@ -23,12 +22,12 @@ class TestPermissionLogger:
         
         # Check console output
         output = captured_output.getvalue().strip()
-        print(repr(output))  # Debug output
         assert "Test info message" in output
     
     def test_permission_levels(self, captured_output):
         """Test logging with different permission levels."""
-        logger = PermissionLogger()
+        # Create logger with captured output
+        logger = PermissionLogger(output_stream=captured_output)
         
         # Guest tries to log admin message
         result = logger.log(
@@ -48,12 +47,12 @@ class TestPermissionLogger:
         
         # Check console output
         output = captured_output.getvalue()
-        print(repr(output))  # Debug output
         assert "Secret admin message" in output
     
     def test_log_levels(self, captured_output):
         """Test different logging levels."""
-        logger = PermissionLogger()
+        # Create logger with captured output
+        logger = PermissionLogger(output_stream=captured_output)
         
         # Test all log levels
         log_levels = ['debug', 'info', 'warning', 'error', 'critical']
