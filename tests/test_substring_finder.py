@@ -24,7 +24,7 @@ def test_repeated_characters():
 
 def test_unicode_characters():
     """Test function with unicode characters"""
-    assert find_longest_substring("こんにちは") == "こんにち"
+    assert find_longest_substring("こんにちは") == "こんにちは"
 
 def test_special_characters():
     """Test function with special characters"""
