@@ -43,4 +43,4 @@ def test_complex_nested_cases():
     """Test various complex nesting scenarios"""
     assert is_nested_parentheses("(a(b)c)") == True
     assert is_nested_parentheses("((a)b(c))") == True
-    assert is_nested_parentheses("(a(b)c"))") == False
+    assert is_nested_parentheses("(a(b)c))") == False
