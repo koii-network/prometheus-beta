@@ -86,16 +86,16 @@ def test_single_vertex():
 
 def test_invalid_inputs():
     """Test invalid input handling."""
-    # Empty graph
-    with pytest.raises(ValueError):
-        bellman_ford([], 0, 1)
+    # Empty graph with more than one vertex should raise ValueError
+    with pytest.raises(ValueError, match="Graph cannot be empty"):
+        bellman_ford([], 0, 2)
 
     # Negative start vertex
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Start vertex must be non-negative"):
         bellman_ford([(0, 1, 1)], -1, 2)
 
     # Invalid number of vertices
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Number of vertices must be positive"):
         bellman_ford([(0, 1, 1)], 0, 0)
 
 
