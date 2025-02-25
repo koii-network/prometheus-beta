@@ -27,13 +27,13 @@ def sort_by_frequency(numbers: List[int]) -> List[int]:
     # Count frequency of each number
     freq_counter = Counter(numbers)
     
-    # Create a list to store frequency and order information
-    freq_order = []
-    for i, num in enumerate(numbers):
-        freq_order.append((num, freq_counter[num], i))
+    # Create a list to store unique elements sorted by frequency
+    unique_sorted = sorted(set(numbers), key=lambda x: freq_counter[x])
     
-    # Sort based on frequency first, then by original order
-    freq_order.sort(key=lambda x: (x[1], x[2]))
+    # Reconstruct the list maintaining the original order within frequency groups
+    result = []
+    for num in unique_sorted:
+        # Add all occurrences of the current number
+        result.extend([n for n in numbers if n == num])
     
-    # Return the sorted list
-    return [x[0] for x in freq_order]
+    return result
