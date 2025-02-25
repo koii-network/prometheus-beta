@@ -25,8 +25,16 @@ def to_sponge_case(text: str) -> str:
     if not text:
         return ""
     
-    # Convert to alternating case
-    return ''.join(
-        char.upper() if idx % 2 == 1 else char.lower() 
-        for idx, char in enumerate(text)
-    )
+    # Convert to alternating case, preserving non-letter character cases
+    result = []
+    letter_count = 0
+    for char in text:
+        if char.isalpha():
+            # Alternate case for letters
+            result.append(char.lower() if letter_count % 2 == 0 else char.upper())
+            letter_count += 1
+        else:
+            # Preserve case for non-letter characters
+            result.append(char)
+    
+    return ''.join(result)
