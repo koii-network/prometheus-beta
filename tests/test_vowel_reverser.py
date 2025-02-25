@@ -3,7 +3,7 @@ from src.vowel_reverser import reverse_vowels_in_substring
 
 def test_reverse_vowels_in_substring_basic():
     """Test basic substring vowel reversal."""
-    assert reverse_vowels_in_substring("hello world", 0, 5) == "hollo werld"
+    assert reverse_vowels_in_substring("hello world", 0, 5) == "holle world"
 
 def test_reverse_vowels_in_substring_full_string():
     """Test reversing vowels in the entire string."""
