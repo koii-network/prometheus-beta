@@ -35,30 +35,55 @@ def flash_sort(arr):
         return arr.copy()
     
     # Number of buckets (classes)
-    m = int(0.42 * len(arr)) + 1
+    n = len(arr)
+    m = int(0.42 * n) + 1
     
-    # Initialize buckets
-    buckets = [0] * m
+    # Initialize buckets 
+    class_count = [0] * m
     
-    # Calculate class boundaries
+    # Compute the indices
     c1 = (m - 1) / (max_val - min_val)
     
-    # Count number of elements in each class
+    # Count the number of elements in each class
     for x in arr:
         i = int(((x - min_val) * c1))
-        buckets[i] += 1
+        class_count[i] += 1
     
-    # Cumulative count of elements in each class
+    # Compute cumulative count
     for i in range(1, m):
-        buckets[i] += buckets[i-1]
+        class_count[i] += class_count[i-1]
     
-    # Create output array and temp storage
-    output = [0] * len(arr)
+    # Create output array
+    output = [0] * n
     
-    # Permute elements
+    # Redistribute elements
     for x in reversed(arr):
-        i = int(((x - min_val) * c1))
-        buckets[i] -= 1
-        output[buckets[i]] = x
+        # Compute class index
+        j = int(((x - min_val) * c1))
+        
+        # Decrement count and place element
+        class_count[j] -= 1
+        output[class_count[j]] = x
+    
+    # Insertion sort on small classes (optional optimization)
+    def insertion_sort(arr, left, right):
+        for i in range(left + 1, right + 1):
+            key = arr[i]
+            j = i - 1
+            while j >= left and arr[j] > key:
+                arr[j + 1] = arr[j]
+                j -= 1
+            arr[j + 1] = key
+        return arr
+    
+    # Apply insertion sort on small classes or problematic parts
+    for i in range(1, m):
+        if class_count[i] - class_count[i-1] > 1:
+            left = class_count[i-1]
+            right = class_count[i] - 1
+            if right - left > 10:  # optional: adjust threshold as needed
+                output[left:right+1] = sorted(output[left:right+1])
+            else:
+                insertion_sort(output, left, right)
     
     return output
