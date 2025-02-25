@@ -18,9 +18,9 @@ def find_missing_numbers(arr):
     # Determine if the array is ascending or descending
     is_ascending = arr[0] <= arr[-1]
     
-    # Sort the array if needed to ensure consistent processing
-    if not is_ascending:
-        arr = sorted(arr, reverse=True)
+    # Normalize the array to always be ascending for processing
+    original_arr = arr
+    arr = sorted(arr)
     
     # Find the range of numbers to check
     min_num = arr[0]
