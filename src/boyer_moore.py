@@ -60,8 +60,8 @@ def boyer_moore_search(text, pattern):
         # If pattern is found
         if j < 0:
             matches.append(i)
-            # Shift to the next possible position
-            i += len(pattern) - bad_char.get(text[i + len(pattern) - 1], -1) if i + len(pattern) < len(text) else 1
+            # Shift by 1 to find overlapping matches
+            i += 1
         else:
             # Use bad character heuristic to determine shift
             bad_char_shift = bad_char.get(text[i + j], -1)
