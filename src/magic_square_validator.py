@@ -3,7 +3,7 @@ def is_magic_square(numbers):
     Determine if a list of 10 integers represents a valid 3x3 magic square.
     
     A 3x3 magic square has the following properties:
-    - Exactly 10 unique integers (1-9)
+    - Exactly 10 unique integers (1-9 and a magic constant)
     - Numbers can be arranged into a 3x3 grid
     - All rows, columns, and diagonals sum to the same magic constant
 
@@ -13,18 +13,26 @@ def is_magic_square(numbers):
     Returns:
         bool: True if the input represents a valid 3x3 magic square, False otherwise
     """
-    # Check input length and uniqueness
-    if len(numbers) != 10 or len(set(numbers)) != 10:
+    # Check input length
+    if len(numbers) != 10:
         return False
     
-    # Check if numbers are in range 1-9
-    if any(num < 1 or num > 9 for num in numbers):
+    # Check if numbers are unique
+    if len(set(numbers)) != 10:
         return False
+    
+    # Check if 9 numbers are in range 1-9
+    base_numbers = [n for n in numbers if 1 <= n <= 9]
+    if len(base_numbers) != 9:
+        return False
+    
+    # Find the magic constant (the extra number)
+    magic_constant = [n for n in numbers if n not in base_numbers][0]
     
     # Try all possible 3x3 grid arrangements
     from itertools import permutations
     
-    for perm in permutations(numbers, 9):
+    for perm in permutations(base_numbers, 9):
         # Convert permutation to 3x3 grid
         grid = [
             perm[0:3],
@@ -51,8 +59,8 @@ def is_magic_square(numbers):
         # Combine all sums to check
         all_sums = row_sums + col_sums + diag_sums
         
-        # Check if all sums are equal
-        if len(set(all_sums)) == 1:
+        # Check if all sums are equal and match the magic constant
+        if len(set(all_sums)) == 1 and all_sums[0] == magic_constant:
             return True
     
     return False
