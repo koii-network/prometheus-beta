@@ -38,11 +38,10 @@ def to_alternating_header_case(input_string: str) -> str:
             # Even index words (0-based) are capitalized
             converted_word = word.capitalize()
         else:
-            # Odd index words alternate between lowercase and uppercase
-            converted_word = ''.join(
-                char.lower() if j % 2 == 0 else char.upper() 
-                for j, char in enumerate(word)
-            )
+            # Odd index words alternate with specific case pattern
+            converted_word = word[0].lower() + \
+                             ''.join(char.upper() if j % 2 == 1 else char.lower() 
+                                     for j, char in enumerate(word[1:], 1))
         converted_words.append(converted_word)
     
     # Join the words back together
