@@ -23,13 +23,18 @@ def maxSumSubarray(arr, k):
     if k == len(arr):
         return sum(arr)
     
-    # Track the maximum sum of non-overlapping subarrays
+    # Use sliding window technique
     max_sum = float('-inf')
     
-    # Slide through the array, finding maximum sum of subarrays
-    for i in range(len(arr) - k + 1):
-        # Calculate current subarray sum
-        current_sum = sum(arr[i:i+k])
+    # Calculate the initial window sum
+    current_sum = sum(arr[:k])
+    max_sum = current_sum
+    
+    # Slide the window through the array
+    for i in range(1, len(arr) - k + 1):
+        # Adjust the sum by removing the first element of the previous window
+        # and adding the last element of the new window
+        current_sum = current_sum - arr[i-1] + arr[i+k-1]
         
         # Update max_sum if current sum is larger
         max_sum = max(max_sum, current_sum)
