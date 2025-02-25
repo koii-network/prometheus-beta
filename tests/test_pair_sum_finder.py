@@ -7,7 +7,7 @@ def test_basic_pair_finding():
 
 def test_single_solution():
     """Test finding a single pair"""
-    assert find_pairs_sum_to_target([1, 1, 2, 3, 4], 5) == [(1, 4)]
+    assert find_pairs_sum_to_target([1, 1, 2, 3, 4], 5) == [(1, 4), (2, 3)]
 
 def test_no_solution():
     """Test when no pairs sum to target"""
@@ -28,7 +28,7 @@ def test_multiple_same_pair():
 
 def test_negative_numbers():
     """Test with negative numbers"""
-    assert find_pairs_sum_to_target([-1, 0, 1, 2, -2, 3], 1) == [(-1, 2), (0, 1)]
+    assert find_pairs_sum_to_target([-1, 0, 1, 2, -2, 3], 1) == [(-2, 3), (-1, 2), (0, 1)]
 
 def test_zero_target():
     """Test with zero as the target"""
