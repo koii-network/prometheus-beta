@@ -10,11 +10,16 @@ def find_missing_number(nums):
         int: The missing number.
     
     Raises:
-        ValueError: If the input is invalid (empty, contains non-positive, or out of range numbers).
+        ValueError: If the input is invalid (empty, contains non-positive, 
+                    out of range numbers, or has duplicates).
     """
     # Validate input
     if not nums:
         raise ValueError("Input array cannot be empty")
+    
+    # Check for duplicates
+    if len(set(nums)) != len(nums):
+        raise ValueError("Input must contain unique numbers")
     
     # Determine the expected length of the complete array
     n = len(nums) + 1
