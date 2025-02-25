@@ -7,16 +7,18 @@ sequences with references to previous occurrences.
 """
 
 class LZSSCompressor:
-    def __init__(self, window_size=4096, lookahead_size=16):
+    def __init__(self, window_size=4096, lookahead_size=16, min_match_length=3):
         """
         Initialize the LZSS compressor.
         
         Args:
             window_size (int): Size of the sliding window for searching previous matches.
             lookahead_size (int): Size of the lookahead buffer for finding matches.
+            min_match_length (int): Minimum length of match to use compression.
         """
         self.window_size = window_size
         self.lookahead_size = lookahead_size
+        self.min_match_length = min_match_length
     
     def compress(self, data):
         """
@@ -39,7 +41,7 @@ class LZSSCompressor:
             raise TypeError("Input must be bytes or str")
         
         # If data is too short to compress, return as-is
-        if len(data) <= 1:
+        if len(data) <= self.min_match_length:
             return data
         
         compressed = bytearray()
@@ -64,12 +66,12 @@ class LZSSCompressor:
                     match_length += 1
                 
                 # Update best match if found
-                if match_length > best_length:
+                if match_length > best_length and match_length >= self.min_match_length:
                     best_length = match_length
                     best_offset = current_pos - offset
             
             # Encode the result
-            if best_length >= 3:  # Minimum match length to compress
+            if best_length >= self.min_match_length:  # Minimum match length to compress
                 # Encode as (offset, length)
                 compressed.append(0)  # Flag for match
                 compressed.append(best_offset & 0xFF)  # Lower byte of offset
