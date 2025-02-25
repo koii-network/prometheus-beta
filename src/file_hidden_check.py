@@ -18,17 +18,25 @@ def is_hidden_file(file_path):
     if not isinstance(file_path, str):
         raise TypeError("file_path must be a string")
 
+    # First check filename
+    filename = os.path.basename(file_path)
+    if filename.startswith('.'):
+        return True
+
     # Expand user and get absolute path
     full_path = os.path.abspath(os.path.expanduser(file_path))
 
     # Check if file exists
     if not os.path.exists(full_path):
+        # If the filename starts with a dot and not a full path, it's considered hidden
+        if filename.startswith('.'):
+            return True
         raise FileNotFoundError(f"File not found: {full_path}")
 
-    # Get filename
+    # Get filename again (in case path changed during expansion)
     filename = os.path.basename(full_path)
 
-    # Check if file starts with a dot (Unix-like hidden file)
+    # Check if filename starts with a dot
     if filename.startswith('.'):
         return True
 
