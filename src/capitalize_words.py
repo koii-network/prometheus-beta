@@ -12,6 +12,10 @@ def capitalize_comma_words(input_string: str) -> str:
     Raises:
         ValueError: If the input string contains non-alphabetical characters.
     """
+    # Handle empty string case
+    if not input_string:
+        return ""
+    
     # Validate input
     if not input_string.replace(',', '').isalpha():
         raise ValueError("Input must contain only alphabetical characters and commas")
