@@ -19,7 +19,7 @@ def test_unique_characters():
 
 def test_mixed_string():
     """Test counting distinct substrings in a mixed string."""
-    assert count_distinct_substrings("aba") == 4
+    assert count_distinct_substrings("aba") == 5
 
 def test_invalid_input():
     """Test that the function raises TypeError for non-string inputs."""
@@ -31,4 +31,4 @@ def test_invalid_input():
 def test_longer_string():
     """Test counting distinct substrings in a longer string."""
     s = "abcabcabc"
-    assert count_distinct_substrings(s) == 22
+    assert count_distinct_substrings(s) == 24
