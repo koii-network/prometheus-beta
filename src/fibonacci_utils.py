@@ -54,5 +54,8 @@ def fibonacci_sum(arr):
     # Find the maximum number in the array
     max_num = max(arr)
     
-    # Generate Fibonacci sequence up to max_num and sum it
-    return sum(fibonacci(max_num))
+    # Generate Fibonacci sequence up to max_num
+    fib_sequence = fibonacci(max_num)
+    
+    # Return the sum of Fibonacci numbers
+    return sum(fib_sequence)
