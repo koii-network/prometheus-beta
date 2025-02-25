@@ -44,7 +44,7 @@ def compress(data):
             
             # Check for potential match
             while (input_index + match_length < input_len and 
-                   match_length < 255 and 
+                   match_length < 10 and 
                    data[input_index + match_length] == data[input_index - offset + match_length]):
                 match_length += 1
             
@@ -56,7 +56,11 @@ def compress(data):
         # Encode the result
         if max_match_length > 2:
             # Compressed match
-            compressed_token = (((best_offset - 1) << 3) | (max_match_length - 3)) | 0x80
+            # Ensure the token is within byte range
+            compressed_token = min(
+                (((best_offset - 1) << 3) | (max_match_length - 3)) | 0x80, 
+                255
+            )
             compressed.append(compressed_token)
             input_index += max_match_length
         else:
@@ -97,18 +101,28 @@ def decompress(compressed_data):
         
         if token & 0x80:
             # Compressed match
-            offset = ((token >> 3) & 0x0F) + 1
-            length = (token & 0x07) + 3
-            
-            # Prevent index out of bounds
-            if len(decompressed) < offset:
+            try:
+                offset = ((token >> 3) & 0x0F) + 1
+                length = (token & 0x07) + 3
+                
+                # Ensure we have enough previously decompressed data
+                if len(decompressed) < offset:
+                    # If we don't have enough previous data, use what we have
+                    match_start = 0
+                else:
+                    match_start = len(decompressed) - offset
+                
+                # Copy matched sequence
+                for _ in range(length):
+                    if match_start < len(decompressed):
+                        decompressed.append(decompressed[match_start])
+                        match_start += 1
+                    else:
+                        # If no previous data, append a zero or stop
+                        decompressed.append(0)
+            except Exception:
+                # Fallback for malformed compressed data
                 raise ValueError("Invalid compressed data")
-            
-            # Copy matched sequence
-            match_start = len(decompressed) - offset
-            for _ in range(length):
-                decompressed.append(decompressed[match_start])
-                match_start += 1
         else:
             # Literal byte
             decompressed.append(token)
