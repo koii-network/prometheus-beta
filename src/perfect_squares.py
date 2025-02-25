@@ -1,4 +1,5 @@
 import math
+from itertools import combinations
 
 def sum_perfect_squares_from_set(num_set):
     """
@@ -25,12 +26,22 @@ def sum_perfect_squares_from_set(num_set):
     
     # Find all perfect squares
     perfect_squares = set()
+    
+    # Check individual numbers
     for num in num_set:
-        # Check positive perfect squares
         abs_num = abs(num)
         root = int(math.sqrt(abs_num))
         if root * root == abs_num:
             perfect_squares.add(abs_num)
+    
+    # Check combinations of numbers
+    for r in range(2, len(num_set) + 1):
+        for combo in combinations(num_set, r):
+            # Try multiplication of combo elements
+            prod = math.prod(abs(x) for x in combo)
+            root = int(math.sqrt(prod))
+            if root * root == prod:
+                perfect_squares.add(prod)
     
     # Return the sum of unique perfect squares
     return sum(perfect_squares)
