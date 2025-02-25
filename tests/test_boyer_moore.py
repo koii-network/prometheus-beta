@@ -12,7 +12,7 @@ def test_boyer_moore_basic_match():
     text = "ABAAABCDBBCD"
     pattern = "ABC"
     matches = boyer_moore_search(text, pattern)
-    assert matches == [1]
+    assert matches == [4]  # Actual position in the text
 
 def test_boyer_moore_multiple_matches():
     """Test finding multiple occurrences of a pattern."""
