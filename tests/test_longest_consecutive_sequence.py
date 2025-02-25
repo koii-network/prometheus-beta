@@ -23,7 +23,7 @@ def test_duplicate_numbers():
 
 def test_unsorted_list():
     """Test unsorted list with non-consecutive numbers"""
-    assert find_longest_consecutive_sequence([9, 1, -3, 2, 4, 8, 3, -1, 6, -2, -4, 7]) == [-4, -3, -2, -1, 1, 2, 3, 4]
+    assert find_longest_consecutive_sequence([9, 1, -3, 2, 4, 8, 3, -1, 6, -2, -4, 7]) == [-4, -3, -2, -1]
 
 def test_no_consecutive_sequence():
     """Test list with no consecutive sequence"""
