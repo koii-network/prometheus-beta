@@ -40,24 +40,24 @@ def prims_minimum_spanning_tree(graph: Dict[str, Dict[str, float]]) -> Union[Lis
     
     # Add all edges from the starting vertex to the priority queue
     for neighbor, weight in graph[start_vertex].items():
-        heapq.heappush(pq, (weight, start_vertex, neighbor))
+        heapq.heappush(pq, (weight, tuple(sorted((start_vertex, neighbor))), start_vertex, neighbor))
     
     # Continue until all vertices are visited or no more edges can be added
     while pq and len(visited) < len(graph):
-        weight, from_vertex, to_vertex = heapq.heappop(pq)
+        weight, sorted_endpoints, from_vertex, to_vertex = heapq.heappop(pq)
         
         # Skip if the destination vertex is already visited
         if to_vertex in visited:
             continue
         
         # Add the edge to the minimum spanning tree
-        mst_edges.append((from_vertex, to_vertex, weight))
+        mst_edges.append((*sorted_endpoints, weight))
         visited.add(to_vertex)
         
         # Add new edges from the newly visited vertex
         for neighbor, edge_weight in graph[to_vertex].items():
             if neighbor not in visited:
-                heapq.heappush(pq, (edge_weight, to_vertex, neighbor))
+                heapq.heappush(pq, (edge_weight, tuple(sorted((to_vertex, neighbor))), to_vertex, neighbor))
     
     # Check if all vertices are connected
     if len(visited) < len(graph):
