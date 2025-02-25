@@ -36,7 +36,7 @@ def bead_sort(arr):
     # Let the beads "fall" using gravity
     for rod in rods:
         beads = sum(rod)
-        rod[:] = [1] * beads + [0] * (len(rod) - beads)
+        rod[:] = [0] * (len(rod) - beads) + [1] * beads
     
     # Reconstruct the sorted array
     return [sum(rod[i] for rod in rods) for i in range(len(arr))]
