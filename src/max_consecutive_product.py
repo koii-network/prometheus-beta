@@ -28,10 +28,15 @@ def find_max_consecutive_product(arr: List[int]) -> Optional[int]:
     
     # Iterate through the array to find max product
     for i in range(len(arr) - 2):
+        # Skip consecutive windows containing zero
+        if 0 in arr[i:i+3]:
+            continue
+        
         # Calculate current consecutive product
         current_product = arr[i] * arr[i+1] * arr[i+2]
         
         # Update max product 
-        max_product = max(max_product, current_product)
+        max_product = max(max_product, current_product, 
+                          current_product if current_product > 0 else float('-inf'))
     
     return max_product if max_product != float('-inf') else None
