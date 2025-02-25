@@ -21,9 +21,10 @@ def test_delete_directory_success():
             f.write('test')
         
         # Attempt to delete the directory
-        delete_directory(base_dir)
+        result = delete_directory(base_dir)
         
-        # Verify directory is deleted
+        # Verify directory is deleted and function returns True
+        assert result is True
         assert not os.path.exists(base_dir)
 
 def test_delete_nonexistent_directory():
@@ -57,10 +58,18 @@ def test_delete_relative_path():
                 f.write('test')
             
             # Delete using relative path
-            delete_directory('test_dir')
+            result = delete_directory('test_dir')
             
-            # Verify directory is deleted
+            # Verify directory is deleted and function returns True
+            assert result is True
             assert not os.path.exists('test_dir')
         finally:
             # Restore original working directory
             os.chdir(original_cwd)
+
+def test_invalid_input_type():
+    """Test that TypeError is raised for non-string input."""
+    with pytest.raises(TypeError):
+        delete_directory(123)  # Integer input
+    with pytest.raises(TypeError):
+        delete_directory(None)  # None input
