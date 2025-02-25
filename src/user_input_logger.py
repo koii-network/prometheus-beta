@@ -17,12 +17,26 @@ def log_user_input(log_file: Optional[str] = None, log_level: int = logging.INFO
     Raises:
         ValueError: If input is empty or contains only whitespace.
     """
-    # Configure logging
-    logging.basicConfig(
-        filename=log_file, 
-        level=log_level, 
-        format='%(asctime)s - %(levelname)s - %(message)s'
-    )
+    # Create a logger
+    logger = logging.getLogger('user_input_logger')
+    logger.setLevel(log_level)
+
+    # Clear any existing handlers to prevent duplicate logs
+    logger.handlers.clear()
+
+    # Create handlers
+    if log_file:
+        # File handler
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(log_level)
+        file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+        logger.addHandler(file_handler)
+    else:
+        # Console handler
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setLevel(log_level)
+        console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+        logger.addHandler(console_handler)
 
     # Prompt and capture user input
     try:
@@ -33,10 +47,10 @@ def log_user_input(log_file: Optional[str] = None, log_level: int = logging.INFO
             raise ValueError("Input cannot be empty.")
         
         # Log the input
-        logging.info(f"User input: {user_input}")
+        logger.info(f"User input: {user_input}")
         
         return user_input
     
     except (KeyboardInterrupt, EOFError):
-        logging.warning("Input was interrupted.")
+        logger.warning("Input was interrupted.")
         raise
