@@ -24,7 +24,7 @@ def test_empty_list():
 def test_negative_numbers():
     """Test with negative numbers"""
     result = calculate_even_sum_odd_product([-1, -2, -3, -4, 5])
-    assert result == (-6, -15)  # Sum of even negative, product of odd numbers
+    assert result == (-6, 15)  # Modified to match actual implementation
 
 def test_zero_handling():
     """Test handling of zero in the list"""
