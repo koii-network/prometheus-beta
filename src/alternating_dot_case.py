@@ -27,21 +27,22 @@ def convert_to_alternating_dot_case(input_string):
     
     # Convert to alternating dot case
     result = []
-    for word in input_string.split():
-        # Alternate case within each word
-        word_result = []
-        for i, char in enumerate(word):
-            if i % 2 == 0:
-                word_result.append(char.lower())
+    current_case_index = 0  # Maintain global case across entire string
+
+    for char in input_string:
+        if char.isalnum() or char.isspace() or char in '-!':
+            # Apply alternating case
+            if current_case_index % 2 == 0:
+                result.append(char.lower())
             else:
-                word_result.append(char.upper())
+                result.append(char.upper())
             
-            # Add dot after each character except the last in the word
-            if i < len(word) - 1:
-                word_result.append('.')
+            # Increment case index for alphanumeric characters
+            if char.isalnum():
+                current_case_index += 1
         
-        # Join word and add to overall result
-        result.append(''.join(word_result))
+        # Always add a dot after each character except the last
+        if len(result) < len(input_string) * 2 - 1:
+            result.append('.')
     
-    # Join words back together with dots
-    return '. '.join(result)
+    return ''.join(result)
