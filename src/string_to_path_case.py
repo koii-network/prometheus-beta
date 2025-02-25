@@ -34,10 +34,14 @@ def to_path_case(input_string: str) -> str:
     if not input_string:
         return ""
     
-    # Convert to lowercase
-    # Replace any non-alphanumeric characters (except spaces) with slashes
-    # Remove consecutive slashes
-    cleaned = re.sub(r'[^a-z0-9 ]', '', input_string.lower())
-    path_case = re.sub(r'\s+', '/', cleaned).strip('/')
+    # Replace underscores and multiple spaces with single spaces
+    normalized = re.sub(r'[_\s]+', ' ', input_string)
     
-    return path_case
+    # Remove special characters
+    cleaned = re.sub(r'[^a-zA-Z0-9 ]', '', normalized)
+    
+    # Split and handle individual words
+    words = cleaned.lower().split()
+    
+    # Return path case version
+    return '/'.join(words)
