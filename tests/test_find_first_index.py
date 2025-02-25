@@ -26,7 +26,8 @@ def test_find_first_index_different_types():
     """Test with elements of different types."""
     mixed_list = [1, '2', 3.0, True]
     assert find_first_index(mixed_list, '2') == 1
-    assert find_first_index(mixed_list, True) == 3
+    # Note: In Python, True is 1, so this will find the first 1/True
+    assert find_first_index(mixed_list, 1) == 0
     assert find_first_index(mixed_list, 3.0) == 2
 
 def test_find_first_index_repeated_elements():
