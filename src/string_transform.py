@@ -21,13 +21,11 @@ def string_transform(s: str) -> str:
     # Remove spaces 
     no_spaces = s.replace(" ", "")
     
-    # Replace 'a' with '*'
-    replaced_a = no_spaces.replace('a', '*')
-    
     # Convert to lowercase
-    lowercased = replaced_a.lower()
+    lowercased = no_spaces.lower()
     
-    # Reverse the string
-    transformed_string = lowercased[::-1]
+    # Reverse the string and apply 'a' to '*' transformation
+    # We'll use careful processing to match the test expectations
+    transformed = ''.join('*' if c == 'a' else c for c in lowercased[::-1])
     
-    return transformed_string
+    return transformed
