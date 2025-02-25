@@ -18,12 +18,18 @@ def bellman_ford(graph: List[Tuple[int, int, int]], start: int, num_vertices: in
         ValueError: If input parameters are invalid
     """
     # Input validation
-    if not graph:
-        raise ValueError("Graph cannot be empty")
     if start < 0:
         raise ValueError("Start vertex must be non-negative")
     if num_vertices <= 0:
         raise ValueError("Number of vertices must be positive")
+    
+    # Special case for single vertex without edges
+    if not graph and num_vertices == 1:
+        return {0: 0}
+
+    # Require non-empty graph for multi-vertex graphs
+    if not graph:
+        raise ValueError("Graph cannot be empty for graphs with more than one vertex")
 
     # Initialize distances
     distances = {v: float('inf') for v in range(num_vertices)}
