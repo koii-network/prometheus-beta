@@ -31,9 +31,9 @@ def find_middle_range_indices(sorted_list, range_size=1):
     # Determine the middle index
     mid_index = len(sorted_list) // 2
     
-    # Calculate the range of indices
-    start_index = max(0, mid_index - range_size)
-    end_index = min(len(sorted_list) - 1, mid_index + range_size)
+    # For odd-length lists, return the middle index
+    if len(sorted_list) % 2 == 1:
+        return [mid_index]
     
-    # Return the indices within the range
-    return list(range(start_index, end_index + 1))
+    # For even-length lists, return the two indices around the middle
+    return [mid_index - 1, mid_index]
