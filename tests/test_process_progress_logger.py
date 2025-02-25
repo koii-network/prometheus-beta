@@ -8,6 +8,7 @@ class TestProcessProgressLogger:
     def setup_method(self):
         # Reset logging to capture log messages
         logging.getLogger().handlers = []
+        logging.getLogger().setLevel(logging.DEBUG)
     
     def test_initialization(self):
         logger = Mock(spec=logging.Logger)
@@ -82,12 +83,17 @@ class TestProcessProgressLogger:
     def test_log_message_content(self):
         # Capture log messages to verify their content
         log_capture = []
-        mock_handler = Mock()
-        mock_handler.handle = lambda record: log_capture.append(record)
+        
+        class CaptureHandler(logging.Handler):
+            def emit(self, record):
+                log_capture.append(record)
         
         logger = logging.getLogger(__name__)
-        logger.addHandler(mock_handler)
+        capture_handler = CaptureHandler()
+        logger.addHandler(capture_handler)
+        logger.setLevel(logging.INFO)
         
+        # Log a progress update
         progress_logger = ProcessProgressLogger(total_steps=10, logger=logger)
         progress_logger.update(steps=3)
         
