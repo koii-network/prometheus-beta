@@ -23,32 +23,25 @@ def find_longest_parity_subsequence(nums):
     if len(nums) == 1:
         return nums
     
-    # Track the longest subsequences for even and odd
-    even_subsequence = []
-    odd_subsequence = []
+    longest_subsequence = []
     
     for start in range(len(nums)):
-        # Check if starting number is even or odd
+        # Check parity of start element
         is_start_even = nums[start] % 2 == 0
         
-        # Current subsequence
+        # Candidate subsequence 
         current_subsequence = [nums[start]]
         
-        # Find consecutive subsequence
+        # Extend subsequence forward
         for j in range(start + 1, len(nums)):
-            # Continue subsequence if parity matches
+            # Continue if maintains parity 
             if (is_start_even and nums[j] % 2 == 0) or (not is_start_even and nums[j] % 2 != 0):
                 current_subsequence.append(nums[j])
             else:
                 break
         
-        # Update subsequences based on length
-        if is_start_even:
-            if len(current_subsequence) > len(even_subsequence):
-                even_subsequence = current_subsequence
-        else:
-            if len(current_subsequence) > len(odd_subsequence):
-                odd_subsequence = current_subsequence
+        # Compare to longest subsequence
+        if len(current_subsequence) > len(longest_subsequence):
+            longest_subsequence = current_subsequence
     
-    # Return the longer subsequence (prefer even if equal)
-    return even_subsequence if len(even_subsequence) >= len(odd_subsequence) else odd_subsequence
+    return longest_subsequence
