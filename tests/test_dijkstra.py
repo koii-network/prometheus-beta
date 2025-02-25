@@ -42,7 +42,7 @@ def test_negative_weights_raise_error():
         'B': {}
     }
     
-    with pytest.raises(ValueError, match="Invalid weight"):
+    with pytest.raises(ValueError, match="Negative weight"):
         dijkstra(graph, 'A')
 
 def test_non_numeric_weights_raise_error():
