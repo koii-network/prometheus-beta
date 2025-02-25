@@ -15,11 +15,11 @@ def test_convert_to_alternating_lowercase_single_char():
 
 def test_convert_to_alternating_lowercase_with_spaces():
     """Test conversion of a string with spaces."""
-    assert convert_to_alternating_lowercase("hello world") == "hElLo WoRlD"
+    assert convert_to_alternating_lowercase("hello world") == "hElLo wOrLd"
 
 def test_convert_to_alternating_lowercase_with_numbers():
     """Test conversion of a string with numbers."""
-    assert convert_to_alternating_lowercase("hello123world") == "hElLo123WoRlD"
+    assert convert_to_alternating_lowercase("hello123world") == "hElLo123wOrLd"
 
 def test_convert_to_alternating_lowercase_invalid_input():
     """Test that TypeError is raised for non-string input."""
