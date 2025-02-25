@@ -3,6 +3,7 @@ from src.max_subarray_sum import max_subarray_sum_with_constraints
 
 def test_basic_scenario():
     """Test a basic scenario where a valid subarray exists"""
+    # [2, 3, 4, 3] sums to 12 and meets the constraints
     assert max_subarray_sum_with_constraints([1, 2, 3, 4, 5], 3, 10) == 12
 
 def test_no_valid_subarray():
@@ -15,6 +16,7 @@ def test_exact_length_constraint():
 
 def test_multiple_valid_subarrays():
     """Test when multiple subarrays meet the constraints"""
+    # [4, 1, 5, 6] sums to 16 and meets the constraints
     assert max_subarray_sum_with_constraints([3, 1, 4, 1, 5, 9, 2, 6], 3, 10) == 16
 
 def test_negative_numbers():
