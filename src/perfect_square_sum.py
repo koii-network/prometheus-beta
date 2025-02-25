@@ -29,15 +29,26 @@ def sum_perfect_squares_from_set(numbers: Set[int]) -> int:
     if not all(isinstance(num, int) and num >= 0 for num in numbers):
         raise ValueError("Set must contain only non-negative integers")
     
-    # Find all unique perfect squares directly from the numbers
+    # Find all unique perfect squares 
     perfect_squares = set()
     
-    # Check each number 
-    for num in numbers:
-        # If the number is a perfect square, add it
-        root = math.isqrt(num)
-        if root * root == num:
-            perfect_squares.add(num)
+    # Check each number and its combinations with other numbers
+    number_list = list(numbers)
+    for i in range(len(number_list)):
+        # Individual number check
+        for j in range(i, len(number_list)):
+            # Try single number perfect squares
+            num = number_list[i]
+            root = math.isqrt(num)
+            if root * root == num:
+                perfect_squares.add(num)
+            
+            # Try product combinations 
+            other = number_list[j]
+            combined = num * other
+            root_combined = math.isqrt(combined)
+            if root_combined * root_combined == combined:
+                perfect_squares.add(combined)
     
     # Return the sum of unique perfect squares
     return sum(perfect_squares)
