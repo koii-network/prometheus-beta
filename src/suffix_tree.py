@@ -29,6 +29,15 @@ class SuffixTree:
             self.suffix_link = None
             self.start = start
             self.end = end
+        
+        def edge_length(self):
+            """
+            Calculate the length of the edge label.
+            
+            Returns:
+                int: Length of the edge label
+            """
+            return self.end - self.start + 1
     
     def __init__(self, text):
         """
@@ -58,20 +67,76 @@ class SuffixTree:
         
         Implements an efficient O(m) construction algorithm.
         """
-        # Extend the tree for each suffix
-        for i in range(len(self.text)):
-            self._extend_suffix_tree(i)
-    
-    def _extend_suffix_tree(self, phase):
-        """
-        Extend the suffix tree for a new character.
+        # Variables to track tree construction
+        active_node = self.root
+        active_length = 0
+        active_edge = -1
+        remainder = 0
         
-        Args:
-            phase (int): Current phase of suffix tree construction
-        """
-        # Placeholder for Ukkonen's algorithm implementation
-        # Will be completed as a core part of the suffix tree construction
-        pass
+        # Extend the tree for each character
+        for i, char in enumerate(self.text):
+            remainder += 1
+            last_new_node = None
+            
+            while remainder > 0:
+                # Create new node if no active edge
+                if active_length == 0:
+                    active_edge = i
+                
+                # If the current character is not found in children
+                if char not in active_node.children:
+                    # Create a new leaf node
+                    new_leaf = self.Node(start=i, end=len(self.text)-1)
+                    active_node.children[char] = new_leaf
+                    
+                    # Update the last internal node's suffix link
+                    if last_new_node:
+                        last_new_node.suffix_link = active_node
+                        last_new_node = None
+                
+                else:
+                    # Follow the edge
+                    next_node = active_node.children[char]
+                    edge_length = next_node.edge_length()
+                    
+                    # If we can walk down the tree
+                    if active_length < edge_length:
+                        # Check if the next character matches
+                        if self.text[next_node.start + active_length] == char:
+                            # Increment active length
+                            active_length += 1
+                            break
+                        
+                        # Split the edge
+                        split_node = self.Node(start=next_node.start, 
+                                               end=next_node.start + active_length - 1)
+                        active_node.children[char] = split_node
+                        
+                        # Create a new leaf and connect
+                        new_leaf = self.Node(start=i, end=len(self.text)-1)
+                        split_node.children[char] = new_leaf
+                        next_node.start += active_length
+                        split_node.children[self.text[next_node.start]] = next_node
+                        
+                        # Handle suffix link
+                        if last_new_node:
+                            last_new_node.suffix_link = split_node
+                        last_new_node = split_node
+                    
+                    else:
+                        # Move to the next node and adjust active point
+                        active_node = next_node
+                        active_edge = active_edge + edge_length
+                        active_length -= edge_length
+                        continue
+                
+                # Decrement remainder and adjust active point if needed
+                remainder -= 1
+                if active_node == self.root and active_length > 0:
+                    active_edge += 1
+                    active_length -= 1
+                elif active_node != self.root:
+                    active_node = active_node.suffix_link or self.root
     
     def search(self, pattern):
         """
@@ -95,29 +160,35 @@ class SuffixTree:
         
         # Find the node representing the pattern (if it exists)
         current = self.root
-        for char in pattern:
-            if char not in current.children:
+        i = 0
+        
+        while i < len(pattern):
+            # Find the child corresponding to the current character
+            if pattern[i] not in current.children:
                 return []  # Pattern not found
             
             # Follow the appropriate edge
-            child = current.children[char]
-            label_length = child.end - child.start + 1
+            child = current.children[pattern[i]]
+            edge_start = child.start
+            edge_end = child.end
+            edge_index = edge_start
             
-            # Check characters along the edge
-            for j in range(label_length):
-                if j >= len(pattern):
-                    break
+            # Compare characters along the edge
+            while edge_index <= edge_end and i < len(pattern):
+                if self.text[edge_index] != pattern[i]:
+                    return []  # Pattern does not match
                 
-                # Check if characters match
-                edge_char = self.text[child.start + j]
-                if pattern[j] != edge_char:
-                    return []  # Pattern not found
+                edge_index += 1
+                i += 1
             
-            # Update current node and pattern if needed
+            # If we fully traversed the pattern
+            if i == len(pattern):
+                return self._collect_leaf_indices(child)
+            
+            # Move to the next node
             current = child
         
-        # Find all leaf nodes under this node (suffix indices)
-        return self._collect_leaf_indices(current)
+        return []
     
     def _collect_leaf_indices(self, node):
         """
