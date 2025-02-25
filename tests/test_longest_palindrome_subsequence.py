@@ -21,5 +21,5 @@ def test_longest_palindrome_subsequence():
     assert longest_palindrome_subsequence("abba") == 4
     
     # Test longer strings
-    assert longest_palindrome_subsequence("forgeeksskeegfor") == 10
+    assert longest_palindrome_subsequence("forgeeksskeegfor") == 12
     assert longest_palindrome_subsequence("abcdefghijklmnop") == 1
