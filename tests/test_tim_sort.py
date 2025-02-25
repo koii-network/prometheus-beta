@@ -51,9 +51,9 @@ def test_tim_sort_invalid_input():
     with pytest.raises(TypeError):
         tim_sort("not a list")
 
-def test_tim_sort_list_with_different_types():
-    """Test sorting a list with mixed comparable types"""
-    input_list = [3, 1.5, 'a', 2]
+def test_tim_sort_float_list():
+    """Test sorting a list of floats"""
+    input_list = [3.14, 1.5, 2.71, 0.99]
     expected = sorted(input_list)
     assert tim_sort(input_list) == expected
 
