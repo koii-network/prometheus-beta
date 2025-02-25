@@ -5,12 +5,13 @@ def test_bad_character_table():
     """Test building bad character table"""
     pattern = "EXAMPLE"
     bad_char = build_bad_character_table(pattern)
+    # Each character should map to its last occurrence in the pattern
     assert bad_char['E'] == 6
     assert bad_char['X'] == 1
-    assert bad_char['A'] == 2  # Last occurrence of 'A'
+    assert bad_char['A'] == 2
     assert bad_char['M'] == 3
-    assert bad_char['P'] == 4  # Changed to match actual implementation
-    assert bad_char['L'] == 2
+    assert bad_char['P'] == 4
+    assert bad_char['L'] == 5
 
 def test_basic_match():
     """Test basic string matching"""
