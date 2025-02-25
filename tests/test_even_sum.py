@@ -15,7 +15,7 @@ def test_sum_even_numbers_no_evens():
 
 def test_sum_even_numbers_negative():
     """Test summing even numbers with negative numbers."""
-    assert sum_even_numbers([-2, -4, 1, 3, 4]) == -6
+    assert sum_even_numbers([-2, -4, 1, 3, 4]) == -2
 
 def test_sum_even_numbers_zero():
     """Test summing even numbers including zero."""
