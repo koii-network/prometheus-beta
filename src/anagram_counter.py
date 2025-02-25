@@ -29,14 +29,14 @@ def count_anagrams(s):
     if len(s) == 1:
         return 0
     
-    # Set to store unique anagram sorted representations
-    unique_anagrams = set()
+    # Initialize set to track unique anagram groups
+    unique_anagram_groups = set()
     
-    # Generate all possible substrings that are at least 2 characters long
-    for length in range(2, len(s) + 1):
-        for start in range(len(s) - length + 1):
+    # Generate all possible substrings
+    for i in range(len(s)):
+        for j in range(i+1, len(s)+1):
             # Sort the substring to identify unique anagram groups
-            sorted_substring = ''.join(sorted(s[start:start+length]))
-            unique_anagrams.add(sorted_substring)
+            sorted_substr = ''.join(sorted(s[i:j]))
+            unique_anagram_groups.add(sorted_substr)
     
-    return len(unique_anagrams)
+    return len(unique_anagram_groups)
