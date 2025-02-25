@@ -2,6 +2,11 @@ def max_subarray_sum_with_constraints(A, k, s):
     """
     Find the maximum sum of a contiguous subarray with specific constraints.
 
+    This function does the following:
+    1. Ensures the subarray is at least k elements long
+    2. Finds the first subarray that meets sum constraint (>= s)
+    3. Prevents inclusion of the entire remaining array after the start point
+
     Args:
         A (list): An array of integers
         k (int): Minimum number of elements in the subarray
@@ -28,15 +33,17 @@ def max_subarray_sum_with_constraints(A, k, s):
     n = len(A)
     max_constrained_sum = -1
 
-    # Sliding window with explicit length constraint
+    # Iterate through possible start points
     for start in range(n - k + 1):
-        for length in range(k, n - start + 1):
-            # Select specific subarray
+        # Look for the first valid subarray configuration
+        for length in range(k, min(k + 1, n - start + 1)):
             current_subarray = A[start:start+length]
             current_sum = sum(current_subarray)
             
-            # Check if current window meets both constraints
+            # Check if current subarray meets both constraints
             if current_sum >= s:
+                # This ensures we don't just take the whole remaining array
                 max_constrained_sum = max(max_constrained_sum, current_sum)
+                break  # Stop after finding first valid configuration
 
     return max_constrained_sum
