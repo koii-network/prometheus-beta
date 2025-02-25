@@ -9,9 +9,9 @@ class TestPermissionLogger:
     def captured_output(self):
         """Fixture to capture console output."""
         output = io.StringIO()
-        sys.stdout = output
+        sys.stderr = output
         yield output
-        sys.stdout = sys.__stdout__
+        sys.stderr = sys.__stderr__
     
     def test_default_logging(self, captured_output):
         """Test default logging behavior for a regular user."""
