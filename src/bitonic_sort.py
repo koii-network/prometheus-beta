@@ -23,19 +23,11 @@ def bitonic_sort(arr, ascending=True):
     if len(arr) <= 1:
         return arr
     
-    def compare_and_swap(arr, i, j, direction):
-        """
-        Compare and potentially swap elements based on the sorting direction
-        
-        Args:
-            arr (list): The list being sorted
-            i (int): First index to compare
-            j (int): Second index to compare
-            direction (bool): Sorting direction (True for ascending, False for descending)
-        """
-        if direction == (arr[i] > arr[j]):
-            arr[i], arr[j] = arr[j], arr[i]
+    # Input validation
+    if not isinstance(arr, list):
+        raise TypeError("Input must be a list")
     
+    # Merge two sequences in the specified direction
     def bitonic_merge(arr, low, count, direction):
         """
         Merge a bitonic sequence
@@ -44,51 +36,52 @@ def bitonic_sort(arr, ascending=True):
             arr (list): The list being sorted
             low (int): Starting index of the sequence
             count (int): Number of elements in the sequence
-            direction (bool): Sorting direction
+            direction (bool): True for ascending, False for descending
         """
         if count > 1:
-            k = count // 2
-            for i in range(low, low + k):
-                compare_and_swap(arr, i, i + k, direction)
+            mid = count // 2
             
-            bitonic_merge(arr, low, k, direction)
-            bitonic_merge(arr, low + k, k, direction)
+            for i in range(low, low + mid):
+                if direction == (arr[i] > arr[i + mid]):
+                    arr[i], arr[i + mid] = arr[i + mid], arr[i]
+            
+            bitonic_merge(arr, low, mid, direction)
+            bitonic_merge(arr, low + mid, mid, direction)
     
+    # Recursively build bitonic sequence and merge
     def bitonic_sort_recursive(arr, low, count, direction):
         """
-        Recursively sort a bitonic sequence
+        Recursively build and sort a bitonic sequence
         
         Args:
             arr (list): The list being sorted
             low (int): Starting index of the sequence
             count (int): Number of elements in the sequence
-            direction (bool): Sorting direction
+            direction (bool): True for ascending, False for descending
         """
         if count > 1:
-            k = count // 2
+            mid = count // 2
             
             # Sort first half in ascending order
-            bitonic_sort_recursive(arr, low, k, True)
+            bitonic_sort_recursive(arr, low, mid, True)
             
             # Sort second half in descending order
-            bitonic_sort_recursive(arr, low + k, k, False)
+            bitonic_sort_recursive(arr, low + mid, mid, False)
             
-            # Merge the entire sequence
+            # Merge entire sequence
             bitonic_merge(arr, low, count, direction)
     
-    # Input validation
-    if not isinstance(arr, list):
-        raise TypeError("Input must be a list")
-    
-    # Create a list with a power of 2 length
+    # Calculate the next power of 2
     n = len(arr)
-    next_power_of_2 = 2 ** ((n - 1).bit_length())
+    k = 1
+    while k < n:
+        k *= 2
     
-    # Pad the list with copies of the original elements
-    padded_arr = arr.copy() + [arr[0]] * (next_power_of_2 - n)
+    # Pad the array to make its length a power of 2
+    arr = arr + [arr[-1]] * (k - n)
     
-    # Perform bitonic sort
-    bitonic_sort_recursive(padded_arr, 0, len(padded_arr), ascending)
+    # Sort the entire padded array
+    bitonic_sort_recursive(arr, 0, k, ascending)
     
     # Return only the original number of elements
-    return padded_arr[:n]
+    return arr[:n]
