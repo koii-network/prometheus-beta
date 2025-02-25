@@ -29,7 +29,7 @@ def find_max_subarray_sum(arr):
         return arr
     
     # Initialize variables for Kadane's algorithm
-    max_sum = float('-inf')
+    max_sum = arr[0]  # Initialize with first element instead of negative infinity
     current_sum = 0
     start = 0
     max_start = 0
