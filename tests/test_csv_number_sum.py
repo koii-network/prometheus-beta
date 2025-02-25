@@ -15,7 +15,7 @@ def test_empty_string():
 
 def test_numbers_with_spaces():
     """Test handling of numbers with surrounding whitespace."""
-    assert sum_csv_number(" 1 , 2 , 3 ") == 6
+    assert sum_csv_numbers(" 1 , 2 , 3 ") == 6
 
 def test_negative_numbers():
     """Test summing strings with negative numbers."""
