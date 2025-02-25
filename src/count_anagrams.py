@@ -41,14 +41,28 @@ def count_anagrams(s: str) -> int:
     # Set to store unique anagram signatures
     unique_anagrams = set()
     
-    # Generate all possible substrings
-    for length in range(1, len(s) + 1):
+    # Generate substrings and track their frequency patterns
+    for length in range(1, len(s)):
         for start in range(len(s) - length + 1):
             substring = s[start:start+length]
             
             # Create a signature of character frequencies
             signature = tuple(sorted(Counter(substring).items()))
-            unique_anagrams.add(signature)
+            
+            # Ensure there's at least one repeated character or permutable
+            if has_repeated_char(substring):
+                unique_anagrams.add(signature)
     
-    # Subtract individual characters to get count of true anagrams
-    return max(0, len(unique_anagrams) - len(set(s)))
+    return len(unique_anagrams)
+
+def has_repeated_char(s: str) -> bool:
+    """
+    Check if the string has repeated characters or can form an anagram.
+    
+    Args:
+        s (str): Input substring.
+    
+    Returns:
+        bool: True if the substring can form an anagram, False otherwise.
+    """
+    return len(set(s)) < len(s) or len(s) > 1
