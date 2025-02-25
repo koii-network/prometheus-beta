@@ -27,7 +27,8 @@ def test_duplicate_numbers():
 
 def test_no_consecutive_sequence():
     """Test list with no consecutive sequence."""
-    assert find_longest_consecutive_sequence([9, 1, 4, 7, 3]) == [9]
+    result = find_longest_consecutive_sequence([9, 1, 4, 7, 3])
+    assert result == [3, 4]
 
 def test_multiple_same_length_sequences():
     """Test when multiple sequences of the same length exist."""
