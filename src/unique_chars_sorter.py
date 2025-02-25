@@ -20,7 +20,7 @@ def sort_unique_characters(input_string):
     if not input_string:
         return []
     
-    # Convert to list of unique characters and sort
-    unique_chars = sorted(set(input_string))
+    # Convert to list of unique characters and sort using Unicode ordering
+    unique_chars = sorted(set(input_string), key=lambda x: str(x))
     
     return unique_chars
