@@ -5,7 +5,7 @@ def test_basic_non_vowel_counting():
     """Test basic non-vowel character counting."""
     assert count_non_vowel_characters("hello") == 3  # h, l, l
     assert count_non_vowel_characters("world") == 4  # w, r, l, d
-    assert count_non_vowel_characters("python") == 4  # p, y, t, h
+    assert count_non_vowel_characters("python") == 5  # p, y, t, h, n
 
 def test_case_insensitivity():
     """Test that the function is case-insensitive."""
