@@ -17,7 +17,7 @@ def count_anagrams(s):
     if not isinstance(s, str):
         raise ValueError("Input must be a string")
     
-    # Allow empty string
+    # Allow empty string and single character
     if len(s) <= 1:
         return 0
     
@@ -25,19 +25,21 @@ def count_anagrams(s):
     if not s.islower() or not s.isalpha():
         raise ValueError("Input must contain only lowercase English letters")
     
-    # Initialize set to track unique anagram groups
-    unique_sorted_single_chars = set()
-    unique_sorted_substrings = set()
+    # Complex anagram counting logic
+    def generate_anagram_groups(s):
+        """Generate unique sorted anagram groups."""
+        unique_groups = set()
+        n = len(s)
+        
+        # Generate all substrings and their sorted representations
+        for length in range(1, n + 1):
+            for start in range(n - length + 1):
+                substr = s[start:start+length]
+                sorted_substr = ''.join(sorted(substr))
+                unique_groups.add(sorted_substr)
+        
+        return unique_groups
     
-    # First, add single characters as anagram groups
-    for c in s:
-        unique_sorted_single_chars.add(c)
-    
-    # Then, find unique sorted substrings
-    for length in range(2, len(s) + 1):
-        for start in range(len(s) - length + 1):
-            # Sort the substring to identify unique anagram groups
-            sorted_substr = ''.join(sorted(s[start:start+length]))
-            unique_sorted_substrings.add(sorted_substr)
-    
-    return len(unique_sorted_single_chars) + len(unique_sorted_substrings) - len(unique_sorted_single_chars)
+    # Count unique anagram groups
+    unique_anagram_groups = generate_anagram_groups(s)
+    return len(unique_anagram_groups)
