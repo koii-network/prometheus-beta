@@ -20,23 +20,25 @@ def reverse_word_characters(sentence: str) -> str:
         ''
         >>> reverse_word_characters("hello, world!")
         'olleh, dlrow!'
+        >>> reverse_word_characters("python 3.9 rocks")
+        'nohtyp 9.3 skcor'
     """
     # Handle empty string case
     if not sentence:
         return ""
     
-    # Function to reverse a word while preserving its punctuation
+    # Function to reverse a word while preserving its punctuation and numeric formatting
     def reverse_word_with_punctuation(word):
-        # Separate the word from its punctuation
-        match = re.match(r'^(\W*)([^\W]*)([\W]*)$', word)
+        # Separate the word from its punctuation and numeric formatting
+        match = re.match(r'^(\W*)([^\W\d]*\d*[^\W\d]*)(\d*)([\W]*)$', word)
         if not match:
             return word
         
-        # Unpack the groups: leading punct, word, trailing punct
-        pre_punct, core_word, post_punct = match.groups()
+        # Unpack the groups: leading punct, alphanumeric core, numeric part, trailing punct
+        pre_punct, letter_part, numeric_part, post_punct = match.groups()
         
-        # Reverse the core word and reassemble with punctuation
-        return pre_punct + core_word[::-1] + post_punct
+        # Reverse the alphanumeric part and reassemble with punctuation and numeric part
+        return pre_punct + letter_part[::-1] + numeric_part + post_punct
     
     # Split the sentence into words, reverse each, then rejoin
     reversed_words = [reverse_word_with_punctuation(word) for word in sentence.split()]
