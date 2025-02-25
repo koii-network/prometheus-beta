@@ -67,22 +67,33 @@ def inverse_burrows_wheeler_transform(transformed_string, original_index):
     if not transformed_string:
         raise ValueError("Transformed string cannot be empty")
     
-    # Create a sorted copy of the transformed string
-    sorted_chars = sorted(transformed_string)
+    # Compute first column (sorted)
+    first_col = sorted(transformed_string)
     
-    # Reconstruct the string
-    result = []
+    # Create the 'next' array and count column
     n = len(transformed_string)
+    next_arr = [0] * n
+    count = {}
+    
+    # Build the count and next arrays
+    for char in first_col:
+        count[char] = count.get(char, 0) + 1
+    
+    # Compute 'next' using multiple passes to handle repeated characters
+    occurrence = {char: 0 for char in count}
+    
+    for i in range(n):
+        current_char = first_col[i]
+        next_arr[i] = occurrence[current_char]
+        occurrence[current_char] += 1
+    
+    # Reconstruct the original string
+    result = []
     current_index = original_index
     
     for _ in range(n):
-        # Add the current character to the result
-        result.append(sorted_chars[current_index])
-        
-        # Find the next character's index in the sorted rotation
-        current_index = transformed_string.index(result[-1], 
-            transformed_string.index(result[-1]) if transformed_string.index(result[-1]) < current_index 
-            else transformed_string.index(result[-1]) + 1)
+        result.append(first_col[current_index])
+        current_index = next_arr[current_index]
     
-    # Remove the sentinel and reconstruct the original string
+    # Return the string without the sentinel character
     return ''.join(result[:-1])
