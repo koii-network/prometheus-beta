@@ -1,4 +1,4 @@
-from typing import Set, Union
+from typing import Set
 import math
 
 def sum_perfect_squares_from_set(numbers: Set[int]) -> int:
@@ -29,24 +29,15 @@ def sum_perfect_squares_from_set(numbers: Set[int]) -> int:
     if not all(isinstance(num, int) and num >= 0 for num in numbers):
         raise ValueError("Set must contain only non-negative integers")
     
-    # Find all unique perfect squares
+    # Find all unique perfect squares directly from the numbers
     perfect_squares = set()
     
-    # Check each number and their combinations
-    for i in range(len(list(numbers))):
-        num = list(numbers)[i]
-        # Check if the number itself is a perfect square
-        if math.isqrt(num) ** 2 == num:
+    # Check each number 
+    for num in numbers:
+        # If the number is a perfect square, add it
+        root = math.isqrt(num)
+        if root * root == num:
             perfect_squares.add(num)
-        
-        # Check with other numbers 
-        for j in range(i+1, len(list(numbers))):
-            other = list(numbers)[j]
-            
-            # Check combined products 
-            combined = num * other
-            if math.isqrt(combined) ** 2 == combined:
-                perfect_squares.add(combined)
     
     # Return the sum of unique perfect squares
     return sum(perfect_squares)
