@@ -26,7 +26,7 @@ def test_complex_edits():
     """Test more complex edit scenarios"""
     assert compute_edit_distance("sunday", "saturday") == 3
     assert compute_edit_distance("saturday", "sunday") == 3
-    assert compute_edit_distance("algorithm", "logarithm") == 2
+    assert compute_edit_distance("algorithm", "logarithm") == 3
 
 def test_type_error():
     """Test type error handling"""
