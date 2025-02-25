@@ -28,15 +28,13 @@ def find_longest_common_suffix(strings):
     if len(strings) == 1:
         return strings[0]
     
-    # Find the shortest string to limit suffix length
+    # Iterate through all possible suffixes from the shortest string
     shortest = min(strings, key=len)
     
-    # Check suffixes from shortest to longest
-    for i in range(1, len(shortest) + 1):
-        # Extract potential suffix
-        suffix = shortest[-i:]
-        
-        # Check if this suffix is common to all strings
+    # Try all possible suffix lengths from longest to shortest
+    for length in range(len(shortest), 0, -1):
+        # Check if suffix at current length is common to all strings
+        suffix = shortest[-length:]
         if all(s.endswith(suffix) for s in strings):
             return suffix
     
