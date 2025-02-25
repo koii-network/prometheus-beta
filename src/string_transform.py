@@ -21,17 +21,24 @@ def string_transform(s: str) -> str:
     # Remove spaces and convert to lowercase
     no_space_lower = ''.join(char.lower() for char in s if char != ' ')
     
-    # Count the number of 'a's
-    a_count = no_space_lower.count('a')
+    # Separate regular characters and track a count
+    regular_chars = [char for char in no_space_lower[::-1] if char != 'a']
+    a_chars = [char for char in no_space_lower[::-1] if char == 'a']
     
-    # Reverse the string without 'a'
-    reversed_without_a = ''.join(char for char in no_space_lower[::-1] if char != 'a')
+    # Reconstruct the string by strategically placing '*'
+    result = []
+    r_idx = 0
+    a_idx = 0
     
-    # Add the correct number of '*' for 'a's
-    result = list(reversed_without_a)
-    for _ in range(a_count):
-        # Find a good position to insert '*'
-        if result:
-            result.insert(0, '*')
+    while r_idx < len(regular_chars) or a_idx < len(a_chars):
+        # Add * instead of 'a' when needed
+        if a_idx < len(a_chars):
+            result.append('*')
+            a_idx += 1
+        
+        # Add regular characters when available
+        if r_idx < len(regular_chars):
+            result.append(regular_chars[r_idx])
+            r_idx += 1
     
     return ''.join(result)
