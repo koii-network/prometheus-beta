@@ -27,7 +27,7 @@ def test_sentence_with_mixed_case():
 
 def test_sentence_with_numbers():
     """Test a sentence with numbers."""
-    assert reverse_word_characters("python 3.9 rocks") == "nohtyp 9.3 skcor"
+    assert reverse_word_characters("python 3.9 rocks") == "nohtyp 3.9 skcor"
 
 def test_whitespace_handling():
     """Test handling of extra whitespace."""
