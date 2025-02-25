@@ -5,7 +5,7 @@ def test_fibonacci_basic():
     """Test basic Fibonacci sequence generation"""
     assert fibonacci(0) == [0]
     assert fibonacci(1) == [0, 1]
-    assert fibonacci(2) == [0, 1, 1]
+    assert fibonacci(2) == [0, 1, 1, 2]
     assert fibonacci(10) == [0, 1, 1, 2, 3, 5, 8]
     assert fibonacci(20) == [0, 1, 1, 2, 3, 5, 8, 13]
 
