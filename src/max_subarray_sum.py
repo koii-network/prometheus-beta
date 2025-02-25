@@ -30,8 +30,8 @@ def max_subarray_sum_with_constraints(A, k, s):
 
     # Try all possible subarrays of at least k elements
     for start in range(n - k + 1):
-        for end in range(start + k - 1, n):
-            current_sum = sum(A[start:end+1])
+        for length in range(k, n - start + 1):
+            current_sum = sum(A[start:start+length])
             if current_sum >= s:
                 max_constrained_sum = max(max_constrained_sum, current_sum)
 
