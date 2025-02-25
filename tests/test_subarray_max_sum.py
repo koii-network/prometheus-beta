@@ -26,7 +26,8 @@ def test_mixed_numbers():
     """Test array with mixed positive and negative numbers"""
     arr = [1, -2, 3, 10, -4, 7, 2, -5]
     k = 3
-    assert maxSumSubarray(arr, k) == 16  # 10 + (-4) + 7 = 16
+    # The maximum sum of any 3 consecutive elements is likely 13
+    assert maxSumSubarray(arr, k) == 13
 
 def test_invalid_k_zero():
     """Test raising ValueError when k is zero"""
