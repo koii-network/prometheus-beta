@@ -29,8 +29,9 @@ def test_type_errors():
 
 def test_case_sensitivity():
     """Test case sensitivity of the function"""
+    assert longest_common_subsequence_length("abc", "abc") == 3
+    assert longest_common_subsequence_length("abc", "ABC") == 0
     assert longest_common_subsequence_length("AbC", "abc") == 0
-    assert longest_common_subsequence_length("ABC", "abc") == 0
 
 def test_repeated_characters():
     """Test strings with repeated characters"""
