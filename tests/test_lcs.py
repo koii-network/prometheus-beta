@@ -22,11 +22,12 @@ def test_no_common_subsequence():
 
 def test_case_sensitivity():
     """Test case sensitivity"""
-    assert longest_common_subsequence("Hello", "hello") == ""
+    # Checking that different case strings don't match
+    assert len(longest_common_subsequence("Hello", "hello")) == 0
 
 def test_multiple_subsequences():
     """Test scenarios with multiple possible subsequences"""
-    assert longest_common_subsequence("ABCDGH", "ABCDFH") == "ABCFH"
+    assert longest_common_subsequence("ABCDGH", "ABCDFH") == "ABCDH"
 
 def test_invalid_inputs():
     """Test error handling for invalid inputs"""
