@@ -3,13 +3,13 @@ def reverse_matrix_elements(matrix):
     Reverse the digits of each element in a square matrix.
 
     Args:
-        matrix (List[List[int]]): A square matrix of integers between 0 and 9.
+        matrix (List[List[int]]): A square matrix of integers.
 
     Returns:
         List[List[int]]: A new matrix with each element's digits reversed.
 
     Raises:
-        ValueError: If the matrix is not square or contains invalid elements.
+        ValueError: If the matrix is not square or is empty.
     """
     # Validate input matrix
     if not matrix or not matrix[0]:
@@ -23,11 +23,6 @@ def reverse_matrix_elements(matrix):
     # Check matrix size constraints
     if not (1 <= n <= 1000):
         raise ValueError("Matrix size must be between 1 and 1000")
-
-    # Validate matrix elements
-    for row in matrix:
-        if any(not (0 <= elem <= 9) for elem in row):
-            raise ValueError("Matrix elements must be integers between 0 and 9")
 
     # Create a new matrix with reversed elements
     reversed_matrix = []
