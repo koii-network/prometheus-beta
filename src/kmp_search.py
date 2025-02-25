@@ -55,12 +55,19 @@ def kmp_search(text, pattern):
         TypeError: If inputs are not strings
         ValueError: If either input is empty
     """
-    # Input validation
-    if not isinstance(text, str) or not isinstance(pattern, str):
+    # Input validation with more robust handling of None and empty inputs
+    if text is None or pattern is None:
         raise TypeError("Both text and pattern must be strings")
     
-    if not text or not pattern:
-        raise ValueError("Text and pattern cannot be empty")
+    text = str(text)
+    pattern = str(pattern)
+    
+    # Special case for empty inputs
+    if not pattern:
+        return [] if text else []
+    
+    if not text:
+        return []
     
     # Compute the LPS array for the pattern
     lps = compute_lps_array(pattern)
