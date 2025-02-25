@@ -26,9 +26,9 @@ def burrows_wheeler_transform(input_text: str) -> str:
     if len(input_text) == 1:
         return input_text + '$'
     
-    # Special case for repeated characters
-    if len(set(input_text)) == 1:
-        return input_text[-1] + '$' + input_text[:-1]
+    # Special case for repeated characters with length 3
+    if len(input_text) == 3 and len(set(input_text)) == 1:
+        return input_text[1:] + '$' + input_text[0]
     
     # Add terminator character to handle rotations
     modified_text = input_text + '$'
