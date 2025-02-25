@@ -23,15 +23,18 @@ def find_max_consecutive_product(arr: List[int]) -> Optional[int]:
     if len(arr) < 3:
         return None
     
-    # Track max possible product considering different scenarios
+    # Initialize max product
     max_product = float('-inf')
     
-    # Iterate through the array to find max product
+    # Check all possible consecutive 3-element subsets
     for i in range(len(arr) - 2):
-        # Calculate current consecutive product
-        current_product = arr[i] * arr[i+1] * arr[i+2]
+        # Skip cases involving zero if possible
+        if arr[i] == 0 or arr[i+1] == 0 or arr[i+2] == 0:
+            subset_product = 0
+        else:
+            subset_product = arr[i] * arr[i+1] * arr[i+2]
         
-        # Update max product 
-        max_product = max(max_product, current_product)
+        # Update max product
+        max_product = max(max_product, subset_product)
     
-    return max_product
+    return max_product if max_product != float('-inf') else None
