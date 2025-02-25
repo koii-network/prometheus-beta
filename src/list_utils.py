@@ -28,13 +28,9 @@ def remove_unique_elements(my_list):
     
     # Iterate through the list in original order
     for item in my_list:
-        # If this is the first occurrence and it appears again later, add it
-        if my_list.count(item) > 1 and item not in duplicates:
-            # Add the required number of occurrences of this duplicate
-            multiple_count = my_list.count(item)
-            duplicates.extend([item] * multiple_count)
-            
-            # Prevent re-adding the same duplicate type
-            duplicates.remove(item)
+        # If this item appears more than once and is not already in duplicates
+        if my_list.count(item) > 1:
+            # Add all occurrences of this item
+            duplicates.append(item)
     
     return duplicates
