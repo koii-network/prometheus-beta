@@ -8,8 +8,8 @@ def max_subarray_sum_with_constraints(A, k, s):
         s (int): Minimum sum threshold for the subarray
 
     Returns:
-        int: Maximum sum of a contiguous subarray meeting the constraints,
-             or -1 if no such subarray exists
+        int: Maximum sum of a contiguous subarray with at least k elements
+             and sum >= s, or -1 if no such subarray exists
 
     Raises:
         ValueError: If input constraints are invalid
@@ -26,19 +26,17 @@ def max_subarray_sum_with_constraints(A, k, s):
         return -1
 
     n = len(A)
-    max_sum = float('-inf')
-    valid_subarrays_found = False
+    max_constrained_sum = -1
 
     # Sliding window approach
-    for window_start in range(n):
+    for start in range(n):
         current_sum = 0
-        for window_end in range(window_start, n):
-            current_sum += A[window_end]
-            window_length = window_end - window_start + 1
+        for end in range(start, n):
+            current_sum += A[end]
+            current_window_size = end - start + 1
 
             # Check if current window meets length and sum constraints
-            if window_length >= k and current_sum >= s:
-                max_sum = max(max_sum, current_sum)
-                valid_subarrays_found = True
+            if current_window_size >= k and current_sum >= s:
+                max_constrained_sum = max(max_constrained_sum, current_sum)
 
-    return max_sum if valid_subarrays_found else -1
+    return max_constrained_sum
