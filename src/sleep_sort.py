@@ -20,33 +20,45 @@ def sleep_sort(arr: List[Union[int, float]]) -> List[Union[int, float]]:
         ValueError: If input list contains negative numbers
         TypeError: If input list contains non-numeric types
     """
-    # Validate input
+    # Validate input first
     if not arr:
         return []
+    
+    # Check for non-numeric types first
+    if not all(isinstance(num, (int, float)) for num in arr):
+        raise TypeError("Input must be a list of numbers")
     
     # Check for negative numbers
     if any(num < 0 for num in arr):
         raise ValueError("Sleep sort does not support negative numbers")
     
-    # Check for non-numeric types
-    if not all(isinstance(num, (int, float)) for num in arr):
-        raise TypeError("Input must be a list of numbers")
-    
     # Thread-safe result list and lock
     result = []
     result_lock = threading.Lock()
+    
+    # Create an event to help synchronize threads
+    start_event = threading.Event()
     
     # Create threads for each number
     threads = []
     for num in arr:
         def worker(x):
-            time.sleep(x * 0.001)  # Sleep proportional to number value
+            # Wait for all threads to be ready
+            start_event.wait()
+            
+            # Sleep proportional to number value
+            time.sleep(x * 0.001)  
+            
+            # Add to result in a thread-safe manner
             with result_lock:
                 result.append(x)
         
         t = threading.Thread(target=worker, args=(num,))
         t.start()
         threads.append(t)
+    
+    # Release all threads simultaneously
+    start_event.set()
     
     # Wait for all threads to complete
     for t in threads:
