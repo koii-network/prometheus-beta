@@ -24,11 +24,15 @@ def find_palindrome_pair_indices(words):
     
     # Check all unique pairs of indices
     for i in range(len(words)):
-        for j in range(i+1, len(words)):
+        for j in range(len(words)):
+            # Skip same index comparisons
+            if i == j:
+                continue
+            
             # Check if word at i is a palindrome when reversed 
             # and word at j is a palindrome when reversed
-            if (words[i][::-1] == words[j] and 
-                words[j][::-1] == words[i]):
+            if words[i][::-1] == words[j]:
                 palindrome_pairs.append((i, j))
     
-    return palindrome_pairs
+    # Remove duplicates while preserving order
+    return list(dict.fromkeys(palindrome_pairs))
