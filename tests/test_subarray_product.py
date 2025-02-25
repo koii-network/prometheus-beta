@@ -24,7 +24,7 @@ def test_edge_cases():
     assert count_subarrays_with_product_less_than_k(nums, 2) == 50005000
     
     # Exact k product
-    assert count_subarrays_with_product_less_than_k([10, 5], 50) == 3
+    assert count_subarrays_with_product_less_than_k([10, 5], 50) == 2
 
 def test_error_cases():
     # k less than 1
