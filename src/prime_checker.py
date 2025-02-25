@@ -12,10 +12,10 @@ def is_prime(number):
         ValueError: If the input is not a positive integer.
     """
     # Validate input
-    if not isinstance(number, int):
+    if not isinstance(number, int) or number != number or number is None:
         raise ValueError("Input must be an integer")
     
-    # Handle edge cases
+    # Handle edge cases for non-positive numbers
     if number < 2:
         return False
     
