@@ -23,39 +23,64 @@ def find_longest_parity_subsequence(nums):
     if len(nums) == 1:
         return nums
     
-    # Track the best subsequences
-    longest_even_subsequence = []
-    longest_odd_subsequence = []
+    # Variables to track overall longest subsequences
+    longest_even_subseq = []
+    longest_odd_subseq = []
     
-    # Iterate through all possible start positions to handle non-contiguous subsequent elements
+    # Iterate through all possible start and end points
     for start in range(len(nums)):
-        # Start subsequences from current point, tracking parity
-        even_subsequence = []
-        odd_subsequence = []
+        even_candidates = []
+        odd_candidates = []
         
-        # Iterate through the list from the start point
+        # Accumulate candidate subsequences from the start
         for j in range(start, len(nums)):
-            # Check parity of current number
-            is_even = nums[j] % 2 == 0
+            current_num = nums[j]
             
-            # Add to appropriate subsequence
-            if is_even:
-                even_subsequence.append(nums[j])
-                # Clear odd subsequence if it breaks parity
-                if odd_subsequence and len(odd_subsequence) == 1:
-                    odd_subsequence = []
+            # Process even numbers
+            if current_num % 2 == 0:
+                # If first even, or can continue even sequence
+                if not even_candidates or len(even_candidates[-1]) == 0 or \
+                   (len(even_candidates[-1]) > 0 and current_num % 2 == even_candidates[-1][-1] % 2):
+                    # Append to most recent even subsequence or start a new one
+                    if not even_candidates or len(even_candidates[-1]) == 0:
+                        even_candidates.append([current_num])
+                    else:
+                        even_candidates[-1].append(current_num)
+                else:
+                    # Start a new even subsequence
+                    even_candidates.append([current_num])
+                
+                # Reset any ongoing odd sequence
+                if odd_candidates and len(odd_candidates[-1]) > 0:
+                    odd_candidates.append([])
+            
+            # Process odd numbers
             else:
-                odd_subsequence.append(nums[j])
-                # Clear even subsequence if it breaks parity
-                if even_subsequence and len(even_subsequence) == 1:
-                    even_subsequence = []
+                # If first odd, or can continue odd sequence
+                if not odd_candidates or len(odd_candidates[-1]) == 0 or \
+                   (len(odd_candidates[-1]) > 0 and current_num % 2 == odd_candidates[-1][-1] % 2):
+                    # Append to most recent odd subsequence or start a new one
+                    if not odd_candidates or len(odd_candidates[-1]) == 0:
+                        odd_candidates.append([current_num])
+                    else:
+                        odd_candidates[-1].append(current_num)
+                
+                # Reset any ongoing even sequence
+                if even_candidates and len(even_candidates[-1]) > 0:
+                    even_candidates.append([])
         
-        # Update longest subsequences, giving preference to even if equal
-        if len(even_subsequence) > len(longest_even_subsequence):
-            longest_even_subsequence = even_subsequence
+        # Find the longest even and odd subsequences
+        max_even_length = max(len(subseq) for subseq in even_candidates) if even_candidates else 0
+        max_odd_length = max(len(subseq) for subseq in odd_candidates) if odd_candidates else 0
         
-        if len(odd_subsequence) > len(longest_odd_subsequence):
-            longest_odd_subsequence = odd_subsequence
+        # Update overall longest subsequences
+        for subseq in even_candidates:
+            if len(subseq) == max_even_length and len(subseq) > len(longest_even_subseq):
+                longest_even_subseq = subseq
+        
+        for subseq in odd_candidates:
+            if len(subseq) == max_odd_length and len(subseq) > len(longest_odd_subseq):
+                longest_odd_subseq = subseq
     
-    # Return the longer subsequence, preferring even
-    return longest_even_subsequence if len(longest_even_subsequence) >= len(longest_odd_subsequence) else longest_odd_subsequence
+    # Return the longer subsequence, preferring even if equal
+    return longest_even_subseq if len(longest_even_subseq) >= len(longest_odd_subseq) else longest_odd_subseq
