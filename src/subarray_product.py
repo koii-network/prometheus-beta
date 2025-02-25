@@ -39,6 +39,6 @@ def count_subarrays_with_product_less_than_k(nums, k):
         
         # Count subarrays ending at the current right index
         # All subarrays between left and right (inclusive) have product less than k
-        total_count += right - left + 1
+        total_count += max(0, right - left + 1)
     
     return total_count
