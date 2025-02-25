@@ -35,13 +35,13 @@ def to_pascal_case(input_string: str) -> str:
     # Remove leading and trailing whitespace
     input_string = input_string.strip()
     
-    # Replace non-alphanumeric characters with space
-    input_string = re.sub(r'[^a-zA-Z0-9]+', ' ', input_string)
+    # Split a camelCase or mixed case string 
+    words = re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z][a-z]|\d|\W|$)|\d+', input_string)
     
-    # Split the string into words
-    words = input_string.split()
+    # Replace any remaining non-alphanumeric characters and split
+    words = [re.sub(r'[^a-zA-Z0-9]', '', word) for word in words]
     
-    # Capitalize each word
-    pascal_words = [word.capitalize() for word in words]
+    # Remove empty strings and capitalize
+    words = [word.capitalize() for word in words if word]
     
-    return ''.join(pascal_words)
+    return ''.join(words)
