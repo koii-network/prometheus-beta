@@ -19,5 +19,5 @@ def sort_strings_by_length(strings):
     if not all(isinstance(s, str) for s in strings):
         raise TypeError("All elements must be strings")
     
-    # Return a new list sorted by length
-    return sorted(strings, key=len)
+    # Return a new list sorted by length, with stable sorting
+    return sorted(strings, key=lambda x: (len(x), x))
