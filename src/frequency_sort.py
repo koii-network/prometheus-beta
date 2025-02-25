@@ -27,22 +27,23 @@ def sort_by_frequency(numbers: List[int]) -> List[int]:
     # Count frequency of each number
     freq_counter = Counter(numbers)
     
-    # Create a list of unique frequencies in ascending order
-    sorted_frequencies = sorted(set(freq_counter.values()))
+    # Group numbers by their frequency
+    freq_groups = {}
+    for num in numbers:
+        freq = freq_counter[num]
+        if freq not in freq_groups:
+            freq_groups[freq] = []
+        if num not in freq_groups[freq]:
+            freq_groups[freq].append(num)
     
-    # Create the result list
+    # Sort frequencies in ascending order
+    sorted_freqs = sorted(freq_groups.keys())
+    
+    # Reconstruct the result list
     result = []
-    
-    # For each unique frequency, add numbers with that frequency
-    for freq in sorted_frequencies:
-        # Find all numbers with this frequency
-        current_nums = [num for num in numbers if freq_counter[num] == freq]
-        
-        # Add these numbers to the result, preserving their original order
-        for num in numbers:
-            if num in current_nums:
-                result.append(num)
-                # Remove to handle duplicates
-                current_nums.remove(num)
+    for freq in sorted_freqs:
+        for num in freq_groups[freq]:
+            # Add all occurrences of this number in original order
+            result.extend([x for x in numbers if x == num])
     
     return result
