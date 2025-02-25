@@ -7,7 +7,7 @@ def test_basic_closest_pair():
 
 def test_negative_numbers():
     """Test finding closest pair with negative numbers."""
-    assert find_closest_pair([-1, -3, 4, 7, 5]) == (-1, -3)
+    assert find_closest_pair([-1, -3, 4, 7, 5]) == (4, 5)
 
 def test_floating_point_numbers():
     """Test finding closest pair with floating point numbers."""
