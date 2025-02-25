@@ -12,14 +12,14 @@ def count_climbing_ways(stair_lengths):
         list: Number of distinct ways to climb each staircase.
     
     Raises:
-        ValueError: If input is not a list or contains non-positive integers.
+        ValueError: If input is not a list or contains negative integers.
     """
     # Input validation
     if not isinstance(stair_lengths, list):
         raise ValueError("Input must be a list of stair lengths")
     
-    if any(not isinstance(length, int) or length <= 0 for length in stair_lengths):
-        raise ValueError("Stair lengths must be positive integers")
+    if any(not isinstance(length, int) or length < 0 for length in stair_lengths):
+        raise ValueError("Stair lengths must be non-negative integers")
     
     # Function to calculate ways for a single staircase
     def climb_ways(n):
