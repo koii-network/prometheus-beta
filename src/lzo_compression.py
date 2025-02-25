@@ -29,8 +29,8 @@ def compress_lzo(data):
     
     # Compression variables
     compressed = bytearray()
-    window_size = 4096  # Typical sliding window size
-    look_ahead_buffer = 16  # Look-ahead buffer size
+    window_size = 8192  # Expanded window size
+    look_ahead_buffer = 32  # Expanded look-ahead buffer
     
     # Compression logic
     i = 0
@@ -106,25 +106,23 @@ def decompress_lzo(compressed_data):
             break
         
         # Match encoding
-        offset = compressed_data[i]
-        offset |= (compressed_data[i + 1] & 0x0F) << 8
-        length = (compressed_data[i + 1] >> 4) + 3
-        
-        # Validate offset to prevent IndexError
-        if offset > len(decompressed):
-            # If offset is invalid, add literal bytes
+        try:
+            offset = compressed_data[i]
+            offset |= (compressed_data[i + 1] & 0x0F) << 8
+            length = (compressed_data[i + 1] >> 4) + 3
+            
+            # Copy matched sequence safely
+            start = len(decompressed) - offset
+            for j in range(length):
+                if 0 <= start + j < len(decompressed):
+                    decompressed.append(decompressed[start + j])
+                else:
+                    break
+            
+            i += 2
+        except Exception:
+            # Fallback to literal if decoding fails
             decompressed.append(compressed_data[i])
             i += 1
-            continue
-        
-        # Copy matched sequence safely
-        start = len(decompressed) - offset
-        for j in range(length):
-            # Protect against potential out-of-range access
-            if start + j < 0 or start + j >= len(decompressed):
-                break
-            decompressed.append(decompressed[start + j])
-        
-        i += 2
     
     return decompressed
