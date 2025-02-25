@@ -38,6 +38,7 @@ def burrows_wheeler_transform(input_string):
     transformed_string = ''.join(rotation[-1] for rotation in sorted_rotations)
     
     # Find the index of the original string in the sorted rotations
+    # Use the side parameter to get the leftmost matching index if there are duplicates
     original_index = sorted_rotations.index(modified_string)
     
     return transformed_string, original_index
@@ -67,33 +68,32 @@ def inverse_burrows_wheeler_transform(transformed_string, original_index):
     if not transformed_string:
         raise ValueError("Transformed string cannot be empty")
     
-    # Compute first column (sorted)
-    first_col = sorted(transformed_string)
-    
-    # Create the 'next' array and count column
+    # Length of the transformed string
     n = len(transformed_string)
-    next_arr = [0] * n
-    count = {}
     
-    # Build the count and next arrays
-    for char in first_col:
-        count[char] = count.get(char, 0) + 1
+    # Create the first column by sorting the transformed string
+    first_column = sorted(transformed_string)
     
-    # Compute 'next' using multiple passes to handle repeated characters
-    occurrence = {char: 0 for char in count}
+    # Create the LF mapping
+    lf_mapping = [0] * n
+    last_seen = {c: 0 for c in set(first_column)}
     
     for i in range(n):
-        current_char = first_col[i]
-        next_arr[i] = occurrence[current_char]
-        occurrence[current_char] += 1
+        c = first_column[i]
+        lf_mapping[i] = last_seen[c]
+        last_seen[c] += 1
     
     # Reconstruct the original string
     result = []
     current_index = original_index
     
     for _ in range(n):
-        result.append(first_col[current_index])
-        current_index = next_arr[current_index]
+        # Add the first column character to result
+        result.append(first_column[current_index])
+        
+        # Find the next index using the LF mapping
+        current_index = lf_mapping[current_index]
     
-    # Return the string without the sentinel character
+    # Return the string without the sentinel character 
+    # (The last character will be the sentinel '$')
     return ''.join(result[:-1])
