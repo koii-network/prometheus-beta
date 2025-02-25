@@ -35,6 +35,10 @@ def find_shortest_path(maze: List[List[int]]) -> Optional[List[Tuple[int, int]]]
     if start is None or end is None:
         raise ValueError("Start or end cell not found in maze")
     
+    # Special case: start at end
+    if start == end:
+        return [start]
+    
     # BFS implementation
     queue = deque([(start, [start])])
     visited = set([start])
@@ -42,17 +46,20 @@ def find_shortest_path(maze: List[List[int]]) -> Optional[List[Tuple[int, int]]]
     while queue:
         current, path = queue.popleft()
         
-        # Check if reached end
-        if current == end:
-            return path
-        
         # Explore neighbors
         neighbors = get_neighbors(current)
         for neighbor in neighbors:
             # Check if neighbor is valid and not visited
             if is_valid(maze, neighbor) and neighbor not in visited:
+                # Create new path
+                new_path = path + [neighbor]
+                
+                # Check if reached end
+                if neighbor == end:
+                    return new_path
+                
                 visited.add(neighbor)
-                queue.append((neighbor, path + [neighbor]))
+                queue.append((neighbor, new_path))
     
     # No path found
     return None
