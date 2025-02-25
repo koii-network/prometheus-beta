@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import List, Union
 
 class MenuLogger:
@@ -16,11 +17,15 @@ class MenuLogger:
         :param log_file: Path to the log file (default: 'menu_selections.log')
         :param log_level: Logging level (default: logging.INFO)
         """
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(log_file) or '.', exist_ok=True)
+        
         # Configure logging
         logging.basicConfig(
             filename=log_file, 
             level=log_level, 
-            format='%(asctime)s - %(levelname)s - %(message)s'
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            filemode='a'  # Append mode to preserve previous logs
         )
         self.logger = logging.getLogger(__name__)
     
