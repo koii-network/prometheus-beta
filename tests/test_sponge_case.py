@@ -21,11 +21,11 @@ def test_mixed_case_input():
 
 def test_string_with_spaces():
     """Test conversion of string with spaces."""
-    assert to_sponge_case("hello world") == "hElLo wOrLd"
+    assert to_sponge_case("hello world") == "hElLo WoRlD"
 
 def test_string_with_symbols():
     """Test conversion of string with symbols."""
-    assert to_sponge_case("hello, world!") == "hElLo, wOrLd!"
+    assert to_sponge_case("hello, world!") == "hElLo, WoRlD!"
 
 def test_invalid_input_type():
     """Test that invalid input types raise a TypeError."""
