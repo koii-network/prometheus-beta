@@ -24,25 +24,23 @@ def comb_sort(arr):
     # Define initial gap using Shrink factor of 1.3
     gap = len(arr)
     shrink = 1.3
-    sorted_flag = False
     
-    while not sorted_flag:
+    while gap > 1:
         # Update gap
         gap = max(int(gap / shrink), 1)
         
-        # Set sorted flag to True initially
-        sorted_flag = True
+        # Track whether any swaps occur
+        swapped = False
         
-        # Compare elements with gap
+        # Compare elements with current gap
         for i in range(len(arr) - gap):
             if arr[i] > arr[i + gap]:
                 # Swap elements
                 arr[i], arr[i + gap] = arr[i + gap], arr[i]
-                # If a swap occurs, list is not yet sorted
-                sorted_flag = False
+                swapped = True
         
-        # If gap is 1 and no swaps occurred, list is sorted
-        if gap == 1 and sorted_flag:
+        # If no swaps occurred and gap is 1, list is sorted
+        if not swapped and gap == 1:
             break
     
     return arr
