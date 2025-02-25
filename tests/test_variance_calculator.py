@@ -42,5 +42,5 @@ def test_calculate_variance_non_numeric_elements():
 def test_calculate_variance_mixed_numerics():
     """Test variance calculation with mixed integer and float types."""
     numbers = [1, 2.5, 3, 4.5, 5]
-    expected_variance = 2.0
+    expected_variance = 2.06  # Actual calculated variance with mixed types
     assert calculate_variance(numbers) == pytest.approx(expected_variance)
