@@ -19,7 +19,7 @@ def convert_to_alternating_case(input_string):
     if not input_string:
         raise ValueError("Input string cannot be empty")
     
-    # Convert to alternating case, independent of original case
+    # Convert to alternating case
     result = []
     for i, char in enumerate(input_string):
         # Even indices (0, 2, 4...) are uppercase
