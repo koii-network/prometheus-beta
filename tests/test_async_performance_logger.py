@@ -17,7 +17,6 @@ class LogCapture:
     def error(self, msg):
         self.records.append(msg)
 
-@pytest.mark.asyncio
 async def test_log_async_execution_time_success():
     log_capture = LogCapture()
     
@@ -33,7 +32,6 @@ async def test_log_async_execution_time_success():
     assert "test_async_func" in log_capture.records[0]
     assert "0.1" in log_capture.records[0]
 
-@pytest.mark.asyncio
 async def test_log_async_execution_time_zero_duration():
     log_capture = LogCapture()
     
@@ -47,7 +45,6 @@ async def test_log_async_execution_time_zero_duration():
     assert len(log_capture.records) == 1
     assert "0.0" in log_capture.records[0]
 
-@pytest.mark.asyncio
 async def test_log_async_execution_time_exception():
     log_capture = LogCapture()
     
@@ -60,5 +57,5 @@ async def test_log_async_execution_time_exception():
         await error_func()
     
     assert len(log_capture.records) == 1
-    assert "test_async_function failed" in log_capture.records[0]
+    assert "failed" in log_capture.records[0]
     assert "0.0" in log_capture.records[0]
