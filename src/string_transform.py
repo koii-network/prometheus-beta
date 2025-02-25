@@ -14,15 +14,18 @@ def string_transform(s: str) -> str:
 
     Examples:
         >>> string_transform("Hello World")
-        'dlrow*H'
+        'dlrow*h'
         >>> string_transform("PYTHON Programming")
         'gnimm*rorp*p'
     """
-    # Remove spaces and convert to lowercase
-    cleaned_string = s.replace(" ", "").lower()
+    # Remove spaces 
+    no_spaces = s.replace(" ", "")
+    
+    # Convert to lowercase
+    lowercased = no_spaces.lower()
     
     # Reverse the string
-    reversed_string = cleaned_string[::-1]
+    reversed_string = lowercased[::-1]
     
     # Replace 'a' with '*'
     transformed_string = reversed_string.replace('a', '*')
