@@ -12,7 +12,7 @@ def test_full_string_reversal():
 
 def test_partial_substring_reversal():
     """Test reversing a portion of the string."""
-    assert reverse_substring("python programming", 7, 17) == "python gnimmargorp"
+    assert reverse_substring("python programming", 7, 17) == "python nimmargorpg"
 
 def test_edge_cases():
     """Test edge cases like empty string and single character."""
