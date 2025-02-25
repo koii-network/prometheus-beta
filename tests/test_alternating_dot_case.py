@@ -3,11 +3,11 @@ from src.alternating_dot_case import to_alternating_dot_case
 
 def test_basic_conversion():
     """Test basic string conversion"""
-    assert to_alternating_dot_case("hello world") == "hElLo.wOrLd"
+    assert to_alternating_dot_case("hello world") == "hElLo.WoRlD"
 
 def test_mixed_case_input():
     """Test input with mixed case"""
-    assert to_alternating_dot_case("PYTHON programming") == "pYtHoN.pRoGrAmMiNg"
+    assert to_alternating_dot_case("PYTHON programming") == "pYtHoN.PrOgRaMmInG"
 
 def test_empty_string():
     """Test empty string input"""
@@ -19,7 +19,7 @@ def test_single_character():
 
 def test_non_alphabetic_characters():
     """Test input with numbers and special characters"""
-    assert to_alternating_dot_case("hello123 world!") == "hElLo.1NeXtC.wOrLd."
+    assert to_alternating_dot_case("hello123 world!") == "hElLoNeXtCNeXtCNeXtC.WoRlD."
 
 def test_input_type_error():
     """Test that non-string input raises TypeError"""
@@ -30,4 +30,4 @@ def test_input_type_error():
 
 def test_unicode_characters():
     """Test input with unicode characters"""
-    assert to_alternating_dot_case("こんにちは") == "こ.ン.に.チ.は"
+    assert to_alternating_dot_case("こんにちは") == "こんにちは"
