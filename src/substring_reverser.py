@@ -20,6 +20,10 @@ def reverse_substring(string: str, start: int, end: int) -> str:
     if start < 0 or end < 0:
         raise ValueError("Indices must be non-negative")
     
+    # Handle empty string as a special case
+    if len(string) == 0 and start == 0 and end == 0:
+        return ""
+    
     if start >= end or end > len(string):
         raise ValueError("Invalid substring indices")
     
