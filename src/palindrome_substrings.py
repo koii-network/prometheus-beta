@@ -8,20 +8,20 @@ def find_palindromic_substrings(s: str) -> list[str]:
         s (str): The input string to search for palindromic substrings.
     
     Returns:
-        list[str]: A list of all unique palindromic substrings, sorted.
+        list[str]: A list of unique palindromic substrings, sorted by length.
     
     Examples:
         >>> find_palindromic_substrings("aaa")
         ['a', 'aa', 'aaa']
         >>> find_palindromic_substrings("racecar")
-        ['a', 'c', 'e', 'r', 'aceca', 'ceec', 'racecar']
+        ['a', 'c', 'e', 'r', 'aceca', 'racecar']
     """
     # Handle edge cases
     if not s:
         return []
     
-    # Set to store unique palindromic substrings
-    palindromes = set()
+    # List to store palindromic substrings
+    palindromes = []
     
     # Check all possible substrings
     for i in range(len(s)):
@@ -30,8 +30,8 @@ def find_palindromic_substrings(s: str) -> list[str]:
             substring = s[i:j+1]
             
             # Check if substring is a palindrome
-            if substring == substring[::-1]:
-                palindromes.add(substring)
+            if substring == substring[::-1] and substring not in palindromes:
+                palindromes.append(substring)
     
-    # Return sorted list of unique palindromes
-    return sorted(list(palindromes), key=len)
+    # Sort palindromes by length
+    return sorted(palindromes, key=len)
