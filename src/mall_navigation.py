@@ -29,30 +29,48 @@ def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, en
     if start_store == end_store:
         return [start_store], 0
 
-    # Tracked paths to determine the most optimal routing
-    paths = {start_store: ([start_store], 0)}
-    
-    # Priority queue to track stores to visit
-    pq = [(0, start_store, [start_store])]
+    # Tracked paths with full routing information
+    graph = {node: {} for node in mall_map}
+    for node, edges in mall_map.items():
+        graph[node] = edges
 
-    while pq:
-        current_distance, current_store, current_path = heapq.heappop(pq)
+    def dijkstra(graph, start, end):
+        # Distances to nodes
+        distances = {node: float('inf') for node in graph}
+        distances[start] = 0
+        
+        # Previous nodes to reconstruct path
+        previous = {node: None for node in graph}
+        
+        # Priority queue of nodes to visit
+        pq = [(0, start)]
 
-        # If we've reached the destination with a more optimal route
-        if current_store == end_store:
-            return current_path, current_distance
+        while pq:
+            current_dist, current_node = heapq.heappop(pq)
 
-        # Explore neighbors
-        for neighbor, weight in mall_map[current_store].items():
-            new_distance = current_distance + weight
-            new_path = current_path + [neighbor]
+            # If we've reached the destination
+            if current_node == end:
+                # Reconstruct the path
+                path = []
+                while current_node:
+                    path.append(current_node)
+                    current_node = previous[current_node]
+                return list(reversed(path)), current_dist
 
-            # Is this a new or more optimal path to the neighbor?
-            if (neighbor not in paths or 
-                new_distance < paths[neighbor][1] or
-                (new_distance == paths[neighbor][1] and len(new_path) < len(paths[neighbor][0]))):
-                paths[neighbor] = (new_path, new_distance)
-                heapq.heappush(pq, (new_distance, neighbor, new_path))
+            # If we've found a longer path to this node, skip
+            if current_dist > distances[current_node]:
+                continue
 
-    # No path found
-    return None
+            # Check all neighboring nodes
+            for neighbor, weight in graph[current_node].items():
+                distance = current_dist + weight
+
+                # If we've found a shorter path
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    previous[neighbor] = current_node
+                    heapq.heappush(pq, (distance, neighbor))
+
+        return None
+
+    return dijkstra(graph, start_store, end_store)
