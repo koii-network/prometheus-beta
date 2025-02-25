@@ -2,8 +2,9 @@ def convert_to_sentence_case(text: str) -> str:
     """
     Convert a string to sentence case.
     
-    Sentence case capitalizes the first character of the first non-whitespace 
-    character and ensures the rest are lowercase while preserving original whitespace.
+    Sentence case capitalizes the first non-whitespace character 
+    and ensures other non-whitespace characters are lowercase 
+    while preserving the original whitespace.
     
     Args:
         text (str): The input string to convert to sentence case.
@@ -33,17 +34,19 @@ def convert_to_sentence_case(text: str) -> str:
         return text
     
     # Find the first non-whitespace character
-    first_non_whitespace_index = 0
-    for i, char in enumerate(text):
-        if not char.isspace():
-            first_non_whitespace_index = i
-            break
+    first_non_whitespace_chars = [(i, char) for i, char in enumerate(text) if not char.isspace()]
     
-    # Create the sentence case string
+    # If no non-whitespace characters, return original string
+    if not first_non_whitespace_chars:
+        return text
+    
+    # Convert first non-whitespace character to uppercase
+    first_non_ws_index, first_non_ws_char = first_non_whitespace_chars[0]
     modified_text = list(text)
-    modified_text[first_non_whitespace_index] = text[first_non_whitespace_index].upper()
+    modified_text[first_non_ws_index] = first_non_ws_char.upper()
     
-    for i in range(first_non_whitespace_index + 1, len(text)):
-        modified_text[i] = text[i].lower()
+    # Convert other non-whitespace characters to lowercase
+    for i, (idx, char) in enumerate(first_non_whitespace_chars[1:], start=1):
+        modified_text[idx] = char.lower()
     
     return ''.join(modified_text)
