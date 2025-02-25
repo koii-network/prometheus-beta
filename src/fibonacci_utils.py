@@ -9,7 +9,7 @@ def fibonacci(n):
         list: A list of Fibonacci numbers less than or equal to n.
     
     Raises:
-        ValueError: If n is not a positive integer.
+        ValueError: If n is not a non-negative integer.
     """
     if not isinstance(n, int) or n < 0:
         raise ValueError("Input must be a non-negative integer")
@@ -31,20 +31,20 @@ def fibonacci_sum(arr):
     Calculate the sum of Fibonacci sequence up to the largest number in the input array.
     
     Args:
-        arr (list): A list of positive integers.
+        arr (list): A list of non-negative integers.
     
     Returns:
         int: Sum of Fibonacci numbers up to the maximum value in the input array.
     
     Raises:
-        ValueError: If the input is not a list of positive integers.
+        ValueError: If the input is not a list of integers.
     """
     # Validate input
     if not arr:
         return 0
     
-    if not all(isinstance(x, int) and x > 0 for x in arr):
-        raise ValueError("Input must be a list of positive integers")
+    if not all(isinstance(x, int) and x >= 0 for x in arr):
+        raise ValueError("Input must be a list of non-negative integers")
     
     # Find the maximum number to generate Fibonacci sequence
     max_num = max(arr)
