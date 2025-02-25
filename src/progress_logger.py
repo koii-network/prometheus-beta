@@ -36,6 +36,9 @@ def dynamic_progress_log(items: Iterable[Any],
     
     results = []
     
+    # Capture original stderr in case we need it
+    original_stderr = sys.stderr
+    
     # Create progress bar
     with tqdm(items, 
               desc=description or "Processing", 
@@ -49,6 +52,7 @@ def dynamic_progress_log(items: Iterable[Any],
             
             # Optional logging
             if log_every > 0 and index % log_every == 0:
-                progress_bar.write(f"Processed {index} items: Current item = {item}")
+                # Use write method to explicitly log
+                original_stderr.write(f"Processed {index} items: Current item = {item}\n")
     
     return results
