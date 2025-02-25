@@ -32,6 +32,6 @@ def test_find_missing_number_out_of_range():
         find_missing_number([1, 2, 3, 6])
 
 def test_find_missing_number_duplicates():
-    """Test that the function works with unique numbers."""
-    with pytest.raises(ValueError, match="All numbers must be between"):
+    """Test that the function does not allow duplicate numbers."""
+    with pytest.raises(ValueError, match="Input must contain unique numbers"):
         find_missing_number([1, 2, 2, 4])  # Duplicates are not allowed
