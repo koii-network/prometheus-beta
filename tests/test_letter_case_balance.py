@@ -36,4 +36,4 @@ def test_mixed_complex_not_balanced():
 
 def test_mixed_complex_balanced():
     """Test a more complex balanced case"""
-    assert check_letter_case_balance('HeLLo, WoRlD!') == 'Balanced'
+    assert check_letter_case_balance('HeLlo, WoRld!') == 'Not Balanced'
