@@ -32,14 +32,18 @@ def sum_perfect_squares_from_set(numbers: Set[int]) -> int:
     # Find all unique perfect squares
     perfect_squares = set()
     
-    # Try all possible combinations of numbers
-    for num in numbers:
+    # Check each number and their combinations
+    for i in range(len(list(numbers))):
+        num = list(numbers)[i]
         # Check if the number itself is a perfect square
         if math.isqrt(num) ** 2 == num:
             perfect_squares.add(num)
         
-        # Check combinations with other numbers
-        for other in numbers:
+        # Check with other numbers 
+        for j in range(i+1, len(list(numbers))):
+            other = list(numbers)[j]
+            
+            # Check combined products 
             combined = num * other
             if math.isqrt(combined) ** 2 == combined:
                 perfect_squares.add(combined)
