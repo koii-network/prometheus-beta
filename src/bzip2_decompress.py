@@ -47,5 +47,5 @@ def decompress_bzip2_file(compressed_filepath, output_filepath=None):
 
     except PermissionError:
         raise PermissionError(f"Unable to read compressed file or write output file: {compressed_filepath}")
-    except bz2.BZip2Error:
-        raise ValueError(f"Invalid bzip2 compressed file: {compressed_filepath}")
+    except (OSError, EOFError):
+        raise ValueError(f"Invalid or corrupted bzip2 compressed file: {compressed_filepath}")
