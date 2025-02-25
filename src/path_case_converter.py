@@ -39,7 +39,7 @@ def to_path_case(input_string: str) -> str:
         raise TypeError("Input must be a string")
 
     # Handle empty string
-    if not input_string:
+    if not input_string.strip():
         return ""
 
     # Convert camel case to lowercase with hyphens
@@ -47,10 +47,10 @@ def to_path_case(input_string: str) -> str:
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', input_string)
     s2 = re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1)
 
-    # Replace underscores, spaces, and multiple consecutive hyphens with a single hyphen
+    # Replace multiple separators with a single hyphen and convert to lowercase
     s3 = re.sub(r'[_\s]+', '-', s2.lower())
     
-    # Remove leading and trailing hyphens
-    s4 = re.sub(r'^-+|-+$', '', s3)
+    # Remove leading and trailing hyphens and replace multiple consecutive hyphens
+    s4 = re.sub(r'-+', '-', s3).strip('-')
 
     return s4
