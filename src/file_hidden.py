@@ -12,11 +12,15 @@ def is_hidden_file(file_path):
 
     Raises:
         TypeError: If file_path is not a string.
-        FileNotFoundError: If the file does not exist.
+        FileNotFoundError: If the file does not exist or an empty path is provided.
     """
     # Type checking
     if not isinstance(file_path, str):
         raise TypeError("File path must be a string")
+
+    # Check for empty string
+    if not file_path:
+        raise FileNotFoundError("Empty file path provided")
 
     # Expand user and get absolute path
     full_path = os.path.abspath(os.path.expanduser(file_path))
