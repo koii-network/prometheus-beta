@@ -20,12 +20,12 @@ def max_consecutive_product(arr: List[int]) -> int:
     if not arr or len(arr) < 3:
         raise ValueError("Input array must contain at least 3 elements")
     
-    # Initialize max product with first three elements
-    max_prod = arr[0] * arr[1] * arr[2]
+    # Compute all possible consecutive products
+    products = [
+        # All three elements
+        arr[i] * arr[i+1] * arr[i+2] 
+        for i in range(len(arr) - 2)
+    ]
     
-    # Slide a window of 3 elements and track max product
-    for i in range(1, len(arr) - 2):
-        current_prod = arr[i] * arr[i+1] * arr[i+2]
-        max_prod = max(max_prod, current_prod)
-    
-    return max_prod
+    # Return the maximum of all consecutive products
+    return max(products)
