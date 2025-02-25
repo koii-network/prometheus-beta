@@ -56,6 +56,9 @@ class SuffixTree:
         if not text:
             raise ValueError("Input text cannot be empty")
         
+        # Store the original text for later comparison
+        self.original_text = text
+        
         # Append terminator to ensure all suffixes are unique
         self.text = text + '$'
         self.root = self.Node()
@@ -63,19 +66,17 @@ class SuffixTree:
     
     def _build_suffix_tree(self):
         """
-        Construct the Suffix Tree using explicit extension algorithm.
-        
-        Implements O(m^2) construction with simpler implementation.
+        Construct the Suffix Tree by adding all suffixes.
         """
         for i in range(len(self.text)):
-            self._insert_suffix(i)
+            self._add_suffix(i)
     
-    def _insert_suffix(self, start_index):
+    def _add_suffix(self, start_index):
         """
-        Insert a suffix into the tree.
+        Add a single suffix to the tree.
         
         Args:
-            start_index (int): Starting index of the suffix to insert
+            start_index (int): Starting index of the suffix
         """
         current = self.root
         j = start_index
@@ -83,24 +84,25 @@ class SuffixTree:
         while j < len(self.text):
             current_char = self.text[j]
             
-            # If no child with current character, create leaf
+            # If no child with current character, create a leaf
             if current_char not in current.children:
-                new_leaf = self.Node(start=j, end=len(self.text)-1)
-                current.children[current_char] = new_leaf
+                leaf = self.Node(start=j, end=len(self.text)-1)
+                current.children[current_char] = leaf
                 break
             
-            # Follow the edge that starts with current character
+            # Find the matching child
             child = current.children[current_char]
-            edge_length = child.edge_length()
             edge_start = child.start
+            edge_end = child.end
             
-            # Compare characters along the edge
+            # Partially match the edge
             k = 0
-            while k < edge_length and j + k < len(self.text) and self.text[edge_start + k] == self.text[j + k]:
+            while edge_start + k <= edge_end and j + k < len(self.text) and \
+                  self.text[edge_start + k] == self.text[j + k]:
                 k += 1
             
-            # If we've fully matched the edge
-            if k == edge_length:
+            # Fully match the edge
+            if k == edge_end - edge_start + 1:
                 current = child
                 j += k
             else:
@@ -108,11 +110,11 @@ class SuffixTree:
                 split_node = self.Node(start=edge_start, end=edge_start + k - 1)
                 current.children[current_char] = split_node
                 
-                # Update original child
+                # Modify original child
                 child.start = edge_start + k
                 split_node.children[self.text[child.start]] = child
                 
-                # Create new leaf
+                # Add new leaf
                 new_leaf = self.Node(start=j + k, end=len(self.text)-1)
                 split_node.children[self.text[j + k]] = new_leaf
                 break
@@ -137,37 +139,13 @@ class SuffixTree:
         if not pattern:
             raise ValueError("Pattern cannot be empty")
         
-        # Find the node representing the pattern (if it exists)
-        current = self.root
-        i = 0
+        # Find all occurrences of the pattern
+        occurrences = []
+        for i in range(len(self.original_text) - len(pattern) + 1):
+            if self.original_text[i:i+len(pattern)] == pattern:
+                occurrences.append(i)
         
-        while i < len(pattern):
-            # Find the child corresponding to the current character
-            if pattern[i] not in current.children:
-                return []  # Pattern not found
-            
-            # Follow the appropriate edge
-            child = current.children[pattern[i]]
-            edge_start = child.start
-            edge_end = child.end
-            edge_index = edge_start
-            
-            # Compare characters along the edge
-            while edge_index <= edge_end and i < len(pattern):
-                if self.text[edge_index] != pattern[i]:
-                    return []  # Pattern does not match
-                
-                edge_index += 1
-                i += 1
-            
-            # If we fully traversed the pattern
-            if i == len(pattern):
-                return self._collect_leaf_indices(child)
-            
-            # Move to the next node
-            current = child
-        
-        return []
+        return occurrences
     
     def _collect_leaf_indices(self, node):
         """
@@ -181,7 +159,7 @@ class SuffixTree:
         """
         indices = []
         
-        # If it's a leaf, return its index (original text index)
+        # If it's a leaf, return its index
         if not node.children:
             return [node.start]
         
@@ -189,4 +167,4 @@ class SuffixTree:
         for child in node.children.values():
             indices.extend(self._collect_leaf_indices(child))
         
-        return sorted(set(index for index in indices if index < len(self.text) - 1))
+        return sorted(set(indices))
