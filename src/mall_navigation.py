@@ -47,7 +47,7 @@ def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, en
             while current_store:
                 path.append(current_store)
                 current_store = previous_stores[current_store]
-            return list(reversed(path)), current_distance
+            return list(reversed(path)), distances[end_store]
 
         # If we've found a longer path, skip
         if current_distance > distances[current_store]:
