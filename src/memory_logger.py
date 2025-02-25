@@ -1,7 +1,7 @@
 import functools
 import psutil
 import logging
-import memory_profiler
+import sys
 
 def log_memory_usage(logger=None):
     """
@@ -16,14 +16,18 @@ def log_memory_usage(logger=None):
     """
     # Create a default logger if none is provided
     if logger is None:
-        logger = logging.getLogger(__name__)
+        # Use the root logger with a stream handler configured to sys.stdout
+        logger = logging.getLogger()
         logger.setLevel(logging.INFO)
-        # Add handler if no handlers exist
-        if not logger.handlers:
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
+        
+        # Remove existing handlers to prevent duplicate log messages
+        logger.handlers.clear()
+        
+        # Create a new stream handler
+        handler = logging.StreamHandler(sys.stdout)
+        formatter = logging.Formatter('%(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
     
     def decorator(func):
         @functools.wraps(func)
