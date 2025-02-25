@@ -36,8 +36,10 @@ def find_longest_substring(s: str) -> str:
             # Append the new character
             current += char
         
-        # Update longest substring if current is longer
-        if len(current) > len(longest):
+        # Update longest substring if current is longer 
+        # or current length is the same but occurs earlier
+        if (len(current) > len(longest)) or \
+           (len(current) == len(longest) and len(s.index(current[0]) < s.index(longest[0]))):
             longest = current
     
     return longest
