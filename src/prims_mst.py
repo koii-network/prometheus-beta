@@ -19,7 +19,8 @@ def prims_mst(graph: Dict[str, Dict[str, float]]) -> Union[List[Tuple[str, str, 
                                                    or disconnected.
     
     Raises:
-        ValueError: If the input graph is not a valid adjacency dictionary.
+        TypeError: If the input is not a dictionary
+        ValueError: If the graph structure is invalid
     
     Example:
         >>> graph = {
@@ -31,8 +32,12 @@ def prims_mst(graph: Dict[str, Dict[str, float]]) -> Union[List[Tuple[str, str, 
         >>> prims_mst(graph)
         [('A', 'C', 2), ('C', 'B', 1), ('B', 'D', 5)]
     """
-    # Validate input
-    if not graph or not isinstance(graph, dict):
+    # Validate input type
+    if not isinstance(graph, dict):
+        raise TypeError("Input must be a dictionary representing a graph")
+    
+    # Handle empty graph
+    if not graph:
         return None
     
     # Choose an arbitrary start node (first node in the graph)
