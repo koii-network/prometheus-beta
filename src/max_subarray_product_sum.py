@@ -36,5 +36,9 @@ def find_max_sum_subarray_with_product(arr, target_product):
             # If product matches target, update max sum
             if current_product == target_product:
                 max_sum = max(max_sum, current_sum)
+            
+            # If product exceeds target, break inner loop to optimize
+            if current_product > target_product:
+                break
     
     return max_sum
