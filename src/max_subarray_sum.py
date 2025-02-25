@@ -21,9 +21,6 @@ def max_subarray_sum_with_constraints(A, k, s):
     if not isinstance(k, int) or k < 1:
         raise ValueError("k must be a positive integer")
     
-    if k > len(A):
-        return -1
-
     # If array is too short to meet minimum length requirement
     if len(A) < k:
         return -1
@@ -33,13 +30,13 @@ def max_subarray_sum_with_constraints(A, k, s):
     valid_subarrays_found = False
 
     # Sliding window approach
-    for start in range(n):
+    for window_start in range(n):
         current_sum = 0
-        for end in range(start, n):
-            current_sum += A[end]
+        for window_end in range(window_start, n):
+            current_sum += A[window_end]
+            window_length = window_end - window_start + 1
 
             # Check if current window meets length and sum constraints
-            window_length = end - start + 1
             if window_length >= k and current_sum >= s:
                 max_sum = max(max_sum, current_sum)
                 valid_subarrays_found = True
