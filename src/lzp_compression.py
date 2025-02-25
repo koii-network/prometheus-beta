@@ -2,7 +2,6 @@
 LZP (Lempel-Ziv Prediction) Compression Algorithm Implementation.
 
 This module provides functions for LZP compression and decompression.
-LZP is a lossless compression algorithm that uses prediction to improve compression.
 """
 
 class LZPCompressor:
@@ -48,7 +47,7 @@ class LZPCompressor:
             context_key = context[-self.context_length:] if context else b''
             
             # Predict the byte based on context
-            predicted_byte = context_dict.get(context_key, byte)
+            predicted_byte = context_dict.get(context_key, 0)
             
             # Calculate the XOR difference
             diff = byte ^ predicted_byte
