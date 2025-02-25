@@ -24,4 +24,4 @@ def create_palindrome_mirror(input_string):
         raise TypeError("Input must be a string")
     
     # Create palindrome mirror by concatenating string with its reverse
-    return input_string + input_string[::-1]
+    return input_string + " " + input_string[::-1]
