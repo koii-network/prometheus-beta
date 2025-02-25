@@ -13,11 +13,22 @@ def dijkstra(graph: Dict[str, Dict[str, Union[int, float]]], start: str) -> Dict
         Dict[str, Union[int, float]]: A dictionary of shortest distances from the start node to all other nodes.
     
     Raises:
-        ValueError: If the start node is not in the graph.
+        ValueError: If the start node is not in the graph or if negative weights are found.
     """
     # Validate input
     if start not in graph:
         raise ValueError(f"Start node '{start}' not found in the graph")
+    
+    # Check for negative weights
+    for node, neighbors in graph.items():
+        for neighbor, weight in neighbors.items():
+            # Validate weight is a number
+            if not isinstance(weight, (int, float)):
+                raise ValueError(f"Invalid weight {weight} for edge from {node} to {neighbor}")
+            
+            # Check for negative weights (Dijkstra's algorithm doesn't work with negative weights)
+            if weight < 0:
+                raise ValueError(f"Negative weight {weight} found between {node} and {neighbor}")
     
     # Initialize distances and visited set
     distances = {node: float('inf') for node in graph}
@@ -42,10 +53,6 @@ def dijkstra(graph: Dict[str, Dict[str, Union[int, float]]], start: str) -> Dict
         
         # Check neighbors
         for neighbor, weight in graph[current_node].items():
-            # Ensure weight is a number
-            if not isinstance(weight, (int, float)):
-                raise ValueError(f"Invalid weight {weight} for edge from {current_node} to {neighbor}")
-            
             # Calculate distance through current node
             distance = current_distance + weight
             
