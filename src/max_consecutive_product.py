@@ -19,12 +19,33 @@ def find_max_consecutive_product(arr):
     if len(arr) < 3:
         raise ValueError("Array must contain at least 3 elements")
     
-    # Initialize max product with first three elements
-    max_product = arr[0] * arr[1] * arr[2]
+    # Helper function to get max of multiple products
+    def compare_products(*products):
+        return max(products)
+    
+    # Special cases for small arrays
+    if len(arr) == 3:
+        return arr[0] * arr[1] * arr[2]
+    
+    # Initialize max product with carefully considering signs
+    first_max = compare_products(
+        arr[0] * arr[1] * arr[2],  # First three
+        arr[0] * arr[1] * arr[3],  # First two and next
+        arr[0] * arr[2] * arr[3],  # First, third and next
+        arr[1] * arr[2] * arr[3]   # Next three
+    )
+    
+    # Track max product as we iterate
+    current_max = first_max
     
     # Iterate through the array to find max consecutive product
     for i in range(1, len(arr) - 2):
-        current_product = arr[i] * arr[i+1] * arr[i+2]
-        max_product = max(max_product, current_product)
+        # Consider three consecutive and mixed cases
+        current_product = compare_products(
+            arr[i] * arr[i+1] * arr[i+2],  # Three consecutive
+            arr[i-1] * arr[i] * arr[i+1],  # Sliding window left
+            arr[i+1] * arr[i+2] * arr[i+3]  # Sliding window right
+        )
+        current_max = max(current_max, current_product)
     
-    return max_product
+    return current_max
