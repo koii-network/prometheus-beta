@@ -34,4 +34,4 @@ def test_invalid_input_non_integers():
 def test_large_input():
     """Test larger input with multiple zero-sum pairs"""
     input_list = [1, -1, 2, -2, 3, -3, 4, -4, 0, 0]
-    assert count_zero_sum_pairs(input_list) == 8
+    assert count_zero_sum_pairs(input_list) == 5
