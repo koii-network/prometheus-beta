@@ -36,5 +36,5 @@ def test_count_lines_permission_error(tmp_path):
     # Make the file unreadable
     test_file.chmod(0o000)
     
-    with pytest.raises((IOError, PermissionError)):
+    with pytest.raises(PermissionError):
         count_file_lines(str(test_file))
