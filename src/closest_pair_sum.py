@@ -17,7 +17,7 @@ def find_closest_pair_sum(arr, target):
         raise ValueError("Array must contain at least two elements")
     
     # Initialize variables to track the closest pair
-    closest_sum = float('inf')
+    smallest_diff = float('inf')
     closest_pair = None
     
     # Compare every possible pair of elements
@@ -27,9 +27,10 @@ def find_closest_pair_sum(arr, target):
             current_diff = abs(current_sum - target)
             
             # Update closest pair if current pair is closer to target
-            # Or if it's the first pair found with the current closest difference
-            if current_diff < abs(closest_sum - target) or closest_pair is None:
-                closest_sum = current_sum
+            # Prioritize pairs closer to the target, and in case of equal difference
+            # keep the first occurrence
+            if current_diff < smallest_diff or (current_diff == smallest_diff and closest_pair is None):
+                smallest_diff = current_diff
                 closest_pair = (arr[i], arr[j])
     
     return closest_pair
