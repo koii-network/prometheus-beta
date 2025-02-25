@@ -46,9 +46,9 @@ def count_anagrams(s: str) -> int:
         for start in range(len(s) - length + 1):
             substring = s[start:start+length]
             
-            # Create a sorted signature of the substring
-            signature = ''.join(sorted(substring))
+            # Create a signature of character frequencies
+            signature = tuple(sorted(Counter(substring).items()))
             unique_anagrams.add(signature)
     
     # Subtract individual characters to get count of true anagrams
-    return len(unique_anagrams) - len(set(s))
+    return max(0, len(unique_anagrams) - len(set(s)))
