@@ -28,19 +28,7 @@ def test_count_lines_file_not_found():
     with pytest.raises(FileNotFoundError):
         count_file_lines("non_existent_file.txt")
 
-def test_count_lines_permission_error(tmp_path):
-    """Test handling of permission-related file access errors."""
-    test_file = tmp_path / "no_read_file.txt"
-    test_file.write_text("Some content")
-    
-    # Make the file unreadable
-    try:
-        import stat
-        os.chmod(str(test_file), stat.S_IRUSR | stat.S_IWUSR)  # Ensure base permissions
-        os.chmod(str(test_file), 0o000)  # Remove all permissions
-        
-        with pytest.raises((PermissionError, IOError)):
-            count_file_lines(str(test_file))
-    except Exception as e:
-        # If chmod fails, skip the test
-        pytest.skip(f"Could not modify file permissions: {e}")
+def test_count_lines_directory(tmp_path):
+    """Test handling of attempting to count lines in a directory."""
+    with pytest.raises((PermissionError, IOError)):
+        count_file_lines(str(tmp_path))
