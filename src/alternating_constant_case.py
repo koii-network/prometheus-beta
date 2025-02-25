@@ -23,10 +23,10 @@ def convert_to_alternating_constant_case(input_string):
         raise TypeError("Input must be a string")
     
     # Check for empty string
-    if not input_string:
+    if not input_string.strip():
         raise ValueError("Input string cannot be empty")
     
-    # Split the input string into words
+    # Split the input string into words and strip extra whitespace
     words = input_string.split()
     
     # Convert words to alternating constant case
@@ -36,8 +36,8 @@ def convert_to_alternating_constant_case(input_string):
             # Even index words (0, 2, 4...) in UPPER CASE
             converted_words.append(word.upper())
         else:
-            # Odd index words (1, 3, 5...) in original case
-            converted_words.append(word)
+            # Odd index words (1, 3, 5...) in lowercase
+            converted_words.append(word.lower())
     
     # Join the words back together
     return ' '.join(converted_words)
