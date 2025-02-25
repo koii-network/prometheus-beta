@@ -13,12 +13,19 @@ def find_longest_common_prefix(strings):
         TypeError: If the input is not a list or contains non-string elements.
     """
     # Check for empty input
-    if not strings:
-        return ""
+    if strings is None:
+        raise TypeError("Input cannot be None")
     
     # Validate input is a list of strings
-    if not isinstance(strings, list) or not all(isinstance(s, str) for s in strings):
-        raise TypeError("Input must be a list of strings")
+    if not isinstance(strings, list):
+        raise TypeError("Input must be a list")
+    
+    if not all(isinstance(s, str) for s in strings):
+        raise TypeError("All elements must be strings")
+    
+    # Handle empty list
+    if not strings:
+        return ""
     
     # Handle case with single string
     if len(strings) == 1:
