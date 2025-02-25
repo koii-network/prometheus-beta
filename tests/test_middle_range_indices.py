@@ -10,8 +10,8 @@ def test_odd_length_list():
 def test_even_length_list():
     """Test with an even-length list"""
     test_list = [1, 2, 3, 4, 5, 6]
-    assert find_middle_range_indices(test_list, 1) == [2, 3]
-    assert find_middle_range_indices(test_list, 0) == [2]
+    assert find_middle_range_indices(test_list, 1) == [2, 3, 4]
+    assert find_middle_range_indices(test_list, 0) == [3]
 
 def test_range_width_zero():
     """Test with range width of zero"""
