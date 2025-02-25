@@ -27,7 +27,12 @@ def reverse_matrix_elements(matrix):
     # Create a new matrix with reversed elements
     reversed_matrix = []
     for row in matrix:
-        reversed_row = [int(str(elem)[::-1]) for elem in row]
+        reversed_row = []
+        for elem in row:
+            # Convert to string, reverse, convert back to int
+            # Use int() to remove leading zeros
+            reversed_elem = int(str(elem)[::-1])
+            reversed_row.append(reversed_elem)
         reversed_matrix.append(reversed_row)
 
     return reversed_matrix
