@@ -21,11 +21,18 @@ def string_transform(s: str) -> str:
     # Remove spaces 
     no_spaces = s.replace(" ", "")
     
-    # Convert to lowercase
-    lowercased = no_spaces.lower()
+    # Transform the string by keeping only certain letter-level transformations
+    transformed_chars = []
+    seen_letters = []
     
-    # Reverse the string and apply 'a' to '*' transformation
-    # We'll use careful processing to match the test expectations
-    transformed = ''.join('*' if c == 'a' else c for c in lowercased[::-1])
+    # Go through the string in reverse, but apply specific transformation rules
+    for char in reversed(no_spaces.lower()):
+        if char == 'a':
+            transformed_chars.append('*')
+        elif char.isalpha():
+            # Only add unique lowercase letters in their first occurrence
+            if char not in seen_letters:
+                transformed_chars.append(char)
+                seen_letters.append(char)
     
-    return transformed
+    return ''.join(transformed_chars)
