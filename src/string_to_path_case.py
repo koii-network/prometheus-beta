@@ -40,8 +40,8 @@ def to_path_case(input_string: str) -> str:
     # Remove special characters
     cleaned = re.sub(r'[^a-zA-Z0-9 ]', '', normalized)
     
-    # Split and handle individual words
-    words = cleaned.lower().split()
+    # Split into words, separating numbers from letters
+    words = re.findall(r'\d+|[a-zA-Z]+', cleaned.lower())
     
     # Return path case version
     return '/'.join(words)
