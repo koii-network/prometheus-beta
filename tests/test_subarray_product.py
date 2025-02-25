@@ -16,12 +16,12 @@ def test_single_element_cases():
     assert count_subarrays_with_product_less_than_k([1, 2, 3], 10) == 6
     
     # Some numbers less than k
-    assert count_subarrays_with_product_less_than_k([1, 5, 2], 4) == 3
+    assert count_subarrays_with_product_less_than_k([1, 5, 2], 4) == 2
 
 def test_edge_cases():
     # Large array
     nums = [1] * 10000
-    assert count_subarrays_with_product_less_than_k(nums, 2) == 55005000
+    assert count_subarrays_with_product_less_than_k(nums, 2) == 50005000
     
     # Exact k product
     assert count_subarrays_with_product_less_than_k([10, 5], 50) == 3
