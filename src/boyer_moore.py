@@ -10,6 +10,7 @@ def build_bad_character_table(pattern):
     """
     bad_char = {}
     for i in range(len(pattern)):
+        # Most recent occurrence of the character updates its position
         bad_char[pattern[i]] = i
     return bad_char
 
