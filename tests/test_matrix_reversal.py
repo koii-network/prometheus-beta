@@ -44,10 +44,10 @@ def test_reverse_matrix_elements_zeros():
     assert reverse_matrix_elements(matrix) == expected
 
 def test_reverse_matrix_elements_leading_zeros():
-    """Test matrix with elements that have leading zeros."""
+    """Test matrix with elements that simulate leading zeros."""
     matrix = [
-        [01, 02],
-        [03, 04]
+        [1, 2],
+        [3, 4]
     ]
     expected = [
         [1, 2],
@@ -87,8 +87,7 @@ def test_matrix_size_constraints():
     with pytest.raises(ValueError, match="Matrix cannot be empty"):
         reverse_matrix_elements(matrix)
 
-    # Test too large (would require generating a very large matrix)
-    # You might want to add a more specific implementation for this test
+    # Test too large
     import numpy as np
     large_matrix = np.ones((1001, 1001), dtype=int).tolist()
     with pytest.raises(ValueError, match="Matrix size must be between 1 and 1000"):
