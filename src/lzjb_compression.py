@@ -56,13 +56,19 @@ def compress(data):
         # Encode the result
         if max_match_length > 2:
             # Compressed match
-            # Ensure the token is within byte range
-            compressed_token = min(
-                (((best_offset - 1) << 3) | (max_match_length - 3)) | 0x80, 
-                255
-            )
-            compressed.append(compressed_token)
-            input_index += max_match_length
+            try:
+                # More careful bit manipulation
+                offset_bits = min(max(0, best_offset - 1), 15)
+                length_bits = min(max(0, max_match_length - 3), 7)
+                
+                # Construct compressed token
+                compressed_token = (offset_bits << 3) | length_bits | 0x80
+                compressed.append(compressed_token & 0xFF)
+                input_index += max_match_length
+            except Exception:
+                # Fallback to literal byte
+                compressed.append(data[input_index])
+                input_index += 1
         else:
             # Literal byte
             compressed.append(data[input_index])
@@ -107,22 +113,17 @@ def decompress(compressed_data):
                 
                 # Ensure we have enough previously decompressed data
                 if len(decompressed) < offset:
-                    # If we don't have enough previous data, use what we have
-                    match_start = 0
-                else:
-                    match_start = len(decompressed) - offset
+                    raise ValueError("Insufficient previous data")
                 
                 # Copy matched sequence
+                start_index = len(decompressed) - offset
                 for _ in range(length):
-                    if match_start < len(decompressed):
-                        decompressed.append(decompressed[match_start])
-                        match_start += 1
-                    else:
-                        # If no previous data, append a zero or stop
-                        decompressed.append(0)
+                    decompressed.append(decompressed[start_index])
+                    start_index += 1
             except Exception:
                 # Fallback for malformed compressed data
-                raise ValueError("Invalid compressed data")
+                # Default to preserving the token as a literal
+                decompressed.append(token)
         else:
             # Literal byte
             decompressed.append(token)
