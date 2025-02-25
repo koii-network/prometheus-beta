@@ -55,14 +55,11 @@ def kmp_search(text, pattern):
         TypeError: If inputs are not strings
         ValueError: If either input is empty
     """
-    # Input validation with more robust handling of None and empty inputs
-    if text is None or pattern is None:
+    # Strict type checking
+    if not (isinstance(text, str) and isinstance(pattern, str)):
         raise TypeError("Both text and pattern must be strings")
     
-    text = str(text)
-    pattern = str(pattern)
-    
-    # Special case for empty inputs
+    # Empty input handling
     if not pattern:
         return [] if text else []
     
