@@ -1,7 +1,7 @@
 import logging
 import sys
 from enum import Enum, auto
-from typing import Optional, Any
+from typing import Optional, Any, TextIO, Union
 
 class UserPermissionLevel(Enum):
     """Enum representing different user permission levels."""
@@ -18,23 +18,33 @@ class PermissionLogger:
     required permission level.
     """
     
-    def __init__(self, log_file: Optional[str] = None):
+    def __init__(self, 
+                 log_file: Optional[str] = None, 
+                 output_stream: Optional[Union[TextIO, None]] = sys.stdout):
         """
         Initialize the PermissionLogger.
         
         Args:
             log_file (Optional[str]): Path to the log file. If None, logs to console.
+            output_stream (Optional[TextIO]): Stream to write log output. Defaults to sys.stdout.
         """
+        # Store output stream
+        self.output_stream = output_stream or sys.stdout
+        
         # Configure logging
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         
         # Create formatter
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter('%(message)s')
         
-        # Console handler (using sys.stdout)
-        console_handler = logging.StreamHandler(sys.stdout)
+        # Console handler 
+        console_handler = logging.StreamHandler(self.output_stream)
         console_handler.setFormatter(formatter)
+        console_handler.setLevel(logging.DEBUG)
+        
+        # Clear any existing handlers
+        self.logger.handlers.clear()
         self.logger.addHandler(console_handler)
         
         # File handler (if log_file is provided)
