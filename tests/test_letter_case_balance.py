@@ -30,10 +30,10 @@ def test_no_letters_raises_error():
     with pytest.raises(ValueError, match="Input string must contain at least one letter"):
         check_letter_case_balance('123 !@#')
 
-def test_mixed_complex_balanced():
-    """Test a more complex balanced case"""
-    assert check_letter_case_balance('Hello, WoRlD!') == 'Balanced'
-
 def test_mixed_complex_not_balanced():
     """Test a more complex not balanced case"""
     assert check_letter_case_balance('Hello, World!') == 'Not Balanced'
+
+def test_mixed_complex_balanced():
+    """Test a more complex balanced case"""
+    assert check_letter_case_balance('HeLLo, WoRlD!') == 'Balanced'
