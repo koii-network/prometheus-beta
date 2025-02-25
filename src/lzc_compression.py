@@ -87,34 +87,35 @@ def lzc_decompress(compressed_data):
     next_code = 256
     max_code = 65536  # 16-bit dictionary limit
     
-    result = []
+    result = bytearray()
+    
+    # Start with the first code
     previous_code = compressed_data[0]
-    result.extend(dictionary[previous_code])
+    previous_entry = dictionary[previous_code]
+    result.extend(previous_entry)
     
     for code in compressed_data[1:]:
-        if code not in dictionary:
-            # Handle out-of-range codes
-            if code >= next_code:
-                raise ValueError(f"Invalid compression code: {code}")
-        
         # Retrieve current sequence
         if code in dictionary:
-            current_sequence = dictionary[code]
+            # If code exists in dictionary, retrieve it
+            current_entry = dictionary[code]
         else:
-            # Special case for new sequence not yet in dictionary
-            previous_sequence = dictionary[previous_code]
-            current_sequence = previous_sequence + bytes([previous_sequence[0]])
+            # Handle case where new sequence is being defined
+            # This can happen when a new sequence is created
+            current_entry = previous_entry + bytes([previous_entry[0]])
         
         # Add current sequence to result
-        result.extend(current_sequence)
+        result.extend(current_entry)
         
-        # Add new dictionary entry if not at max
+        # Create new dictionary entry
         if next_code < max_code:
             # New entry is previous sequence + first byte of current sequence
-            new_entry = dictionary[previous_code] + bytes([current_sequence[0]])
+            new_entry = previous_entry + bytes([current_entry[0]])
             dictionary[next_code] = new_entry
             next_code += 1
         
+        # Update previous sequence for next iteration
+        previous_entry = current_entry
         previous_code = code
     
     return bytes(result)
