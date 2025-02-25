@@ -1,1 +1,2 @@
-pytest
+sqlalchemy==1.4.46
+pytest==7.3.1
