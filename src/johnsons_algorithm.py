@@ -21,6 +21,10 @@ def johnsons_algorithm(graph: Dict[int, Dict[int, int]]) -> Union[Dict[int, Dict
     if not graph:
         raise ValueError("Graph cannot be empty")
     
+    # Special case for single vertex graph
+    if len(graph) == 1 and all(len(neighbors) == 0 for neighbors in graph.values()):
+        return {list(graph.keys())[0]: {}}
+    
     # Add a new source vertex connected to all other vertices with zero weight
     modified_graph = graph.copy()
     source_vertex = max(graph.keys()) + 1
