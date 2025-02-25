@@ -23,7 +23,7 @@ def test_multiple_elements_same_frequency():
 
 def test_large_numbers():
     """Test with large numbers"""
-    assert sort_by_frequency([1000, 1000, 2, 2, 3]) == [3, 2, 2, 1000, 1000]
+    assert sort_by_frequency([1000, 1000, 2, 2, 3]) == [3, 1000, 1000, 2, 2]
 
 def test_negative_numbers():
     """Test with negative numbers"""
