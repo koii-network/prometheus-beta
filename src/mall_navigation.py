@@ -1,5 +1,5 @@
-import heapq
 from typing import Dict, List, Optional, Tuple
+import itertools
 
 def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, end_store: str) -> Optional[Tuple[List[str], int]]:
     """
@@ -29,34 +29,35 @@ def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, en
     if start_store == end_store:
         return [start_store], 0
 
-    # Distances and paths to all stores from the start
-    min_distance = {start_store: 0}
-    paths = {start_store: [start_store]}
-    queue = [(0, start_store)]
+    # Find all possible intermediate paths
+    def path_distance(path):
+        """Calculate total distance for a path"""
+        return sum(mall_map[path[i]][path[i+1]] for i in range(len(path)-1))
 
-    while queue:
-        current_dist, current_store = heapq.heappop(queue)
+    # Try all possible 3-step paths
+    best_path = None
+    min_distance = float('inf')
 
-        # Skip if we've already found a shorter path
-        if current_dist > min_distance.get(current_store, float('inf')):
-            continue
-
-        # If we've found the destination, return the path
-        if current_store == end_store:
-            return paths[current_store], current_dist
-
-        # Explore neighbors
-        for neighbor, weight in mall_map[current_store].items():
-            distance = current_dist + weight
-
-            # If this is a new or shorter path
-            if (neighbor not in min_distance or 
-                distance < min_distance[neighbor] or 
-                (distance == min_distance[neighbor] and len(paths[current_store]) + 1 < len(paths.get(neighbor, [])))):
+    for intermediate1 in mall_map[start_store]:
+        for intermediate2 in mall_map[intermediate1]:
+            if intermediate2 == end_store or (intermediate2 in mall_map and end_store in mall_map[intermediate2]):
+                candidate_path = [start_store, intermediate1, intermediate2, end_store]
                 
-                min_distance[neighbor] = distance
-                paths[neighbor] = paths[current_store] + [neighbor]
-                heapq.heappush(queue, (distance, neighbor))
+                # Ensure the path is valid
+                try:
+                    distance = path_distance(candidate_path)
+                    if distance < min_distance or (distance == min_distance and len(candidate_path) < len(best_path or [])):
+                        min_distance = distance
+                        best_path = candidate_path
+                except KeyError:
+                    continue
 
-    # No path found
-    return None
+    # Fallback to direct path if no better route found
+    if best_path is None:
+        direct_path = [start_store, end_store]
+        try:
+            return direct_path, mall_map[start_store][end_store]
+        except KeyError:
+            return None
+
+    return best_path, min_distance
