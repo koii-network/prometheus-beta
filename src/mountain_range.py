@@ -44,7 +44,7 @@ def create_mountain_range(num_peaks, region='Unknown'):
         raise ValueError("Number of peaks cannot be negative")
     
     # List of possible mountain names and locations
-    mountain_names = [
+    base_mountain_names = [
         'Peak Alpha', 'Peak Beta', 'Peak Gamma', 'Peak Delta', 'Peak Epsilon',
         'Summit One', 'Summit Two', 'Summit Three', 'Summit Four', 'Summit Five'
     ]
@@ -52,8 +52,13 @@ def create_mountain_range(num_peaks, region='Unknown'):
     # Generate mountain range
     mountain_range = []
     for i in range(num_peaks):
-        # Randomize name, height, and adjust for overlap
-        name = mountain_names[i % len(mountain_names)]
+        # Handle cases where num_peaks exceeds base names
+        if i < len(base_mountain_names):
+            name = base_mountain_names[i]
+        else:
+            # Create unique names for additional peaks
+            name = f"Peak {i + 1}"
+        
         height = round(random.uniform(1000, 8000), 2)  # Heights between 1000m and 8000m
         
         # Create Mountain object
