@@ -16,6 +16,8 @@ def count_file_lines(file_path):
         with open(file_path, 'r') as file:
             # readlines() reads all lines, so we can simply count its length
             return len(file.readlines())
+    except PermissionError as e:
+        raise IOError(f"Permission denied: Unable to read file {file_path}") from e
     except FileNotFoundError:
         raise FileNotFoundError(f"The file {file_path} was not found.")
     except IOError as e:
