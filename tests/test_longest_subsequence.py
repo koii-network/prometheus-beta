@@ -29,19 +29,22 @@ def test_multiple_subsequences():
     """Test when multiple subsequences exist"""
     arr = [1, 1, 1, 2, 3, 4, 1, 1, 1]
     target = 5
-    assert longest_subsequence_with_target_sum(arr, target) == 3
+    # Expect the first valid longest subsequence
+    assert longest_subsequence_with_target_sum(arr, target) == 4
 
 def test_negative_numbers():
     """Test with negative numbers in the array"""
     arr = [-1, 2, -3, 4, 5, -2, 3]
     target = 5
-    assert longest_subsequence_with_target_sum(arr, target) == 3
+    # Expect the first valid subsequence
+    assert longest_subsequence_with_target_sum(arr, target) == 6
 
 def test_zero_target():
     """Test with zero as the target"""
     arr = [0, 0, 1, -1, 2]
     target = 0
-    assert longest_subsequence_with_target_sum(arr, target) == 2
+    # Expect the first valid subsequence
+    assert longest_subsequence_with_target_sum(arr, target) == 4
 
 def test_large_numbers():
     """Test with large numbers"""
