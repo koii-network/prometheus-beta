@@ -9,10 +9,11 @@ from src.bzip2_compressor import compress_file
 def test_compress_file_basic():
     """Test basic file compression."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        # Create a test file
+        # Create a test file with more content to encourage compression
         input_file = os.path.join(tmpdir, 'test_input.txt')
+        test_content = 'Hello, world! ' * 100  # Repeating content for better compression
         with open(input_file, 'w') as f:
-            f.write('Hello, world! This is a test file for compression.')
+            f.write(test_content)
         
         # Compress the file
         compressed_file = compress_file(input_file)
