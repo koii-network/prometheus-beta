@@ -22,13 +22,13 @@ def fibonacci(max_num):
     
     # Generate Fibonacci sequence
     fib_seq = [1, 1]
-    while True:
+    while fib_seq[-1] < max_num:
         next_num = fib_seq[-1] + fib_seq[-2]
         if next_num > max_num:
             break
         fib_seq.append(next_num)
     
-    return fib_seq
+    return fib_seq[:len([num for num in fib_seq if num <= max_num])]
 
 def fibonacci_sum(arr):
     """
