@@ -1,3 +1,5 @@
+import re
+
 def to_pascal_case(input_string: str) -> str:
     """
     Convert a given string to Pascal case.
@@ -30,25 +32,16 @@ def to_pascal_case(input_string: str) -> str:
     if not input_string:
         return ""
     
-    # Replace common separators with a space and handle potential mixed case
-    for separator in ['-', '_', ' ']:
-        input_string = input_string.replace(separator, ' ')
+    # Remove leading and trailing whitespace
+    input_string = input_string.strip()
     
-    # Split the string into words, handling mixed case first
-    words = []
-    current_word = input_string[0].upper()
-    for char in input_string[1:]:
-        if char.isupper():
-            # Start a new word when an uppercase letter is found
-            words.append(current_word)
-            current_word = char
-        else:
-            current_word += char
+    # Replace non-alphanumeric characters with space
+    input_string = re.sub(r'[^a-zA-Z0-9]+', ' ', input_string)
     
-    # Add the last word
-    words.append(current_word)
+    # Split the string into words
+    words = input_string.split()
     
-    # Capitalize each word and join
+    # Capitalize each word
     pascal_words = [word.capitalize() for word in words]
     
     return ''.join(pascal_words)
