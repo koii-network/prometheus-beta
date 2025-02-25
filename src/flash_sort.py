@@ -6,94 +6,85 @@ def flash_sort(arr):
     to improve the performance of sorting, especially for non-uniform distributions.
     
     Args:
-        arr (list): The input list to be sorted in-place
+        arr (list): The input list to be sorted
     
     Returns:
         list: The sorted list
     
     Raises:
         TypeError: If input is not a list
-        ValueError: If list contains non-comparable elements
     """
     # Validate input
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
     
     # Handle empty or single-element lists
-    if len(arr) <= 1:
-        return arr
+    n = len(arr)
+    if n <= 1:
+        return arr.copy()
     
-    # Determine the range of input values
+    # Create a copy to avoid modifying the original list
+    arr = arr.copy()
+    
+    # Find min and max
     min_val = min(arr)
     max_val = max(arr)
     
-    # Prevent division by zero
+    # Handle case where all elements are the same
     if min_val == max_val:
         return arr
     
-    # Number of classes (buckets)
-    m = int(0.43 * len(arr)) + 1
+    # Determine number of classes
+    m = int(0.43 * n) + 1
     
-    # Create classification array to hold the count of elements in each class
+    # Create classification array
     l = [0] * m
     
-    # Compute the range of each class
+    # Compute range per class
     c1 = (max_val - min_val) / m
     
-    # Classify the elements
-    for i in range(len(arr)):
-        j = int((arr[i] - min_val) / c1)
+    # Classify elements
+    for x in arr:
+        j = int((x - min_val) / c1)
         # Ensure j is within bounds
         j = min(j, m - 1)
         l[j] += 1
     
-    # Compute cumulative count
-    for i in range(1, m):
-        l[i] += l[i-1]
+    # Cumulative count
+    for j in range(1, m):
+        l[j] += l[j-1]
     
-    # Rearrange the elements
-    k = 0
-    j = 0
-    while k < len(arr):
-        # Find the initial class
-        j = int((arr[k] - min_val) / c1)
+    # Move elements to their correct classes
+    result = [0] * n
+    count = [0] * m
+    
+    for x in arr:
+        j = int((x - min_val) / c1)
         j = min(j, m - 1)
-        
-        # Move element to its correct position
-        while k < l[j] - 1:
-            # Swap elements
-            temp = arr[k]
-            pos = l[j] - 1
-            arr[k] = arr[pos]
-            arr[pos] = temp
-            
-            # Reduce the count for this class
-            l[j] -= 1
-        
-        # Move to next element
-        k += 1
+        result[l[j] - 1 - count[j]] = x
+        count[j] += 1
     
-    # Perform insertion sort on each class
-    for i in range(m):
-        start = 0 if i == 0 else l[i-1]
-        end = l[i]
-        insertion_sort(arr, start, end)
+    # Insertion sort within each class
+    for j in range(m):
+        start = 0 if j == 0 else l[j-1]
+        end = l[j]
+        insertion_sort(result, start, end)
     
-    return arr
+    return result
 
-def insertion_sort(arr, low, high):
+def insertion_sort(arr, start, end):
     """
-    Perform insertion sort on a subarray.
+    Perform insertion sort on a specific section of the array.
     
     Args:
-        arr (list): The list to be partially sorted
-        low (int): Starting index of the subarray
-        high (int): Ending index of the subarray
+        arr (list): The list to partially sort
+        start (int): Starting index of the section
+        end (int): Ending index of the section
     """
-    for i in range(low + 1, high):
+    for i in range(start + 1, end):
         key = arr[i]
         j = i - 1
-        while j >= low and arr[j] > key:
+        while j >= start and arr[j] > key:
             arr[j + 1] = arr[j]
             j -= 1
         arr[j + 1] = key
