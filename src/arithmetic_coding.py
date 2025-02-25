@@ -78,6 +78,10 @@ def arithmetic_decode(encoded_value: float,
     if data_length <= 0:
         raise ValueError("Data length must be positive")
     
+    # Validate encoded value range
+    if not (0 <= encoded_value <= 1):
+        raise ValueError("Encoded value must be between 0 and 1")
+    
     # Prepare for decoding
     decoded_data = []
     low = 0.0

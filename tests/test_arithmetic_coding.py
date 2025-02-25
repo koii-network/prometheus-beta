@@ -110,6 +110,10 @@ def test_invalid_decoding():
     with pytest.raises(ValueError, match="Data length must be positive"):
         arithmetic_decode(0.5, 0, prob_model)
     
-    # Invalid encoded value
-    with pytest.raises(Exception):
+    # Invalid encoded value out of bounds
+    with pytest.raises(ValueError):
         arithmetic_decode(2.0, 5, prob_model)  # Out of [0, 1] range
+    
+    # Invalid probability model
+    with pytest.raises(ValueError):
+        arithmetic_decode(0.5, 5, {})
