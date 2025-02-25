@@ -95,25 +95,36 @@ def decompress_lzo(compressed_data):
     i = 0
     
     while i < len(compressed_data):
-        # Check if it's a literal or match
-        if compressed_data[i] < 32:
-            # Match encoding
-            offset = compressed_data[i]
-            if i + 1 < len(compressed_data):
-                offset |= (compressed_data[i + 1] & 0x0F) << 8
-                length = (compressed_data[i + 1] >> 4) + 3
-                
-                # Copy matched sequence
-                start = len(decompressed) - offset
-                for j in range(length):
-                    decompressed.append(decompressed[start + j])
-                
-                i += 2
-            else:
-                break
-        else:
-            # Literal byte
+        # Non-match (literal) encoding
+        if compressed_data[i] >= 32:
             decompressed.append(compressed_data[i])
             i += 1
+            continue
+        
+        # Ensure we have enough bytes for match decoding
+        if i + 1 >= len(compressed_data):
+            break
+        
+        # Match encoding
+        offset = compressed_data[i]
+        offset |= (compressed_data[i + 1] & 0x0F) << 8
+        length = (compressed_data[i + 1] >> 4) + 3
+        
+        # Validate offset to prevent IndexError
+        if offset > len(decompressed):
+            # If offset is invalid, add literal bytes
+            decompressed.append(compressed_data[i])
+            i += 1
+            continue
+        
+        # Copy matched sequence safely
+        start = len(decompressed) - offset
+        for j in range(length):
+            # Protect against potential out-of-range access
+            if start + j < 0 or start + j >= len(decompressed):
+                break
+            decompressed.append(decompressed[start + j])
+        
+        i += 2
     
     return decompressed
