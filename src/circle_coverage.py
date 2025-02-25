@@ -68,16 +68,17 @@ def min_circle_coverage(circles: List[Circle]) -> List[Circle]:
     covering_circles = []
     
     for circle in sorted_circles:
-        # Skip if this circle is already covered
-        if any(circle in covered_circles for circle in covered_circles):
-            continue
-        
-        # Add this circle to covering circles
-        covering_circles.append(circle)
-        
-        # Mark this and overlapping circles as covered
-        for other_circle in sorted_circles:
-            if do_circles_overlap(circle, other_circle):
-                covered_circles.add(other_circle)
+        # Check if this circle is completely alone (not overlapping)
+        if all(not do_circles_overlap(circle, other_circle) for other_circle in sorted_circles if other_circle != circle):
+            covering_circles.append(circle)
+        else:
+            # Check if this circle can cover other circles
+            if not any(circle in covered_circles for circle in covered_circles):
+                covering_circles.append(circle)
+                
+                # Mark this and overlapping circles as covered
+                for other_circle in sorted_circles:
+                    if do_circles_overlap(circle, other_circle):
+                        covered_circles.add(other_circle)
     
     return covering_circles
