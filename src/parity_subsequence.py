@@ -23,25 +23,39 @@ def find_longest_parity_subsequence(nums):
     if len(nums) == 1:
         return nums
     
-    longest_subsequence = []
+    # Track the best subsequences
+    longest_even_subsequence = []
+    longest_odd_subsequence = []
     
+    # Iterate through all possible start positions to handle non-contiguous subsequent elements
     for start in range(len(nums)):
-        # Check parity of start element
-        is_start_even = nums[start] % 2 == 0
+        # Start subsequences from current point, tracking parity
+        even_subsequence = []
+        odd_subsequence = []
         
-        # Candidate subsequence 
-        current_subsequence = [nums[start]]
-        
-        # Extend subsequence forward
-        for j in range(start + 1, len(nums)):
-            # Continue if maintains parity 
-            if (is_start_even and nums[j] % 2 == 0) or (not is_start_even and nums[j] % 2 != 0):
-                current_subsequence.append(nums[j])
+        # Iterate through the list from the start point
+        for j in range(start, len(nums)):
+            # Check parity of current number
+            is_even = nums[j] % 2 == 0
+            
+            # Add to appropriate subsequence
+            if is_even:
+                even_subsequence.append(nums[j])
+                # Clear odd subsequence if it breaks parity
+                if odd_subsequence and len(odd_subsequence) == 1:
+                    odd_subsequence = []
             else:
-                break
+                odd_subsequence.append(nums[j])
+                # Clear even subsequence if it breaks parity
+                if even_subsequence and len(even_subsequence) == 1:
+                    even_subsequence = []
         
-        # Compare to longest subsequence
-        if len(current_subsequence) > len(longest_subsequence):
-            longest_subsequence = current_subsequence
+        # Update longest subsequences, giving preference to even if equal
+        if len(even_subsequence) > len(longest_even_subsequence):
+            longest_even_subsequence = even_subsequence
+        
+        if len(odd_subsequence) > len(longest_odd_subsequence):
+            longest_odd_subsequence = odd_subsequence
     
-    return longest_subsequence
+    # Return the longer subsequence, preferring even
+    return longest_even_subsequence if len(longest_even_subsequence) >= len(longest_odd_subsequence) else longest_odd_subsequence
