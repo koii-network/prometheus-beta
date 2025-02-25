@@ -1,5 +1,6 @@
 import logging
 import time
+import functools
 from typing import Callable, Optional, Any
 
 class ProcessProgressLogger:
@@ -87,30 +88,30 @@ class ProcessProgressLogger:
         )
 
 def track_process(
-    process: Callable[..., Any], 
     total_steps: int, 
     logger: Optional[logging.Logger] = None
-) -> Any:
+):
     """
     Decorator to track progress of a process automatically.
     
     Args:
-        process (Callable): The process to track
         total_steps (int): Total number of steps in the process
         logger (Optional[logging.Logger]): Logger to use. If None, uses default logger
     
     Returns:
-        Wrapped function that logs progress
+        Decorator function
     """
-    def wrapper(*args, **kwargs):
-        progress_logger = ProcessProgressLogger(total_steps, logger)
-        
-        try:
-            result = process(*args, **kwargs)
-            progress_logger.complete()
-            return result
-        except Exception as e:
-            progress_logger.logger.error(f"Process failed: {str(e)}")
-            raise
-    
-    return wrapper
+    def decorator(process: Callable[..., Any]):
+        @functools.wraps(process)
+        def wrapper(*args, **kwargs):
+            progress_logger = ProcessProgressLogger(total_steps, logger)
+            
+            try:
+                result = process(*args, **kwargs)
+                progress_logger.complete()
+                return result
+            except Exception as e:
+                progress_logger.logger.error(f"Process failed: {str(e)}")
+                raise
+        return wrapper
+    return decorator
