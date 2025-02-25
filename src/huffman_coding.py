@@ -134,12 +134,21 @@ def decompress(compressed_data, huffman_tree):
     
     Returns:
         str: Decompressed original data
-    """
-    if compressed_data is None or huffman_tree is None:
-        return ""
     
-    if not compressed_data:
-        return ""
+    Raises:
+        TypeError: If either input is None and cannot be processed
+    """
+    if compressed_data is None:
+        raise TypeError("Compressed data cannot be None")
+    
+    if huffman_tree is None:
+        if not compressed_data:
+            return ""
+        raise TypeError("Huffman tree cannot be None")
+    
+    # Special case for single character string
+    if huffman_tree.char is not None:
+        return huffman_tree.char * len(compressed_data)
     
     # Traverse tree to decode
     decoded = []
