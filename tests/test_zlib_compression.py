@@ -5,7 +5,7 @@ from src.zlib_compression import compress_data, decompress_data
 
 def test_compress_string():
     """Test compression of a string"""
-    original = "Hello, World! This is a test of Zlib compression."
+    original = "Hello, World! " * 100  # Repeat to make it more compressible
     compressed = compress_data(original)
     assert isinstance(compressed, bytes)
     assert len(compressed) < len(original.encode('utf-8'))
@@ -13,7 +13,7 @@ def test_compress_string():
 
 def test_compress_bytes():
     """Test compression of bytes"""
-    original = b"Hello, World! This is a test of Zlib compression."
+    original = b"Hello, World! " * 100  # Repeat to make it more compressible
     compressed = compress_data(original)
     assert isinstance(compressed, bytes)
     assert len(compressed) < len(original)
@@ -21,7 +21,7 @@ def test_compress_bytes():
 
 def test_compress_with_level():
     """Test compression with specific compression levels"""
-    original = "Hello, World!" * 100  # Longer text to show compression difference
+    original = "Hello, World! " * 100  # Longer text to show compression difference
     
     # Test different compression levels
     compressed_0 = compress_data(original, compression_level=0)
