@@ -19,11 +19,7 @@ def is_prime(number):
     if not isinstance(number, int):
         raise ValueError("Input must be an integer")
     
-    # Check for negative or non-integer numbers
-    if number != int(number):
-        raise ValueError("Input must be an integer")
-    
-    # Handle edge cases for non-positive numbers
+    # Handle negative numbers
     if number < 2:
         return False
     
