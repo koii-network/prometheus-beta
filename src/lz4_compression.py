@@ -40,40 +40,45 @@ def lz4_compress(data):
     pos = 0
     
     while pos < len(data):
-        # Find the longest match in the previous data
+        # Look for the longest match in previous data
         best_match_length = 0
         best_match_offset = 0
         
-        # Look back up to 65535 bytes (16-bit offset)
-        look_back = min(pos, 65535)
+        # Search back up to 65535 bytes
+        search_back = min(pos, 65535)
         
-        for offset in range(1, look_back + 1):
+        for offset in range(1, search_back + 1):
             # Start of potential match
             match_start = pos - offset
             current_match_length = 0
             
-            # Check how long the match continues
+            # Check match length
             while (pos + current_match_length < len(data) and 
                    data[match_start + current_match_length] == data[pos + current_match_length] and 
                    current_match_length < 255):
                 current_match_length += 1
             
-            # Update best match if found a longer match
+            # Update best match
             if current_match_length > best_match_length:
                 best_match_length = current_match_length
                 best_match_offset = offset
         
-        # If no match found, store as literal
+        # Encode the data
         if best_match_length < 4:
+            # Literal byte
             compressed.append(data[pos])
             pos += 1
         else:
-            # Encode match with offset and length
-            compressed.extend([
-                best_match_length - 4,  # Subtract 4 to save bits
-                best_match_offset & 0xFF,   # Low byte of offset
-                (best_match_offset >> 8) & 0xFF  # High byte of offset
-            ])
+            # Encode match
+            # Token = (match length - 4) in high 4 bits, offset in low 12 bits
+            match_token = (best_match_length - 4) << 4
+            match_token |= (best_match_offset & 0xFFF)
+            
+            # Write token bytes
+            compressed.append((match_token >> 8) & 0xFF)
+            compressed.append(match_token & 0xFF)
+            
+            # Move forward
             pos += best_match_length
     
     return bytes(compressed)
@@ -106,33 +111,34 @@ def lz4_decompress(compressed_data):
     pos = 0
     
     while pos < len(compressed_data):
-        # Check if it's a literal or a match
-        if compressed_data[pos] < 15:
-            # Literal byte
+        # Literal or match determination
+        if compressed_data[pos] < 240:  # Assume literal
             decompressed.append(compressed_data[pos])
             pos += 1
         else:
-            # Match encoding
-            match_length = compressed_data[pos] - 4
-            
-            # Check if we have enough bytes for offset
-            if pos + 2 >= len(compressed_data):
+            # Extract token
+            if pos + 1 >= len(compressed_data):
                 raise ValueError("Invalid compressed data")
             
-            # Extract offset (little-endian 16-bit)
-            offset = compressed_data[pos + 1] | (compressed_data[pos + 2] << 8)
+            token = (compressed_data[pos] << 8) | compressed_data[pos + 1]
             
-            # Copy matched sequence
+            # Extract match length (high 4 bits)
+            match_length = (token >> 12) + 4
+            
+            # Extract offset (low 12 bits)
+            offset = token & 0xFFF
+            
+            # Verify offset is valid
             if offset > len(decompressed):
                 raise ValueError("Invalid offset in compressed data")
             
-            # Repeat the matched sequence
+            # Copy matched sequence
             for _ in range(match_length):
                 # Find the byte to copy from previous data
                 copy_pos = len(decompressed) - offset
                 decompressed.append(decompressed[copy_pos])
             
             # Move to next token
-            pos += 3
+            pos += 2
     
     return bytes(decompressed)
