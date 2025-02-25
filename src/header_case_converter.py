@@ -32,24 +32,35 @@ def convert_to_header_case(input_string):
     if not input_string:
         return ""
     
-    # Replace various separators with a single space
-    # This handles snake_case, kebab-case, and camelCase
+    # Normalize the string by replacing different separators
     normalized = input_string.replace('_', ' ').replace('-', ' ')
     
-    # Split the string and capitalize each word
-    words = []
-    current_word = ""
-    for char in normalized:
-        # Handle camelCase by inserting spaces before capital letters
-        if char.isupper() and current_word:
+    # Function to determine word boundaries and capitalize
+    def split_and_capitalize(s):
+        words = []
+        current_word = ""
+        for i, char in enumerate(s):
+            # Detect camel case and split
+            if char.isupper() and current_word and not current_word[-1].isupper():
+                words.append(current_word)
+                current_word = char
+            # Handle consecutive uppercase letters
+            elif char.isupper() and current_word and current_word[-1].isupper():
+                current_word += char
+            else:
+                current_word += char.lower()
+        
+        # Add the last word
+        if current_word:
             words.append(current_word)
-            current_word = char
-        else:
-            current_word += char.lower()
+        
+        # Capitalize each word and handle consecutive spaces
+        return [word.capitalize() for word in words]
     
-    # Add the last word
-    if current_word:
-        words.append(current_word)
+    # Split normalized string and capitalize
+    words = []
+    for part in normalized.split():
+        words.extend(split_and_capitalize(part))
     
-    # Capitalize the first letter of each word and join
-    return ' '.join(word.capitalize() for word in words)
+    # Join the words
+    return ' '.join(words)
