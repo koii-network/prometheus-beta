@@ -48,7 +48,7 @@ def inverse_burrows_wheeler_transform(bwt_text: str) -> str:
     
     Raises:
         TypeError: If input is not a string
-        ValueError: If input is an empty string or doesn't end with '$'
+        ValueError: If input is empty or doesn't end with '$'
     """
     # Validate input
     if not isinstance(bwt_text, str):
@@ -61,16 +61,21 @@ def inverse_burrows_wheeler_transform(bwt_text: str) -> str:
     if '$' not in bwt_text:
         raise ValueError("Input must contain terminator character '$'")
     
-    # Create a table of sorted characters
+    # Length of the text
     n = len(bwt_text)
-    table = [''] * n
     
-    # Repeatedly sort to reconstruct original text
-    for _ in range(n):
-        table = sorted(bwt_text[i] + table[i] for i in range(n))
+    # Create first column and last column
+    sorted_chars = sorted(bwt_text)
     
-    # Find the original text (the one ending with terminator)
-    original = [x for x in table if x.endswith('$')][0]
+    # Compute next array to reconstruct the original text
+    next_arr = [sorted_chars.index(c) for c in bwt_text]
     
-    # Remove the terminator and return
-    return original[:-1]
+    # Reconstruct the original text
+    current = sorted_chars.index('$')
+    result = []
+    
+    for _ in range(n - 1):
+        result.append(bwt_text[current])
+        current = next_arr[current]
+    
+    return ''.join(result)
