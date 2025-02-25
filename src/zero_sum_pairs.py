@@ -25,6 +25,13 @@ def count_zero_sum_pairs(nums):
     num_freq = {}
     
     for num in nums:
+        # Special handling for zero
+        if num == 0:
+            # If zero is already seen, add to pair count
+            pair_count += num_freq.get(0, 0)
+            num_freq[0] = num_freq.get(0, 0) + 1
+            continue
+        
         # Check if the negative of the current number exists in the frequency map
         if -num in num_freq:
             pair_count += num_freq[-num]
