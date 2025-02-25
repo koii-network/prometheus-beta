@@ -35,28 +35,26 @@ def sum_subarrays(arr, k):
     if k == 0:
         return 0
     
-    # If k is greater than the array length, calculate number of subarrays
+    # If k is greater than the array length, handle special case
     if k >= len(arr):
-        # Calculate total number of subarrays for each element
-        subarrays_per_elem = sum(range(1, len(arr) + 1))
-        return sum(arr) * subarrays_per_elem
+        return sum(arr) * (sum(range(1, len(arr) + 1)))
     
     # Calculate sum of subarrays
     total_sum = 0
     n = len(arr)
     
-    # Iterate through all possible starting points
+    # All possible subarrays of length 1 to k
     for start in range(n):
-        # Consider subarrays of length 1 to k starting from this point
-        current_sum = 0
+        current_subarray_sum = 0
         for length in range(1, k + 1):
-            # Break if we go beyond the array
+            # Check if this subarray is within the array bounds
             if start + length > n:
                 break
             
-            # Add current subarray
-            subarray = arr[start:start+length]
-            current_sum = sum(subarray)
-            total_sum += current_sum * (n - start - length + 1)
+            # Calculate current subarray sum
+            current_subarray_sum += sum(arr[start:start+length])
+            
+            # Add the current subarray sum to total
+            total_sum += current_subarray_sum
     
     return total_sum
