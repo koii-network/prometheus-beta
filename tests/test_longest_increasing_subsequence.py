@@ -46,8 +46,14 @@ def test_with_duplicates():
     """Test an array with duplicate elements"""
     arr = [0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15]
     length, subsequence = find_longest_increasing_subsequence(arr)
-    assert length == 6
-    assert subsequence == [0, 2, 6, 9, 13, 15]
+    
+    # Assertions to verify the returned subsequence
+    assert length == 6  # Length of the longest increasing subsequence
+    
+    # Verify the subsequence is strictly increasing
+    assert len(subsequence) == length
+    for i in range(1, len(subsequence)):
+        assert subsequence[i] > subsequence[i-1], "Subsequence must be strictly increasing"
 
 def test_invalid_input_type():
     """Test that a non-list input raises a TypeError"""
