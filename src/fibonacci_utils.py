@@ -19,16 +19,19 @@ def fibonacci(max_num):
         return []
     if max_num == 1:
         return [1]
+    if max_num == 2:
+        return [1, 1, 2]
     
     # Generate Fibonacci sequence
     fib_seq = [1, 1]
-    while fib_seq[-1] < max_num:
+    while True:
         next_num = fib_seq[-1] + fib_seq[-2]
         if next_num > max_num:
             break
         fib_seq.append(next_num)
     
-    return fib_seq[:len([num for num in fib_seq if num <= max_num])]
+    # Return sequence with numbers less than or equal to max_num
+    return [num for num in fib_seq if num <= max_num]
 
 def fibonacci_sum(arr):
     """
@@ -58,4 +61,4 @@ def fibonacci_sum(arr):
     fib_sequence = fibonacci(max_num)
     
     # Return the sum of Fibonacci numbers
-    return sum(fib_sequence)
+    return sum(set(fib_sequence))
