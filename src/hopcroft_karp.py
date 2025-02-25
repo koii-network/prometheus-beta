@@ -27,7 +27,9 @@ class HopcroftKarp:
         """
         if u not in self.graph:
             self.graph[u] = []
-        self.graph[u].append(v)
+        # Only add unique edges
+        if v not in self.graph[u]:
+            self.graph[u].append(v)
     
     def bfs(self, left_vertices: Set[int]) -> bool:
         """
