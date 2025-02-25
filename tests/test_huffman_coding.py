@@ -54,10 +54,12 @@ def test_compress_decompress():
         compressed, tree = hc.compress(original)
         
         # Decompress
-        decompressed = hc.decompress(compressed, tree)
-        
-        # Verify
-        assert decompressed == original, f"Failed for input: {original}"
+        if original:
+            decompressed = hc.decompress(compressed, tree)
+            assert decompressed == original, f"Failed for input: {original}"
+        else:
+            assert compressed == ""
+            assert tree is None
 
 def test_edge_cases():
     # Test compression and decompression with empty input
