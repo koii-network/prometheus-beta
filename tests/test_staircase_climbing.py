@@ -25,9 +25,9 @@ def test_invalid_input_type():
 
 def test_invalid_stair_lengths():
     """Test raising error for invalid stair lengths"""
-    with pytest.raises(ValueError, match="Stair lengths must be positive integers"):
+    with pytest.raises(ValueError, match="Stair lengths must be non-negative integers"):
         count_climbing_ways([1, -2, 3])
-    with pytest.raises(ValueError, match="Stair lengths must be positive integers"):
+    with pytest.raises(ValueError, match="Stair lengths must be non-negative integers"):
         count_climbing_ways([1, 2.5, 3])
 
 def test_empty_list():
