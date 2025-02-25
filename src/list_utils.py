@@ -1,7 +1,7 @@
 def remove_unique_elements(my_list):
     """
     Remove unique elements from a list of integers, keeping only elements 
-    that appear more than once.
+    that appear more than once, in their original order.
     
     Uses only built-in list methods to identify and remove unique elements.
     
@@ -26,11 +26,15 @@ def remove_unique_elements(my_list):
     # Create a result list to store duplicates
     duplicates = []
     
-    # Iterate through the list
+    # Iterate through the list in original order
     for item in my_list:
         # If this is the first occurrence and it appears again later, add it
         if my_list.count(item) > 1 and item not in duplicates:
-            # Add all occurrences of this duplicate
-            duplicates.extend([item] * (my_list.count(item)))
+            # Add the required number of occurrences of this duplicate
+            multiple_count = my_list.count(item)
+            duplicates.extend([item] * multiple_count)
+            
+            # Prevent re-adding the same duplicate type
+            duplicates.remove(item)
     
     return duplicates
