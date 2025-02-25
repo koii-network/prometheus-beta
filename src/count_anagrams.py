@@ -48,11 +48,10 @@ def count_anagrams(s: str) -> int:
         for start in range(len(s) - length + 1):
             substring = s[start:start+length]
             
-            # Signature based on character frequencies
-            signature = tuple(sorted(Counter(substring).items()))
-            
-            # Add signatures of substrings with potential for rearrangement
+            # Only add signatures with potential for rearrangement
             if len(set(substring)) < len(substring):
+                # Signature based on sorted character frequencies
+                signature = tuple(sorted(Counter(substring).items()))
                 unique_signatures.add(signature)
     
-    return max(0, len(unique_signatures) - 1)
+    return len(unique_signatures)
