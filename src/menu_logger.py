@@ -20,14 +20,30 @@ class MenuLogger:
         # Ensure the directory exists
         os.makedirs(os.path.dirname(log_file) or '.', exist_ok=True)
         
-        # Configure logging
-        logging.basicConfig(
-            filename=log_file, 
-            level=log_level, 
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            filemode='a'  # Append mode to preserve previous logs
-        )
-        self.logger = logging.getLogger(__name__)
+        # Create a file handler
+        self.log_file = log_file
+        self.handler = logging.FileHandler(filename=log_file, mode='a')
+        self.handler.setLevel(log_level)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        self.handler.setFormatter(formatter)
+        
+        # Create a logger
+        self.logger = logging.getLogger(f'menu_logger_{os.getpid()}')
+        self.logger.setLevel(log_level)
+        
+        # Add the handler to the logger (remove any existing handlers first)
+        self.logger.handlers.clear()
+        self.logger.addHandler(self.handler)
+        
+        # Prevent propagation to root logger
+        self.logger.propagate = False
+    
+    def __del__(self):
+        """
+        Ensure the file handler is closed when the object is deleted.
+        """
+        if hasattr(self, 'handler'):
+            self.handler.close()
     
     def log_selection(self, 
                       selection: Union[str, int], 
@@ -53,8 +69,17 @@ class MenuLogger:
             context_str = ', '.join(f"{k}: {v}" for k, v in additional_context.items())
             log_message += f" (Context: {context_str})"
         
-        # Log the selection
-        self.logger.info(log_message)
+        # Log the selection with direct write (as a fallback)
+        try:
+            self.logger.info(log_message)
+            self.handler.flush()
+        except Exception:
+            # Fallback direct file write
+            try:
+                with open(self.log_file, 'a') as f:
+                    f.write(f'{log_message}\n')
+            except Exception:
+                pass
     
     def log_invalid_selection(self, 
                                invalid_selection: Union[str, int], 
@@ -66,4 +91,15 @@ class MenuLogger:
         :param menu_name: Name of the menu (optional)
         """
         log_message = f"Invalid Selection - Menu: {menu_name}, Attempted Selection: {invalid_selection}"
-        self.logger.warning(log_message)
+        
+        # Log the invalid selection with direct write (as a fallback)
+        try:
+            self.logger.warning(log_message)
+            self.handler.flush()
+        except Exception:
+            # Fallback direct file write
+            try:
+                with open(self.log_file, 'a') as f:
+                    f.write(f'{log_message}\n')
+            except Exception:
+                pass
