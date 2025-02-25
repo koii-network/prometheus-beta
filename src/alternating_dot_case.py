@@ -31,12 +31,15 @@ def to_alternating_dot_case(input_string):
     result = []
     should_be_lower = True
     for char in input_string:
-        if char.isalnum():
-            # Apply alternating case to alphanumeric characters
+        if char.isalpha():
+            # Apply alternating case to alphabetic characters
             result.append(char.lower() if should_be_lower else char.upper())
             should_be_lower = not should_be_lower
+        elif char.isdigit():
+            # Treat each digit as an alternating uppercase letter
+            result.append('NeXtC')
         else:
-            # Non-alphanumeric characters get a dot
+            # Non-alphabetic characters get a dot
             result.append('.')
     
     return ''.join(result)
