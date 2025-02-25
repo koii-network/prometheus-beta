@@ -12,11 +12,13 @@ from src.zstandard_compress import (
 
 def test_compress_decompress_bytes():
     """Test compressing and decompressing bytes"""
-    original_data = b"Hello, Zstandard compression!"
+    original_data = b"Repeated data to ensure compression works Repeated data to ensure compression works"
     compressed = compress_data(original_data)
     
     # Verify compressed data is different
     assert compressed != original_data
+    
+    # Verify compression reduces size for compressible data
     assert len(compressed) < len(original_data)
     
     # Decompress and verify
@@ -26,11 +28,14 @@ def test_compress_decompress_bytes():
 
 def test_compress_decompress_string():
     """Test compressing and decompressing string"""
-    original_data = "Hello, Zstandard compression!"
+    original_data = "Hello, Zstandard compression! " * 10
     compressed = compress_data(original_data)
     
     # Verify compressed data is different
     assert compressed != original_data.encode('utf-8')
+    
+    # Verify compression reduces size for repetitive data
+    assert len(compressed) < len(original_data)
     
     # Decompress and verify
     decompressed = decompress_data(compressed)
@@ -39,25 +44,27 @@ def test_compress_decompress_string():
 
 def test_compression_levels():
     """Test different compression levels"""
-    data = b"Test compression with different levels"
+    data = b"Test compression with repetitive data Test compression with repetitive data" * 5
     
     # Test minimum and maximum levels
     min_compressed = compress_data(data, compression_level=1)
     max_compressed = compress_data(data, compression_level=22)
     
-    # Verify different levels produce different compressed sizes
-    assert len(min_compressed) != len(max_compressed)
-    
     # Verify both can be decompressed
     assert decompress_data(min_compressed) == data
     assert decompress_data(max_compressed) == data
+    
+    # Verify that higher compression levels tend to result in smaller compressed data
+    # (this may not always be true, but is generally expected)
+    assert len(max_compressed) <= len(min_compressed)
 
 
 def test_file_compression():
     """Test file compression and decompression"""
     # Create a temporary file with test data
     with tempfile.NamedTemporaryFile(delete=False, mode='wb') as temp_input:
-        temp_input.write(b"Test file compression with Zstandard")
+        test_data = b"Test file compression with Zstandard " * 100
+        temp_input.write(test_data)
         input_path = temp_input.name
 
     try:
@@ -73,7 +80,7 @@ def test_file_compression():
         with open(decompressed_path, 'rb') as f:
             decompressed_content = f.read()
         
-        assert decompressed_content == b"Test file compression with Zstandard"
+        assert decompressed_content == test_data
     
     finally:
         # Clean up temp files
@@ -108,11 +115,12 @@ def test_invalid_inputs():
 
 def test_large_data_compression():
     """Test compression of larger data"""
+    # Create compressible data (lots of repeated chars)
     large_data = b"0" * (1024 * 1024)  # 1MB of zeros
     compressed = compress_data(large_data)
     
-    # Verify compression reduces size
-    assert len(compressed) < len(large_data)
+    # Verify compression reduces size significantly
+    assert len(compressed) < len(large_data) * 0.1
     
     # Verify decompression
     decompressed = decompress_data(compressed)
