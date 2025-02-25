@@ -5,7 +5,7 @@ def test_suffix_tree_initialization():
     """Test basic initialization of Suffix Tree"""
     text = "banana"
     suffix_tree = SuffixTree(text)
-    assert suffix_tree.text == "banana$"
+    assert suffix_tree.original_text == "banana"
     assert suffix_tree.root is not None
 
 def test_invalid_input():
@@ -40,9 +40,10 @@ def test_search_edge_cases():
     suffix_tree = SuffixTree(text)
     
     # Single character searches
-    assert "i" in suffix_tree.search("i")
     assert 1 in suffix_tree.search("i")
     assert 4 in suffix_tree.search("i")
+    assert 7 in suffix_tree.search("i")
+    assert 10 in suffix_tree.search("i")
     
     # Full string and overlapping patterns
     assert suffix_tree.search("iss") == [1, 4]
