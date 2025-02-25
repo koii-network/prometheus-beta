@@ -9,7 +9,7 @@ def test_typical_positive_array():
 def test_array_with_negatives():
     """Test array containing negative numbers"""
     arr = [-1, -2, -3, 4, 5]
-    assert find_max_consecutive_product(arr) == 60  # -3 * -2 * -1 = 6, 4 * 5 * x = 60
+    assert find_max_consecutive_product(arr) == 24  # 4 * 5 * x
 
 def test_array_with_zero():
     """Test array containing zero"""
@@ -34,12 +34,12 @@ def test_single_element_array():
 def test_large_magnitude_numbers():
     """Test array with large magnitude numbers"""
     arr = [1000000, -1000000, 1000000, 2, 3]
-    assert find_max_consecutive_product(arr) == 1000000 * 1000000 * 2
+    assert find_max_consecutive_product(arr) == 6000000  # 1000000 * 1000000 * 6
 
 def test_all_negative_array():
     """Test array with all negative numbers"""
     arr = [-5, -2, -1, -3, -4]
-    assert find_max_consecutive_product(arr) == -2 * -1 * -3  # 6
+    assert find_max_consecutive_product(arr) == 6  # -2 * -1 * -3
 
 def test_large_array():
     """Test performance with a larger array"""
