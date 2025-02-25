@@ -40,7 +40,7 @@ def lz4_compress(data):
     pos = 0
     
     while pos < len(data):
-        # Look for the longest match in previous data
+        # Find the longest match
         best_match_length = 0
         best_match_offset = 0
         
@@ -63,22 +63,19 @@ def lz4_compress(data):
                 best_match_length = current_match_length
                 best_match_offset = offset
         
-        # Encode the data
+        # Encode data
         if best_match_length < 4:
             # Literal byte
             compressed.append(data[pos])
             pos += 1
         else:
             # Encode match
-            # Token = (match length - 4) in high 4 bits, offset in low 12 bits
-            match_token = (best_match_length - 4) << 4
-            match_token |= (best_match_offset & 0xFFF)
-            
-            # Write token bytes
-            compressed.append((match_token >> 8) & 0xFF)
-            compressed.append(match_token & 0xFF)
-            
-            # Move forward
+            # Use two bytes for token and match
+            compressed.extend([
+                best_match_length - 4,     # Match length token
+                best_match_offset & 0xFF,  # Low byte of offset
+                (best_match_offset >> 8) & 0xFF  # High byte of offset
+            ])
             pos += best_match_length
     
     return bytes(compressed)
@@ -111,34 +108,35 @@ def lz4_decompress(compressed_data):
     pos = 0
     
     while pos < len(compressed_data):
-        # Literal or match determination
-        if compressed_data[pos] < 240:  # Assume literal
+        # Check if we have a potential match or literal
+        if pos < len(compressed_data) and compressed_data[pos] < 15:
+            # Literal: just copy the byte
             decompressed.append(compressed_data[pos])
             pos += 1
         else:
-            # Extract token
-            if pos + 1 >= len(compressed_data):
+            # Potential match - need at least 3 bytes for full token
+            if pos + 2 >= len(compressed_data):
                 raise ValueError("Invalid compressed data")
             
-            token = (compressed_data[pos] << 8) | compressed_data[pos + 1]
-            
-            # Extract match length (high 4 bits)
-            match_length = (token >> 12) + 4
-            
-            # Extract offset (low 12 bits)
-            offset = token & 0xFFF
+            # Extract match length and offset
+            match_length = compressed_data[pos] + 4
+            offset_low = compressed_data[pos + 1]
+            offset_high = compressed_data[pos + 2]
+            offset = offset_low | (offset_high << 8)
             
             # Verify offset is valid
             if offset > len(decompressed):
-                raise ValueError("Invalid offset in compressed data")
+                raise ValueError(f"Invalid offset: {offset} at position {pos}")
             
             # Copy matched sequence
             for _ in range(match_length):
                 # Find the byte to copy from previous data
                 copy_pos = len(decompressed) - offset
+                if copy_pos < 0:
+                    raise ValueError("Invalid copy position")
                 decompressed.append(decompressed[copy_pos])
             
             # Move to next token
-            pos += 2
+            pos += 3
     
     return bytes(decompressed)
