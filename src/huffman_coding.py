@@ -23,6 +23,9 @@ def build_frequency_dict(data):
     Returns:
         dict: Character frequency dictionary
     """
+    if data is None:
+        raise TypeError("Input must be a string")
+    
     if not data:
         return {}
     return dict(Counter(data))
@@ -101,6 +104,9 @@ def compress(data):
     Returns:
         tuple: (compressed_data, huffman_tree_root)
     """
+    if data is None:
+        raise TypeError("Input must be a string")
+    
     if not data:
         return "", None
     
@@ -129,7 +135,10 @@ def decompress(compressed_data, huffman_tree):
     Returns:
         str: Decompressed original data
     """
-    if not compressed_data or not huffman_tree:
+    if compressed_data is None or huffman_tree is None:
+        return ""
+    
+    if not compressed_data:
         return ""
     
     # Traverse tree to decode
