@@ -19,9 +19,9 @@ def generate_all_substrings(input_string):
         return []
     
     # Generate all possible substrings
-    substrings = []
-    for start in range(len(input_string)):
-        for end in range(start + 1, len(input_string) + 1):
-            substrings.append(input_string[start:end])
-    
-    return substrings
+    # Use a list comprehension with nested loops to handle all cases
+    return [
+        input_string[start:end] 
+        for start in range(len(input_string)) 
+        for end in range(start + 1, len(input_string) + 1)
+    ]
