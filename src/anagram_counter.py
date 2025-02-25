@@ -26,20 +26,26 @@ def count_anagrams(s):
         raise ValueError("Input must contain only lowercase English letters")
     
     # Complex anagram counting logic
-    def generate_anagram_groups(s):
+    def generate_unique_anagram_groups(s):
         """Generate unique sorted anagram groups."""
         unique_groups = set()
         n = len(s)
         
-        # Generate all substrings and their sorted representations
-        for length in range(1, n + 1):
+        # Single character anagram groups
+        for c in set(s):
+            unique_groups.add(c)
+        
+        # Sorted substring anagram groups with more than 1 character
+        for length in range(2, n + 1):
             for start in range(n - length + 1):
                 substr = s[start:start+length]
-                sorted_substr = ''.join(sorted(substr))
-                unique_groups.add(sorted_substr)
+                if len(set(substr)) >= 2:  # Ensure at least 2 unique characters
+                    sorted_substr = ''.join(sorted(substr))
+                    unique_groups.add(sorted_substr)
         
         return unique_groups
     
-    # Count unique anagram groups
-    unique_anagram_groups = generate_anagram_groups(s)
-    return len(unique_anagram_groups)
+    # Count unique anagram groups and subtract single character groups
+    unique_anagram_groups = generate_unique_anagram_groups(s)
+    single_char_groups = set(s)
+    return len(unique_anagram_groups) - len(single_char_groups) + 1
