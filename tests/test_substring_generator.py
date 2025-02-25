@@ -26,7 +26,7 @@ def test_generate_all_substrings_special_chars():
 def test_generate_all_substrings_repeated_chars():
     """Test substring generation with repeated characters."""
     result = generate_all_substrings("aaa")
-    expected = ['a', 'aa', 'aaa', 'a', 'aa', 'aaa']
+    expected = ['a', 'a', 'a', 'aa', 'aa', 'aaa']
     assert sorted(result) == sorted(expected)
     assert len(result) == 6
 
