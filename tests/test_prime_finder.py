@@ -31,7 +31,7 @@ def test_small_range():
 
 def test_large_range():
     """Test a larger range of primes"""
-    expected_primes = [89, 97]
+    expected_primes = [83, 89, 97]
     assert find_primes_in_range(80, 100) == expected_primes
 
 def test_range_starting_below_two():
