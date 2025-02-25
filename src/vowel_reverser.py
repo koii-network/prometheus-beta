@@ -20,6 +20,12 @@ def reverse_vowels_in_substring(s: str, start: int, end: int) -> str:
     if not isinstance(start, int) or not isinstance(end, int):
         raise TypeError("Start and end indices must be integers")
 
+    # Handle empty string as a special case
+    if not s:
+        if start == 0 and end == 0:
+            return ""
+        raise ValueError("Invalid substring indices")
+
     # Validate index bounds
     if start < 0 or end > len(s) or start >= end:
         raise ValueError("Invalid substring indices")
@@ -30,7 +36,7 @@ def reverse_vowels_in_substring(s: str, start: int, end: int) -> str:
     # Convert string to list for easier manipulation
     chars = list(s)
 
-    # Extract vowels from the substring
+    # Extract vowels from the substring, preserving their original order
     substring_vowels = [char for char in chars[start:end] if char in vowels]
     
     # Reverse the extracted vowels
