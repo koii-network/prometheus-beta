@@ -17,12 +17,12 @@ def delete_file(file_path):
     Returns:
         bool: True if the file was successfully deleted.
     """
+    # Validate input early
+    if file_path is None or (isinstance(file_path, str) and len(file_path.strip()) == 0):
+        raise ValueError("File path cannot be empty or None")
+
     # Convert to Path object if string is provided
     path = pathlib.Path(file_path)
-
-    # Validate input
-    if not path:
-        raise ValueError("File path cannot be empty or None")
 
     # Check if path exists
     if not path.exists():
