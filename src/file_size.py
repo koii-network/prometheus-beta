@@ -14,10 +14,15 @@ def get_file_size(file_path):
         FileNotFoundError: If the file does not exist.
         PermissionError: If there's no permission to access the file.
         IsADirectoryError: If the path is a directory instead of a file.
+        TypeError: If the input is not a string.
     """
     # Validate input is a string
     if not isinstance(file_path, str):
         raise TypeError("File path must be a string")
+
+    # Explicitly check if path is a directory before attempting to get size
+    if os.path.isdir(file_path):
+        raise IsADirectoryError(f"Path is a directory, not a file: {file_path}")
 
     # Use os.path.getsize to get file size
     try:
@@ -26,5 +31,3 @@ def get_file_size(file_path):
         raise FileNotFoundError(f"No file found at path: {file_path}")
     except PermissionError:
         raise PermissionError(f"Permission denied accessing file: {file_path}")
-    except IsADirectoryError:
-        raise IsADirectoryError(f"Path is a directory, not a file: {file_path}")
