@@ -31,7 +31,20 @@ def find_palindromic_substrings(s: str) -> list[str]:
             
             # Check if substring is a palindrome
             if substring == substring[::-1] and substring not in palindromes:
+                # Avoid duplicates
                 palindromes.append(substring)
     
     # Sort palindromes by length
-    return sorted(palindromes, key=len)
+    # Keep order by slicing the string in a consistent manner
+    filtered_palindromes = []
+    seen = set()
+    for p in palindromes:
+        if p not in seen and len(p) > 1:
+            filtered_palindromes.append(p)
+            seen.add(p)
+    
+    # Always include single-character palindromes
+    single_chars = [c for c in s if c not in seen]
+    
+    # Combine single chars with longer palindromes and sort
+    return sorted(single_chars + filtered_palindromes, key=len)
