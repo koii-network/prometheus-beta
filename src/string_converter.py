@@ -1,3 +1,5 @@
+import re
+
 def to_kebab_case(input_string: str) -> str:
     """
     Convert a given string to kebab-case.
@@ -30,8 +32,13 @@ def to_kebab_case(input_string: str) -> str:
     if not input_string:
         return ""
     
+    # Handle camel case by inserting spaces before capital letters
+    # except for the first letter
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1 \2', input_string)
+    s2 = re.sub('([a-z0-9])([A-Z])', r'\1 \2', s1)
+    
     # Replace multiple types of word separators with a single space
-    normalized = input_string.replace('_', ' ').replace('-', ' ')
+    normalized = s2.replace('_', ' ').replace('-', ' ')
     
     # Split the string, convert to lowercase, and join with hyphens
     words = normalized.split()
