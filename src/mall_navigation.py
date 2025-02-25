@@ -1,5 +1,5 @@
 from typing import Dict, List, Optional, Tuple
-import itertools
+import heapq
 
 def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, end_store: str) -> Optional[Tuple[List[str], int]]:
     """
@@ -29,37 +29,40 @@ def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, en
     if start_store == end_store:
         return [start_store], 0
 
-    # Direct connection handling
-    if end_store in mall_map[start_store]:
-        return [start_store, end_store], mall_map[start_store][end_store]
+    # Dijkstra's algorithm for shortest path
+    distances = {store: float('inf') for store in mall_map}
+    distances[start_store] = 0
+    
+    # Track previous stores to reconstruct the path
+    previous = {store: None for store in mall_map}
+    
+    # Priority queue to explore stores
+    pq = [(0, start_store)]
 
-    # Find the shortest path through intermediate stores
-    min_distance = float('inf')
-    best_path = None
+    while pq:
+        current_distance, current_store = heapq.heappop(pq)
 
-    # Try 2-hop and 3-hop paths
-    for intermediate1 in mall_map[start_store]:
-        # Direct 2-hop path
-        if intermediate1 in mall_map and end_store in mall_map[intermediate1]:
-            candidate_path = [start_store, intermediate1, end_store]
-            distance = (mall_map[start_store][intermediate1] + 
-                        mall_map[intermediate1][end_store])
-            
-            if distance < min_distance:
-                min_distance = distance
-                best_path = candidate_path
+        # Reached destination
+        if current_store == end_store:
+            path = []
+            while current_store:
+                path.append(current_store)
+                current_store = previous[current_store]
+            return list(reversed(path)), current_distance
 
-        # 3-hop path via additional intermediate store
-        for intermediate2 in mall_map[intermediate1]:
-            if intermediate2 in mall_map and end_store in mall_map[intermediate2]:
-                candidate_path = [start_store, intermediate1, intermediate2, end_store]
-                distance = (mall_map[start_store][intermediate1] + 
-                            mall_map[intermediate1][intermediate2] + 
-                            mall_map[intermediate2][end_store])
-                
-                if distance < min_distance:
-                    min_distance = distance
-                    best_path = candidate_path
+        # If we've found a longer path, skip
+        if current_distance > distances[current_store]:
+            continue
 
-    # Return best path if found, else return None
-    return best_path, min_distance if best_path else None
+        # Explore neighbors
+        for neighbor, weight in mall_map[current_store].items():
+            distance = current_distance + weight
+
+            # Found a shorter path
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                previous[neighbor] = current_store
+                heapq.heappush(pq, (distance, neighbor))
+
+    # No path found
+    return None
