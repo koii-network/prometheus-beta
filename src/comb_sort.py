@@ -15,12 +15,12 @@ def comb_sort(arr):
     Raises:
         TypeError: If the input is not a list or contains non-comparable elements.
     """
-    # Create a copy of the input list to avoid modifying the original
-    arr = arr.copy()
-    
     # Validate input
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
+    
+    # Create a copy of the input list to avoid modifying the original
+    arr = arr.copy()
     
     # If list is empty or has only one element, return it as-is
     if len(arr) <= 1:
