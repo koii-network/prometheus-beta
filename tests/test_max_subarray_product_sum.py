@@ -5,13 +5,13 @@ def test_basic_scenario():
     """Test a basic scenario with a valid subarray."""
     arr = [1, 2, 3, 4]
     target_product = 6
-    assert find_max_sum_subarray_with_product(arr, target_product) == 5  # 2 + 3
+    assert find_max_sum_subarray_with_product(arr, target_product) == 6  # 2 * 3
 
 def test_multiple_subarrays():
     """Test when multiple subarrays exist with target product."""
     arr = [1, 2, 3, 2, 4]
     target_product = 6
-    assert find_max_sum_subarray_with_product(arr, target_product) == 9  # 2 + 3 + 4
+    assert find_max_sum_subarray_with_product(arr, target_product) == 6  # 2 * 3
 
 def test_no_matching_subarray():
     """Test when no subarray matches the target product."""
