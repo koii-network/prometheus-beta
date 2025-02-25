@@ -29,11 +29,14 @@ def to_alternating_dot_case(input_string):
     
     # Convert to alternating dot case
     result = []
-    for i, char in enumerate(input_string):
-        # Alternate case based on index
-        if i % 2 == 0:
-            result.append(char.lower())
+    should_be_lower = True
+    for char in input_string:
+        if char.isalnum():
+            # Apply alternating case to alphanumeric characters
+            result.append(char.lower() if should_be_lower else char.upper())
+            should_be_lower = not should_be_lower
         else:
-            result.append(char.upper())
+            # Non-alphanumeric characters get a dot
+            result.append('.')
     
     return ''.join(result)
