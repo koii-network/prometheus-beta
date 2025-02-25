@@ -1,12 +1,12 @@
 def find_longest_parity_subsequence(nums):
     """
-    Find the longest contiguous subsequence with the same parity (all even or all odd).
+    Find the longest subsequence with the same parity (all even or all odd).
     
     Args:
         nums (list[int]): Input list of integers
     
     Returns:
-        list[int]: The longest contiguous subsequence with consistent parity
+        list[int]: The longest subsequence with consistent parity
     
     Raises:
         TypeError: If input is not a list
@@ -23,34 +23,38 @@ def find_longest_parity_subsequence(nums):
     if len(nums) == 1:
         return nums
     
-    # Track the longest subsequences
-    longest_even_subseq = []
-    longest_odd_subseq = []
+    # Find all possible even and odd subsequences
+    even_subsequences = []
+    odd_subsequences = []
     
-    # Current subsequence being built
-    current_even_subseq = []
-    current_odd_subseq = []
+    for start in range(len(nums)):
+        # Even subsequence candidates
+        current_even = []
+        # Odd subsequence candidates
+        current_odd = []
+        
+        for j in range(start, len(nums)):
+            # Check parity of current number
+            if nums[j] % 2 == 0:
+                # If we can continue the last subsequence or start a new one
+                if not current_even:
+                    current_even = [nums[j]]
+                else:
+                    current_even.append(nums[j])
+                    even_subsequences.append(current_even.copy())
+            else:
+                # If we can continue the last subsequence or start a new one
+                if not current_odd:
+                    current_odd = [nums[j]]
+                else:
+                    current_odd.append(nums[j])
+                    odd_subsequences.append(current_odd.copy())
     
-    for num in nums:
-        is_even = num % 2 == 0
-        
-        if is_even:
-            # Continue or start even subsequence
-            current_even_subseq.append(num)
-            # Reset odd subsequence
-            current_odd_subseq = []
-        else:
-            # Continue or start odd subsequence
-            current_odd_subseq.append(num)
-            # Reset even subsequence
-            current_even_subseq = []
-        
-        # Update longest subsequences
-        if len(current_even_subseq) > len(longest_even_subseq):
-            longest_even_subseq = current_even_subseq.copy()
-        
-        if len(current_odd_subseq) > len(longest_odd_subseq):
-            longest_odd_subseq = current_odd_subseq.copy()
+    # Find the longest subsequences
+    max_even = max(even_subsequences, key=len) if even_subsequences else []
+    max_odd = max(odd_subsequences, key=len) if odd_subsequences else []
     
-    # Return the longer subsequence, preferring even if equal
-    return longest_even_subseq if len(longest_even_subseq) >= len(longest_odd_subseq) else longest_odd_subseq
+    # If equal length, prefer even
+    if len(max_even) >= len(max_odd):
+        return max_even
+    return max_odd
