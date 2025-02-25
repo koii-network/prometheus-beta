@@ -31,8 +31,8 @@ class PermissionLogger:
         # Create formatter
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         
-        # Console handler
-        console_handler = logging.StreamHandler()
+        # Console handler (using sys.stdout)
+        console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(formatter)
         self.logger.addHandler(console_handler)
         
