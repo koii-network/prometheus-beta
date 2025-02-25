@@ -18,11 +18,8 @@ def find_first_index(arr, target):
         >>> find_first_index([], 1)
         -1
     """
-    try:
-        return arr.index(target) if target in arr else -1
-    except TypeError:
-        # Handle cases with unhashable or incomparable types
-        for i, item in enumerate(arr):
-            if item == target:
-                return i
-        return -1
+    for i, item in enumerate(arr):
+        # Use strict equality to handle edge cases like True/1
+        if item is target or item == target:
+            return i
+    return -1
