@@ -26,23 +26,11 @@ def sum_perfect_squares_from_set(num_set):
     # Find all perfect squares
     perfect_squares = set()
     for num in num_set:
-        if num < 0:
-            continue  # Skip negative numbers
-        
-        # Check if the number is a perfect square
-        root = int(math.sqrt(num))
-        if root * root == num:
-            perfect_squares.add(num)
-        
-        # Check perfect squares that can be formed by combining set elements
-        for other in num_set:
-            if other < 0:
-                continue
-            
-            combined = num * other
-            combined_root = int(math.sqrt(combined))
-            if combined_root * combined_root == combined:
-                perfect_squares.add(combined)
+        # Check positive perfect squares
+        abs_num = abs(num)
+        root = int(math.sqrt(abs_num))
+        if root * root == abs_num:
+            perfect_squares.add(abs_num)
     
     # Return the sum of unique perfect squares
     return sum(perfect_squares)
