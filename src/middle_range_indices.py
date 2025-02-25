@@ -31,18 +31,22 @@ def find_middle_range_indices(sorted_list, range_size=1):
     # Determine the middle index
     mid_index = len(sorted_list) // 2
     
-    # Calculate start and end indices for large range size
-    start_index = max(0, mid_index - range_size)
-    end_index = min(len(sorted_list) - 1, mid_index + range_size)
+    # For default range (1), handle odd and even lists differently
+    if range_size == 1:
+        if len(sorted_list) % 2 == 1:
+            return [mid_index]  # Odd list
+        else:
+            return [mid_index - 1, mid_index]  # Even list
     
-    # Return the indices within the range
-    indices = list(range(start_index, end_index + 1))
+    # For custom range sizes
+    if len(sorted_list) % 2 == 1:
+        # For odd-length lists
+        indices = list(range(mid_index - range_size, mid_index + range_size + 1))
+    else:
+        # For even-length lists
+        indices = list(range(mid_index - range_size, mid_index + range_size + 1))
     
-    # Additional logic for odd and even lists with specific range size
-    if len(sorted_list) % 2 == 1 and range_size == 1:
-        return [mid_index]
-    
-    if len(sorted_list) % 2 == 0 and range_size == 1:
-        return [mid_index - 1, mid_index]
+    # Clip indices to list bounds
+    indices = [idx for idx in indices if 0 <= idx < len(sorted_list)]
     
     return indices
