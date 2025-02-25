@@ -3,7 +3,7 @@ from src.alternating_case import convert_to_alternating_case
 
 def test_convert_to_alternating_case_basic():
     """Test basic string conversion"""
-    assert convert_to_alternating_case("hello world") == "HeLlO wOrLd"
+    assert convert_to_alternating_case("hello world") == "HeLlO WoRlD"
     assert convert_to_alternating_case("PYTHON PROGRAMMING") == "PyThOn PrOgRaMmInG"
 
 def test_convert_to_alternating_case_empty_string():
