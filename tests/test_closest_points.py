@@ -41,7 +41,11 @@ def test_negative_coordinates():
     list_a = [(-1, -1), (-2, -2)]
     list_b = [(-3, -3), (0, 0)]
     result = find_closest_points(list_a, list_b)
-    assert result == ((-1, -1), (-3, -3))
+    # Verify the points are the closest
+    expected_distance = math.sqrt(1**2 + 1**2)
+    actual_distance = math.sqrt((result[0][0] - result[1][0])**2 + 
+                                 (result[0][1] - result[1][1])**2)
+    assert math.isclose(actual_distance, expected_distance, rel_tol=1e-9)
 
 def test_floating_point_coordinates():
     """Test points with floating point coordinates"""
