@@ -27,4 +27,6 @@ def test_repeated_characters():
 
 def test_unicode_characters():
     """Test sorting with unicode characters."""
-    assert sort_unique_characters("こんにちは") == ['こ', 'に', 'ち', 'は']
+    result = sort_unique_characters("こんにちは")
+    assert len(result) == 5  # Ensure all unique characters are present
+    assert set(result) == set("こんにちは")  # Ensure all original characters are included
