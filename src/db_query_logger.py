@@ -14,7 +14,7 @@ def log_query_time(logger: logging.Logger = None):
     Returns:
         Decorator function that logs query execution time
     """
-    # Create a default logger if none is provided
+    # Always get a logger, either the provided one or a new one
     if logger is None:
         logger = logging.getLogger(__name__)
         # Ensure basic logging configuration if not set
