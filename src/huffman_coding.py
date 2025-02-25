@@ -43,6 +43,11 @@ def build_huffman_tree(freq_dict):
     if not freq_dict:
         return None
     
+    # Single character special case
+    if len(freq_dict) == 1:
+        char, freq = list(freq_dict.items())[0]
+        return HuffmanNode(char, freq)
+    
     # Create heap of nodes
     heap = [HuffmanNode(char, freq) for char, freq in freq_dict.items()]
     heapq.heapify(heap)
@@ -73,6 +78,10 @@ def build_huffman_codes(root):
     """
     if not root:
         return {}
+    
+    # Special case for single character
+    if root.char is not None and root.left is None and root.right is None:
+        return {root.char: '0'}
     
     codes = {}
     
@@ -147,7 +156,7 @@ def decompress(compressed_data, huffman_tree):
         raise TypeError("Huffman tree cannot be None")
     
     # Special case for single repeated character
-    if huffman_tree.char is not None:
+    if huffman_tree.char is not None and huffman_tree.left is None and huffman_tree.right is None:
         return huffman_tree.char * len(compressed_data)
     
     # Traverse tree to decode
