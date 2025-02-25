@@ -7,7 +7,7 @@ LZJB is a fast compression algorithm developed by Jeff Bonwick for the ZFS files
 
 def compress(data):
     """
-    Compress input data using the LZJB compression algorithm.
+    Compress input data using a simplified LZJB-like algorithm.
     
     Args:
         data (bytes): Input data to compress
@@ -26,45 +26,45 @@ def compress(data):
     if not data:
         raise ValueError("Input cannot be empty")
     
-    # LZJB compression implementation
     compressed = bytearray()
     input_len = len(data)
+    
+    # Use a sliding window for compression
+    window_size = 2048
+    
+    # Current position in the input
     input_index = 0
     
     while input_index < input_len:
-        # Look for matching sequences
-        max_match_length = 0
+        # Search back for the best match
+        best_match_length = 0
         best_offset = 0
         
-        # Search back (typically up to 2048 bytes)
-        search_back_limit = min(input_index, 2048)
+        # Limit search to current window
+        search_start = max(0, input_index - window_size)
+        search_end = input_index
         
-        for offset in range(1, search_back_limit + 1):
+        for offset in range(1, min(input_index - search_start + 1, 16)):
+            # Try to find the longest match
             match_length = 0
-            
-            # Check for potential match
             while (input_index + match_length < input_len and 
-                   match_length < 10 and 
+                   match_length < 8 and 
                    data[input_index + match_length] == data[input_index - offset + match_length]):
                 match_length += 1
             
-            # Update best match if found
-            if match_length > max_match_length:
-                max_match_length = match_length
+            # Update best match
+            if match_length > best_match_length:
+                best_match_length = match_length
                 best_offset = offset
         
-        # Encode the result
-        if max_match_length > 2:
-            # Compressed match
+        # Encode the best match
+        if best_match_length > 2:
+            # Compressed token with offset and length
+            # High bit set indicates compressed token
             try:
-                # More careful bit manipulation
-                offset_bits = min(max(0, best_offset - 1), 15)
-                length_bits = min(max(0, max_match_length - 3), 7)
-                
-                # Construct compressed token
-                compressed_token = (offset_bits << 3) | length_bits | 0x80
-                compressed.append(compressed_token & 0xFF)
-                input_index += max_match_length
+                token = (((best_offset - 1) << 3) | (best_match_length - 3)) | 0x80
+                compressed.append(token & 0xFF)
+                input_index += best_match_length
             except Exception:
                 # Fallback to literal byte
                 compressed.append(data[input_index])
@@ -78,7 +78,7 @@ def compress(data):
 
 def decompress(compressed_data):
     """
-    Decompress data compressed with the LZJB algorithm.
+    Decompress data compressed with the simplified LZJB algorithm.
     
     Args:
         compressed_data (bytes): Input compressed data
@@ -97,7 +97,6 @@ def decompress(compressed_data):
     if not compressed_data:
         raise ValueError("Input cannot be empty")
     
-    # Decompression implementation
     decompressed = bytearray()
     input_index = 0
     
@@ -106,12 +105,13 @@ def decompress(compressed_data):
         input_index += 1
         
         if token & 0x80:
-            # Compressed match
+            # Compressed token
             try:
+                # Extract offset and length
                 offset = ((token >> 3) & 0x0F) + 1
                 length = (token & 0x07) + 3
                 
-                # Ensure we have enough previously decompressed data
+                # Ensure we have enough previous data
                 if len(decompressed) < offset:
                     raise ValueError("Insufficient previous data")
                 
@@ -121,8 +121,7 @@ def decompress(compressed_data):
                     decompressed.append(decompressed[start_index])
                     start_index += 1
             except Exception:
-                # Fallback for malformed compressed data
-                # Default to preserving the token as a literal
+                # Fallback: treat as a literal byte
                 decompressed.append(token)
         else:
             # Literal byte
