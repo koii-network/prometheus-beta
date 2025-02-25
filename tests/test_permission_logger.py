@@ -9,9 +9,9 @@ class TestPermissionLogger:
     def captured_output(self):
         """Fixture to capture console output."""
         output = io.StringIO()
-        sys.stderr = output
+        sys.stdout = output
         yield output
-        sys.stderr = sys.__stderr__
+        sys.stdout = sys.__stdout__
     
     def test_default_logging(self, captured_output):
         """Test default logging behavior for a regular user."""
@@ -23,6 +23,7 @@ class TestPermissionLogger:
         
         # Check console output
         output = captured_output.getvalue().strip()
+        print(repr(output))  # Debug output
         assert "Test info message" in output
     
     def test_permission_levels(self, captured_output):
@@ -47,6 +48,7 @@ class TestPermissionLogger:
         
         # Check console output
         output = captured_output.getvalue()
+        print(repr(output))  # Debug output
         assert "Secret admin message" in output
     
     def test_log_levels(self, captured_output):
