@@ -3,6 +3,7 @@ import pytest
 import tarfile
 import tempfile
 import shutil
+import io
 
 
 from src.tar_extractor import extract_tar_archive
@@ -91,13 +92,23 @@ def test_invalid_archive_path():
 
 def test_archive_with_directories(sample_tar_archive):
     """Test extracting an archive with nested directories."""
-    with tarfile.open(sample_tar_archive, 'a') as tar:
-        tarinfo = tarfile.TarInfo('subdir/file3.txt')
-        tarinfo.size = 17
-        tar.addfile(tarinfo, fileobj=b'Content of file3')
-    
-    with tempfile.TemporaryDirectory() as extract_dir:
-        extracted_files = extract_tar_archive(sample_tar_archive, extract_dir)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create tar archive with directory
+        nested_archive_path = os.path.join(temp_dir, 'nested.tar')
+        with tarfile.open(nested_archive_path, 'w') as tar:
+            # Create a TarInfo object for a file in a subdirectory
+            tarinfo = tarfile.TarInfo('subdir/file3.txt')
+            content = b'Content of file3'
+            tarinfo.size = len(content)
+            
+            # Use a BytesIO to simulate a file-like object
+            file_obj = io.BytesIO(content)
+            tar.addfile(tarinfo, fileobj=file_obj)
         
-        assert len(extracted_files) >= 2  # Original files + possibly nested files
-        assert any('subdir/file3.txt' in f for f in extracted_files)
+        # Extract and verify
+        with tempfile.TemporaryDirectory() as extract_dir:
+            extracted_files = extract_tar_archive(nested_archive_path, extract_dir)
+            
+            assert len(extracted_files) == 1
+            assert 'subdir/file3.txt' in extracted_files[0]
+            assert os.path.exists(extracted_files[0])
