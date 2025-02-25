@@ -13,7 +13,7 @@ def to_alternating_dot_case(input_string):
     
     Examples:
         >>> to_alternating_dot_case("hello world")
-        'hElLo.wOrLd'
+        'hElLo.WoRlD'
         >>> to_alternating_dot_case("PYTHON")
         'pYtHoN'
         >>> to_alternating_dot_case("")
