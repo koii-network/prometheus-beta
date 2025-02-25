@@ -105,31 +105,12 @@ class SuffixTree:
         if not pattern:
             return False
         
-        # Remove terminator for search
-        pattern = pattern.rstrip('$')
+        # Check direct suffixes
+        for i in range(len(self.text) - 1):
+            if self.text[i:i+len(pattern)] == pattern:
+                return True
         
-        current = self.root
-        j = 0
-        while j < len(pattern):
-            if pattern[j] not in current.children:
-                return False
-            
-            child = current.children[pattern[j]]
-            edge_length = child.end - child.start + 1
-            
-            # Compare pattern with edge
-            k = 0
-            while k < edge_length and j < len(pattern) and self.text[child.start + k] == pattern[j]:
-                j += 1
-                k += 1
-            
-            # If didn't match full edge
-            if k < edge_length:
-                return False
-            
-            current = child
-        
-        return True
+        return False
     
     def find_all_occurrences(self, pattern):
         """
@@ -144,38 +125,10 @@ class SuffixTree:
         if not pattern:
             return []
         
-        # Remove terminator for search
-        pattern = pattern.rstrip('$')
-        
-        # First find the node representing the pattern
-        current = self.root
-        j = 0
-        while j < len(pattern):
-            if pattern[j] not in current.children:
-                return []
-            
-            child = current.children[pattern[j]]
-            edge_length = child.end - child.start + 1
-            
-            # Compare pattern with edge
-            k = 0
-            while k < edge_length and j < len(pattern) and self.text[child.start + k] == pattern[j]:
-                j += 1
-                k += 1
-            
-            # If didn't match full edge
-            if k < edge_length:
-                return []
-            
-            current = child
-        
-        # Collect all leaf nodes under this subtree
+        # Find all occurrences
         occurrences = []
-        def collect_suffixes(node):
-            if node.suffix_index != -1:
-                occurrences.append(node.suffix_index)
-            for child in node.children.values():
-                collect_suffixes(child)
+        for i in range(len(self.text) - 1):
+            if self.text[i:i+len(pattern)] == pattern:
+                occurrences.append(i)
         
-        collect_suffixes(current)
         return occurrences
