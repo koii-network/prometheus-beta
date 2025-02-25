@@ -23,4 +23,4 @@ def convert_to_alternating_lowercase(input_string):
     return ''.join(
         char.lower() if idx % 2 == 0 else char.upper() 
         for idx, char in enumerate(input_string)
-    ).upper()
+    )
