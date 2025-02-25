@@ -38,7 +38,6 @@ def burrows_wheeler_transform(input_string):
     transformed_string = ''.join(rotation[-1] for rotation in sorted_rotations)
     
     # Find the index of the original string in the sorted rotations
-    # Use the side parameter to get the leftmost matching index if there are duplicates
     original_index = sorted_rotations.index(modified_string)
     
     return transformed_string, original_index
@@ -68,32 +67,33 @@ def inverse_burrows_wheeler_transform(transformed_string, original_index):
     if not transformed_string:
         raise ValueError("Transformed string cannot be empty")
     
-    # Length of the transformed string
+    # Create lists for tracking
     n = len(transformed_string)
-    
-    # Create the first column by sorting the transformed string
     first_column = sorted(transformed_string)
     
-    # Create the LF mapping
-    lf_mapping = [0] * n
-    last_seen = {c: 0 for c in set(first_column)}
+    # Create a mapping to track the next indices
+    next_indices = [0] * n
+    char_counts = {}
     
+    # Compute the next indices
     for i in range(n):
-        c = first_column[i]
-        lf_mapping[i] = last_seen[c]
-        last_seen[c] += 1
+        current_char = first_column[i]
+        current_count = char_counts.get(current_char, 0)
+        char_count_in_last = transformed_string.count(current_char)
+        
+        # Find the correct index for this character in the last column
+        matches = [j for j in range(n) if transformed_string[j] == current_char]
+        next_indices[i] = matches[current_count]
+        
+        char_counts[current_char] = current_count + 1
     
     # Reconstruct the original string
     result = []
     current_index = original_index
     
     for _ in range(n):
-        # Add the first column character to result
         result.append(first_column[current_index])
-        
-        # Find the next index using the LF mapping
-        current_index = lf_mapping[current_index]
+        current_index = next_indices[current_index]
     
-    # Return the string without the sentinel character 
-    # (The last character will be the sentinel '$')
+    # Return the string without the sentinel character
     return ''.join(result[:-1])
