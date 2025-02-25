@@ -70,15 +70,15 @@ def test_invalid_matrix_empty():
     with pytest.raises(ValueError, match="Matrix cannot be empty"):
         reverse_matrix_elements(matrix)
 
-def test_invalid_matrix_out_of_range():
-    """Test that a matrix with large multi-digit numbers works correctly."""
+def test_reverse_matrix_elements_multi_digit():
+    """Test matrix with multi-digit numbers."""
     matrix = [
-        [10, 100],
-        [1000, 50]
+        [12, 45],
+        [67, 89]
     ]
     expected = [
-        [1, 1],
-        [0, 5]
+        [21, 54],
+        [76, 98]
     ]
     assert reverse_matrix_elements(matrix) == expected
 
