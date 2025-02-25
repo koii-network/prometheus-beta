@@ -23,24 +23,23 @@ def find_longest_substring(s: str) -> str:
         return ""
     
     # Use sliding window technique
-    char_index = {}
-    start = 0
-    longest_start = 0
-    longest_length = 0
+    max_substring = s[0]
     
-    for end, char in enumerate(s):
-        # If character is already in the current window, 
-        # move the start pointer to the right of its previous occurrence
-        if char in char_index and char_index[char] >= start:
-            start = char_index[char] + 1
+    for start in range(len(s)):
+        seen = set()
+        current_substring = ""
         
-        # Update the last seen index of the character
-        char_index[char] = end
+        for end in range(start, len(s)):
+            # If character is already seen, break the inner loop
+            if s[end] in seen:
+                break
+            
+            # Add character to current substring
+            seen.add(s[end])
+            current_substring += s[end]
         
-        # Update longest substring if current is longer
-        current_length = end - start + 1
-        if current_length > longest_length:
-            longest_start = start
-            longest_length = current_length
+        # Update max substring if current is longer
+        if len(current_substring) > len(max_substring):
+            max_substring = current_substring
     
-    return s[longest_start:longest_start + longest_length]
+    return max_substring
