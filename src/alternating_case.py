@@ -23,8 +23,20 @@ def to_alternating_case(text):
     if not isinstance(text, str):
         raise TypeError("Input must be a string")
     
-    # Convert to alternating case
-    return ''.join(
-        char.upper() if i % 2 == 0 else char.lower() 
-        for i, char in enumerate(text)
-    )
+    # Track index separately to reset for each word
+    result = []
+    word_index = 0
+    
+    for char in text:
+        if char.isspace():
+            # Reset word index on spaces
+            word_index = 0
+            result.append(char)
+        else:
+            # Apply alternating case based on word index
+            result.append(
+                char.upper() if word_index % 2 == 0 else char.lower()
+            )
+            word_index += 1
+    
+    return ''.join(result)
