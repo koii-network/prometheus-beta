@@ -1,6 +1,9 @@
-from typing import List, TypeVar, Comparable
+from typing import List, TypeVar, Union
 
-def patience_sort(arr: List[Comparable]) -> List[Comparable]:
+# Define a generic type that supports comparison
+T = TypeVar('T', bound=Union[int, float, str])
+
+def patience_sort(arr: List[T]) -> List[T]:
     """
     Implement the Patience Sorting algorithm.
     
@@ -8,14 +11,13 @@ def patience_sort(arr: List[Comparable]) -> List[Comparable]:
     similar to the card game Patience (Solitaire). It has a time complexity of O(n log n).
     
     Args:
-        arr (List[Comparable]): Input list to be sorted
+        arr (List[T]): Input list to be sorted
     
     Returns:
-        List[Comparable]: Sorted list in ascending order
+        List[T]: Sorted list in ascending order
     
     Raises:
-        TypeError: If input is not a list
-        ValueError: If list contains elements that cannot be compared
+        TypeError: If input is not a list or contains incomparable elements
     """
     # Validate input
     if not isinstance(arr, list):
