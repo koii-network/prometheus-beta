@@ -26,7 +26,7 @@ def maxSumSubarray(arr, k):
     # Track the maximum sum of non-overlapping subarrays
     max_sum = float('-inf')
     
-    # Slide through the array, finding maximum sum of non-overlapping subarrays
+    # Slide through the array, finding maximum sum of subarrays
     for i in range(len(arr) - k + 1):
         # Calculate current subarray sum
         current_sum = sum(arr[i:i+k])
