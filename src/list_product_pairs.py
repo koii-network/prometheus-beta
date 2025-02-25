@@ -12,7 +12,7 @@ def calculate_product_pairs(numbers: List[int]) -> Optional[List[int]]:
         or None if the input list is None or empty.
 
     Raises:
-        TypeError: If the input contains non-integer elements.
+        TypeError: If the input is None or contains non-integer elements.
 
     Examples:
         >>> calculate_product_pairs([1, 2, 3])
@@ -22,7 +22,11 @@ def calculate_product_pairs(numbers: List[int]) -> Optional[List[int]]:
         >>> calculate_product_pairs([5])
         None
     """
-    # Handle None or empty list input
+    # Explicitly handle None input
+    if numbers is None:
+        raise TypeError("Input cannot be None")
+    
+    # Handle empty list input
     if not numbers:
         return None
     
