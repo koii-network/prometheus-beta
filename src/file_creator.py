@@ -6,7 +6,9 @@ def create_text_file(file_path, content=''):
 
     Args:
         file_path (str): The path where the file should be created.
-        content (str, optional): The content to write to the file. Defaults to empty string.
+        content (str or any, optional): The content to write to the file. 
+                                       Defaults to empty string.
+                                       Non-string content will be converted to str.
 
     Raises:
         ValueError: If file_path is empty or None.
@@ -22,10 +24,13 @@ def create_text_file(file_path, content=''):
     if directory and not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
 
+    # Convert content to string
+    str_content = str(content)
+
     # Create and write to the file
     try:
         with open(file_path, 'w') as file:
-            file.write(content)
+            file.write(str_content)
     except PermissionError:
         raise PermissionError(f"Permission denied: Cannot create file at {file_path}")
     except OSError as e:
