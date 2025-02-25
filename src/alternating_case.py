@@ -13,7 +13,7 @@ def convert_to_alternating_case(input_string):
     
     Examples:
         >>> convert_to_alternating_case("hello world")
-        'Hello wOrLd'
+        'HeLlO wOrLd'
         >>> convert_to_alternating_case("PYTHON PROGRAMMING")
         'PyThOn pRoGrAmMiNg'
     """
@@ -25,14 +25,17 @@ def convert_to_alternating_case(input_string):
     if not input_string:
         return ""
     
-    # Convert to alternating case
+    # Convert to alternating case, resetting for each word
     result = []
-    for i, char in enumerate(input_string):
-        # Even indices (0, 2, 4...) are uppercase
-        # Odd indices (1, 3, 5...) are lowercase
-        if i % 2 == 0:
-            result.append(char.upper())
-        else:
-            result.append(char.lower())
+    for word in input_string.split(' '):
+        word_result = []
+        for i, char in enumerate(word):
+            # Even indices (0, 2, 4...) are uppercase
+            # Odd indices (1, 3, 5...) are lowercase
+            if i % 2 == 0:
+                word_result.append(char.upper())
+            else:
+                word_result.append(char.lower())
+        result.append(''.join(word_result))
     
-    return ''.join(result)
+    return ' '.join(result)
