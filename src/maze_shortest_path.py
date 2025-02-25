@@ -39,7 +39,7 @@ def find_shortest_path(maze: List[List[int]]) -> Optional[List[Tuple[int, int]]]
     if start == end:
         return [start]
     
-    # BFS implementation
+    # BFS implementation with more precise neighbor checking
     queue = deque([(start, [start])])
     visited = set([start])
     
@@ -53,6 +53,10 @@ def find_shortest_path(maze: List[List[int]]) -> Optional[List[Tuple[int, int]]]
             if is_valid(maze, neighbor) and neighbor not in visited:
                 # Create new path
                 new_path = path + [neighbor]
+                
+                # Prevent unnecessary traversal 
+                if len(new_path) > 1 and any(maze[r][c] == 1 for r, c in new_path):
+                    continue
                 
                 # Check if reached end
                 if neighbor == end:
