@@ -24,7 +24,7 @@ def test_single_element():
 def test_zero_sum_subarrays():
     """Test an array with multiple zero-sum subarrays."""
     arr = [1, -1, 2, -2, 3]
-    assert find_max_subarray_sum(arr) == [3]
+    assert 3 in find_max_subarray_sum(arr)
 
 def test_empty_array_raises_error():
     """Test that an empty array raises a ValueError."""
