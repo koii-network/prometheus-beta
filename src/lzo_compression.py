@@ -28,26 +28,24 @@ def lzo_compress(data):
     
     # Compression logic - simplified LZO-like approach
     compressed = bytearray()
-    window_size = 1024  # Sliding window size
-    
     i = 0
+    
     while i < len(data):
-        # Look for longest match in previous window
-        best_length = 0
+        # Look for repeating sequences
+        best_length = 1
         best_offset = 0
         
-        # Search back in the window
-        window_start = max(0, i - window_size)
-        for j in range(window_start, i):
+        # Search back 4096 bytes (typical LZO window size)
+        search_start = max(0, i - 4096)
+        for j in range(search_start, i):
+            # Check potential match
             match_length = 0
-            
-            # Find match length
             while (i + match_length < len(data) and 
                    data[j + match_length] == data[i + match_length] and 
                    match_length < 255):
                 match_length += 1
             
-            # Update best match if found
+            # Update best match
             if match_length > best_length:
                 best_length = match_length
                 best_offset = i - j
@@ -56,8 +54,8 @@ def lzo_compress(data):
         if best_length > 2:
             # Encode match (offset, length)
             compressed.extend([
-                best_offset >> 8,  # High byte of offset
-                best_offset & 0xFF,  # Low byte of offset
+                (best_offset >> 8) & 0xFF,  # High byte of offset
+                best_offset & 0xFF,         # Low byte of offset
                 best_length
             ])
             i += best_length
@@ -94,23 +92,25 @@ def lzo_decompress(compressed_data):
     i = 0
     
     while i < len(compressed_data):
-        # Check if we have enough bytes for a match
+        # Check for match sequence
         if i + 2 < len(compressed_data):
-            # Check if this is a match sequence
+            # Try to read offset and length
             offset = (compressed_data[i] << 8) | compressed_data[i+1]
             length = compressed_data[i+2]
             
-            if offset > 0 and length > 0:
-                # Reconstructing match
-                start = len(decompressed) - offset
+            # Valid match sequence
+            if offset > 0 and length > 0 and offset <= len(decompressed):
+                # Prepare to copy matched sequence
+                match_start = len(decompressed) - offset
                 
-                # Copy matched sequence
+                # Copy the matched sequence
                 for j in range(length):
-                    if start + j < 0:
+                    if match_start + j < 0 or match_start + j >= len(decompressed):
                         raise ValueError("Corrupt compressed data")
-                    decompressed.append(decompressed[start + j])
+                    decompressed.append(decompressed[match_start + j])
                 
-                i += 3  # Move past match sequence
+                # Move past match sequence
+                i += 3
                 continue
         
         # Literal byte
