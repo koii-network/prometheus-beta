@@ -58,12 +58,16 @@ class HopcroftKarp:
             
             if self.dist[v] < self.dist[None]:
                 for u in self.graph.get(v, []):
-                    # Check if the matched partner of u is not yet visited
-                    partner = next((k for k, val in self.matching.items() if val == u), None)
+                    # Find if u is already matched
+                    matched_vertex = next((k for k, val in self.matching.items() if val == u), None)
                     
-                    if self.dist.get(partner, float('inf')) == float('inf'):
-                        self.dist[partner] = self.dist[v] + 1
-                        queue.append(partner)
+                    if matched_vertex is None:
+                        # Unmatched edge found
+                        self.dist[None] = self.dist[v] + 1
+                    elif self.dist.get(matched_vertex, float('inf')) == float('inf'):
+                        # Explore matched vertex's path
+                        self.dist[matched_vertex] = self.dist[v] + 1
+                        queue.append(matched_vertex)
         
         return self.dist[None] != float('inf')
     
@@ -79,10 +83,15 @@ class HopcroftKarp:
         """
         if v is not None:
             for u in self.graph.get(v, []):
-                partner = next((k for k, val in self.matching.items() if val == u), None)
+                matched_vertex = next((k for k, val in self.matching.items() if val == u), None)
                 
-                if self.dist.get(partner, float('inf')) == self.dist[v] + 1:
-                    if self.dfs(partner):
+                if matched_vertex is None:
+                    # Found an unmatched vertex
+                    self.matching[v] = u
+                    return True
+                
+                if self.dist.get(matched_vertex, float('inf')) == self.dist[v] + 1:
+                    if self.dfs(matched_vertex):
                         self.matching[v] = u
                         return True
             
