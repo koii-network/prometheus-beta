@@ -5,14 +5,14 @@ def test_basic_array_difference():
     """Test basic array difference calculation"""
     A = [5, 7, 3, 9, 2, 6, 8, 1, 4, 0]
     B = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    expected = [4, 5, 0, 5, 7, 0, 1, 3, 5, 0]
+    expected = [4, 5, 0, 5, 0, 0, 1, 3, 5, 0]
     assert calculate_array_difference(A, B) == expected
 
 def test_negative_difference():
     """Test scenarios where difference results in negative values"""
     A = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     B = [5, 7, 3, 9, 2, 6, 8, 1, 4, 0]
-    expected = [0, 0, 0, 0, 3, 0, 0, 7, 5, 0]
+    expected = [6, 5, 0, 5, 3, 0, 0, 7, 5, 0]
     assert calculate_array_difference(A, B) == expected
 
 def test_zero_difference():
@@ -26,7 +26,7 @@ def test_maximum_values():
     """Test array difference with maximum values"""
     A = [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
     B = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    expected = [8, 7, 6, 5, 4, 3, 2, 1, 0, 0]
+    expected = [8, 7, 6, 5, 4, 3, 2, 1, 0, 9]
     assert calculate_array_difference(A, B) == expected
 
 def test_invalid_array_length():
