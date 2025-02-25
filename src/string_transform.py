@@ -24,7 +24,7 @@ def string_transform(s: str) -> str:
     # Reverse the string
     reversed_str = no_space_lower[::-1]
     
-    # Replace 'a' with '*'
+    # Specifically replace only lowercase 'a'
     transformed = reversed_str.replace('a', '*')
     
     return transformed
