@@ -25,13 +25,16 @@ def burrows_wheeler_transform(input_text: str) -> str:
     # Add terminator character to handle rotations
     modified_text = input_text + '$'
     
-    # Generate all rotations of the text
-    rotations = [modified_text[i:] + modified_text[:i] for i in range(len(modified_text))]
+    # Create all cyclic rotations
+    rotations = []
+    for i in range(len(modified_text)):
+        rotation = modified_text[i:] + modified_text[:i]
+        rotations.append(rotation)
     
     # Sort the rotations lexicographically
     sorted_rotations = sorted(rotations)
     
-    # Extract the last character of each sorted rotation
+    # Take the last column of the sorted matrix
     bwt_result = ''.join(rotation[-1] for rotation in sorted_rotations)
     
     return bwt_result
@@ -48,7 +51,7 @@ def inverse_burrows_wheeler_transform(bwt_text: str) -> str:
     
     Raises:
         TypeError: If input is not a string
-        ValueError: If input is empty or doesn't end with '$'
+        ValueError: If input is empty or doesn't contain '$'
     """
     # Validate input
     if not isinstance(bwt_text, str):
@@ -61,21 +64,32 @@ def inverse_burrows_wheeler_transform(bwt_text: str) -> str:
     if '$' not in bwt_text:
         raise ValueError("Input must contain terminator character '$'")
     
-    # Length of the text
+    # First column (sorted characters)
+    first_column = sorted(bwt_text)
+    
+    # Create next/last column mapping
     n = len(bwt_text)
+    last_to_first = {}
+    for i in range(n):
+        if bwt_text[i] not in last_to_first:
+            last_to_first[bwt_text[i]] = 0
+        last_to_first[bwt_text[i]] += 1
     
-    # Create first column and last column
-    sorted_chars = sorted(bwt_text)
-    
-    # Compute next array to reconstruct the original text
-    next_arr = [sorted_chars.index(c) for c in bwt_text]
-    
-    # Reconstruct the original text
-    current = sorted_chars.index('$')
+    # Reconstruct the original string
+    current_char_index = first_column.index('$')
     result = []
     
     for _ in range(n - 1):
-        result.append(bwt_text[current])
-        current = next_arr[current]
+        # Find the next character by looking up in the last column
+        result.append(first_column[current_char_index])
+        
+        # Update current index
+        current_first_col_char_count = first_column[:current_char_index + 1].count(first_column[current_char_index])
+        current_last_col_char_count = bwt_text[:current_char_index + 1].count(first_column[current_char_index])
+        
+        current_char_index = first_column.index(
+            first_column[current_char_index], 
+            current_first_col_char_count - current_last_col_char_count
+        )
     
     return ''.join(result)
