@@ -4,12 +4,12 @@ from src.palindrome_pairs import find_palindrome_pair_indices
 def test_basic_palindrome_pairs():
     """Test basic palindrome pair detection."""
     words = ['bat', 'tab', 'cat']
-    assert find_palindrome_pair_indices(words) == [(0, 1)]
+    assert set(find_palindrome_pair_indices(words)) == {(0, 1), (1, 0)}
 
 def test_multiple_palindrome_pairs():
     """Test finding multiple palindrome pairs."""
     words = ['race', 'care', 'deer', 'reed']
-    assert sorted(find_palindrome_pair_indices(words)) == [(0, 1), (2, 3)]
+    assert set(find_palindrome_pair_indices(words)) == {(2, 3), (3, 2)}
 
 def test_no_palindrome_pairs():
     """Test when no palindrome pairs exist."""
