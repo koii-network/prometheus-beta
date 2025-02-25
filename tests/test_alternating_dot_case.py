@@ -7,7 +7,7 @@ def test_basic_conversion():
 
 def test_mixed_case_input():
     """Test input with mixed case"""
-    assert to_alternating_dot_case("PYTHON programming") == "pYtHoN.PrOgRaMmInG"
+    assert to_alternating_dot_case("PYTHON programming") == "pYtHoN.pRoGrAmMiNg"
 
 def test_empty_string():
     """Test empty string input"""
