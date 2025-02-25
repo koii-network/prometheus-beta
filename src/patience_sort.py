@@ -1,4 +1,5 @@
 from typing import List, TypeVar, Union
+import heapq
 
 # Define a generic type that supports comparison
 T = TypeVar('T', bound=Union[int, float, str])
@@ -27,38 +28,41 @@ def patience_sort(arr: List[T]) -> List[T]:
     if len(arr) <= 1:
         return arr.copy()
     
-    # Create piles (stacks)
+    # Create piles
     piles = []
     
     # Distribute elements into piles
     for item in arr:
-        # Find the rightmost pile where we can place the item
-        inserted = False
-        for pile in piles:
-            # If the current pile's top is greater, we can place the item
-            if not pile or item <= pile[-1]:
-                pile.append(item)
-                inserted = True
-                break
+        # Binary search to find the right pile
+        left, right = 0, len(piles)
+        while left < right:
+            mid = (left + right) // 2
+            if piles[mid][-1] <= item:
+                left = mid + 1
+            else:
+                right = mid
         
-        # If no existing pile works, create a new pile
-        if not inserted:
+        # If found a suitable pile, append to that pile
+        if left < len(piles):
+            piles[left].append(item)
+        # Otherwise, create a new pile
+        else:
             piles.append([item])
     
-    # Merge piles using a min-heap like approach
+    # Use a min-heap to merge piles
+    heap = [(pile[0], i, 0) for i, pile in enumerate(piles)]
+    heapq.heapify(heap)
+    
+    # Reconstruct sorted list
     result = []
-    while piles:
-        # Find the pile with the smallest top element
-        min_pile_index = 0
-        for i in range(1, len(piles)):
-            if piles[i][0] < piles[min_pile_index][0]:
-                min_pile_index = i
+    while heap:
+        val, pile_index, element_index = heapq.heappop(heap)
+        result.append(val)
         
-        # Pop and add the smallest element
-        result.append(piles[min_pile_index].pop(0))
-        
-        # Remove the pile if it becomes empty
-        if not piles[min_pile_index]:
-            piles.pop(min_pile_index)
+        # Move to next element in the pile
+        element_index += 1
+        if element_index < len(piles[pile_index]):
+            next_val = piles[pile_index][element_index]
+            heapq.heappush(heap, (next_val, pile_index, element_index))
     
     return result
