@@ -29,10 +29,8 @@ def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, en
     if start_store == end_store:
         return [start_store], 0
 
-    # Initialize distances, previous stores, and visited set
-    distances = {store: float('inf') for store in mall_map}
-    distances[start_store] = 0
-    previous_stores = {store: None for store in mall_map}
+    # Tracked paths to determine the most optimal routing
+    paths = {start_store: ([start_store], 0)}
     
     # Priority queue to track stores to visit
     pq = [(0, start_store, [start_store])]
@@ -40,24 +38,21 @@ def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, en
     while pq:
         current_distance, current_store, current_path = heapq.heappop(pq)
 
-        # If we've reached the destination
+        # If we've reached the destination with a more optimal route
         if current_store == end_store:
             return current_path, current_distance
 
-        # If we've found a longer path to this store, skip
-        if current_distance > distances[current_store]:
-            continue
-
-        # Check neighboring stores
+        # Explore neighbors
         for neighbor, weight in mall_map[current_store].items():
-            distance = current_distance + weight
+            new_distance = current_distance + weight
             new_path = current_path + [neighbor]
 
-            # If we've found a shorter path
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-                previous_stores[neighbor] = current_store
-                heapq.heappush(pq, (distance, neighbor, new_path))
+            # Is this a new or more optimal path to the neighbor?
+            if (neighbor not in paths or 
+                new_distance < paths[neighbor][1] or
+                (new_distance == paths[neighbor][1] and len(new_path) < len(paths[neighbor][0]))):
+                paths[neighbor] = (new_path, new_distance)
+                heapq.heappush(pq, (new_distance, neighbor, new_path))
 
     # No path found
     return None
