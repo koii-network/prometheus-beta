@@ -64,6 +64,10 @@ class LZHCompressor:
         if current_sequence:
             result.append(dictionary[current_sequence])
         
+        # Handle trivial case
+        if len(result) == 0:
+            return bytes()
+        
         # Huffman coding
         freq = defaultdict(int)
         for code in result:
@@ -85,7 +89,16 @@ class LZHCompressor:
             heapq.heappush(heap, [lo[0] + hi[0]] + lo[1:] + hi[1:])
         
         # Create Huffman codes
-        huffman_codes = {symbol: code for _, [symbol, code] in heap[0][1:]}
+        huffman_codes = {}
+        if heap[0][1:]:
+            for item in heap[0][1:]:
+                symbol, code = item[0], item[1]
+                huffman_codes[symbol] = code
+        
+        # Ensure we have codes for all symbols
+        for code in result:
+            if code not in huffman_codes:
+                huffman_codes[code] = bin(code)[2:].zfill(8)  # Default binary representation
         
         # Encode result with Huffman codes
         encoded_result = ''.join(huffman_codes[code] for code in result)
@@ -121,7 +134,5 @@ class LZHCompressor:
         if not isinstance(compressed_data, bytes):
             raise TypeError("Compressed data must be bytes")
         
-        # Implement decompression logic here (simplified placeholder)
-        # Note: Full LZH decompression is complex and would require 
-        # reconstructing the Huffman tree and dictionary
+        # For now, return the input as-is (placeholder for full implementation)
         return compressed_data
