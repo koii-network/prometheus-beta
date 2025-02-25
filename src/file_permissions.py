@@ -40,9 +40,14 @@ def get_file_permissions(file_path):
         
         # Create readable permission string
         readable_permissions = ''
-        for who in ['USR', 'GRP', 'OTH']:
-            for perm in ['R', 'W', 'X']:
-                readable_permissions += 'r' if mode & getattr(stat, f'S_I{perm}{who}') else '-'
+        for who, mask in [
+            (stat.S_IRUSR, stat.S_IWUSR, stat.S_IXUSR),  # owner
+            (stat.S_IRGRP, stat.S_IWGRP, stat.S_IXGRP),  # group
+            (stat.S_IROTH, stat.S_IWOTH, stat.S_IXOTH)   # others
+        ]:
+            readable_permissions += 'r' if mode & who else '-'
+            readable_permissions += 'w' if mode & mask[1] else '-'
+            readable_permissions += 'x' if mode & mask[2] else '-'
         
         return {
             'numeric': numeric_permissions,
@@ -57,6 +62,8 @@ def get_file_permissions(file_path):
             'others_write': bool(mode & stat.S_IWOTH),
             'others_execute': bool(mode & stat.S_IXOTH)
         }
+    except FileNotFoundError:
+        raise
     except PermissionError:
         raise PermissionError(f"Permission denied when accessing file: {file_path}")
     except Exception as e:
