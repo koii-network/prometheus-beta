@@ -146,7 +146,7 @@ def decompress(compressed_data, huffman_tree):
             return ""
         raise TypeError("Huffman tree cannot be None")
     
-    # Special case for single character string
+    # Special case for single repeated character
     if huffman_tree.char is not None:
         return huffman_tree.char * len(compressed_data)
     
