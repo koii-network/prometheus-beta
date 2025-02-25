@@ -8,6 +8,9 @@ def longest_palindromic_substring(s: str) -> str:
     Returns:
         str: The longest palindromic substring found
     
+    Raises:
+        TypeError: If input is not a string
+    
     Time complexity: O(n^2)
     Space complexity: O(1)
     
@@ -19,6 +22,10 @@ def longest_palindromic_substring(s: str) -> str:
         >>> longest_palindromic_substring("")
         ''
     """
+    # Validate input type
+    if not isinstance(s, str):
+        raise TypeError("Input must be a string")
+    
     # Handle edge cases
     if not s or len(s) < 1:
         return ""
