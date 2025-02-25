@@ -34,4 +34,4 @@ def test_case_sensitivity():
 def test_mixed_subsequences():
     """Test mixed character subsequences"""
     assert longest_palindrome_subsequence("racecar") == 7
-    assert longest_palindrome_subsequence("forgeeksskeegfor") == 7  # "geeksskeeg"
+    assert longest_palindrome_subsequence("forgeeksskeegfor") == 12
