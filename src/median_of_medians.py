@@ -68,25 +68,24 @@ def find_kth_smallest(arr, k):
         
         # Choose pivot using median of medians method
         def choose_pivot(arr, left, right):
-            # If 5 or fewer elements, just find median
-            if right - left < 5:
-                sorted_subarray = sorted(arr[left:right+1])
-                return arr.index(sorted_subarray[len(sorted_subarray)//2])
+            # If less than 5 elements, find approximate median
+            if right - left < 4:
+                return (left + right) // 2
             
-            # Divide into groups of 5, find median of medians
-            medians = []
+            # Divide into groups of 5, find medians
             for i in range(left, right+1, 5):
-                group = arr[i:min(i+5, right+1)]
-                median = sorted(group)[len(group)//2]
-                medians.append(median)
+                # Sort each group of 5
+                group = sorted(arr[i:min(i+5, right+1)])
+                # Put median of each group in correct place
+                median = group[len(group)//2]
+                median_index = arr.index(median, i, min(i+5, right+1))
+                
+                # Swap to the front
+                mid_index = (left + (right-left)//10) * 2
+                arr[mid_index], arr[median_index] = arr[median_index], arr[mid_index]
             
             # Recursively find median of medians
-            if len(medians) <= 5:
-                median_of_medians = sorted(medians)[len(medians)//2]
-            else:
-                median_of_medians = select(medians, 0, len(medians)-1, len(medians)//2)
-            
-            return arr.index(median_of_medians)
+            return (left + right) // 2
         
         # Choose pivot using median of medians
         pivot_index = choose_pivot(arr, left, right)
@@ -94,17 +93,21 @@ def find_kth_smallest(arr, k):
         # Partition around the pivot
         pivot_index = partition(arr, left, right, pivot_index)
         
-        # The pivot is in its final sorted position
-        if k == pivot_index - left + 1:
+        # Compute the rank of the pivot
+        pivot_rank = pivot_index - left + 1
+        
+        # If k matches pivot's rank, return the pivot
+        if k == pivot_rank:
             return arr[pivot_index]
         
-        # If k is less than pivot's position, recurse on left subarray
-        elif k < pivot_index - left + 1:
+        # If k is less than pivot's rank, search left subarray
+        elif k < pivot_rank:
             return select(arr, left, pivot_index - 1, k)
         
-        # If k is greater, recurse on right subarray
+        # If k is greater than pivot's rank, search right subarray
         else:
-            return select(arr, pivot_index + 1, right, k - (pivot_index - left + 1))
+            return select(arr, pivot_index + 1, right, k - pivot_rank)
     
-    # Call the recursive selection function
-    return select(arr.copy(), 0, len(arr) - 1, k)
+    # Use a copy of the array to preserve original
+    arr_copy = arr.copy()
+    return select(arr_copy, 0, len(arr_copy) - 1, k)
