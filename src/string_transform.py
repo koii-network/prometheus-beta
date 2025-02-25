@@ -19,12 +19,12 @@ def string_transform(s: str) -> str:
         'gnimm*rgor*p'
     """
     # Remove spaces, convert to lowercase
-    no_space_lower = s.replace(" ", "").lower()
+    no_space_lower = ''.join(char.lower() for char in s if char != ' ')
     
     # Reverse the string
     reversed_str = no_space_lower[::-1]
     
-    # Specifically replace only lowercase 'a'
-    transformed = reversed_str.replace('a', '*')
+    # Replace only lowercase 'a' with '*'
+    transformed = transformed = ''.join('*' if char == 'a' else char for char in reversed_str)
     
     return transformed
