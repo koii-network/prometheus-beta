@@ -24,17 +24,17 @@ def min_steps_to_target_sum(numbers: List[int], target: int) -> int:
     # Track unique combinations of current sum and used numbers
     n = len(numbers)
     
-    # Use a set to store unique states: (current_sum, used_numbers_mask)
-    states = {(0, 0)}
+    # Use a dictionary to store states with their minimum steps
+    states = {(0, 0): 0}
     
     # Track minimum steps
     min_steps = float('inf')
     
     # Try all possible combinations
     for steps in range(1, n + 1):
-        new_states = set()
+        new_states = {}
         
-        for current_sum, used_mask in states:
+        for (current_sum, used_mask), current_steps in states.items():
             for i in range(n):
                 # Skip if number already used
                 if used_mask & (1 << i):
@@ -45,14 +45,20 @@ def min_steps_to_target_sum(numbers: List[int], target: int) -> int:
                 add_mask = used_mask | (1 << i)
                 if add_sum == target:
                     min_steps = min(min_steps, steps)
-                new_states.add((add_sum, add_mask))
+                new_states[(add_sum, add_mask)] = min(
+                    new_states.get((add_sum, add_mask), float('inf')), 
+                    steps
+                )
                 
                 # Try subtracting the number
                 sub_sum = current_sum - numbers[i]
                 sub_mask = used_mask | (1 << i)
                 if sub_sum == target:
                     min_steps = min(min_steps, steps)
-                new_states.add((sub_sum, sub_mask))
+                new_states[(sub_sum, sub_mask)] = min(
+                    new_states.get((sub_sum, sub_mask), float('inf')), 
+                    steps
+                )
         
         states = new_states
     
