@@ -35,6 +35,8 @@ def find_second_highest(sorted_list):
     if len(unique_list) < 2:
         return None
     
-    # Return the second highest value 
-    # Works for both ascending and descending sorted lists
-    return unique_list[-2]
+    # Determine if the list is ascending or descending
+    is_ascending = unique_list[0] < unique_list[-1]
+    
+    # Return the second highest value based on list order
+    return unique_list[-2] if is_ascending else unique_list[1]
