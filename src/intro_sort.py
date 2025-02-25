@@ -105,6 +105,10 @@ def intro_sort(arr, max_depth=None):
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
     
+    # Handle empty or single-element list
+    if len(arr) <= 1:
+        return arr.copy()
+    
     # Make a copy to avoid modifying the original list
     arr = arr.copy()
     
