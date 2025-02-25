@@ -33,9 +33,9 @@ def test_memory_logger_basic():
 
 def test_memory_logger_default_logger():
     """Test memory logger with default logger."""
-    # Capture stdout
-    captured_output = io.StringIO()
-    sys.stdout = captured_output
+    # Capture log output with a string handler
+    log_capture = io.StringIO()
+    logging.basicConfig(stream=log_capture, level=logging.INFO)
     
     @log_memory_usage()
     def simple_func():
@@ -43,11 +43,8 @@ def test_memory_logger_default_logger():
     
     result = simple_func()
     
-    # Restore stdout
-    sys.stdout = sys.__stdout__
-    
     # Get captured output
-    output = captured_output.getvalue()
+    output = log_capture.getvalue()
     
     # Verify logging occurred
     assert "Memory before simple_func" in output
