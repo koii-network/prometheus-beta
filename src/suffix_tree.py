@@ -105,6 +105,9 @@ class SuffixTree:
         if not pattern:
             return False
         
+        # Remove terminator for search
+        pattern = pattern.rstrip('$')
+        
         current = self.root
         j = 0
         while j < len(pattern):
@@ -140,6 +143,9 @@ class SuffixTree:
         """
         if not pattern:
             return []
+        
+        # Remove terminator for search
+        pattern = pattern.rstrip('$')
         
         # First find the node representing the pattern
         current = self.root
