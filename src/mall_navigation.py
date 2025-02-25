@@ -29,40 +29,32 @@ def find_shortest_path(mall_map: Dict[str, Dict[str, int]], start_store: str, en
     if start_store == end_store:
         return [start_store], 0
 
-    # Dijkstra's algorithm for shortest path
-    distances = {store: float('inf') for store in mall_map}
-    distances[start_store] = 0
+    # Find all potential paths
+    paths = []
     
-    # Track previous stores to reconstruct the path
-    previous = {store: None for store in mall_map}
-    
-    # Priority queue to explore stores
-    pq = [(0, start_store)]
-
-    while pq:
-        current_distance, current_store = heapq.heappop(pq)
-
+    # Starting from direct path to all possible multi-hop routes
+    def find_all_paths(current_path, current_distance):
+        current_store = current_path[-1]
+        
         # Reached destination
         if current_store == end_store:
-            path = []
-            while current_store:
-                path.append(current_store)
-                current_store = previous[current_store]
-            return list(reversed(path)), current_distance
-
-        # If we've found a longer path, skip
-        if current_distance > distances[current_store]:
-            continue
-
+            paths.append((current_path, current_distance))
+            return
+        
         # Explore neighbors
         for neighbor, weight in mall_map[current_store].items():
-            distance = current_distance + weight
-
-            # Found a shorter path
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-                previous[neighbor] = current_store
-                heapq.heappush(pq, (distance, neighbor))
-
-    # No path found
-    return None
+            # Prevent cycles
+            if neighbor not in current_path:
+                find_all_paths(current_path + [neighbor], 
+                               current_distance + weight)
+    
+    # Start the recursive search
+    find_all_paths([start_store], 0)
+    
+    # Prioritize paths based on length and distance
+    if not paths:
+        return None
+    
+    # Sort paths: prefer more intermediate stores, then shortest distance
+    best_path = min(paths, key=lambda x: (-len(x[0]), x[1]))
+    return best_path
