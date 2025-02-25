@@ -61,14 +61,15 @@ def test_query_time_error_handling():
 
 def test_default_logger_creation():
     """Test that a default logger is created if none is provided"""
-    # Use patch to ensure __name__ returns a specific value
-    with patch(__name__, 'test_module'):
-        # Create a mock database
-        db = MockDatabase()
-        
-        # Run a simple query
-        result = db.simple_query()
-        assert result == "Query result"
+    # Reset any existing loggers
+    logging.getLogger(__name__).handlers.clear()
+    
+    # Create a mock database
+    db = MockDatabase()
+    
+    # Run a simple query
+    result = db.simple_query()
+    assert result == "Query result"
 
 def test_query_timing_accuracy():
     """Test that the timing is reasonably accurate"""
