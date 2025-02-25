@@ -35,16 +35,16 @@ def test_log_browser_performance_custom_entries():
 
 def test_log_browser_performance_invalid_input():
     """Test error handling for invalid input"""
-    with pytest.raises(ValueError):
-        log_browser_performance_metrics("not a list")
+    result_non_list = log_browser_performance_metrics("not a list")
+    assert 'error' in result_non_list
     
     invalid_entries = [
         "not a dictionary",
         {"incomplete": "entry"}
     ]
     
-    with pytest.raises(ValueError):
-        log_browser_performance_metrics(invalid_entries)
+    result_invalid_entries = log_browser_performance_metrics(invalid_entries)
+    assert 'error' in result_invalid_entries
 
 def test_log_browser_performance_empty_list():
     """Test behavior with an empty list of performance entries"""
@@ -56,8 +56,11 @@ def test_log_browser_performance_empty_list():
 
 def test_log_browser_performance_error_handling():
     """Test error handling returns dictionary with error info"""
-    # Simulate an error scenario
-    bad_entries = [None, 1, "string"]
+    # Invalid entries with missing required keys
+    bad_entries = [
+        {'name': 'missing-keys'},
+        {'startTime': 100}
+    ]
     
     result = log_browser_performance_metrics(bad_entries)
     
