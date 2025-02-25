@@ -24,13 +24,16 @@ def sleep_sort(arr: List[Union[int, float]]) -> List[Union[int, float]]:
     if not arr:
         return []
     
-    # Check for negative numbers
-    if any(num < 0 for num in arr):
-        raise ValueError("Sleep sort does not support negative numbers")
-    
-    # Validate input types
-    if not all(isinstance(num, (int, float)) for num in arr):
+    # Validate input types first
+    try:
+        # Convert to float to catch any non-numeric types
+        float_arr = [float(num) for num in arr]
+    except (TypeError, ValueError):
         raise TypeError("Input must be a list of numbers")
+    
+    # Check for negative numbers
+    if any(num < 0 for num in float_arr):
+        raise ValueError("Sleep sort does not support negative numbers")
     
     # Thread-safe shared result list
     result = []
@@ -38,7 +41,7 @@ def sleep_sort(arr: List[Union[int, float]]) -> List[Union[int, float]]:
     
     # Create threads for each element
     threads = []
-    for num in arr:
+    for num in float_arr:
         def worker(x):
             time.sleep(x / 100.0)  # Proportional sleep time
             with lock:
