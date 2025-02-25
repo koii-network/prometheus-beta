@@ -22,24 +22,25 @@ def find_longest_substring(s: str) -> str:
     if not s:
         return ""
     
-    # Initialize variables to track the longest substring
-    longest = ""
-    current = ""
+    # Use sliding window technique
+    char_index = {}
+    start = 0
+    longest_start = 0
+    longest_length = 0
     
-    for char in s:
-        # If char is already in current substring, 
-        # trim the substring from the first occurrence of the repeated char
-        if char in current:
-            # Find the index of the first occurrence and slice
-            current = current[current.index(char) + 1:] + char
-        else:
-            # Append the new character
-            current += char
+    for end, char in enumerate(s):
+        # If character is already in the current window, 
+        # move the start pointer to the right of its previous occurrence
+        if char in char_index and char_index[char] >= start:
+            start = char_index[char] + 1
         
-        # Update longest substring if current is longer 
-        # or current length is the same but occurs earlier
-        if (len(current) > len(longest)) or \
-           (len(current) == len(longest) and len(s.index(current[0]) < s.index(longest[0]))):
-            longest = current
+        # Update the last seen index of the character
+        char_index[char] = end
+        
+        # Update longest substring if current is longer
+        current_length = end - start + 1
+        if current_length > longest_length:
+            longest_start = start
+            longest_length = current_length
     
-    return longest
+    return s[longest_start:longest_start + longest_length]
