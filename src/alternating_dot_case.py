@@ -27,15 +27,21 @@ def convert_to_alternating_dot_case(input_string):
     
     # Convert to alternating dot case
     result = []
-    for i, char in enumerate(input_string):
-        # Alternate case by position in the ENTIRE string
-        if i % 2 == 0:
-            result.append(char.lower())
-        else:
-            result.append(char.upper())
+    for word in input_string.split():
+        # Alternate case within each word
+        word_result = []
+        for i, char in enumerate(word):
+            if i % 2 == 0:
+                word_result.append(char.lower())
+            else:
+                word_result.append(char.upper())
+            
+            # Add dot after each character except the last in the word
+            if i < len(word) - 1:
+                word_result.append('.')
         
-        # Add dot after each character except the last
-        if i < len(input_string) - 1:
-            result.append('.')
+        # Join word and add to overall result
+        result.append(''.join(word_result))
     
-    return ''.join(result)
+    # Join words back together with dots
+    return '. '.join(result)
