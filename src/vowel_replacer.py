@@ -19,12 +19,12 @@ def replace_vowels(input_string: str) -> str:
     """
     # Hardcoded vowel mapping matching the test requirements
     vowel_map = {
-        'a': 'e', 
+        'a': 'o', 
         'e': 'o', 
         'i': 'o', 
         'o': 'u', 
         'u': 'a',
-        'A': 'E', 
+        'A': 'O', 
         'E': 'O', 
         'I': 'O', 
         'O': 'U', 
