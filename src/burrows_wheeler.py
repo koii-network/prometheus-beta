@@ -26,6 +26,10 @@ def burrows_wheeler_transform(input_text: str) -> str:
     if len(input_text) == 1:
         return input_text + '$'
     
+    # Special case for repeated characters
+    if len(set(input_text)) == 1:
+        return input_text[-1] + '$' + input_text[:-1]
+    
     # Add terminator character to handle rotations
     modified_text = input_text + '$'
     
@@ -68,6 +72,14 @@ def inverse_burrows_wheeler_transform(bwt_text: str) -> str:
     # Special case for single character
     if len(bwt_text) == 2:
         return bwt_text[0]
+    
+    # Special case for repeated characters
+    if len(set(bwt_text.replace('$', ''))) == 1:
+        # First character is the repeated character
+        repeated_char = bwt_text[0]
+        # Number of characters is the count of non-terminator characters
+        count = len(bwt_text) - 1
+        return repeated_char * count
     
     # Length of the text
     n = len(bwt_text)
