@@ -20,34 +20,38 @@ def calculate_staircase_combinations(stair_lengths):
     if not all(isinstance(length, int) and length > 0 for length in stair_lengths):
         raise ValueError("All stair lengths must be positive integers")
     
+    # Special case: empty staircase
+    if len(stair_lengths) == 0:
+        return 1
+    
     # Total length of the staircase
     total_length = sum(stair_lengths)
     
-    # If no stairs, there's one way to do nothing
-    if total_length == 0:
-        return 1
+    # Memoization dictionary to store computed results
+    memo = {}
     
-    # Dynamic programming to calculate combinations
-    # dp[i] represents the number of ways to reach step i
-    dp = [0] * (total_length + 1)
+    def climb(remaining):
+        """
+        Recursive helper function to calculate climbing combinations.
+        
+        Args:
+            remaining (int): Remaining length to climb.
+        
+        Returns:
+            int: Number of ways to climb the remaining length.
+        """
+        # Base cases
+        if remaining == 0:
+            return 1
+        if remaining < 0:
+            return 0
+        
+        # Check memoized result
+        if remaining in memo:
+            return memo[remaining]
+        
+        # Calculate combinations by climbing 1 or 2 steps
+        memo[remaining] = climb(remaining - 1) + climb(remaining - 2)
+        return memo[remaining]
     
-    # Base cases
-    dp[0] = 1  # One way to climb 0 steps
-    
-    # If total length is 1, there's 1 way
-    if total_length == 1:
-        return 1
-    
-    # If total length is 2, there are 2 ways
-    if total_length == 2:
-        return 2
-    
-    # Climb up to the total length
-    dp[1] = 1
-    dp[2] = 2
-    
-    for i in range(3, total_length + 1):
-        # Add ways from 1-step and 2-step climbs
-        dp[i] = dp[i-1] + dp[i-2]
-    
-    return dp[total_length]
+    return climb(total_length)
