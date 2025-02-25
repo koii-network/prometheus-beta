@@ -27,28 +27,28 @@ def find_longest_parity_subsequence(nums):
     even_subsequence = []
     odd_subsequence = []
     
-    # Track the current subsequences being built
-    current_even = []
-    current_odd = []
-    
-    for num in nums:
-        # Check parity
-        is_even = num % 2 == 0
+    for start in range(len(nums)):
+        # Check if starting number is even or odd
+        is_start_even = nums[start] % 2 == 0
         
-        # Build or reset even subsequence
-        if is_even:
-            current_even.append(num)
-            current_odd = []
+        # Current subsequence
+        current_subsequence = [nums[start]]
+        
+        # Find consecutive subsequence
+        for j in range(start + 1, len(nums)):
+            # Continue subsequence if parity matches
+            if (is_start_even and nums[j] % 2 == 0) or (not is_start_even and nums[j] % 2 != 0):
+                current_subsequence.append(nums[j])
+            else:
+                break
+        
+        # Update subsequences based on length
+        if is_start_even:
+            if len(current_subsequence) > len(even_subsequence):
+                even_subsequence = current_subsequence
         else:
-            current_odd.append(num)
-            current_even = []
-        
-        # Update longest subsequences
-        if len(current_even) > len(even_subsequence):
-            even_subsequence = current_even.copy()
-        
-        if len(current_odd) > len(odd_subsequence):
-            odd_subsequence = current_odd.copy()
+            if len(current_subsequence) > len(odd_subsequence):
+                odd_subsequence = current_subsequence
     
-    # Return the longer subsequence
+    # Return the longer subsequence (prefer even if equal)
     return even_subsequence if len(even_subsequence) >= len(odd_subsequence) else odd_subsequence
