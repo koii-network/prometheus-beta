@@ -35,7 +35,10 @@ def find_longest_consecutive_sequence(nums):
                 current_sequence.append(current_num)
             
             # Update longest sequence if current is longer
-            if len(current_sequence) > len(longest_sequence):
+            # If lengths are equal, prefer sequence with smallest element
+            if (len(current_sequence) > len(longest_sequence) or 
+                (len(current_sequence) == len(longest_sequence) and 
+                 current_sequence[0] < longest_sequence[0])):
                 longest_sequence = current_sequence
     
     return longest_sequence
