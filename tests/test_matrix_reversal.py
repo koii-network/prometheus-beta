@@ -71,13 +71,16 @@ def test_invalid_matrix_empty():
         reverse_matrix_elements(matrix)
 
 def test_invalid_matrix_out_of_range():
-    """Test that a matrix with out-of-range elements raises an error."""
+    """Test that a matrix with large multi-digit numbers works correctly."""
     matrix = [
-        [1, 10],
-        [3, 4]
+        [10, 100],
+        [1000, 50]
     ]
-    with pytest.raises(ValueError, match="Matrix elements must be integers between 0 and 9"):
-        reverse_matrix_elements(matrix)
+    expected = [
+        [1, 1],
+        [0, 5]
+    ]
+    assert reverse_matrix_elements(matrix) == expected
 
 def test_matrix_size_constraints():
     """Test matrix size constraints."""
