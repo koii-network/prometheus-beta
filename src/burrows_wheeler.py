@@ -22,6 +22,10 @@ def burrows_wheeler_transform(input_text: str) -> str:
     if not input_text:
         raise ValueError("Input string cannot be empty")
     
+    # Special case for single character
+    if len(input_text) == 1:
+        return input_text + '$'
+    
     # Add terminator character to handle rotations
     modified_text = input_text + '$'
     
@@ -61,36 +65,41 @@ def inverse_burrows_wheeler_transform(bwt_text: str) -> str:
     if '$' not in bwt_text:
         raise ValueError("Input must contain terminator character '$'")
     
+    # Special case for single character
+    if len(bwt_text) == 2:
+        return bwt_text[0]
+    
     # Length of the text
     n = len(bwt_text)
     
     # Precompute first column (sorted characters)
     first_column = sorted(bwt_text)
     
-    # Compute last-to-first mapping
-    last_to_first = {}
-    counts = {}
+    # Compute last column frequencies and indices mapping
+    frequencies = {}
+    indices = {}
     
     for i, char in enumerate(bwt_text):
-        if char not in counts:
-            counts[char] = 0
-        last_to_first[(char, counts[char])] = i
-        counts[char] += 1
+        if char not in frequencies:
+            frequencies[char] = 0
+        indices[(char, frequencies[char])] = i
+        frequencies[char] += 1
     
     # Initialize reconstruction
-    current_index = first_column.index('$')
+    current_char_tuple = ('$', 0)
     reconstructed = []
     
     for _ in range(n - 1):
-        # Append next character
-        current_char = first_column[current_index]
-        reconstructed.append(current_char)
+        # Find the index in the first column
+        current_index = indices[current_char_tuple]
         
-        # Find the next index
-        char_count = sum(1 for c in first_column[:current_index + 1] if c == current_char)
-        current_index = last_to_first.get((current_char, char_count - 1), -1)
+        # Append the character from the first column
+        reconstruct_char = first_column[current_index]
+        if reconstruct_char != '$':
+            reconstructed.append(reconstruct_char)
         
-        if current_index == -1:
-            break
+        # Update current character tuple
+        curr_freq = sum(1 for c in first_column[:current_index+1] if c == reconstruct_char)
+        current_char_tuple = (reconstruct_char, curr_freq - 1)
     
     return ''.join(reconstructed)
