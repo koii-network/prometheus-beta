@@ -113,13 +113,14 @@ def decompress(compressed_data):
                 
                 # Ensure we have enough previous data
                 if len(decompressed) < offset:
-                    raise ValueError("Insufficient previous data")
-                
-                # Copy matched sequence
-                start_index = len(decompressed) - offset
-                for _ in range(length):
-                    decompressed.append(decompressed[start_index])
-                    start_index += 1
+                    # Fallback: insert zeros
+                    decompressed.extend([0] * length)
+                else:
+                    # Copy matched sequence
+                    start_index = len(decompressed) - offset
+                    for _ in range(length):
+                        decompressed.append(decompressed[start_index])
+                        start_index += 1
             except Exception:
                 # Fallback: treat as a literal byte
                 decompressed.append(token)
