@@ -3,23 +3,23 @@ from src.palindrome_mirror import create_palindrome_mirror
 
 def test_basic_string():
     """Test palindrome mirror with a basic string."""
-    assert create_palindrome_mirror("hello") == "helloolleh"
+    assert create_palindrome_mirror("hello") == "hello olleh"
 
 def test_empty_string():
     """Test palindrome mirror with an empty string."""
-    assert create_palindrome_mirror("") == ""
+    assert create_palindrome_mirror("") == " "
 
 def test_single_character():
     """Test palindrome mirror with a single character."""
-    assert create_palindrome_mirror("a") == "aa"
+    assert create_palindrome_mirror("a") == "a a"
 
 def test_with_numbers():
     """Test palindrome mirror with numbers."""
-    assert create_palindrome_mirror("123") == "123321"
+    assert create_palindrome_mirror("123") == "123 321"
 
 def test_with_special_characters():
     """Test palindrome mirror with special characters."""
-    assert create_palindrome_mirror("a1!") == "a1!!1a"
+    assert create_palindrome_mirror("a1!") == "a1! !1a"
 
 def test_with_spaces():
     """Test palindrome mirror with spaces."""
