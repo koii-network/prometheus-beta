@@ -27,8 +27,14 @@ def to_sponge_case(text: str) -> str:
     if not text:
         return text
     
-    # Convert to sponge case
-    return ''.join(
-        char.upper() if i % 2 == 0 else char.lower() 
-        for i, char in enumerate(text)
-    )
+    # Convert to sponge case, preserving original spacing
+    result = []
+    count = 0
+    for char in text:
+        if char.isalpha():
+            result.append(char.upper() if count % 2 == 0 else char.lower())
+            count += 1
+        else:
+            result.append(char)
+    
+    return ''.join(result)
