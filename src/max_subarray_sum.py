@@ -28,15 +28,11 @@ def max_subarray_sum_with_constraints(A, k, s):
     n = len(A)
     max_constrained_sum = -1
 
-    # Sliding window approach
-    for start in range(n):
-        current_sum = 0
-        for end in range(start, n):
-            current_sum += A[end]
-            current_window_size = end - start + 1
-
-            # Check if current window meets length and sum constraints
-            if current_window_size >= k and current_sum >= s:
+    # Try all possible subarrays of at least k elements
+    for start in range(n - k + 1):
+        for end in range(start + k - 1, n):
+            current_sum = sum(A[start:end+1])
+            if current_sum >= s:
                 max_constrained_sum = max(max_constrained_sum, current_sum)
 
     return max_constrained_sum
