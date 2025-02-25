@@ -25,14 +25,14 @@ def test_large_non_prime():
 
 def test_invalid_input():
     """Test handling of invalid inputs."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Input must be an integer"):
         is_prime(-1)
     
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Input must be an integer"):
         is_prime(3.14)
     
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Input must be an integer"):
         is_prime("not a number")
     
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Input must be an integer"):
         is_prime(None)
