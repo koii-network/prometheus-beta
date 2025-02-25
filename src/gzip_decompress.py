@@ -19,13 +19,13 @@ def decompress_gzip_file(input_path, output_path=None):
         ValueError: If input file is not a .gz file
         IOError: If there are issues reading or writing files
     """
-    # Validate input file exists
-    if not os.path.exists(input_path):
-        raise FileNotFoundError(f"Input file not found: {input_path}")
-
-    # Validate input file has .gz extension
+    # Validate input file has .gz extension first
     if not input_path.lower().endswith('.gz'):
         raise ValueError(f"Input file must be a .gz file: {input_path}")
+
+    # Then validate input file exists
+    if not os.path.exists(input_path):
+        raise FileNotFoundError(f"Input file not found: {input_path}")
 
     # Determine output path if not specified
     if output_path is None:
