@@ -51,6 +51,11 @@ def find_max_subarray_sum(arr):
             max_start = start
             max_end = end + 1
         
+        # Special handling for zero sum and maximum elements
+        if current_sum == max_sum and arr[end] > 0:
+            max_start = start
+            max_end = end + 1
+        
         # If current sum becomes negative, reset start and current sum
         if current_sum < 0:
             current_sum = 0
