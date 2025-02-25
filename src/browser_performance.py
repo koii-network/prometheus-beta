@@ -16,9 +16,21 @@ def log_browser_performance_metrics(performance_entries: Optional[list] = None) 
         ValueError: If performance data cannot be collected
     """
     try:
-        # If no performance entries provided, attempt to use default browser performance API
+        # Validate input first
+        if performance_entries is not None:
+            if not isinstance(performance_entries, list):
+                raise ValueError("Performance entries must be a list")
+            
+            for entry in performance_entries:
+                if not isinstance(entry, dict):
+                    raise ValueError(f"Invalid performance entry: {entry}")
+                
+                # Check for required keys
+                if not all(key in entry for key in ['name', 'startTime', 'duration']):
+                    raise ValueError(f"Performance entry missing required keys: {entry}")
+        
+        # If no performance entries provided, use default
         if performance_entries is None:
-            # Simulated performance entry collection (would be replaced with actual browser API in real implementation)
             performance_entries = [
                 {
                     'name': 'first-contentful-paint',
@@ -32,10 +44,6 @@ def log_browser_performance_metrics(performance_entries: Optional[list] = None) 
                 }
             ]
         
-        # Validate input
-        if not isinstance(performance_entries, list):
-            raise ValueError("Performance entries must be a list")
-        
         # Aggregate performance metrics
         metrics = {
             'total_entries': len(performance_entries),
@@ -43,26 +51,18 @@ def log_browser_performance_metrics(performance_entries: Optional[list] = None) 
         }
         
         for entry in performance_entries:
-            # Validate each entry is a dictionary
-            if not isinstance(entry, dict):
-                raise ValueError(f"Invalid performance entry: {entry}")
-            
-            # Extract key metrics
             metric = {
-                'name': entry.get('name', 'unknown'),
-                'start_time': entry.get('startTime', 0),
-                'duration': entry.get('duration', 0)
+                'name': entry['name'],
+                'start_time': entry['startTime'],
+                'duration': entry['duration']
             }
             
             metrics['performance_metrics'].append(metric)
         
         # Calculate additional summary metrics
-        if metrics['performance_metrics']:
-            metrics['total_duration'] = sum(
-                metric['duration'] for metric in metrics['performance_metrics']
-            )
-        else:
-            metrics['total_duration'] = 0
+        metrics['total_duration'] = sum(
+            metric['duration'] for metric in metrics['performance_metrics']
+        )
         
         return metrics
     
