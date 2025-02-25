@@ -28,7 +28,8 @@ def find_middle_range_indices(sorted_list, range_width):
         return []
     
     # Calculate the middle index
-    middle_index = len(sorted_list) // 2
+    # For even length lists, use the lower of the two middle indices
+    middle_index = (len(sorted_list) - 1) // 2
     
     # Calculate the start and end of the range
     start_index = max(0, middle_index - range_width)
