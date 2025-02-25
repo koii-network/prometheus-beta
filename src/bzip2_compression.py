@@ -20,6 +20,10 @@ def compress_bzip2(input_data: Union[str, bytes], output_path: Optional[str] = N
         ValueError: If input is empty
         IOError: If there's an issue writing to output file
     """
+    # Handle None input
+    if input_data is None:
+        raise TypeError("Input cannot be None")
+    
     # Validate input
     if not input_data:
         raise ValueError("Input data cannot be empty")
@@ -60,8 +64,12 @@ def decompress_bzip2(input_data: Union[str, bytes], output_path: Optional[str] =
         TypeError: If input is not str or bytes
         ValueError: If input is empty
         IOError: If there's an issue reading/writing files
-        bz2.BZ2Error: If data cannot be decompressed
+        Exception: If data cannot be decompressed
     """
+    # Handle None input
+    if input_data is None:
+        raise TypeError("Input cannot be None")
+    
     # Handle file input
     if isinstance(input_data, str):
         try:
@@ -80,8 +88,8 @@ def decompress_bzip2(input_data: Union[str, bytes], output_path: Optional[str] =
     # Decompress data
     try:
         decompressed_data = bz2.decompress(input_data)
-    except bz2.BZ2Error as e:
-        raise bz2.BZ2Error(f"Decompression failed: {e}")
+    except Exception as e:
+        raise Exception(f"Decompression failed: {e}")
     
     # Write to file if output path is provided
     if output_path:
