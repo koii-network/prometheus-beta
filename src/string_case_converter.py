@@ -25,34 +25,18 @@ def convert_to_alternating_pascal_case(input_string: str) -> str:
     if not input_string:
         raise ValueError("Input string cannot be empty")
     
-    # Split the string into tokens (words and special characters)
-    tokens = []
-    current_token = ""
-    for char in input_string:
-        if char.isalnum():
-            current_token += char
-        else:
-            if current_token:
-                tokens.append(current_token)
-                current_token = ""
-            tokens.append(char)
+    # Split the string and remove extra whitespace
+    words = input_string.split()
     
-    if current_token:
-        tokens.append(current_token)
+    # Convert each word to alternating case
+    alternating_words = []
+    for word in words:
+        # Convert to alternating case
+        alternating_word = ''.join(
+            char.upper() if idx % 2 == 0 else char.lower() 
+            for idx, char in enumerate(word)
+        )
+        alternating_words.append(alternating_word)
     
-    # Convert alternating case for word tokens
-    processed_tokens = []
-    for token in tokens:
-        if token.isalpha():
-            # Convert to alternating case
-            alternating_token = ''.join(
-                char.upper() if idx % 2 == 0 else char.lower() 
-                for idx, char in enumerate(token)
-            )
-            processed_tokens.append(alternating_token)
-        else:
-            # Non-alphabetic tokens remain unchanged
-            processed_tokens.append(token)
-    
-    # Join the tokens back together
-    return ''.join(processed_tokens)
+    # Join the words back together
+    return ' '.join(alternating_words)
