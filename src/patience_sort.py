@@ -37,27 +37,36 @@ def patience_sort(arr: List[T], key: Optional[Callable[[T], int]] = None) -> Lis
     piles = []
     for item in arr:
         # Find the rightmost pile where we can place the item
-        new_pile = False
-        for pile in piles:
-            # Compare the top of the pile with the current item
-            if not pile or key(item) < key(pile[-1]):
-                pile.append(item)
+        insertion_index = 0
+        for i, pile in enumerate(piles):
+            if key(item) < key(pile[-1]):
                 break
-        else:
-            # If no suitable pile is found, create a new pile
+            insertion_index = i + 1
+        
+        # If we're at the end, start a new pile
+        if insertion_index == len(piles):
             piles.append([item])
+        else:
+            # Insert into the appropriate pile
+            piles[insertion_index].append(item)
     
     # Merge piles using a min-heap
     result = []
-    heap = [(key(pile[0]), i, pile) for i, pile in enumerate(piles)]
-    heapq.heapify(heap)
+    heap = []
+    
+    # Initialize heap with the top of each pile
+    for pile in piles:
+        if pile:
+            heapq.heappush(heap, (key(pile[0]), pile))
     
     while heap:
-        _, _, pile = heapq.heappop(heap)
+        _, pile = heapq.heappop(heap)
+        
+        # Add the smallest item to the result
         result.append(pile.pop(0))
         
         # If pile is not empty, put it back into the heap
         if pile:
-            heapq.heappush(heap, (key(pile[0]), len(heap), pile))
+            heapq.heappush(heap, (key(pile[0]), pile))
     
     return result
