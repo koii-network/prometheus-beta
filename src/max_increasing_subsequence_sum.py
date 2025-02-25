@@ -26,25 +26,18 @@ def max_increasing_subsequence_sum(arr: List[int]) -> Optional[int]:
     if not arr:
         return None
     
-    # Store the maximum sums of subsequences
-    max_sums = []
+    # Initialize dp array to store maximum sum of subsequence ending at each index
+    n = len(arr)
+    dp = arr.copy()
     
-    for num in arr:
-        # Find the insertion point for the current number
-        insert_idx = binary_search(max_sums, num)
-        
-        # If the number can't be added to an existing subsequence
-        if insert_idx == len(max_sums):
-            max_sums.append(num)
-        else:
-            # Update the current subsequence sum
-            if insert_idx == 0:
-                max_sums[insert_idx] = num
-            else:
-                max_sums[insert_idx] = max(max_sums[insert_idx], 
-                                           max_sums[insert_idx - 1] + num)
+    # Compute the maximum sum of increasing subsequence
+    for i in range(1, n):
+        for j in range(i):
+            if arr[i] > arr[j]:
+                dp[i] = max(dp[i], dp[j] + arr[i])
     
-    return max(max_sums)
+    # Return the maximum sum of all possible subsequences
+    return max(dp)
 
 def binary_search(sums: List[int], target: int) -> int:
     """
