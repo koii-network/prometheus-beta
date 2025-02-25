@@ -30,12 +30,25 @@ def to_pascal_case(input_string: str) -> str:
     if not input_string:
         return ""
     
-    # Replace common separators with a space
+    # Replace common separators with a space and handle potential mixed case
     for separator in ['-', '_', ' ']:
         input_string = input_string.replace(separator, ' ')
     
-    # Split the string into words, capitalize each word, and join
-    words = input_string.split()
+    # Split the string into words, handling mixed case first
+    words = []
+    current_word = input_string[0].upper()
+    for char in input_string[1:]:
+        if char.isupper():
+            # Start a new word when an uppercase letter is found
+            words.append(current_word)
+            current_word = char
+        else:
+            current_word += char
+    
+    # Add the last word
+    words.append(current_word)
+    
+    # Capitalize each word and join
     pascal_words = [word.capitalize() for word in words]
     
     return ''.join(pascal_words)
