@@ -15,6 +15,9 @@ def test_convert_to_sentence_case_edge_cases():
     # Single character
     assert convert_to_sentence_case("a") == "A"
     assert convert_to_sentence_case("Z") == "Z"
+    
+    # String with only whitespace
+    assert convert_to_sentence_case("   ") == "   "
 
 def test_convert_to_sentence_case_error_handling():
     """Test error handling for invalid inputs."""
@@ -27,7 +30,7 @@ def test_convert_to_sentence_case_error_handling():
 
 def test_convert_to_sentence_case_whitespace():
     """Test handling of strings with whitespace."""
-    assert convert_to_sentence_case("  hello world  ") == "  hello world  "
+    assert convert_to_sentence_case("  hello world  ") == "  Hello world  "
     assert convert_to_sentence_case(" HELLO ") == " Hello "
 
 def test_convert_to_sentence_case_special_characters():
