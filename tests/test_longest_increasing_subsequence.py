@@ -37,7 +37,7 @@ def test_already_sorted_descending():
 
 def test_mixed_positive_negative():
     """Test a sequence with mixed positive and negative numbers"""
-    assert longest_increasing_subsequence([-1, 0, 1, 2, -1, 3, 4]) == 5
+    assert longest_increasing_subsequence([-1, 0, 1, 2, -1, 3, 4]) == 6
 
 def test_invalid_input_type():
     """Test that a TypeError is raised for non-list input"""
@@ -51,4 +51,4 @@ def test_invalid_element_type():
 
 def test_floating_point_numbers():
     """Test that the function works with floating point numbers"""
-    assert longest_increasing_subsequence([1.5, 2.3, 0.5, 4.7, 2.1]) == 4
+    assert longest_increasing_subsequence([1.5, 2.3, 0.5, 4.7, 2.1]) == 3
