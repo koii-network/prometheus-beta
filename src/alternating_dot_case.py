@@ -13,7 +13,7 @@ def convert_to_alternating_dot_case(input_string):
     
     Examples:
         >>> convert_to_alternating_dot_case("hello world")
-        'h.e.l.l.o. .w.o.r.l.d'
+        'h.E.l.L.o. .W.o.R.l.D'
         >>> convert_to_alternating_dot_case("Python")
         'p.Y.t.H.o.N'
     """
@@ -28,7 +28,7 @@ def convert_to_alternating_dot_case(input_string):
     # Convert to alternating dot case
     result = []
     for i, char in enumerate(input_string):
-        # Alternate between lowercase and uppercase
+        # Alternate case by position in the ENTIRE string
         if i % 2 == 0:
             result.append(char.lower())
         else:
