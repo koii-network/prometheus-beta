@@ -10,6 +10,9 @@ def find_first_index(numbers: list[int], target: int) -> int:
         int: The index of the first occurrence of the target value,
              or -1 if the target is not found in the list
 
+    Raises:
+        TypeError: If numbers is not a list or target is not an integer
+
     Examples:
         >>> find_first_index([1, 2, 3, 4, 3], 3)
         2
@@ -18,9 +21,19 @@ def find_first_index(numbers: list[int], target: int) -> int:
         >>> find_first_index([], 1)
         -1
     """
+    # Type checking
+    if not isinstance(numbers, list):
+        raise TypeError("First argument must be a list")
+    if not isinstance(target, int):
+        raise TypeError("Target must be an integer")
+    
     # Handle empty list case first
     if not numbers:
         return -1
+    
+    # Ensure all elements in the list are integers
+    if not all(isinstance(x, int) for x in numbers):
+        raise TypeError("All elements in the list must be integers")
     
     # Iterate through the list to find the first occurrence
     for index, value in enumerate(numbers):
