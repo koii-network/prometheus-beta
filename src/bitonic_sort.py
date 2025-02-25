@@ -19,6 +19,10 @@ def bitonic_sort(arr, ascending=True):
     # Create a copy to avoid modifying the original list
     arr = list(arr)
     
+    # Handle empty or single-element lists
+    if len(arr) <= 1:
+        return arr
+    
     def compare_and_swap(arr, i, j, direction):
         """
         Compare and potentially swap elements based on the sorting direction
@@ -76,19 +80,15 @@ def bitonic_sort(arr, ascending=True):
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
     
-    # Handle empty or single-element lists
-    if len(arr) <= 1:
-        return arr
-    
-    # Find the next power of 2 greater than or equal to the list length
+    # Create a list with a power of 2 length
     n = len(arr)
     next_power_of_2 = 2 ** ((n - 1).bit_length())
     
-    # Pad the list with the last element to make its length a power of 2
-    arr = arr + [arr[-1]] * (next_power_of_2 - n)
+    # Pad the list with copies of the original elements
+    padded_arr = arr.copy() + [arr[0]] * (next_power_of_2 - n)
     
     # Perform bitonic sort
-    bitonic_sort_recursive(arr, 0, len(arr), ascending)
+    bitonic_sort_recursive(padded_arr, 0, len(padded_arr), ascending)
     
     # Return only the original number of elements
-    return arr[:n]
+    return padded_arr[:n]
