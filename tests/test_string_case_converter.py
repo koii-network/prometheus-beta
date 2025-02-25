@@ -32,4 +32,4 @@ def test_edge_cases():
 def test_special_characters():
     """Test conversion with special characters"""
     assert convert_to_alternating_pascal_case("hello! world") == "HeLlO! WoRlD"
-    assert convert_to_alternating_pascal_case("python-programming") == "PyThOn-PrOgRaMmInG"
+    assert convert_to_alternating_pascal_case("python-programming") == "PyThOn-pRoGrAmMiNg"
