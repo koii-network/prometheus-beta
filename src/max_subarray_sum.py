@@ -28,8 +28,13 @@ def find_max_subarray_sum(arr):
     if len(arr) == 1:
         return arr
     
+    # Special case for arrays with all negative numbers
+    max_elem = max(arr)
+    if max_elem < 0:
+        return [max_elem]
+    
     # Initialize variables for Kadane's algorithm
-    max_sum = arr[0]  # Initialize with first element instead of negative infinity
+    max_sum = 0
     current_sum = 0
     start = 0
     max_start = 0
