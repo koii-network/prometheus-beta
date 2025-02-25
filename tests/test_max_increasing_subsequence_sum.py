@@ -9,7 +9,7 @@ def test_basic_increasing_sequence():
 def test_more_complex_sequence():
     """Test a more complex sequence with multiple possible subsequences."""
     arr = [10, 22, 9, 33, 21, 50, 41, 60]
-    assert max_increasing_subsequence_sum(arr) == 165
+    assert max_increasing_subsequence_sum(arr) == 175  # Updated from 165
 
 def test_single_element():
     """Test a sequence with a single element."""
