@@ -10,14 +10,15 @@ def count_file_lines(file_path):
 
     Raises:
         FileNotFoundError: If the specified file does not exist.
-        IOError: If there's an issue reading the file.
+        PermissionError: If there's a permission issue reading the file.
+        IOError: If there's another issue reading the file.
     """
     try:
         with open(file_path, 'r') as file:
             # readlines() reads all lines, so we can simply count its length
             return len(file.readlines())
-    except PermissionError as e:
-        raise IOError(f"Permission denied: Unable to read file {file_path}") from e
+    except PermissionError:
+        raise PermissionError(f"Permission denied: Unable to read file {file_path}")
     except FileNotFoundError:
         raise FileNotFoundError(f"The file {file_path} was not found.")
     except IOError as e:
