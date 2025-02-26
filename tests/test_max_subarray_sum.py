@@ -11,7 +11,7 @@ def test_all_positive_numbers():
     """Test max subarray sum with all positive numbers"""
     arr = [5, 2, 7, 3, 1, 9, 4]
     k = 3
-    assert max_subarray_sum(arr, k) == 16  # 7 + 3 + 1 = 11
+    assert max_subarray_sum(arr, k) == 14  # 7 + 3 + 4 = 14
 
 def test_all_negative_numbers():
     """Test max subarray sum with all negative numbers"""
