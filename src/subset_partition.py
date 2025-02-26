@@ -32,10 +32,8 @@ def count_equal_sum_partitions(numbers: List[int]) -> int:
     target_sum = total_sum // 2
     count = 0
 
-    # Special handling for small lists
-    if len(numbers) <= 2:
-        if sum(numbers) % 2 == 0 and sum(numbers) // 2 == target_sum:
-            return 1
+    # Ensure we have at least 2 elements to partition
+    if len(numbers) < 2:
         return 0
 
     # Track unique partitions to avoid duplicates
@@ -51,7 +49,7 @@ def count_equal_sum_partitions(numbers: List[int]) -> int:
                 
                 # Verify complement also sums to target
                 if sum(complement) == target_sum:
-                    # Use frozenset to ignore order
+                    # Use frozenset to ignore order and prevent duplicates
                     partition_key = frozenset([frozenset(subset), frozenset(complement)])
                     if partition_key not in unique_partitions:
                         unique_partitions.add(partition_key)
