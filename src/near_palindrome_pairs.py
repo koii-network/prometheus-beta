@@ -67,9 +67,15 @@ def find_near_palindrome_pairs(strings):
     
     # Compare each pair of strings
     for i in range(len(strings)):
-        for j in range(i+1, len(strings)):
-            # Check if this pair is near palindrome
+        for j in range(len(strings)):
+            # Skip comparing a string with itself
+            if i == j:
+                continue
+            
+            # Check if this pair can become palindromes with one character change
             if is_near_palindrome(strings[i]) and is_near_palindrome(strings[j]):
-                near_palindrome_pairs.append([strings[i], strings[j]])
+                # Avoid duplicate pairs 
+                if [strings[i], strings[j]] not in near_palindrome_pairs:
+                    near_palindrome_pairs.append([strings[i], strings[j]])
     
     return near_palindrome_pairs
