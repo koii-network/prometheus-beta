@@ -44,7 +44,9 @@ def generate_prime_sum_pairs(n):
         for j in range(i + 1, n + 1):
             pair_sum = i + j
             if pair_sum <= 2 * n and is_prime(pair_sum):
-                prime_sums.add(pair_sum)
+                # Only add prime sums greater than or equal to 5
+                if pair_sum >= 5:
+                    prime_sums.add(pair_sum)
     
     # Return sorted list of unique prime sums
     return sorted(list(prime_sums))
