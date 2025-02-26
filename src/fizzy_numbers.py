@@ -18,9 +18,4 @@ def generate_fizzy_numbers(n):
         raise ValueError("Input must be a positive integer")
     
     # Generate fizzy numbers
-    fizzy_nums = []
-    for num in range(1, n + 1):
-        if num % 3 == 0 or num % 7 == 0:
-            fizzy_nums.append(num)
-    
-    return fizzy_nums
+    return [num for num in range(1, n + 1) if num % 3 == 0 or num % 7 == 0]
