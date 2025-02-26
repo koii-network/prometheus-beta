@@ -1,3 +1,21 @@
+def _flatten(arr):
+    """
+    Recursively flatten a nested list.
+
+    Args:
+        arr (list): A potentially nested list
+
+    Returns:
+        list: A completely flattened list
+    """
+    flattened = []
+    for item in arr:
+        if isinstance(item, list):
+            flattened.extend(_flatten(item))
+        else:
+            flattened.append(item)
+    return flattened
+
 def transform_array(input_array):
     """
     Transform a multi-dimensional array by:
@@ -26,17 +44,16 @@ def transform_array(input_array):
         if subarray  # Remove empty sub-arrays
     ]
 
-    # Flatten the array
-    flattened = []
-    for subarray in non_empty_reversed:
-        flattened.extend(subarray)
+    # Flatten the array (handling nested lists)
+    flattened = _flatten(non_empty_reversed)
 
     # Remove duplicates while maintaining order
     seen = set()
     deduplicated = []
     for item in flattened:
-        if item not in seen:
+        hashable_item = item if isinstance(item, (int, str, float, bool, tuple)) else str(item)
+        if hashable_item not in seen:
             deduplicated.append(item)
-            seen.add(item)
+            seen.add(hashable_item)
 
     return deduplicated
