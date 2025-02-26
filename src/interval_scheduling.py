@@ -33,8 +33,8 @@ def max_non_overlapping_intervals(intervals: List[Tuple[int, int]]) -> int:
     last_end_time = float('-inf')
     
     for start, end in sorted_intervals:
-        # If this interval starts after the last scheduled interval ends
-        if start >= last_end_time:
+        # If this interval starts strictly after the last scheduled interval ends
+        if start > last_end_time:
             count += 1
             last_end_time = end
     
