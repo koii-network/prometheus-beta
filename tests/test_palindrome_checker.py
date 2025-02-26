@@ -17,7 +17,7 @@ def test_palindrome_edge_cases():
 def test_palindrome_special_characters():
     """Test palindromes with various special characters and spaces"""
     assert is_palindrome("!@#$%^&*()") == True
-    assert is_palindrome("A man, a plan, a canal!") == True
+    assert is_palindrome("A man, a plan, a canal: Panama!") == True
     assert is_palindrome("hello world") == False
 
 def test_palindrome_numbers():
