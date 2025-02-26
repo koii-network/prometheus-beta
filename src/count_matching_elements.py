@@ -23,5 +23,5 @@ def count_matching_elements(arr1, arr2):
     # Convert arr2 to a set for O(1) lookup
     arr2_set = set(arr2)
     
-    # Count matching elements
+    # Precisely count matching elements, including duplicates
     return sum(1 for x in arr1 if x in arr2_set)
