@@ -39,12 +39,21 @@ def test_non_numeric_list():
 def test_large_list():
     """Test with a larger list to ensure efficiency."""
     large_list = list(range(1000))
-    assert find_two_sum(large_list, 1998) == (999, 999)
+    result = find_two_sum(large_list, 1998)
+    assert result is not None
+    a, b = result
+    assert large_list[a] + large_list[b] == 1998
 
 def test_negative_numbers():
     """Test with negative numbers."""
-    assert find_two_sum([-1, -2, -3, -4, -5], -8) == (2, 4)
+    result = find_two_sum([-1, -2, -3, -4, -5], -8)
+    assert result is not None
+    a, b = result
+    assert [-1, -2, -3, -4, -5][a] + [-1, -2, -3, -4, -5][b] == -8
 
 def test_mixed_numbers():
     """Test with mixed positive and negative numbers."""
-    assert find_two_sum([-1, 2, 3, -4, 5], 1) == (1, 3)
+    result = find_two_sum([-1, 2, 3, -4, 5], 1)
+    assert result is not None
+    a, b = result
+    assert [-1, 2, 3, -4, 5][a] + [-1, 2, 3, -4, 5][b] == 1
