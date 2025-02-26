@@ -20,35 +20,18 @@ def find_odd_frequency_number(numbers):
     if not numbers:
         raise ValueError("Input list cannot be empty")
     
-    # Use bitwise XOR to find numbers with odd frequencies
-    # XOR has the property that:
-    # 1. a ^ a = 0 (same numbers cancel out)
-    # 2. a ^ 0 = a (XORing with 0 returns the original number)
-    
-    # First pass: find potential candidates
-    xor_result = 0
+    # Find the unique number that appears an odd number of times
+    # Create a frequency dictionary to track occurrences
+    frequency = {}
     for num in numbers:
-        xor_result ^= num
+        frequency[num] = frequency.get(num, 0) + 1
     
-    # If no number appears odd times, xor_result will be 0
-    if xor_result == 0:
+    # Filter numbers with odd frequency and find the smallest
+    odd_freq_nums = [num for num, count in frequency.items() if count % 2 == 1]
+    
+    # If no numbers with odd frequency, raise an error
+    if not odd_freq_nums:
         raise ValueError("No number appears an odd number of times")
     
-    # Second pass: find the smallest number with odd frequency
-    smallest_odd_freq = float('inf')
-    for num in numbers:
-        # XOR the current number with the initial XOR result
-        current_xor = num ^ xor_result
-        
-        # If XOR is non-zero, this number might be part of the odd frequency set
-        if current_xor > 0:
-            # Check how many times this number appears
-            count = sum(1 for x in numbers if x == num)
-            if count % 2 == 1:
-                smallest_odd_freq = min(smallest_odd_freq, num)
-    
-    # If no number found (shouldn't happen given previous checks)
-    if smallest_odd_freq == float('inf'):
-        raise ValueError("No number appears an odd number of times")
-    
-    return smallest_odd_freq
+    # Return the smallest number with odd frequency
+    return min(odd_freq_nums)
