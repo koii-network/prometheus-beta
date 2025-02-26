@@ -15,21 +15,21 @@ def find_near_palindrome_pairs(strings):
         >>> find_near_palindrome_pairs(["racecar", "radar", "hello", "world"])
         [["racecar", "radar"]]
     """
-    def is_near_palindrome(s):
+    def can_be_palindrome(s):
         """
-        Check if a string is close to being a palindrome.
+        Check if a string can become a palindrome by changing one character.
         
         Args:
             s (str): The string to check.
         
         Returns:
-            bool: True if the string is close to being a palindrome, False otherwise.
+            bool: True if the string can become a palindrome by changing one char, False otherwise.
         """
-        # If string is already a palindrome, return False
+        # Already a palindrome
         if s == s[::-1]:
             return False
         
-        # Try changing one character at a time
+        # Check changing one character
         for i in range(len(s)):
             for c in 'abcdefghijklmnopqrstuvwxyz':
                 # Create a new string with one character changed
@@ -47,8 +47,8 @@ def find_near_palindrome_pairs(strings):
     # Check all pairs of strings
     for i in range(len(strings)):
         for j in range(i+1, len(strings)):
-            # Check both strings
-            if is_near_palindrome(strings[i]) and is_near_palindrome(strings[j]):
+            # Check if both strings can become palindromes by changing one character
+            if can_be_palindrome(strings[i]) and can_be_palindrome(strings[j]):
                 near_palindrome_pairs.append([strings[i], strings[j]])
     
     return near_palindrome_pairs
