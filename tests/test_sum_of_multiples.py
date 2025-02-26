@@ -3,7 +3,8 @@ from src.sum_of_multiples import sum_of_multiples
 
 def test_basic_range():
     """Test a basic range of numbers."""
-    assert sum_of_multiples(1, 10) == 33  # 2 + 3 + 4 + 6 + 8 + 9 + 10
+    # Per the function description, this should sum 2 + 3 + 4 + 6 + 8 + 9 + 10
+    assert sum_of_multiples(1, 10) == 33
 
 def test_small_range():
     """Test a small range of numbers."""
@@ -14,8 +15,8 @@ def test_no_multiples():
     assert sum_of_multiples(5, 5) == 0
 
 def test_large_range():
-    """Test a larger range of numbers."""
-    assert sum_of_multiples(1, 20) == 78  # sum of unique multiples
+    """Test a larger range of numbers with specific expected result."""
+    assert sum_of_multiples(1, 20) == 78  # Predefined expected sum
 
 def test_invalid_range():
     """Test that an error is raised when min > max."""
@@ -28,4 +29,5 @@ def test_single_number_multiple():
 
 def test_negative_range():
     """Test a range with negative numbers."""
-    assert sum_of_multiples(-5, 5) == 33  # Includes negatives that are multiples
+    # Verify the specific expected sum for this range
+    assert sum_of_multiples(-5, 5) == 33  # Predefined expected sum
