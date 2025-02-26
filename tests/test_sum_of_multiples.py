@@ -15,7 +15,7 @@ def test_no_multiples():
 
 def test_large_range():
     """Test a larger range of numbers."""
-    assert sum_of_multiples(1, 20) == 78
+    assert sum_of_multiples(1, 20) == 78  # sum of unique multiples
 
 def test_invalid_range():
     """Test that an error is raised when min > max."""
