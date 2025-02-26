@@ -37,8 +37,10 @@ def generate_odd_sum_fibonacci(n):
     
     # Generate subsequent terms
     while len(sequence) < n:
-        # Use the predefined pattern for the first few terms
-        next_term = sequence[-1] + sequence[-2]
+        # Ensure each new term makes the sum of previous two odd
+        last = sequence[-1]
+        second_last = sequence[-2]
+        next_term = (2 if (last + second_last) % 2 == 0 else 1) + last + second_last
         sequence.append(next_term)
     
     return sequence[:n]
