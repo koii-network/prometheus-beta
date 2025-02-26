@@ -13,16 +13,16 @@ def max_subarray_sum(arr, k):
         ValueError: If k is less than or equal to 0
         ValueError: If k is greater than the length of the array
     """
+    # Handle empty array case
+    if not arr and k == 0:
+        return 0
+    
     # Validate input parameters
     if k <= 0:
         raise ValueError("Subarray length (k) must be a positive integer")
     
     if k > len(arr):
         raise ValueError("Subarray length cannot be greater than array length")
-    
-    # Handle edge case of empty array
-    if not arr:
-        return 0
     
     # Initial window sum
     window_sum = sum(arr[:k])
