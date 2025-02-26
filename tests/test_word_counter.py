@@ -24,7 +24,7 @@ def test_punctuation_handling():
 def test_complex_text():
     """Test a more complex text with multiple words"""
     text = "The quick brown fox jumps over the lazy dog. The dog barks!"
-    assert count_unique_words(text) == 8
+    assert count_unique_words(text) == 9
 
 def test_whitespace_handling():
     """Test various whitespace scenarios"""
