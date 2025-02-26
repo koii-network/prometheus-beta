@@ -33,6 +33,10 @@ def generate_prime_sum_pairs(n):
     if not isinstance(n, int) or n < 1:
         raise ValueError("Input must be a positive integer")
     
+    # Special case for n=1
+    if n == 1:
+        return []
+    
     # Set to store unique prime sums
     prime_sums = set()
     
