@@ -13,11 +13,16 @@ def find_shortest_path(maze: List[List[int]]) -> int:
         int: Length of the shortest path, or -1 if no path exists.
     
     Raises:
-        ValueError: If maze is empty or None
+        ValueError: If maze is empty, None, or has irregular row lengths
     """
     # Validate input
     if not maze or not maze[0]:
         raise ValueError("Maze cannot be empty")
+    
+    # Check for irregular row lengths
+    row_lengths = set(len(row) for row in maze)
+    if len(row_lengths) > 1:
+        raise ValueError("Maze must have consistent row lengths")
     
     rows, cols = len(maze), len(maze[0])
     
