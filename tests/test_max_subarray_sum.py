@@ -23,7 +23,7 @@ def test_mixed_numbers():
     """Test array with mixed positive and negative numbers"""
     arr = [1, -2, 3, 4, -5, 6, 7]
     k = 3
-    assert max_subarray_sum(arr, k) == 12
+    assert max_subarray_sum(arr, k) == 8  # Corrected expected output
 
 def test_single_element():
     """Test array with single element and k=1"""
