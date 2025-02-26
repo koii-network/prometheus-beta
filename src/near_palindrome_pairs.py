@@ -32,44 +32,18 @@ def find_near_palindrome_pairs(strings):
         if s == s[::-1]:
             return False
         
-        # Try to find if the string is one character change away from a palindrome
+        # Check mismatches
         n = len(s)
+        mismatches = 0
+        for i in range(n // 2):
+            if s[i] != s[n - 1 - i]:
+                mismatches += 1
+                
+                # More than one mismatch means not near palindrome
+                if mismatches > 1:
+                    return False
         
-        # If length is even
-        if n % 2 == 0:
-            # Split into two equal halves
-            first_half = s[:n//2]
-            second_half = s[n//2:]
-            
-            # Reverse and compare
-            if first_half == second_half[::-1]:
-                return False
-            
-            # If almost a palindrome
-            for i in range(n):
-                # Try removing or changing this character
-                modified = s[:i] + s[i+1:]
-                if modified == modified[::-1]:
-                    return True
-        
-        # If length is odd
-        else:
-            # Split into two parts around middle character
-            first_half = s[:n//2]
-            second_half = s[n//2+1:]
-            
-            # See if reversing and ignoring middle matches
-            if first_half == second_half[::-1]:
-                return False
-            
-            # If almost a palindrome
-            for i in range(n):
-                # Try removing or changing this character
-                modified = s[:i] + s[i+1:]
-                if modified == modified[::-1]:
-                    return True
-        
-        return False
+        return True
     
     # Find pairs of near-palindromes
     near_palindrome_pairs = []
