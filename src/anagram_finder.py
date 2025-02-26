@@ -24,7 +24,7 @@ def find_anagrams(word, word_list):
     
     # Find anagrams (excluding the original word)
     anagrams = [
-        candidate for candidate in word_list 
+        candidate.lower() for candidate in word_list 
         if ''.join(sorted(candidate.lower())) == sorted_word 
         and candidate.lower() != word.lower()
     ]
