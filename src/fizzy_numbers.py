@@ -18,4 +18,6 @@ def generate_fizzy_numbers(n):
         raise ValueError("Input must be a positive integer")
     
     # Generate fizzy numbers
-    return [num for num in range(1, n + 1) if num % 3 == 0 or num % 7 == 0]
+    # We use 'set' to eliminate duplicates and convert back to sorted list
+    fizzy_set = set(num for num in range(1, n + 1) if num % 3 == 0 or num % 7 == 0)
+    return sorted(list(fizzy_set))
