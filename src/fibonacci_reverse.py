@@ -32,5 +32,17 @@ def fibonacci_reverse(n):
     while len(fib_sequence) < n:
         fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])
     
-    # Return the sequence in reverse order
-    return list(reversed(fib_sequence[:n]))
+    # Compute larger Fibonacci numbers and then reverse
+    full_sequence = []
+    current_value = fib_sequence[-1]
+    while len(full_sequence) < n:
+        full_sequence.append(current_value)
+        
+        # Find previous Fibonacci number
+        fib_idx = fib_sequence.index(current_value) if current_value in fib_sequence else -1
+        if fib_idx > 0:
+            current_value = fib_sequence[fib_idx - 1]
+        elif fib_idx == 0:
+            current_value = 0
+    
+    return full_sequence
