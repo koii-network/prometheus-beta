@@ -9,7 +9,7 @@ def test_unique_characters_normal_string():
 def test_unique_characters_case_sensitivity():
     """Test case-sensitive unique character counting."""
     assert count_unique_characters('Hello') == 4  # H, e, l, o
-    assert count_unique_characters('hELLo') == 5  # h, E, L, o
+    assert count_unique_characters('hELLo') == 4  # h, E, L, o
     
 def test_unique_characters_empty_input():
     """Test handling of empty strings and None."""
@@ -25,4 +25,4 @@ def test_unique_characters_repeated_chars():
 def test_unique_characters_special_chars():
     """Test strings with special characters and punctuation."""
     assert count_unique_characters('!@#$%^&*()') == 10
-    assert count_unique_characters('hello, world!') == 9  # including comma and space
+    assert count_unique_characters('hello, world!') == 10  # including comma and space
