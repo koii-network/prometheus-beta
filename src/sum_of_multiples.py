@@ -19,7 +19,7 @@ def sum_of_multiples(min: int, max: int) -> int:
     # Use a set to avoid counting numbers that are multiples of both 2 and 3 twice
     multiples = set()
 
-    # Find multiples of 2
+    # Find multiples of 2 or 3
     for num in range(min, max + 1):
         if num % 2 == 0 or num % 3 == 0:
             multiples.add(num)
