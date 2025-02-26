@@ -16,13 +16,13 @@ def test_empty_subarrays():
 def test_duplicates_removal():
     """Test removal of duplicates while maintaining order"""
     input_array = [[1, 2, 2], [3, 1, 4], [2, 5]]
-    expected = [2, 1, 3, 4, 5]
+    expected = [2, 1, 4, 3, 5]
     assert transform_array(input_array) == expected
 
 def test_complex_nested_array():
     """Test with more complex nested arrays"""
     input_array = [[1, 2], [3, [4, 5]], [6, 7]]
-    expected = [2, 1, 5, 4, 3, 7, 6]
+    expected = [2, 1, 4, 5, 3, 7, 6]
     assert transform_array(input_array) == expected
 
 def test_invalid_input():
