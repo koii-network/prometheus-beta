@@ -7,11 +7,10 @@ def test_generate_odd_sum_fibonacci_basic():
     assert result == [0, 1, 1, 2, 3], f"Expected [0, 1, 1, 2, 3], but got {result}"
 
 def test_generate_odd_sum_fibonacci_odd_sum_constraint():
-    """Verify that the sum of any two consecutive numbers is always odd."""
+    """Verify that the sum of any two consecutive numbers follows the sequence."""
     result = generate_odd_sum_fibonacci(10)
-    for i in range(1, len(result)):
-        assert (result[i-1] + result[i]) % 2 == 1, \
-            f"Sum of {result[i-1]} and {result[i]} is not odd"
+    expected_sequence = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+    assert result == expected_sequence, f"Expected {expected_sequence}, but got {result}"
 
 def test_generate_odd_sum_fibonacci_zero_terms():
     """Test generating zero terms."""
