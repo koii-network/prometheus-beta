@@ -29,12 +29,12 @@ def generate_odd_sum_fibonacci(n):
         return [0, 1]
     
     # Initialize the sequence
-    sequence = [0, 1, 1]
+    sequence = [0, 1, 2]
     
     # Generate subsequent terms
     while len(sequence) < n:
-        # Calculate the next term based on the odd sum constraint
-        next_term = (sequence[-2] + sequence[-1]) // 2 + sequence[-1]
+        # Calculate the next term to ensure odd sum
+        next_term = sequence[-1] + sequence[-2]
         sequence.append(next_term)
     
     return sequence[:n]
