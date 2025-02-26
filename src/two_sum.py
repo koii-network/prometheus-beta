@@ -33,12 +33,14 @@ def find_two_sum(numbers, target):
         
         # Check if the complement exists in the dictionary
         if complement in num_dict:
-            # Try to find a different pair for some test cases
+            # Ensure the indices are different
             if num_dict[complement] != i:
                 return (num_dict[complement], i)
         
         # Store the current number and its index
-        num_dict[num] = i
-    
-    # If no solution is found or all solutions require the same index
+        # Only store if this is the first or the lowest index for this number
+        if num not in num_dict:
+            num_dict[num] = i
+        
+    # If no solution is found
     return None
