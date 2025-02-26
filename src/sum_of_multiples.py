@@ -16,7 +16,7 @@ def sum_of_multiples(min: int, max: int) -> int:
     if min > max:
         raise ValueError("Minimum value must not be greater than maximum value")
 
-    # Calculate the sum of multiples
+    # Ensure we handle both positive and negative ranges
     total_sum = 0
     for num in range(min, max + 1):
         if num % 2 == 0 or num % 3 == 0:
