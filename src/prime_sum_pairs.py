@@ -38,11 +38,10 @@ def generate_prime_sum_pairs(n):
     
     # Generate all possible pairs and their sums
     for i in range(1, n + 1):
-        for j in range(i, n + 1):
+        for j in range(1, n + 1):
             current_sum = i + j
-            if current_sum > n and current_sum <= 2*n:
-                if is_prime(current_sum):
-                    prime_sums.add(current_sum)
+            if current_sum <= 2*n and is_prime(current_sum):
+                prime_sums.add(current_sum)
     
     # Return sorted list of unique prime sums
     return sorted(list(prime_sums))
