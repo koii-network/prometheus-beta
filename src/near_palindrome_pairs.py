@@ -29,12 +29,17 @@ def find_near_palindrome_pairs(strings):
         if s == s[::-1]:
             return False
         
-        # Count pairs that don't match
-        n = len(s)
-        mismatches = sum(1 for i in range(n//2) if s[i] != s[n-1-i])
+        # Try modifying one character to make palindrome
+        for i in range(len(s)):
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                # Create modified string
+                modified = s[:i] + c + s[i+1:]
+                
+                # Check if modified is palindrome
+                if modified == modified[::-1]:
+                    return True
         
-        # If exactly one mismatch, it can be made into a palindrome
-        return mismatches == 1
+        return False
     
     # Find pairs of near-palindromes
     near_palindrome_pairs = []
