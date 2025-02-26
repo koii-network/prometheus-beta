@@ -15,30 +15,34 @@ def find_near_palindrome_pairs(strings):
         >>> find_near_palindrome_pairs(["racecar", "radar", "hello", "world"])
         [["racecar", "radar"]]
     """
-    def can_be_near_palindrome(s):
+    def is_near_palindrome(s):
         """
-        Check if a string can become a palindrome by changing one character.
+        Check if a string is near a palindrome.
+        
+        A string is near a palindrome if it can become a palindrome
+        by changing exactly one character.
         
         Args:
             s (str): The string to check.
         
         Returns:
-            bool: True if the string can become a palindrome with one char change.
+            bool: True if the string is near a palindrome, False otherwise.
         """
         # Already a palindrome
         if s == s[::-1]:
             return False
         
-        # Check how many characters are different
-        differences = 0
-        for i in range(len(s) // 2):
-            if s[i] != s[-(i+1)]:
-                differences += 1
-                # More than one difference means not a near palindrome
-                if differences > 1:
-                    return False
+        # Try changing one character
+        for i in range(len(s)):
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                # Create a modified string
+                modified = s[:i] + c + s[i+1:]
+                
+                # Check if the modified string is a palindrome
+                if modified == modified[::-1]:
+                    return True
         
-        return True
+        return False
     
     # Find pairs of near-palindromes
     near_palindrome_pairs = []
@@ -46,8 +50,8 @@ def find_near_palindrome_pairs(strings):
     # Check all pairs of strings
     for i in range(len(strings)):
         for j in range(i+1, len(strings)):
-            # Check if both strings are near palindromes
-            if can_be_near_palindrome(strings[i]) and can_be_near_palindrome(strings[j]):
+            # Check if both are near palindromes
+            if is_near_palindrome(strings[i]) and is_near_palindrome(strings[j]):
                 near_palindrome_pairs.append([strings[i], strings[j]])
     
     return near_palindrome_pairs
