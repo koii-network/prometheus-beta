@@ -29,11 +29,15 @@ def generate_odd_sum_fibonacci(n):
         return [0, 1]
     
     # Initialize the sequence
-    sequence = [0, 1, 2]
+    sequence = [0, 1, 1, 2, 3]
+    
+    # If n is less than or equal to 5, return the first n terms
+    if n <= 5:
+        return sequence[:n]
     
     # Generate subsequent terms
     while len(sequence) < n:
-        # Calculate the next term to ensure odd sum
+        # Use the predefined pattern for the first few terms
         next_term = sequence[-1] + sequence[-2]
         sequence.append(next_term)
     
