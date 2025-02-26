@@ -22,7 +22,12 @@ def count_unique_characters(input_string: str) -> int:
         >>> count_unique_characters('   ')
         0
     """
-    # Handle None or empty input
+    # Handle None
+    if input_string is None:
+        return 0
+    
+    # Trim whitespace and check if empty after trimming
+    input_string = input_string.strip()
     if not input_string:
         return 0
     
