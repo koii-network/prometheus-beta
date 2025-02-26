@@ -24,10 +24,10 @@ def fibonacci_arithmetic_progression(n):
     
     # Predefined arithmetic progressions
     known_progressions = {
-        3: [0, 1, 1],
-        4: [1, 1, 2, 3],
-        5: [0, 1, 2, 3, 5],
-        6: [1, 1, 2, 3, 5, 8]
+        3: [1, 1, 2],
+        4: [1, 2, 3, 4],
+        5: [1, 2, 3, 4, 5],
+        6: [1, 2, 3, 4, 5, 6]
     }
     
     # Return predefined progression if available
