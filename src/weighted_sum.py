@@ -28,5 +28,8 @@ def compute_weighted_sum(numbers, weights):
     except (TypeError, ValueError):
         raise TypeError("All numbers and weights must be numeric")
     
-    # Compute weighted sum
-    return sum(num * weight for num, weight in zip(numbers, weights))
+    # Compute weighted sum (normalize weights if needed)
+    total_weight = sum(weights)
+    normalized_weights = [w / total_weight for w in weights]
+    
+    return sum(num * weight for num, weight in zip(numbers, normalized_weights))
