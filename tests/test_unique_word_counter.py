@@ -24,7 +24,7 @@ def test_punctuation_handling():
 def test_complex_text():
     """Test counting unique words in a more complex text."""
     text = "The quick brown fox jumps over the lazy dog. The dog barks!"
-    assert count_unique_words(text) == 8
+    assert count_unique_words(text) == 9
 
 def test_special_characters():
     """Test handling of special characters and mixed punctuation."""
