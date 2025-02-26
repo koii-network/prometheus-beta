@@ -20,7 +20,7 @@ def find_near_palindrome_pairs(strings):
         Check if a string is near a palindrome.
         
         A string is near a palindrome if it can become a palindrome
-        by changing exactly one character.
+        by changing exactly one character or removing one character.
         
         Args:
             s (str): The string to check.
@@ -28,22 +28,28 @@ def find_near_palindrome_pairs(strings):
         Returns:
             bool: True if the string is near a palindrome, False otherwise.
         """
-        # Already a palindrome
+        # Already a palindrome 
         if s == s[::-1]:
             return False
         
-        # Check mismatches
-        n = len(s)
-        mismatches = 0
-        for i in range(n // 2):
-            if s[i] != s[n - 1 - i]:
-                mismatches += 1
-                
-                # More than one mismatch means not near palindrome
-                if mismatches > 1:
-                    return False
+        # Try removing each character
+        for i in range(len(s)):
+            # Remove current character
+            removed = s[:i] + s[i+1:]
+            if removed == removed[::-1]:
+                return True
         
-        return True
+        # Try changing each character
+        for i in range(len(s)):
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                # Create modified string
+                modified = s[:i] + c + s[i+1:]
+                
+                # Check if modified is palindrome
+                if modified == modified[::-1]:
+                    return True
+        
+        return False
     
     # Find pairs of near-palindromes
     near_palindrome_pairs = []
