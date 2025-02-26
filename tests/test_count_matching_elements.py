@@ -30,7 +30,7 @@ def test_duplicates_in_first_array():
     """Test array with duplicate elements."""
     arr1 = [1, 1, 2, 2, 3]
     arr2 = [1, 2]
-    assert count_matching_elements(arr1, arr2) == 5
+    assert count_matching_elements(arr1, arr2) == 4
 
 def test_invalid_input_type():
     """Test invalid input types raise TypeError."""
