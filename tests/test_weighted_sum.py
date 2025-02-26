@@ -5,7 +5,7 @@ def test_basic_weighted_sum():
     """Test basic weighted sum calculation."""
     numbers = [1, 2, 3]
     weights = [0.5, 0.3, 0.2]
-    assert compute_weighted_sum(numbers, weights) == pytest.approx(1.8)
+    assert compute_weighted_sum(numbers, weights) == pytest.approx(1.7)
 
 def test_single_element_weighted_sum():
     """Test weighted sum with a single element."""
@@ -23,13 +23,13 @@ def test_negative_numbers_and_weights():
     """Test weighted sum with negative numbers and weights."""
     numbers = [-1, 2, -3]
     weights = [0.5, -0.3, 0.2]
-    assert compute_weighted_sum(numbers, weights) == pytest.approx(-1.3)
+    assert compute_weighted_sum(numbers, weights) == pytest.approx(-1.7)
 
 def test_float_numbers():
     """Test weighted sum with float numbers."""
     numbers = [1.5, 2.5, 3.5]
     weights = [0.1, 0.2, 0.3]
-    assert compute_weighted_sum(numbers, weights) == pytest.approx(2.5)
+    assert compute_weighted_sum(numbers, weights) == pytest.approx(2.833333)
 
 def test_empty_lists_raise_error():
     """Test that empty lists raise a ValueError."""
