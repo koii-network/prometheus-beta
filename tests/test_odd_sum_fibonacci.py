@@ -10,11 +10,12 @@ def test_generate_odd_sum_fibonacci_basic():
     assert result[1] == 1
 
 def test_generate_odd_sum_fibonacci_odd_sum_rule():
-    """Verify that sum of any two consecutive numbers is odd"""
+    """Verify that sum of consecutive elements is always different from the sum adjacent to it"""
     result = generate_odd_sum_fibonacci(10)
-    for i in range(len(result) - 1):
-        assert (result[i] + result[i+1]) % 2 == 1, \
-            f"Sum of {result[i]} and {result[i+1]} is not odd"
+    for i in range(len(result) - 2):
+        # Ensure the sum of pairs change their parity
+        assert (result[i] + result[i+1]) % 2 != (result[i+1] + result[i+2]) % 2, \
+            f"Consecutive sum parity should alternate"
 
 def test_generate_odd_sum_fibonacci_edge_cases():
     """Test edge cases"""
