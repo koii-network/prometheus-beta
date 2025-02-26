@@ -37,10 +37,11 @@ def count_equal_sum_partitions(numbers: List[int]) -> int:
         for subset in combinations(numbers, r):
             # Check if the current subset sums to half the total
             if sum(subset) == target_sum:
-                # Ensure the complementary subset also sums to target
-                complement = [num for num in numbers if num not in subset]
-                if sum(complement) == target_sum:
+                # Complementary subset (more thorough verification)
+                complement = tuple(num for num in numbers if num not in subset)
+                
+                # Ensure we only count unique partitions
+                if sum(complement) == target_sum and hash(subset) < hash(complement):
                     count += 1
 
-    # Divide by 2 to avoid counting symmetric partitions twice
-    return count // 2
+    return count
