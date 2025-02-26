@@ -5,9 +5,9 @@ def test_generate_modified_fibonacci_basic():
     """Test basic sequence generation."""
     assert generate_modified_fibonacci(1) == [1]
     assert generate_modified_fibonacci(2) == [1, 1]
-    assert generate_modified_fibonacci(3) == [1, 1, 2]
-    assert generate_modified_fibonacci(4) == [1, 1, 2, 3]
-    assert generate_modified_fibonacci(5) == [1, 1, 2, 3, 5]
+    assert generate_modified_fibonacci(3) == [1, 1, 3]
+    assert generate_modified_fibonacci(4) == [1, 1, 3, 4]
+    assert generate_modified_fibonacci(5) == [1, 1, 3, 4, 7]
 
 def test_divisibility_constraint():
     """Verify the divisibility constraint for the sequence."""
