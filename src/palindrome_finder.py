@@ -27,7 +27,9 @@ def find_palindromic_substrings(s):
     # Helper function to expand around center
     def expand_around_center(left, right):
         while left >= 0 and right < len(s) and s[left] == s[right]:
-            palindromes.add(s[left:right+1])
+            # Only add complete palindromes that match exact character range
+            if s[left:right+1] == s[left:right+1][::-1]:
+                palindromes.add(s[left:right+1])
             left -= 1
             right += 1
     
