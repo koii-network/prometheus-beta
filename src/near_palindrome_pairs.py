@@ -32,17 +32,19 @@ def find_near_palindrome_pairs(strings):
         if s == s[::-1]:
             return False
         
-        # Try changing one character
-        for i in range(len(s)):
-            for c in 'abcdefghijklmnopqrstuvwxyz':
-                # Create a modified string
-                modified = s[:i] + c + s[i+1:]
-                
-                # Check if the modified string is a palindrome
-                if modified == modified[::-1]:
-                    return True
+        # Count how many characters are different
+        n = len(s)
+        mismatches = 0
         
-        return False
+        for i in range(n // 2):
+            if s[i] != s[n - 1 - i]:
+                mismatches += 1
+                
+                # If more than one mismatch, it's not a near palindrome
+                if mismatches > 1:
+                    return False
+        
+        return True
     
     # Find pairs of near-palindromes
     near_palindrome_pairs = []
