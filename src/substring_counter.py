@@ -22,6 +22,10 @@ def count_substring_occurrences(text: str, substring: str) -> int:
         >>> count_substring_occurrences("aaaaa", "aa")
         2
     """
+    # Special case: empty text and/or substring
+    if text == "" and substring == "":
+        return 0
+    
     # Validate inputs
     if not isinstance(text, str) or not isinstance(substring, str):
         raise TypeError("Both text and substring must be strings")
