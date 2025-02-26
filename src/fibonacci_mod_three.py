@@ -24,7 +24,7 @@ def generate_modified_fibonacci(n):
     # Generate the sequence
     while len(sequence) < n:
         # Calculate the next number to ensure sum of last two is divisible by 3
-        next_num = sequence[-1] + sequence[-2]
+        next_num = 3 - (sequence[-1] + sequence[-2]) % 3 + sequence[-1] + sequence[-2]
         sequence.append(next_num)
     
     # Return only the first n elements
