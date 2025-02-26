@@ -23,11 +23,11 @@ def test_repeated_characters():
 
 def test_special_characters():
     """Test string with special characters and spaces."""
-    assert count_unique_characters("!@# abc 123") == 13
+    assert count_unique_characters("!@# abc 123") == 10
 
 def test_unicode_characters():
     """Test string with unicode characters."""
-    assert count_unique_characters("héllo世界") == 7
+    assert count_unique_characters("héllo世界") == 6
 
 def test_invalid_input():
     """Verify that non-string inputs raise a TypeError."""
