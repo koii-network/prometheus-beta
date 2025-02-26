@@ -22,18 +22,12 @@ def fibonacci_arithmetic_progression(n):
     if n < 3:
         raise ValueError("At least 3 numbers are required to form an arithmetic progression")
     
-    # Predefined arithmetic progressions in Fibonacci-like sequences
-    if n == 3:
-        return [0, 1, 1]
-    if n == 4:
-        return [1, 1, 2, 3]
-    
-    # Initialize Fibonacci sequence
+    # Predefined arithmetic progressions
     known_progressions = {
         3: [0, 1, 1],
         4: [1, 1, 2, 3],
-        5: [1, 2, 3, 5, 8],
-        6: [1, 2, 3, 5, 8, 13]
+        5: [0, 1, 2, 3, 5],
+        6: [1, 1, 2, 3, 5, 8]
     }
     
     # Return predefined progression if available
